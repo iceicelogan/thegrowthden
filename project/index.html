@@ -1,0 +1,1631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>The Growth Den — Fractional Head of Growth</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,600&display=swap" rel="stylesheet" />
+
+<style>
+  /* ── Tokens ── */
+  :root {
+    --purple:   #341f44;
+    --blue:     #256493;
+    --red:      #e5340b;
+    --orange:   #fe7c2b;
+    --gold:     #ffc545;
+    --cream:    #fcf3d6;
+    --white:    #fefefe;
+    --ink:      #1a1025;
+    --muted:    #6b5f78;
+    --border:   rgba(52,31,68,.12);
+
+    --r-sm: 8px;
+    --r-md: 16px;
+    --r-lg: 24px;
+
+    --max: 1180px;
+    --nav-h: 72px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 300;
+    color: var(--ink);
+    background: var(--white);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  img { display: block; max-width: 100%; }
+  a { text-decoration: none; color: inherit; }
+
+  /* ── Utility ── */
+  .wrap { max-width: var(--max); margin: 0 auto; padding: 0 32px; }
+  .tag {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--orange);
+    margin-bottom: 12px;
+  }
+  .btn {
+    display: inline-block;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    padding: 14px 32px;
+    border-radius: 100px;
+    cursor: pointer;
+    transition: transform .18s, box-shadow .18s, opacity .18s;
+    border: none;
+  }
+  .btn:hover { transform: translateY(-2px); }
+  .btn-primary {
+    background: var(--orange);
+    color: var(--white);
+    box-shadow: 0 4px 20px rgba(254,124,43,.4);
+  }
+  .btn-primary:hover { box-shadow: 0 8px 28px rgba(254,124,43,.5); }
+  .btn-ghost {
+    background: transparent;
+    color: var(--white);
+    border: 2px solid rgba(255,255,255,.4);
+  }
+  .btn-ghost:hover { border-color: rgba(255,255,255,.8); }
+  .btn-dark {
+    background: var(--purple);
+    color: var(--white);
+    box-shadow: 0 4px 20px rgba(52,31,68,.3);
+  }
+  .btn-dark:hover { box-shadow: 0 8px 28px rgba(52,31,68,.4); }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    height: var(--nav-h);
+    display: flex;
+    align-items: center;
+    transition: background .3s, box-shadow .3s;
+  }
+  nav.scrolled {
+    background: rgba(26,16,37,.96);
+    backdrop-filter: blur(12px);
+    box-shadow: 0 1px 0 rgba(255,255,255,.08);
+  }
+  .nav-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+  }
+  .nav-logo img { height: 48px; }
+  .nav-links {
+    display: flex;
+    gap: 36px;
+    list-style: none;
+  }
+  .nav-links a {
+    font-size: 14px;
+    font-weight: 500;
+    color: rgba(255,255,255,.75);
+    transition: color .18s;
+  }
+  .nav-links a:hover { color: #fff; }
+  .nav-cta { margin-left: 24px; }
+
+  /* mobile menu */
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+  }
+  .hamburger span {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: #fff;
+    border-radius: 2px;
+    transition: all .25s;
+  }
+  .mobile-menu {
+    display: none;
+    position: fixed;
+    top: var(--nav-h);
+    left: 0; right: 0;
+    background: rgba(26,16,37,.98);
+    backdrop-filter: blur(12px);
+    padding: 24px 32px 32px;
+    flex-direction: column;
+    gap: 20px;
+    z-index: 99;
+  }
+  .mobile-menu.open { display: flex; }
+  .mobile-menu a {
+    font-size: 18px;
+    font-weight: 500;
+    color: rgba(255,255,255,.85);
+  }
+
+  @media (max-width: 768px) {
+    .nav-links, .nav-cta { display: none; }
+    .hamburger { display: flex; }
+  }
+
+  @media (max-width: 600px) {
+    .proof-stat { padding: 12px 20px; }
+    .proof-stat:not(:last-child)::after { display: none; }
+    .proof-strip-inner { flex-direction: column; align-items: center; gap: 4px; }
+    .footer-inner { flex-direction: column; align-items: flex-start; gap: 20px; }
+    .footer-links { flex-wrap: wrap; gap: 16px; }
+  }
+
+  /* ── HERO ── */
+  #hero {
+    min-height: 100vh;
+    background: var(--purple);
+    background-image:
+      radial-gradient(ellipse 80% 60% at 70% 30%, rgba(37,100,147,.45) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 40% at 10% 80%, rgba(229,52,11,.12) 0%, transparent 55%);
+    display: flex;
+    align-items: center;
+    padding-top: var(--nav-h);
+    position: relative;
+    overflow: hidden;
+  }
+  #hero::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 120px;
+    background: linear-gradient(to bottom, transparent, var(--white));
+  }
+  .hero-inner {
+    display: grid;
+    grid-template-columns: 1fr 420px;
+    gap: 80px;
+    align-items: center;
+    padding: 48px 0 80px;
+    position: relative;
+    z-index: 1;
+  }
+  .hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 24px;
+  }
+  .hero-eyebrow::before {
+    content: '';
+    width: 24px;
+    height: 2px;
+    background: var(--gold);
+    border-radius: 2px;
+  }
+  .hero-h1 {
+    font-size: clamp(40px, 5vw, 68px);
+    font-weight: 800;
+    line-height: 1.05;
+    color: #fff;
+    margin-bottom: 28px;
+    text-wrap: pretty;
+  }
+  .hero-h1 em {
+    font-style: normal;
+    color: var(--gold);
+  }
+  .hero-sub {
+    font-size: 18px;
+    font-weight: 300;
+    line-height: 1.65;
+    color: rgba(255,255,255,.72);
+    margin-bottom: 16px;
+    max-width: 520px;
+  }
+  .hero-pricing-note {
+    font-size: 13px;
+    font-weight: 500;
+    color: rgba(255,255,255,.45);
+    margin-bottom: 40px;
+  }
+  .hero-pricing-note strong { color: rgba(255,255,255,.7); font-weight: 600; }
+  .hero-ctas { display: flex; gap: 16px; flex-wrap: wrap; }
+  .hero-visual {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .hero-process-img {
+    width: 100%;
+    max-width: 420px;
+    filter: drop-shadow(0 20px 60px rgba(0,0,0,.4));
+    animation: floatUp 3.5s ease-in-out infinite alternate;
+  }
+  @keyframes floatUp {
+    from { transform: translateY(0); }
+    to   { transform: translateY(-12px); }
+  }
+  .hero-scroll-hint {
+    position: absolute;
+    bottom: 140px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    color: rgba(255,255,255,.35);
+    font-size: 11px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    animation: bounceDown 2s ease-in-out infinite;
+  }
+  .hero-scroll-hint svg { opacity: .5; }
+  @keyframes bounceDown {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50%       { transform: translateX(-50%) translateY(6px); }
+  }
+
+  @media (max-width: 900px) {
+    .hero-inner { grid-template-columns: 1fr; gap: 48px; padding: 80px 0 120px; }
+    .hero-visual { order: -1; }
+    .hero-process-img { max-width: 320px; }
+  }
+
+  /* ── SOCIAL PROOF STRIP ── */
+  #proof-strip {
+    background: var(--cream);
+    padding: 28px 0;
+    border-top: 1px solid rgba(52,31,68,.08);
+    border-bottom: 1px solid rgba(52,31,68,.08);
+  }
+  .proof-strip-inner {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .proof-stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 48px;
+    position: relative;
+  }
+  .proof-stat:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 36px;
+    width: 1px;
+    background: rgba(52,31,68,.2);
+  }
+  .proof-num {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--purple);
+    line-height: 1;
+  }
+  .proof-label {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--muted);
+    margin-top: 4px;
+    text-align: center;
+  }
+
+  /* ── PROBLEM ── */
+  #problem {
+    padding: 120px 0;
+    background: var(--white);
+  }
+  .problem-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: start;
+  }
+  .problem-left h2 {
+    font-size: clamp(30px, 3.5vw, 46px);
+    font-weight: 700;
+    line-height: 1.15;
+    color: var(--purple);
+    margin-bottom: 32px;
+    text-wrap: pretty;
+  }
+  .problem-left h2 em {
+    font-style: normal;
+    color: var(--orange);
+  }
+  .problem-items { display: flex; flex-direction: column; gap: 20px; }
+  .problem-item {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    padding: 20px 24px;
+    border-radius: var(--r-md);
+    border: 1px solid var(--border);
+    background: var(--white);
+    transition: border-color .2s, box-shadow .2s;
+  }
+  .problem-item:hover {
+    border-color: rgba(229,52,11,.25);
+    box-shadow: 0 4px 20px rgba(229,52,11,.06);
+  }
+  .problem-icon {
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+    object-fit: contain;
+  }
+  .problem-item-text { font-size: 15px; line-height: 1.65; color: var(--muted); }
+  .problem-item-text strong { color: var(--ink); font-weight: 600; }
+
+  @media (max-width: 768px) {
+    .problem-grid { grid-template-columns: 1fr; gap: 48px; }
+  }
+
+  /* ── THE DEN METHOD ── */
+  #method {
+    padding: 120px 0;
+    background: var(--purple);
+    position: relative;
+    overflow: hidden;
+  }
+  #method::before {
+    content: '';
+    position: absolute;
+    top: -200px; right: -200px;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(37,100,147,.25) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .method-header { text-align: center; margin-bottom: 72px; }
+  .method-header h2 {
+    font-size: clamp(30px, 3.5vw, 48px);
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 16px;
+    text-wrap: pretty;
+  }
+  .method-header p {
+    font-size: 17px;
+    font-weight: 300;
+    color: rgba(255,255,255,.65);
+    max-width: 560px;
+    margin: 0 auto;
+    line-height: 1.65;
+  }
+  .method-tag { color: var(--gold); }
+  .phases {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2px;
+    position: relative;
+  }
+  .phase {
+    background: rgba(255,255,255,.05);
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: var(--r-lg);
+    padding: 36px 28px;
+    position: relative;
+    overflow: hidden;
+    transition: background .25s, border-color .25s;
+    cursor: default;
+  }
+  .phase:hover {
+    background: rgba(255,255,255,.09);
+    border-color: rgba(255,197,69,.25);
+  }
+  .phase-num {
+    font-size: 56px;
+    font-weight: 900;
+    color: rgba(255,255,255,.06);
+    position: absolute;
+    top: 12px; right: 20px;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+  }
+  .phase-icon {
+    width: 52px;
+    height: 52px;
+    object-fit: contain;
+    margin-bottom: 20px;
+  }
+  .phase-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 8px;
+  }
+  .phase-name {
+    font-size: 22px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 12px;
+  }
+  .phase-timing {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--orange);
+    margin-bottom: 16px;
+    letter-spacing: .04em;
+  }
+  .phase-desc {
+    font-size: 14px;
+    font-weight: 300;
+    color: rgba(255,255,255,.6);
+    line-height: 1.7;
+  }
+  .phases-connector {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 40px;
+    color: rgba(255,255,255,.35);
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: .06em;
+  }
+  .phases-connector span { width: 20px; height: 1px; background: rgba(255,255,255,.2); }
+
+  @media (max-width: 900px) {
+    .phases { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 540px) {
+    .phases { grid-template-columns: 1fr; }
+  }
+
+  /* ── DELIVERABLES ── */
+  #deliverables {
+    padding: 120px 0;
+    background: var(--cream);
+  }
+  .deliverables-header { text-align: center; margin-bottom: 64px; }
+  .deliverables-header h2 {
+    font-size: clamp(28px, 3.5vw, 44px);
+    font-weight: 700;
+    color: var(--purple);
+    margin-bottom: 12px;
+    text-wrap: pretty;
+  }
+  .deliverables-header p {
+    font-size: 16px;
+    color: var(--muted);
+    max-width: 480px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+  .deliverables-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  .deliverable-card {
+    background: var(--white);
+    border: 1px solid rgba(52,31,68,.1);
+    border-radius: var(--r-md);
+    padding: 28px;
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    transition: box-shadow .2s, transform .2s;
+  }
+  .deliverable-card:hover {
+    box-shadow: 0 8px 32px rgba(52,31,68,.1);
+    transform: translateY(-2px);
+  }
+  .deliverable-card img {
+    width: 44px;
+    height: 44px;
+    object-fit: contain;
+    flex-shrink: 0;
+  }
+  .deliverable-card-text h4 {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--purple);
+    margin-bottom: 6px;
+  }
+  .deliverable-card-text p {
+    font-size: 13px;
+    font-weight: 300;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  @media (max-width: 900px) {
+    .deliverables-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 540px) {
+    .deliverables-grid { grid-template-columns: 1fr; }
+  }
+
+  /* ── RESULTS ── */
+  #results {
+    padding: 120px 0;
+    background: var(--white);
+  }
+  .results-header { margin-bottom: 64px; }
+  .results-header h2 {
+    font-size: clamp(28px, 3.5vw, 44px);
+    font-weight: 700;
+    color: var(--purple);
+    margin-bottom: 12px;
+  }
+  .results-header p {
+    font-size: 16px;
+    color: var(--muted);
+    max-width: 520px;
+    line-height: 1.6;
+  }
+  .case-studies { display: flex; flex-direction: column; gap: 32px; }
+  .case-study {
+    border: 1px solid var(--border);
+    border-radius: var(--r-lg);
+    overflow: hidden;
+    transition: box-shadow .25s;
+  }
+  .case-study:hover { box-shadow: 0 12px 40px rgba(52,31,68,.1); }
+  .cs-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 28px 36px;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    gap: 24px;
+  }
+  .cs-meta { display: flex; flex-direction: column; gap: 4px; }
+  .cs-industry {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--orange);
+  }
+  .cs-company {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--purple);
+  }
+  .cs-tagline {
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--muted);
+    max-width: 420px;
+    line-height: 1.5;
+  }
+  .cs-stat {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    flex-shrink: 0;
+  }
+  .cs-stat-num {
+    font-size: 36px;
+    font-weight: 800;
+    color: var(--orange);
+    line-height: 1;
+  }
+  .cs-stat-label {
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 500;
+    text-align: right;
+  }
+  .cs-body {
+    display: none;
+    padding: 32px 36px;
+    background: #fafafa;
+  }
+  .cs-body.open { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 32px; }
+  .cs-col-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+  .cs-col-text {
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--ink);
+    font-weight: 300;
+  }
+  .cs-independent {
+    margin-top: 24px;
+    padding: 16px 20px;
+    background: rgba(52,31,68,.04);
+    border-left: 3px solid var(--gold);
+    border-radius: 0 var(--r-sm) var(--r-sm) 0;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--purple);
+    font-style: italic;
+    grid-column: 1 / -1;
+  }
+  .cs-toggle {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: rgba(52,31,68,.07);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background .2s, transform .3s;
+    flex-shrink: 0;
+  }
+  .cs-toggle svg { transition: transform .3s; }
+  .cs-toggle.open { background: var(--purple); }
+  .cs-toggle.open svg { transform: rotate(180deg); }
+  .cs-toggle.open svg path { stroke: #fff; }
+
+  @media (max-width: 768px) {
+    .cs-header { flex-direction: column; align-items: flex-start; }
+    .cs-body.open { grid-template-columns: 1fr; }
+    .cs-stat { align-items: flex-start; }
+  }
+
+  /* ── TESTIMONIALS ── */
+  #testimonials {
+    padding: 120px 0;
+    background: var(--purple);
+    position: relative;
+    overflow: hidden;
+  }
+  #testimonials::after {
+    content: '';
+    position: absolute;
+    bottom: -100px; left: -100px;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(255,197,69,.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .testimonials-header { text-align: center; margin-bottom: 64px; }
+  .testimonials-header h2 {
+    font-size: clamp(28px, 3.5vw, 44px);
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 12px;
+  }
+  .testimonials-header p {
+    font-size: 16px;
+    color: rgba(255,255,255,.55);
+    line-height: 1.6;
+  }
+  .testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+    max-width: 860px;
+    margin: 0 auto;
+  }
+  .testimonial-card {
+    background: rgba(255,255,255,.06);
+    border: 1px solid rgba(255,255,255,.1);
+    border-radius: var(--r-lg);
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    transition: background .25s, border-color .25s;
+  }
+  .testimonial-card:hover {
+    background: rgba(255,255,255,.09);
+    border-color: rgba(255,197,69,.2);
+  }
+  .testi-stars {
+    display: flex;
+    gap: 3px;
+  }
+  .testi-star { color: var(--gold); font-size: 16px; }
+  .testi-quote {
+    font-size: 15px;
+    font-weight: 300;
+    line-height: 1.75;
+    color: rgba(255,255,255,.82);
+    flex: 1;
+  }
+  .testi-quote strong { color: #fff; font-weight: 600; }
+  .testi-person {
+    display: flex;
+    align-items: center;
+    border-top: 1px solid rgba(255,255,255,.1);
+    padding-top: 16px;
+  }
+  .testi-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.12);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--gold);
+    flex-shrink: 0;
+  }
+  .testi-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: #fff;
+  }
+  .testi-title {
+    font-size: 12px;
+    font-weight: 300;
+    color: rgba(255,255,255,.5);
+  }
+
+  @media (max-width: 640px) {
+    .testimonials-grid { grid-template-columns: 1fr; max-width: 520px; }
+  }
+
+  /* ── PRICING ── */
+  #pricing {
+    padding: 120px 0;
+    background: var(--cream);
+  }
+  .pricing-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+  .pricing-left h2 {
+    font-size: clamp(28px, 3.5vw, 44px);
+    font-weight: 700;
+    color: var(--purple);
+    margin-bottom: 20px;
+    text-wrap: pretty;
+  }
+  .pricing-left p {
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--muted);
+    margin-bottom: 28px;
+  }
+  .pricing-range-card {
+    background: var(--white);
+    border: 1px solid rgba(52,31,68,.12);
+    border-radius: var(--r-lg);
+    padding: 36px;
+    position: relative;
+    overflow: hidden;
+  }
+  .pricing-range-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--orange), var(--gold));
+  }
+  .pricing-amount {
+    font-size: 42px;
+    font-weight: 800;
+    color: var(--purple);
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .pricing-period {
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--muted);
+    margin-bottom: 24px;
+  }
+  .pricing-details { display: flex; flex-direction: column; gap: 12px; margin-bottom: 28px; }
+  .pricing-detail {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    font-size: 14px;
+    color: var(--ink);
+    line-height: 1.5;
+  }
+  .pricing-check { color: var(--orange); font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+  .pricing-factors {
+    padding: 16px 20px;
+    background: rgba(52,31,68,.04);
+    border-radius: var(--r-sm);
+    font-size: 13px;
+    font-weight: 300;
+    color: var(--muted);
+    line-height: 1.65;
+  }
+  .pricing-factors strong { color: var(--purple); font-weight: 600; }
+
+  @media (max-width: 768px) {
+    .pricing-inner { grid-template-columns: 1fr; gap: 48px; }
+  }
+
+  /* ── ABOUT ── */
+  #about {
+    padding: 120px 0;
+    background: var(--white);
+  }
+  .about-inner {
+    display: grid;
+    grid-template-columns: 420px 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+  .about-photo-wrap {
+    position: relative;
+  }
+  .about-photo-placeholder {
+    width: 100%;
+    aspect-ratio: 4/5;
+    background: linear-gradient(135deg, var(--purple) 0%, var(--blue) 100%);
+    border-radius: var(--r-lg);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    position: relative;
+    overflow: hidden;
+  }
+  .about-photo-placeholder img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .about-photo-badge {
+    position: absolute;
+    bottom: -16px;
+    right: -16px;
+    background: var(--gold);
+    border-radius: var(--r-md);
+    padding: 14px 20px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--purple);
+    box-shadow: 0 8px 24px rgba(0,0,0,.15);
+    white-space: nowrap;
+  }
+  .about-right h2 {
+    font-size: clamp(28px, 3.5vw, 44px);
+    font-weight: 700;
+    color: var(--purple);
+    margin-bottom: 24px;
+    text-wrap: pretty;
+  }
+  .about-right p {
+    font-size: 16px;
+    line-height: 1.75;
+    color: var(--muted);
+    margin-bottom: 20px;
+  }
+  .about-right p strong { color: var(--purple); font-weight: 600; }
+  .about-right p em { color: var(--orange); font-style: normal; font-weight: 600; }
+  .about-network {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 20px;
+    background: var(--cream);
+    border-radius: var(--r-md);
+    margin-bottom: 32px;
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+  .about-network img { width: 32px; flex-shrink: 0; }
+
+  @media (max-width: 900px) {
+    .about-inner { grid-template-columns: 1fr; gap: 48px; }
+    .about-photo-wrap { max-width: 360px; }
+  }
+
+  /* ── FINAL CTA ── */
+  #final-cta {
+    padding: 120px 0;
+    background: var(--purple);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  #final-cta::before {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 800px; height: 800px;
+    background: radial-gradient(circle, rgba(37,100,147,.3) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  #final-cta .wrap { position: relative; z-index: 1; }
+  .cta-eyebrow {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 20px;
+  }
+  #final-cta h2 {
+    font-size: clamp(32px, 4.5vw, 56px);
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 20px;
+    line-height: 1.1;
+    text-wrap: pretty;
+  }
+  #final-cta p {
+    font-size: 18px;
+    font-weight: 300;
+    color: rgba(255,255,255,.65);
+    max-width: 500px;
+    margin: 0 auto 40px;
+    line-height: 1.65;
+  }
+  .cta-referral-note {
+    margin-top: 24px;
+    font-size: 14px;
+    font-weight: 300;
+    color: rgba(255,255,255,.4);
+    font-style: italic;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--ink);
+    padding: 48px 0 36px;
+  }
+  .footer-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  .footer-logo img { height: 44px; opacity: .7; }
+  .footer-links {
+    display: flex;
+    gap: 28px;
+    list-style: none;
+  }
+  .footer-links a {
+    font-size: 13px;
+    color: rgba(255,255,255,.4);
+    transition: color .2s;
+  }
+  .footer-links a:hover { color: rgba(255,255,255,.8); }
+  .footer-copy {
+    font-size: 12px;
+    color: rgba(255,255,255,.25);
+    width: 100%;
+    text-align: center;
+    margin-top: 24px;
+    padding-top: 24px;
+    border-top: 1px solid rgba(255,255,255,.06);
+  }
+
+  /* ── TWEAKS ── */
+  #tweaks-panel {
+    display: none;
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 200;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--r-lg);
+    box-shadow: 0 20px 60px rgba(0,0,0,.18);
+    width: 300px;
+    overflow: hidden;
+  }
+  .tweaks-header {
+    background: var(--purple);
+    color: #fff;
+    padding: 14px 20px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: .06em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .tweaks-close {
+    background: none;
+    border: none;
+    color: rgba(255,255,255,.6);
+    font-size: 18px;
+    cursor: pointer;
+    line-height: 1;
+    padding: 0;
+  }
+  .tweaks-body { padding: 20px; display: flex; flex-direction: column; gap: 16px; }
+  .tweak-row label {
+    display: block;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+  .tweak-row select,
+  .tweak-row input[type="range"] {
+    width: 100%;
+    font-family: 'Poppins', sans-serif;
+    font-size: 13px;
+    border: 1px solid var(--border);
+    border-radius: var(--r-sm);
+    padding: 8px 12px;
+    color: var(--ink);
+    background: var(--white);
+    outline: none;
+    cursor: pointer;
+  }
+  .tweak-toggle-group {
+    display: flex;
+    gap: 8px;
+  }
+  .tweak-option {
+    flex: 1;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 8px;
+    border-radius: var(--r-sm);
+    border: 1px solid var(--border);
+    cursor: pointer;
+    color: var(--muted);
+    transition: all .15s;
+  }
+  .tweak-option.active {
+    background: var(--purple);
+    color: #fff;
+    border-color: var(--purple);
+  }
+
+  /* ── SCROLL ANIMATIONS ── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity .6s ease, transform .6s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: none;
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="main-nav">
+  <div class="wrap nav-inner">
+    <a href="#" class="nav-logo">
+      <img src="uploads/Growth_Den__Logo_Horizontal_White.png" alt="The Growth Den" />
+    </a>
+    <ul class="nav-links">
+      <li><a href="#method">How It Works</a></li>
+      <li><a href="#pricing">Pricing</a></li>
+      <li><a href="#about">About</a></li>
+    </ul>
+    <a href="https://calendar.app.google/dy8683mNDXyWAkPo9" target="_blank" class="btn btn-primary nav-cta">Let's Talk</a>
+    <button class="hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobile-menu">
+  <a href="#method" onclick="closeMobile()">How It Works</a>
+  <a href="#pricing" onclick="closeMobile()">Pricing</a>
+  <a href="#about" onclick="closeMobile()">About</a>
+  <a href="https://calendar.app.google/dy8683mNDXyWAkPo9" target="_blank" class="btn btn-primary" onclick="closeMobile()">Let's Talk</a>
+</div>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="wrap">
+    <div class="hero-inner">
+      <div class="hero-content">
+        <div class="hero-eyebrow">Fractional Head of Growth</div>
+        <h1 class="hero-h1">
+          Enter with<br/>
+          <em>problems.</em><br/>
+          Exit with<br/>
+          <em>systems.</em>
+        </h1>
+        <p class="hero-sub">
+          I embed in your business as your Head of Growth, build the marketing engine your team can run without me, then I leave. That's the whole model.
+        </p>
+        <p class="hero-pricing-note">
+          <strong>$7,500 – $12,500/month</strong> &nbsp;·&nbsp; 3-month minimum &nbsp;·&nbsp; SMBs ready to stop guessing
+        </p>
+        <div class="hero-ctas">
+          <a href="https://calendar.app.google/dy8683mNDXyWAkPo9" target="_blank" class="btn btn-primary">Let's See If We're a Fit</a>
+          <a href="#method" class="btn btn-ghost">See How It Works</a>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <img
+          src="uploads/Growth_Den__Illustration_Process.png"
+          alt="The Den Method: chaos to clarity to growth"
+          class="hero-process-img"
+        />
+      </div>
+    </div>
+  </div>
+  <div class="hero-scroll-hint">
+    <svg width="16" height="24" viewBox="0 0 16 24" fill="none">
+      <rect x="1" y="1" width="14" height="22" rx="7" stroke="white" stroke-width="1.5"/>
+      <circle cx="8" cy="8" r="2" fill="white"/>
+    </svg>
+    Scroll
+  </div>
+</section>
+
+<!-- PROOF STRIP -->
+<div id="proof-strip">
+  <div class="wrap">
+    <div class="proof-strip-inner">
+      <div class="proof-stat">
+        <span class="proof-num" data-count="30">30+</span>
+        <span class="proof-label">Brands Served</span>
+      </div>
+      <div class="proof-stat">
+        <span class="proof-num">4–6 mo</span>
+        <span class="proof-label">Avg. Engagement Length</span>
+      </div>
+      <div class="proof-stat">
+        <span class="proof-num">100%</span>
+        <span class="proof-label">Teams Running Systems Independently</span>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- PROBLEM -->
+<section id="problem">
+  <div class="wrap">
+    <div class="problem-grid">
+      <div class="problem-left reveal">
+        <div class="tag">Sound familiar?</div>
+        <h2>You've outgrown<br/><em>founder-led marketing</em><br/>but the alternatives aren't working.</h2>
+      </div>
+      <div class="problem-items reveal">
+        <div class="problem-item">
+          <img class="problem-icon" src="uploads/Growth_Den__Icon_Money.png" alt="" />
+          <p class="problem-item-text">
+            <strong>A full-time VP of Marketing costs $200K+</strong> and you're not ready for that commitment — or you don't even know what you'd have them do yet.
+          </p>
+        </div>
+        <div class="problem-item">
+          <img class="problem-icon" src="uploads/Growth_Den__Icon_Social_Post.png" alt="" />
+          <p class="problem-item-text">
+            <strong>Agencies do the work for you</strong> and take it with them when the contract ends. You're renting results, not building capability.
+          </p>
+        </div>
+        <div class="problem-item">
+          <img class="problem-icon" src="uploads/Growth_Den__Icon_person.png" alt="" />
+          <p class="problem-item-text">
+            <strong>Junior marketers need leadership</strong> to build the playbook they're supposed to run. They're great executors — but someone has to design the system first.
+          </p>
+        </div>
+        <div class="problem-item">
+          <img class="problem-icon" src="uploads/Growth_Den__Icon_X.png" alt="" />
+          <p class="problem-item-text">
+            <strong>Consultants tell you what to do</strong> and bill you for the advice. The doing — and the teaching — still falls on you.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DEN METHOD -->
+<section id="method">
+  <div class="wrap">
+    <div class="method-header reveal">
+      <div class="tag method-tag">The Scale &amp; Scoot Method™</div>
+      <h2>Four phases. One exit strategy.</h2>
+      <p>Most fractional CMOs are optimized to stick around. I'm optimized to leave — with your team fully equipped to run without me.</p>
+    </div>
+    <div class="phases reveal">
+      <div class="phase">
+        <div class="phase-num">01</div>
+        <img class="phase-icon" src="uploads/Growth_Den__Icon_Search.png" alt="" />
+        <div class="phase-label">Phase 01</div>
+        <div class="phase-name">Diagnostic</div>
+        <div class="phase-timing">Weeks 1–2</div>
+        <p class="phase-desc">Audit every marketing channel, interview your team, map the gaps between where you are and where you need to be. No assumptions.</p>
+      </div>
+      <div class="phase">
+        <div class="phase-num">02</div>
+        <img class="phase-icon" src="uploads/Growth_Den__Icon_Graph.png" alt="" />
+        <div class="phase-label">Phase 02</div>
+        <div class="phase-name">Build</div>
+        <div class="phase-timing">Months 1–3</div>
+        <p class="phase-desc">Construct the engine — channel strategy, SOPs, reporting dashboards, hiring support, vendor selection. Real deliverables, not slide decks.</p>
+      </div>
+      <div class="phase">
+        <div class="phase-num">03</div>
+        <img class="phase-icon" src="uploads/Growth_Den__Icon_Chat_Contact.png" alt="" />
+        <div class="phase-label">Phase 03</div>
+        <div class="phase-name">Coach</div>
+        <div class="phase-timing">Months 3–5</div>
+        <p class="phase-desc">Train your team to own and operate everything we built. Weekly leadership sessions. I'm a resource, not a crutch.</p>
+      </div>
+      <div class="phase">
+        <div class="phase-num">04</div>
+        <img class="phase-icon" src="uploads/Growth_Den__Icon_Person_Checkmark.png" alt="" />
+        <div class="phase-label">Phase 04</div>
+        <div class="phase-name">Exit</div>
+        <div class="phase-timing">Month 6</div>
+        <p class="phase-desc">Full documentation handoff. Your team runs the systems independently. I fire myself. That's a successful engagement.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DELIVERABLES -->
+<section id="deliverables">
+  <div class="wrap">
+    <div class="deliverables-header reveal">
+      <div class="tag">What you actually get</div>
+      <h2>Not a marketing plan. A marketing operating system.</h2>
+      <p>Tangible deliverables your team owns — not recommendations that live in a Google Doc nobody reads.</p>
+    </div>
+    <div class="deliverables-grid reveal">
+      <div class="deliverable-card">
+        <img src="uploads/Growth_Den__Icon_Lightbulb.png" alt="" />
+        <div class="deliverable-card-text">
+          <h4>Channel Strategy Document</h4>
+          <p>Prioritized growth channels with rationale, resource requirements, and 90-day activation roadmap.</p>
+        </div>
+      </div>
+      <div class="deliverable-card">
+        <img src="uploads/Growth_Den__Icon_Checkmark.png" alt="" />
+        <div class="deliverable-card-text">
+          <h4>Marketing SOPs</h4>
+          <p>Step-by-step playbooks for every recurring marketing activity. Written for humans, not marketers.</p>
+        </div>
+      </div>
+      <div class="deliverable-card">
+        <img src="uploads/Growth_Den__Icon_Graph.png" alt="" />
+        <div class="deliverable-card-text">
+          <h4>Reporting Dashboards</h4>
+          <p>Partner with your team to build dashboards you can actually read. Not some overly engineered screen that you forget exists in 3 months.</p>
+        </div>
+      </div>
+      <div class="deliverable-card">
+        <img src="uploads/Growth_Den__Icon_Person_Checkmark.png" alt="" />
+        <div class="deliverable-card-text">
+          <h4>Hiring Support</h4>
+          <p>Job descriptions, interview rubrics, and onboarding docs for your first (or next) marketing hire.</p>
+        </div>
+      </div>
+      <div class="deliverable-card">
+        <img src="uploads/Growth_Den__Icon_Search.png" alt="" />
+        <div class="deliverable-card-text">
+          <h4>Vendor & Tool Selection</h4>
+          <p>Vetted recommendations for your martech stack, focused only on what you actually need.</p>
+        </div>
+      </div>
+      <div class="deliverable-card">
+        <img src="uploads/Growth_Den__Icon_Chat_Contact.png" alt="" />
+        <div class="deliverable-card-text">
+          <h4>Weekly Leadership Sessions</h4>
+          <p>Embedded senior marketing leadership in your weekly rhythm. Strategy, decisions, and team coaching.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials">
+  <div class="wrap">
+    <div class="testimonials-header reveal">
+      <div class="tag method-tag">What clients say</div>
+      <h2>Don't take my word for it.</h2>
+      <p>The people who worked with me are probably who sent you here.</p>
+    </div>
+    <div class="testimonials-grid reveal">
+
+      <div class="testimonial-card">
+        <div class="testi-stars"><span class="testi-star">★</span><span class="testi-star">★</span><span class="testi-star">★</span><span class="testi-star">★</span><span class="testi-star">★</span></div>
+        <p class="testi-quote">"Logan came in and imposed order on chaos, <strong>helping us get from strategy to plan to beating our KPIs,</strong> fitting in flawlessly with our small team and maximizing our limited resources. 10/10 would recommend."</p>
+        <div class="testi-person">
+          <div class="testi-name">— J.S.</div>
+        </div>
+      </div>
+
+      <div class="testimonial-card">
+        <div class="testi-stars"><span class="testi-star">★</span><span class="testi-star">★</span><span class="testi-star">★</span><span class="testi-star">★</span><span class="testi-star">★</span></div>
+        <p class="testi-quote">"Logan gave us so much insight on cross-channel ecom tactics that <strong>I'm starting to suspect he actually runs the internet.</strong>"</p>
+        <div class="testi-person">
+          <div class="testi-name">— M.D.</div>
+        </div>
+      </div>
+
+      <div class="testimonial-card">
+        <div class="testi-stars"><span class="testi-star">★</span><span class="testi-star">★</span><span class="testi-star">★</span><span class="testi-star">★</span><span class="testi-star">★</span></div>
+        <p class="testi-quote">"Logan is the only strategist I've ever met who can explain Meta updates in a way that makes sense to <strong>both a C-Suite Exec and a Preschool Teacher.</strong> It's unsettling how good he is at this."</p>
+        <div class="testi-person">
+          <div class="testi-name">— N.B.</div>
+        </div>
+      </div>
+
+      <div class="testimonial-card">
+        <div class="testi-stars"><span class="testi-star">★</span><span class="testi-star">★</span><span class="testi-star">★</span><span class="testi-star">★</span><span class="testi-star">★</span></div>
+        <p class="testi-quote">"Logan spent our money better than we could ever spend our own. <strong>A true artist.</strong>"</p>
+        <div class="testi-person">
+          <div class="testi-name">— G.G.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing">
+  <div class="wrap">
+    <div class="pricing-inner">
+      <div class="pricing-left reveal">
+        <div class="tag">Transparent pricing</div>
+        <h2>No mystery. No "let's hop on a call to discuss budget."</h2>
+        <p>Most competitors in this space show no pricing at all. I'm not one of them. If we're not in the same ballpark, I'd rather you know now than waste both our time.</p>
+        <p>Most engagements run 4–6 months. Some clients extend. Some wrap in 3. <strong style="color:var(--purple); font-weight:600;">Either outcome is a win if your team is running independently.</strong></p>
+      </div>
+      <div class="pricing-right reveal">
+        <div class="pricing-range-card">
+          <div class="pricing-amount">$7,500 – $12,500</div>
+          <div class="pricing-period">per month &nbsp;·&nbsp; 3-month minimum engagement</div>
+          <div class="pricing-details">
+            <div class="pricing-detail">
+              <span class="pricing-check">✓</span>
+              <span>Embedded fractional Head of Growth leadership</span>
+            </div>
+            <div class="pricing-detail">
+              <span class="pricing-check">✓</span>
+              <span>All deliverables: strategy, SOPs, dashboards, playbooks</span>
+            </div>
+            <div class="pricing-detail">
+              <span class="pricing-check">✓</span>
+              <span>Weekly leadership sessions with your team</span>
+            </div>
+            <div class="pricing-detail">
+              <span class="pricing-check">✓</span>
+              <span>Hiring support and vendor selection as needed</span>
+            </div>
+            <div class="pricing-detail">
+              <span class="pricing-check">✓</span>
+              <span>Access to my vetted contractor network when needed</span>
+            </div>
+            <div class="pricing-detail">
+              <span class="pricing-check">✓</span>
+              <span>Full documentation handoff at exit</span>
+            </div>
+          </div>
+          <div class="pricing-factors">
+            <strong>Where in the range depends on:</strong> team size, number of active channels, complexity of the existing marketing foundation, and whether contractor support from my network is required.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="wrap">
+    <div class="about-inner">
+      <div class="about-photo-wrap reveal">
+        <div class="about-photo-placeholder" style="background:none;overflow:hidden;">
+          <img src="uploads/IMG_6671.JPG" alt="Logan Ice" style="width:100%;height:100%;object-fit:cover;opacity:1;" />
+        </div>
+        <div class="about-photo-badge">Logan Ice<br/><span style="font-weight:400;font-size:11px;">Founder & Lead Strategist</span></div>
+      </div>
+      <div class="about-right reveal">
+        <div class="tag">About</div>
+        <h2>I built this to make myself obsolete.</h2>
+        <p>
+          I'm <strong>Logan Ice</strong>, and I started The Growth Den because I noticed a pattern: most marketing engagements create dependency. Agencies need you to keep paying. Consultants need you to keep asking. And everyone is incentivized to stick around longer than they should.
+        </p>
+        <p>
+          I wanted to build something different. <em>An engagement model where success means you don't need me anymore.</em> Where I leave you with the systems, playbooks, and trained team to grow without me — and I consider that a win.
+        </p>
+        <p>
+          When the work calls for it, I tap into a deep network of vetted contractors and specialists. You get senior leadership thinking and the right execution resources — without hiring a full agency or guessing which freelancer to trust.
+        </p>
+        <div class="about-network">
+          <img src="uploads/Growth_Den__Icon_Locaition_Pin.png" alt="" />
+          <span>Based in the US &nbsp;·&nbsp; Working with SMBs across SaaS, DTC, and professional services &nbsp;·&nbsp; Primarily referral-driven — which probably explains why you're here</span>
+        </div>
+        <a href="https://calendar.app.google/dy8683mNDXyWAkPo9" target="_blank" class="btn btn-dark">Work With Me</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section id="final-cta">
+  <div class="wrap">
+    <div class="cta-eyebrow">Ready?</div>
+    <h2>If someone sent you here,<br/>they probably already told you I'm good.</h2>
+    <p>Let's find out if we're a fit — and if the timing is right. No pitch deck. Just a conversation.</p>
+    <a href="https://calendar.app.google/dy8683mNDXyWAkPo9" target="_blank" class="btn btn-primary" style="font-size:17px; padding:18px 44px;">Let's Talk</a>
+    <p class="cta-referral-note">Or reach out directly — I read every message myself.</p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="footer-inner">
+      <div class="footer-logo">
+        <img src="uploads/Growth_Den__Logo_Horizontal_White.png" alt="The Growth Den" />
+      </div>
+      <ul class="footer-links">
+        <li><a href="#method">How It Works</a></li>
+        <li><a href="#pricing">Pricing</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="https://calendar.app.google/dy8683mNDXyWAkPo9" target="_blank">Let's Talk</a></li>
+      </ul>
+    </div>
+    <p class="footer-copy">© 2026 The Growth Den. All rights reserved. &nbsp;·&nbsp; Logan Ice, Founder</p>
+  </div>
+</footer>
+
+<!-- TWEAKS PANEL -->
+<div id="tweaks-panel">
+  <div class="tweaks-header">
+    Tweaks
+    <button class="tweaks-close" onclick="closeTweaks()">×</button>
+  </div>
+  <div class="tweaks-body">
+    <div class="tweak-row">
+      <label>Hero Style</label>
+      <div class="tweak-toggle-group">
+        <div class="tweak-option active" onclick="setHeroStyle('dark', this)">Dark Purple</div>
+        <div class="tweak-option" onclick="setHeroStyle('blue', this)">Deep Blue</div>
+        <div class="tweak-option" onclick="setHeroStyle('split', this)">Split</div>
+      </div>
+    </div>
+    <div class="tweak-row">
+      <label>CTA Button Color</label>
+      <div class="tweak-toggle-group">
+        <div class="tweak-option active" onclick="setCTAColor('orange', this)">Orange</div>
+        <div class="tweak-option" onclick="setCTAColor('gold', this)">Gold</div>
+        <div class="tweak-option" onclick="setCTAColor('red', this)">Red</div>
+      </div>
+    </div>
+    <div class="tweak-row">
+      <label>Body Tone</label>
+      <div class="tweak-toggle-group">
+        <div class="tweak-option active" onclick="setBodyTone('cream', this)">Cream</div>
+        <div class="tweak-option" onclick="setBodyTone('white', this)">White</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── Nav scroll ──
+const nav = document.getElementById('main-nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 40);
+});
+nav.classList.toggle('scrolled', window.scrollY > 40);
+
+// ── Mobile menu ──
+const hamburger = document.getElementById('hamburger');
+const mobileMenu = document.getElementById('mobile-menu');
+hamburger.addEventListener('click', () => {
+  mobileMenu.classList.toggle('open');
+});
+function closeMobile() { mobileMenu.classList.remove('open'); }
+
+// ── Case study toggle ──
+function toggleCS(header) {
+  const body = header.nextElementSibling;
+  const toggle = header.querySelector('.cs-toggle');
+  const isOpen = body.classList.contains('open');
+  // Close all
+  document.querySelectorAll('.cs-body').forEach(b => b.classList.remove('open'));
+  document.querySelectorAll('.cs-toggle').forEach(t => t.classList.remove('open'));
+  if (!isOpen) {
+    body.classList.add('open');
+    toggle.classList.add('open');
+  }
+}
+
+// ── Scroll reveal ──
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      observer.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.12 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// ── Tweaks ──
+window.addEventListener('message', e => {
+  if (e.data && e.data.type === '__activate_edit_mode') showTweaks();
+  if (e.data && e.data.type === '__deactivate_edit_mode') hideTweaks();
+});
+window.parent.postMessage({ type: '__edit_mode_available' }, '*');
+
+function showTweaks() { document.getElementById('tweaks-panel').style.display = 'block'; }
+function hideTweaks() { document.getElementById('tweaks-panel').style.display = 'none'; }
+function closeTweaks() {
+  hideTweaks();
+  window.parent.postMessage({ type: '__edit_mode_dismissed' }, '*');
+}
+
+function setActive(group, el) {
+  group.querySelectorAll('.tweak-option').forEach(o => o.classList.remove('active'));
+  el.classList.add('active');
+}
+function setHeroStyle(style, el) {
+  setActive(el.parentElement, el);
+  const hero = document.getElementById('hero');
+  if (style === 'dark') {
+    hero.style.background = '#341f44';
+    hero.style.backgroundImage = 'radial-gradient(ellipse 80% 60% at 70% 30%, rgba(37,100,147,.45) 0%, transparent 60%), radial-gradient(ellipse 50% 40% at 10% 80%, rgba(229,52,11,.12) 0%, transparent 55%)';
+  } else if (style === 'blue') {
+    hero.style.background = '#1a3a52';
+    hero.style.backgroundImage = 'radial-gradient(ellipse 80% 60% at 70% 30%, rgba(52,31,68,.4) 0%, transparent 60%)';
+  } else {
+    hero.style.background = 'linear-gradient(120deg, #341f44 55%, #256493 100%)';
+    hero.style.backgroundImage = 'none';
+  }
+  window.parent.postMessage({ type: '__edit_mode_set_keys', edits: { heroStyle: style } }, '*');
+}
+function setCTAColor(color, el) {
+  setActive(el.parentElement, el);
+  const map = { orange: '#fe7c2b', gold: '#ffc545', red: '#e5340b' };
+  document.querySelectorAll('.btn-primary').forEach(b => {
+    b.style.background = map[color];
+    b.style.boxShadow = `0 4px 20px ${map[color]}66`;
+  });
+  window.parent.postMessage({ type: '__edit_mode_set_keys', edits: { ctaColor: color } }, '*');
+}
+function setBodyTone(tone, el) {
+  setActive(el.parentElement, el);
+  const cream = tone === 'cream' ? '#fcf3d6' : '#ffffff';
+  document.documentElement.style.setProperty('--cream', cream);
+  document.getElementById('proof-strip').style.background = cream;
+  window.parent.postMessage({ type: '__edit_mode_set_keys', edits: { bodyTone: tone } }, '*');
+}
+</script>
+</body>
+</html>
