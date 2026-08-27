@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>Collage Den — digital fashion &amp; moodboard collage maker</title>
+<meta name="description" content="A Polyvore-style digital collage maker. Clip clothing, furniture, scrapbook backgrounds, washi tape and stickers onto a board, then export your collage as an image.">
+<meta name="robots" content="noindex">
+<link rel="icon" href="../favicon-32x32.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=DM+Sans:ital,opsz,wght@0,9..40,400..800;1,9..40,400..800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header id="topbar">
+  <div class="brand">
+    <span class="brand-mark">✂</span>
+    <span class="brand-name">Collage&nbsp;Den</span>
+  </div>
+  <div class="top-actions">
+    <button id="btnUndo" class="icon-btn" title="Undo (Ctrl+Z)" aria-label="Undo">↺</button>
+    <button id="btnRedo" class="icon-btn" title="Redo (Ctrl+Shift+Z)" aria-label="Redo">↻</button>
+    <select id="boardSize" class="size-select" title="Board size">
+      <option value="1080x1080">Square</option>
+      <option value="1080x1350">Portrait 4:5</option>
+      <option value="1080x1920">Story 9:16</option>
+      <option value="1600x1000">Landscape</option>
+    </select>
+    <button id="btnNew" class="ghost-btn">New</button>
+    <button id="btnExport" class="primary-btn">Download&nbsp;PNG</button>
+  </div>
+</header>
+
+<main id="workspace">
+
+  <!-- ======== side / bottom panel ======== -->
+  <aside id="panel">
+    <div id="panelHandle" title="Show / hide panel"><span></span></div>
+    <nav id="tabs" role="tablist">
+      <button class="tab active" data-tab="fashion"  role="tab"><span class="tab-ico">👗</span><span class="tab-label">Fashion</span></button>
+      <button class="tab" data-tab="home"    role="tab"><span class="tab-ico">🛋️</span><span class="tab-label">Home</span></button>
+      <button class="tab" data-tab="bg"      role="tab"><span class="tab-ico">🎨</span><span class="tab-label">Papers</span></button>
+      <button class="tab" data-tab="craft"   role="tab"><span class="tab-ico">🩹</span><span class="tab-label">Craft</span></button>
+      <button class="tab" data-tab="search"  role="tab"><span class="tab-ico">🔍</span><span class="tab-label">Search</span></button>
+      <button class="tab" data-tab="mine"    role="tab"><span class="tab-ico">📎</span><span class="tab-label">Mine</span></button>
+    </nav>
+
+    <section class="tab-page active" id="page-fashion">
+      <div class="chips" id="fashionChips"></div>
+      <div class="grid shop-grid" id="fashionGrid"></div>
+    </section>
+
+    <section class="tab-page" id="page-home">
+      <div class="chips" id="homeChips"></div>
+      <div class="grid shop-grid" id="homeGrid"></div>
+    </section>
+
+    <section class="tab-page" id="page-bg">
+      <p class="hint">Tap a swatch to set the board background.</p>
+      <h3 class="sec-title">Solid paper</h3>
+      <div class="swatch-row" id="bgColors"></div>
+      <h3 class="sec-title">Patterns &amp; scrapbook paper</h3>
+      <div class="grid bg-grid" id="bgPatterns"></div>
+    </section>
+
+    <section class="tab-page" id="page-craft">
+      <h3 class="sec-title">Washi tape</h3>
+      <div class="grid craft-grid tape-grid" id="tapeGrid"></div>
+      <h3 class="sec-title">Paper scraps &amp; frames</h3>
+      <div class="grid craft-grid" id="paperGrid"></div>
+      <h3 class="sec-title">Stickers &amp; doodles</h3>
+      <div class="grid craft-grid" id="stickerGrid"></div>
+    </section>
+
+    <section class="tab-page" id="page-search">
+      <form id="searchForm" class="search-form">
+        <input id="searchInput" type="search" placeholder="Search openly-licensed images…" autocomplete="off">
+        <button type="submit" class="primary-btn">Go</button>
+      </form>
+      <div class="chips" id="searchChips"></div>
+      <div class="grid shop-grid" id="searchGrid">
+        <p class="hint pad">Search millions of openly-licensed photos from across the web (powered by Openverse) — flowers, textures, magazine scans, vintage ads, anything.</p>
+      </div>
+    </section>
+
+    <section class="tab-page" id="page-mine">
+      <h3 class="sec-title">Add your own images</h3>
+      <label class="upload-drop" for="fileInput">
+        <span class="big">📷</span>
+        <span>Upload from your device</span>
+        <input id="fileInput" type="file" accept="image/*" multiple hidden>
+      </label>
+      <form id="urlForm" class="search-form">
+        <input id="urlInput" type="url" placeholder="…or paste any image URL" autocomplete="off">
+        <button type="submit" class="primary-btn">Add</button>
+      </form>
+      <p class="hint">Tip: right-click (or long-press) any product photo on a shopping site and copy the image address, then paste it here — just like old-school Polyvore clipping.</p>
+      <h3 class="sec-title">Recently added</h3>
+      <div class="grid shop-grid" id="recentGrid"><p class="hint pad">Nothing yet.</p></div>
+    </section>
+  </aside>
+
+  <!-- ======== board ======== -->
+  <div id="stage">
+    <div id="boardWrap">
+      <div id="board" aria-label="Collage board"></div>
+    </div>
+
+    <div id="layerBar" class="hidden">
+      <button data-act="back"    title="Send backward">⬇</button>
+      <button data-act="front"   title="Bring forward">⬆</button>
+      <button data-act="flip"    title="Flip">⇋</button>
+      <button data-act="dup"     title="Duplicate">⧉</button>
+      <input  data-act="alpha" type="range" min="15" max="100" value="100" title="Opacity">
+      <button data-act="del" class="danger" title="Delete">🗑</button>
+    </div>
+  </div>
+</main>
+
+<div id="toast" class="hidden"></div>
+
+<script src="assets.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
