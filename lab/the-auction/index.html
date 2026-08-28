@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-TR4S2MZM');</script>
+<!-- End Google Tag Manager -->
+<title>The Auction, In Human Terms — how Meta decides who sees your ad</title>
+<meta name="description" content="A scrollytelling, physics-powered explainer of Meta's ad auction: total value, estimated action rates, ad quality, the learning phase, pacing and fatigue — in plain human terms.">
+<meta name="robots" content="noindex">
+<link rel="icon" href="../../favicon-32x32.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="mode-cmo">
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TR4S2MZM"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager -->
+
+<header id="topbar">
+  <a class="logo" href="/" aria-label="The Growth Den home">
+    <img src="../../uploads/Growth_Den__Logo_Horizontal_White.svg" alt="The Growth Den">
+    <span class="lab-tag">Lab</span>
+  </a>
+  <div id="modeToggle" class="mode-toggle" role="group" aria-label="Explanation mode">
+    <button id="modeKidBtn" class="mode-btn" type="button">Explain like I'm 8</button>
+    <button id="modeCmoBtn" class="mode-btn active" type="button">Explain like I'm a CMO</button>
+  </div>
+</header>
+
+<!-- progress rail -->
+<nav id="rail" aria-label="Sections">
+  <div class="rail-track"><div class="rail-fill" id="railFill"></div></div>
+  <ol id="railDots">
+    <li data-target="s1"><i></i><span>The seat</span></li>
+    <li data-target="s2"><i></i><span>Three forces</span></li>
+    <li data-target="s3"><i></i><span>The discount</span></li>
+    <li data-target="s4"><i></i><span>Learning</span></li>
+    <li data-target="s5"><i></i><span>Pacing</span></li>
+    <li data-target="s6"><i></i><span>Fatigue</span></li>
+    <li data-target="s7"><i></i><span>Play</span></li>
+  </ol>
+</nav>
+
+<main>
+
+<!-- ============ HERO ============ -->
+<section id="hero">
+  <p class="kicker">The Growth Den Lab presents</p>
+  <h1>The Auction,<br><em>In Human Terms</em></h1>
+  <div class="dual hero-sub">
+    <p class="kid">Every ad you've ever seen won a race to get there. Here's how the race really works — with balls, magnets, wind and water.</p>
+    <p class="cmo">How Meta's delivery system actually decides who sees your ad — the documented mechanics, told with physics you can poke.</p>
+  </div>
+  <p class="hero-legend"><span class="you-dot"></span><span>This orange ball is <b>your ad</b>, in every scene. Everything else is the competition.</span></p>
+  <div class="scroll-cue" aria-hidden="true"><span>scroll</span><i>↓</i></div>
+</section>
+
+<!-- ============ S1 · SEESAW ============ -->
+<section class="step" id="s1" data-scene="seesaw">
+  <div class="pin">
+    <div class="step-grid">
+      <div class="copy">
+        <p class="kicker">01 · the seat</p>
+        <h2 class="dual"><span class="kid">It's a contest — but not the one you think.</span><span class="cmo">It's an auction — but not the one you think.</span></h2>
+        <div class="dual body">
+          <div class="kid">
+            <p>Every time someone opens Instagram or Facebook, there's <b>one empty seat</b> where an ad can sit. In that split second, all the ads race for it.</p>
+            <p>Here's the twist: the ad that promised the <b>most money</b> doesn't automatically win. The seat goes to the ad with the biggest <b>total score</b> — and money is only one part of the score. It's like a lemonade contest where the judges actually <i>taste</i> the lemonade instead of just checking who paid the biggest entry fee.</p>
+          </div>
+          <div class="cmo">
+            <p>Every impression on Meta is allocated by a real-time auction — billions per day, resolved in milliseconds, one per slot per person.</p>
+            <p>But it isn't a highest-bid-wins auction. Meta's own docs: the slot goes to the highest <b>total value</b> — a composite of your bid, the <b>estimated action rate</b> for that specific person, and your <b>ad quality</b>. A bigger budget can be — and constantly is — outweighed by a better ad.</p>
+          </div>
+        </div>
+      </div>
+      <div class="stage">
+        <canvas></canvas>
+        <p class="scene-caption dual-cap" aria-live="polite"></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ S2 · THREE FORCES ============ -->
+<section class="step" id="s2" data-scene="forces">
+  <div class="pin">
+    <div class="step-grid">
+      <div class="copy">
+        <p class="kicker">02 · the score</p>
+        <h2 class="dual"><span class="kid">Three forces decide your score.</span><span class="cmo">Three forces decide your total value.</span></h2>
+        <p class="formula">total value&nbsp;=&nbsp;<b class="f-bid">bid</b>&nbsp;×&nbsp;<b class="f-rate">estimated action rate</b>&nbsp;+&nbsp;<b class="f-quality">ad quality</b></p>
+        <div class="dual body">
+          <div class="kid">
+            <p>Your ad is a ball. Your <b class="f-bid">bid</b> is how <b>heavy</b> it is — that's the part you buy with money.</p>
+            <p>But look up: there's a <b class="f-rate">magnet</b> in the sky. That's Meta guessing how much people will actually <i>like</i> and click your ad. A cool ad makes the magnet strong — and it pulls you up <b>for free</b>.</p>
+            <p>And feel that? <b class="f-quality">Wind.</b> A fun, honest ad gets pushed higher. An annoying, tricky ad gets shoved down. Money can't buy the magnet or the wind. Only a good ad can.</p>
+          </div>
+          <div class="cmo">
+            <p><b class="f-bid">Bid</b> is the only lever you purchase directly.</p>
+            <p><b class="f-rate">Estimated action rate</b> is a per-person, per-auction prediction of the probability they take your optimization event — driven by your creative and the system's conversion history with you.</p>
+            <p><b class="f-quality">Ad quality</b> is a separate signal built from user feedback and low-quality attributes — engagement bait, withheld information, sensational language — and it can go <i>negative</i>. Two of your three levers are earned, not bought.</p>
+          </div>
+        </div>
+      </div>
+      <div class="stage">
+        <canvas></canvas>
+        <p class="scene-caption dual-cap" aria-live="polite"></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ S3 · THE DISCOUNT ============ -->
+<section class="step" id="s3" data-scene="discount">
+  <div class="pin">
+    <div class="step-grid">
+      <div class="copy">
+        <p class="kicker">03 · the price</p>
+        <h2 class="dual"><span class="kid">You only pay just enough to win.</span><span class="cmo">You pay the minimum needed to win.</span></h2>
+        <div class="dual body">
+          <div class="kid">
+            <p>Best secret in the whole game: when your ad wins the seat, you <b>don't</b> pay everything you promised. You pay the <b>tiniest amount that still beats second place</b>. Not a penny more.</p>
+            <p>And remember the magnet? When Meta thinks people will love your ad, the magnet does most of the lifting — so the money part you need gets <b>smaller and smaller</b>. Making a better ad is like earning a discount on everything, forever.</p>
+          </div>
+          <div class="cmo">
+            <p>The auction is effectively second-price on total value: winners are charged the <b>minimum necessary to have won</b>, not their bid.</p>
+            <p>Run the formula backwards: your cost ≈ (runner-up's total value − your quality) ÷ your estimated action rate. Every point of predicted action rate and quality directly displaces cash. That's the whole economic case for creative — it isn't brand polish, it's a <b>structural CPM discount</b>.</p>
+          </div>
+        </div>
+      </div>
+      <div class="stage">
+        <canvas></canvas>
+        <p class="scene-caption dual-cap" aria-live="polite"></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ S4 · LEARNING ============ -->
+<section class="step" id="s4" data-scene="learning">
+  <div class="pin">
+    <div class="step-grid">
+      <div class="copy">
+        <p class="kicker">04 · the wobble</p>
+        <h2 class="dual"><span class="kid">The magnet has to learn where to point.</span><span class="cmo">The learning phase: the magnet is calibrating.</span></h2>
+        <div class="dual body">
+          <div class="kid">
+            <p>When your ad is brand new, the magnet doesn't know <b>who</b> to point at yet. So it wobbles around, guessing.</p>
+            <p>Every time somebody does the thing you wanted — clicks, buys, signs up — the magnet learns a little and steadies. After about <b>50</b> of those, it's locked on. But careful: if you <b>change your ad</b>, the magnet thinks it's a brand-new ad… and starts wobbling all over again.</p>
+          </div>
+          <div class="cmo">
+            <p>New ad sets enter the <b>learning phase</b> while the delivery system explores who converts. Expect volatile delivery and hot CPAs until it stabilizes — Meta's guidance is roughly <b>50 optimization events</b> within a week of the last significant edit.</p>
+            <p>Significant edits — creative, targeting, optimization event, large budget or bid changes — <b>reset learning</b>. So: consolidate ad sets so events pool, resist mid-learning tinkering, and count events before judging performance.</p>
+          </div>
+        </div>
+      </div>
+      <div class="stage">
+        <canvas></canvas>
+        <p class="scene-caption dual-cap" aria-live="polite"></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ S5 · PACING ============ -->
+<section class="step" id="s5" data-scene="pacing">
+  <div class="pin">
+    <div class="step-grid">
+      <div class="copy">
+        <p class="kicker">05 · the valve</p>
+        <h2 class="dual"><span class="kid">Your budget is water through a valve.</span><span class="cmo">Pacing: your budget through a valve.</span></h2>
+        <div class="dual body">
+          <div class="kid">
+            <p>Say you've got $20 for the whole day. Meta doesn't spend it like birthday money — all at once, first thing. It opens a little <b>valve</b> and lets it drip out all day long.</p>
+            <p>Why? Because seats get cheaper and pricier at different times. Dump everything at breakfast and you miss all the bargain seats at dinner. <b>Slow and steady buys more.</b></p>
+          </div>
+          <div class="cmo">
+            <p>Delivery uses <b>discount pacing</b>: the system deliberately sits out auctions it could win early in order to capture comparable, cheaper results later — optimizing for lowest average cost across the full schedule.</p>
+            <p>This is why panic reactions to a slow morning backfire: big midday budget changes force the pacer to recalibrate. Judge spend against the day or schedule, not the first hours of it.</p>
+          </div>
+        </div>
+      </div>
+      <div class="stage">
+        <canvas></canvas>
+        <p class="scene-caption dual-cap" aria-live="polite"></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ S6 · FATIGUE ============ -->
+<section class="step" id="s6" data-scene="fatigue">
+  <div class="pin">
+    <div class="step-grid">
+      <div class="copy">
+        <p class="kicker">06 · the yawn</p>
+        <h2 class="dual"><span class="kid">The magnet wears out on repeat viewers.</span><span class="cmo">Fatigue: the magnet decays with frequency.</span></h2>
+        <div class="dual body">
+          <div class="kid">
+            <p>The same people keep walking past your ad. First time: <i>"ooh!"</i> Second time: <i>"seen it."</i> Fifth time: <i>"ugh, this again."</i></p>
+            <p>Every repeat makes your magnet <b>weaker on that person</b> — your score drops and winning costs more. The happy part: make a <b>fresh ad</b>, and the magnet switches right back on.</p>
+          </div>
+          <div class="cmo">
+            <p>As frequency climbs, estimated action rates and quality feedback decline for saturated users — the total value the system can find for you erodes while your clearing price creeps up.</p>
+            <p>So watch frequency next to CPM and CTR trend, and treat creative refresh as <b>scheduled maintenance</b>, not an emergency response. New creative restores the prediction; louder budget doesn't.</p>
+          </div>
+        </div>
+      </div>
+      <div class="stage">
+        <canvas></canvas>
+        <p class="scene-caption dual-cap" aria-live="polite"></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ S7 · SANDBOX ============ -->
+<section class="step sandbox" id="s7" data-scene="sandbox">
+  <div class="sandbox-inner">
+    <div class="copy sandbox-copy">
+      <p class="kicker">07 · the floor is yours</p>
+      <h2>Prove it to yourself.</h2>
+      <div class="dual body">
+        <div class="kid">
+          <p>You're the orange ball. Eight rivals want the seat too. Slide your money up, make your ad better, keep it fresh — then run auctions and watch what happens.</p>
+          <p><b>Try this:</b> double your money and look at the price you pay. Then put it back… and double your ad-goodness instead. Which one made winning <b>cheaper</b>?</p>
+        </div>
+        <div class="cmo">
+          <p>A live second-price simulator: 8 competitors with randomized bid, creative and freshness. Run auctions; watch win rate and effective CPM respond.</p>
+          <p><b>The homework:</b> 2× your bid — win rate rises, CPM doesn't improve. Reset, then 2× creative strength — win rate rises <i>and</i> CPM collapses, because action rate raises your total value and divides your clearing price. Freshness decays ~1% per auction; refresh resets it.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="arena-wrap">
+      <canvas id="arenaCanvas"></canvas>
+      <div class="arena-toast" id="arenaToast"></div>
+    </div>
+
+    <div class="deck">
+      <div class="deck-sliders">
+        <label class="ctl">
+          <span class="ctl-name dual-inline"><span class="kid">💰 Your money</span><span class="cmo">💰 Your bid</span></span>
+          <input type="range" id="ctlBid" min="0.5" max="10" step="0.5" value="2.5">
+          <b class="ctl-val" id="valBid">$2.50</b>
+        </label>
+        <label class="ctl">
+          <span class="ctl-name dual-inline"><span class="kid">🎨 Ad goodness</span><span class="cmo">🎨 Creative strength</span></span>
+          <input type="range" id="ctlCreative" min="1" max="10" step="0.5" value="5">
+          <b class="ctl-val" id="valCreative">5</b>
+        </label>
+        <div class="ctl">
+          <span class="ctl-name dual-inline"><span class="kid">✨ Freshness</span><span class="cmo">✨ Freshness</span></span>
+          <div class="fresh-bar"><i id="freshFill"></i></div>
+          <button id="btnRefresh" class="chip-btn" type="button">🔄 <span class="dual-inline"><span class="kid">new ad!</span><span class="cmo">refresh creative</span></span></button>
+        </div>
+      </div>
+      <div class="deck-actions">
+        <button id="btnRun1" class="run-btn" type="button">🔨 Run 1 auction</button>
+        <button id="btnRun20" class="run-btn ghost" type="button">⚡ Run 20 fast</button>
+        <button id="btnReroll" class="chip-btn" type="button">🎲 <span class="dual-inline"><span class="kid">new rivals</span><span class="cmo">re-roll competitors</span></span></button>
+      </div>
+      <div class="deck-stats">
+        <div class="stat"><span class="dual-inline"><span class="kid">contests</span><span class="cmo">auctions</span></span><b id="stAuctions">0</b></div>
+        <div class="stat"><span class="dual-inline"><span class="kid">you won</span><span class="cmo">win rate</span></span><b id="stWins">0 · 0%</b></div>
+        <div class="stat accent"><span class="dual-inline"><span class="kid">price when you win</span><span class="cmo">effective CPM</span></span><b id="stCpm">—</b></div>
+      </div>
+      <p class="deck-note dual-cap" id="deckNote"></p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ RECEIPT FOOTER ============ -->
+<footer id="receipt-zone">
+  <div class="receipt" role="contentinfo">
+    <p class="r-store">THE GROWTH DEN — LAB</p>
+    <p class="r-line">************************************</p>
+    <p class="r-item"><span>EVERY-IMPRESSION AUCTION</span><span>DOCUMENTED</span></p>
+    <p class="r-item"><span>TOTAL VALUE = BID × EST. ACTION RATE + QUALITY</span><span>✓</span></p>
+    <p class="r-item"><span>PAY-THE-MINIMUM PRICING</span><span>✓</span></p>
+    <p class="r-item"><span>LEARNING PHASE (~50 EVENTS/WK)</span><span>✓</span></p>
+    <p class="r-item"><span>DISCOUNT PACING</span><span>✓</span></p>
+    <p class="r-item"><span>CREATIVE FATIGUE</span><span>✓</span></p>
+    <p class="r-line">************************************</p>
+    <p class="r-item r-total"><span>TOTAL</span><span>BETTER ADS COST LESS</span></p>
+    <p class="r-line">************************************</p>
+    <p class="r-small">SOURCES: META ADS HELP CENTER — "ABOUT THE AD AUCTION", "ABOUT THE LEARNING PHASE", "ABOUT BUDGET PACING" (<a href="https://www.facebook.com/business/help" rel="noopener noreferrer" target="_blank">FACEBOOK.COM/BUSINESS/HELP</a>).</p>
+    <p class="r-small">METAPHORS OURS. NUMBERS ILLUSTRATIVE. SIMULATOR SIMPLIFIED. NOT AFFILIATED WITH OR ENDORSED BY META.</p>
+    <p class="r-small">PHYSICS BY MATTER.JS · NO COOKIES USED BY THIS PAGE ITSELF · YOUR TOGGLE CHOICE IS SAVED IN YOUR BROWSER ONLY.</p>
+    <p class="r-barcode" aria-hidden="true"></p>
+    <p class="r-store"><a href="/">THEGROWTHDEN.COM</a> · ENTER WITH PROBLEMS. EXIT WITH SYSTEMS.</p>
+  </div>
+</footer>
+
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
