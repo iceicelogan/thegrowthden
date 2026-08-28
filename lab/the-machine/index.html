@@ -498,6 +498,81 @@ h1.room-title {
 .hn-dots i { width: 8px; height: 8px; border-radius: 50%; border: 1.5px solid var(--muted); }
 .hn-dots i.on { background: var(--gold); border-color: var(--gold); }
 
+/* ---------- recency: play-as-GEM game ---------- */
+.gem-stage { background: rgba(15,9,24,.72); border: 1px solid var(--line); border-radius: var(--r); padding: 20px; }
+.gem-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+.gem-head .gh-t { font-size: 15px; font-weight: 800; color: var(--cream); }
+.gem-score { font-size: 12px; font-weight: 700; color: var(--gold); background: rgba(255,197,69,.12); border: 1px solid rgba(255,197,69,.4); border-radius: 100px; padding: 4px 12px; }
+.evt-stream { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
+.evt {
+  display: flex; align-items: center; gap: 10px;
+  background: rgba(252,243,214,.06); border: 1px solid var(--line); border-radius: 12px;
+  padding: 9px 12px; opacity: 0; transform: translateX(-14px);
+  animation: evt-in .4s ease forwards;
+}
+@keyframes evt-in { to { opacity: 1; transform: none; } }
+.evt .e-ico { font-size: 19px; }
+.evt .e-lab { flex: 1; font-size: 13.5px; color: var(--cream); }
+.evt .e-when { font-size: 11px; color: var(--sky); white-space: nowrap; }
+.evt.ghosted { opacity: .45; border-style: dashed; }
+.gem-q { font-size: 14.5px; font-weight: 700; color: var(--white); margin: 4px 0 10px; }
+.opt-row { display: flex; flex-direction: column; gap: 8px; }
+.opt {
+  text-align: left; font-family: 'Poppins', sans-serif; font-size: 13.5px; font-weight: 500;
+  color: var(--cream); background: rgba(252,243,214,.05);
+  border: 1.5px solid rgba(252,243,214,.3); border-radius: 12px;
+  padding: 12px 14px; min-height: 46px; cursor: pointer; transition: border-color .15s;
+}
+.opt:hover { border-color: var(--cream); }
+.opt.correct { border-color: var(--green); background: rgba(143,214,148,.12); }
+.opt.wrong { border-color: var(--red); background: rgba(229,52,11,.1); opacity: .8; }
+.opt:disabled { cursor: default; }
+.gem-reveal {
+  margin-top: 12px; border-left: 3px solid var(--gold);
+  background: rgba(255,197,69,.07); border-radius: 0 12px 12px 0;
+  padding: 11px 14px; font-size: 13.5px; line-height: 1.65; color: var(--muted);
+}
+.gem-reveal b { color: var(--cream); }
+.gem-next { margin-top: 12px; }
+
+/* ---------- fatigue courtroom ---------- */
+.case { position: relative; }
+.verdict {
+  position: absolute; top: 18px; right: 18px; transform: rotate(4deg);
+  font-size: 11px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase;
+  border: 2px solid; border-radius: 8px; padding: 4px 10px;
+}
+.verdict.v-folk { color: var(--muted); border-color: rgba(252,243,214,.4); }
+.verdict.v-meas { color: var(--sky); border-color: rgba(127,200,240,.6); }
+.verdict.v-doc { color: var(--gold); border-color: rgba(255,197,69,.6); }
+.case-quote { font-size: 16px; font-weight: 600; font-style: italic; color: var(--white); margin-bottom: 10px; padding-right: 120px; }
+.curve-box { position: relative; height: 210px; margin-top: 12px; border: 1px solid var(--line); border-radius: 14px; background: rgba(15,9,24,.6); overflow: hidden; }
+.curve-box canvas { position: absolute; inset: 0; width: 100%; height: 100%; touch-action: none; cursor: crosshair; }
+.band-wrap { margin-top: 12px; }
+.band-bar { display: flex; height: 34px; border-radius: 10px; overflow: hidden; border: 1px solid var(--line); }
+.band-bar i { display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 800; letter-spacing: .06em; font-style: normal; }
+.band-bar .b-ok { flex: 7; background: rgba(143,214,148,.25); color: var(--green); }
+.band-bar .b-lim { flex: 5; background: rgba(255,197,69,.22); color: var(--gold); }
+.band-bar .b-fat { flex: 10; background: rgba(229,52,11,.22); color: #ff8a70; }
+.band-stamp { margin-top: 8px; font-size: 14px; font-weight: 800; }
+.caveat-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.caveat {
+  font-size: 11.5px; font-weight: 600; color: var(--muted);
+  border: 1.5px dashed rgba(252,243,214,.4); border-radius: 100px;
+  background: transparent; padding: 6px 12px; cursor: pointer; min-height: 34px;
+  font-family: 'Poppins', sans-serif;
+}
+.caveat.on { color: var(--deep); background: var(--sky); border-color: var(--sky); border-style: solid; }
+.duo { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
+.duo .duo-col { border: 1px solid var(--line); border-radius: 14px; padding: 12px; }
+.duo h4 { font-size: 12px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; margin-bottom: 8px; }
+.duo .d-yes h4 { color: #ff8a70; }
+.duo .d-no h4 { color: var(--green); }
+.duo li { list-style: none; font-size: 12.5px; color: var(--muted); padding: 4px 0 4px 18px; position: relative; line-height: 1.5; }
+.duo .d-yes li::before { content: '↺'; position: absolute; left: 0; color: #ff8a70; }
+.duo .d-no li::before { content: '✓'; position: absolute; left: 0; color: var(--green); }
+@media (max-width: 640px) { .duo { grid-template-columns: 1fr; } .case-quote { padding-right: 0; margin-top: 26px; } }
+
 /* ---------- placeholder rooms ---------- */
 .bench { text-align: center; padding: 52px 24px 46px; border-style: dashed; border-width: 1.5px; }
 .flask { font-size: 54px; display: inline-block; animation: bubble 2.6s ease-in-out infinite; }
@@ -973,6 +1048,73 @@ var CONTENT = {
     pro: '<p>2020 → today → stated end-state. The through-line is consolidation plus automation; the badges mark which waypoints are Meta on-record and which are trade-press reporting.</p>',
   },
 
+  /* ============ recency & fatigue ============ */
+  'r.intro': {
+    kid: '<p>The machine never asks who you are. It watches what you <b>just did</b> — in order — and guesses what you want next. For the next minute, you get to be the machine. Read each visitor’s little story and make the guess yourself.</p>',
+    cmo: '<p>Delivery predictions come from sequences: recent events, in order, with recency weighting. The fastest way to understand what that means for your media plan is to make the predictions yourself. Five rounds; the reveals show how order and timing change the answer.</p>',
+    pro: '<p>Sequence-conditioned prediction, playable. Each round is an ordered event stream; you produce p(next action). The reveals demonstrate order sensitivity, recency decay, and why narrative composition is not what the model does.</p>',
+  },
+  'r.g.r1': {
+    kid: '<b>Easy one!</b> The story goes: watched shoes, searched shoes, almost bought shoes — all in the last few minutes. The freshest, strongest wish wins: show the shoes.',
+    cmo: '<b>Stacked intent, all recent.</b> View → search → cart-abandon inside minutes is the cleanest buy signal a sequence can carry. The prediction almost writes itself — and this is the moment retargeting-like delivery happens on its own.',
+    pro: '<b>Dense recent intent.</b> Three escalating events inside one session; recency weight and funnel position agree. Highest-confidence prediction in the game.',
+  },
+  'r.g.r2': {
+    kid: '<b>Same three things — flipped around!</b> The almost-bought part happened weeks ago, so that wish went cold. The freshest thing is watching fun shoe videos, so the machine shows fun shoe stuff, not a “finish buying!” nag.',
+    cmo: '<b>Identical events, reversed order — different ad.</b> The cart is three weeks stale; the fresh signal is renewed browsing interest. A discount would answer a question this person stopped asking. Order alone changed the correct creative.',
+    pro: '<b>Order sensitivity, isolated.</b> Same event set, permuted: stale transactional intent decays below fresh upper-funnel signal. The optimal creative changes with sequence order while the feature <i>set</i> is constant — the whole argument for sequence models in one round.',
+  },
+  'r.g.r3': {
+    kid: '<b>Three quiet weeks is a long time.</b> The desk wish faded away, and the new wish — cooking — is loud and fresh. The moment passed. Machines respect that.',
+    cmo: '<b>Decay in action.</b> Three silent weeks take the desk signal below threshold; the active stream is cookware. Timing beats history — which is also why “we retargeted site visitors from last month” underperforms.',
+    pro: '<b>Recency decay dominating.</b> A 3-week-old query with no reinforcement loses to a dense fresh stream. Decay is monotone in silence; reinforcement resets it.',
+  },
+  'r.g.r4': {
+    kid: '<b>Tricky!</b> The cat-carrier answer feels clever because it connects both stories. But the machine doesn’t write stories — it follows the freshest trail, and the freshest trail says: this person is booking a trip.',
+    cmo: '<b>The composition trap.</b> A human strategist invents “cat owner who travels → carrier.” The model doesn’t compose narratives across signals; it predicts the next action from the dominant recent pattern — hotels. Clever cross-signal creative briefs often target predictions the machine will never make.',
+    pro: '<b>No narrative composition.</b> Sequence models predict next-action from recent pattern density, not from human-legible conjunctions of older signals. The travel stream dominates; the pet stream is context, not intent.',
+  },
+  'r.g.r5': {
+    kid: '<b>It didn’t listen. It didn’t need to.</b> Look at the hidden part of the story that just unfolded — the machine had a week of quiet little clues. The spooky ad was a <b>prediction</b>, like a weather forecast that happens to be about you.',
+    cmo: '<b>No microphone required.</b> Expand the sequence and the ad explains itself: household and lookalike signals, a nine-day-old Reel view, a price check. The prediction preceded the dinner conversation — you talked about desks <i>because</i> desk-thoughts were already in your week.',
+    pro: '<b>The reveal:</b> the conversation and the ad share a common cause — the accumulated sequence. Prediction from behavioral priors beats audio surveillance on cost, legality, and detection risk, and it produces exactly this uncanny timing.',
+  },
+  'r.myth': {
+    kid: '<p><b>So… is the phone listening?</b> It really, truly isn’t — and here is the whole story, because you deserve the whole story.</p><p>The feeling is real. You talk about something, and the ad shows up. That is genuinely spooky, and nobody should laugh at you for wondering.</p><p>But scientists have hooked phones up to machines that watch every single thing the phone sends, waiting to catch it whispering. It doesn’t. Listening to everyone all day would take mountains of computer power, it would show up in your battery, and it would break serious laws.</p><p>Here is the secret nobody tells you: the machine doesn’t need your voice. Your taps and pauses and searches already tell it what you’re about to want — sometimes before <i>you</i> notice. The truth is stranger than the myth: nobody is listening, and it still knows.</p>',
+    cmo: '<p><b>The microphone myth, handled completely.</b> The experience driving it is real and common: conversation, then the ad. Dismissing it insults your customers’ pattern recognition — they noticed something true. They just attributed it wrong.</p><p>The evidence against audio capture is strong: network-traffic studies have specifically hunted for it and found nothing; always-on transcription at billions-of-users scale would be a visible compute and battery signature; and the legal exposure would dwarf any targeting benefit. Meta denies it on the record, and — more persuasively — doesn’t need it.</p><p>What actually happens: sequences. The topic entered the household’s behavior stream days earlier — a search on shared wifi, a friend’s purchase, a Reel half-watched. The conversation and the ad are both downstream of the same signals. For your brand, the lesson is practical: you don’t need creepy data to be uncannily relevant. You need to catch moments.</p>',
+    pro: '<p><b>Full treatment, no strawmen.</b> Claim: ambient audio drives ad targeting. Against it: (1) independent traffic analyses — notably the 2018 Northeastern study instrumenting 17,000+ apps — found no evidence of covert audio exfiltration; (2) the compute, battery, and bandwidth signature of always-on ASR at Meta’s scale would be detectable and enormous; (3) wiretap-adjacent legal exposure is asymmetric to the marginal targeting lift; (4) sequence prediction from behavioral, household, and graph signals already produces the observed uncanny relevance — the myth survives because the <i>outputs</i> are indistinguishable to the person experiencing them.</p><p>The professional takeaway: uncanny timing is a property of sequence models operating on shared-environment signals. Build for it honestly — moment-level creative against behavioral triggers — and you get the “how did they know” effect without touching a microphone.</p>',
+  },
+  'r.court': {
+    kid: '<p>Now the courtroom! Grown-ups say lots of confident things about ads getting “worn out.” Each claim goes on trial: some are just campfire stories, some are half-true, and one is written in the fair’s own rulebook. Poke the little charts to see for yourself.</p>',
+    cmo: '<p>Fatigue folklore, on trial. Four claims your team has probably repeated in a meeting — each gets a verdict, a badge, and an interactive exhibit. The pattern to notice: Meta’s actual fatigue machinery is <b>cost-based</b>, while the folklore is <b>frequency-number</b>-based.</p>',
+    pro: '<p>Claims triaged by evidence class. Note the structural distinction the exhibits keep surfacing: platform triggers key on cost-per-result deltas vs. your own baseline; folklore keys on absolute frequency thresholds. Those are different measurement systems, and only one of them ships in the product.</p>',
+  },
+  'r.c1': {
+    kid: 'People love saying “after X views, an ad dies.” But there is no magic number in the rulebook. The fair only raises a flag when your lemonade starts <b>costing too much</b> compared to how you were doing before — however many views that takes.',
+    cmo: 'There is no documented frequency cliff. The trigger Meta actually surfaces is cost-based — your cost per result versus your own history. Frequency correlates with cost creep, which is why the folklore survives, but the number itself (“3”, “5”, whatever your agency says) is not a mechanism.',
+    pro: 'No frequency-threshold trigger exists in the documented product surface. The flag condition is a cost-per-result delta against trailing baseline. Frequency is a correlate and a useful diagnostic input — it is not the trigger, and any specific “kill number” is unfalsifiable folklore.',
+  },
+  'r.c2': {
+    kid: 'A very careful grown-up named Jon read the fair’s messages closely and wrote down when each warning shows up: “a little worse” gets a yellow note, “twice as expensive” gets the red one. The fair hasn’t framed his notes on its wall, so we mark them half-sure.',
+    cmo: 'The specific thresholds — Creative Limited at elevated-but-under-2×, Creative Fatigue at ≥2× your historical cost per result — come from practitioner documentation (Jon Loomer’s work), not from a Meta spec sheet. They match observed behavior well; they carry a ◐, not a ●.',
+    pro: 'Thresholds per practitioner reverse-documentation: Creative Limited = elevated CPR below 2× trailing baseline; Creative Fatigue = ≥2×. Consistent with the observed flag behavior, unconfirmed as spec. Grade accordingly and treat the boundary values as approximate.',
+  },
+  'r.c3': {
+    kid: 'Meta’s own scientists once measured ads getting <b>45% weaker</b> after people saw them four times. Sounds scary! But their own footnotes admit the study didn’t check everything — so it’s a clue, not a law.',
+    cmo: 'Meta’s 2022 research reported a ~45% performance decline after four exposures. Use it — with its own caveats attached: the analysis didn’t control for time window, placement mix, or engagement level, so exposure count is entangled with everything else that accumulates over a campaign. Directionally real, numerically soft.',
+    pro: 'The 2022 figure: ~45% drop in performance beyond four exposures. Confounds acknowledged in the work itself: no time-window control (exposure count ∝ elapsed time), no placement normalization, no engagement stratification. Read it as decay-exists-and-is-large, not as a universal constant.',
+  },
+  'r.c4': {
+    kid: 'This one is real rulebook stuff: change your ad, and the fair’s magnet starts learning all over again. But not every touch counts — the two lists show exactly which touches wake the reset and which are safe.',
+    cmo: 'Documented directly by Meta: significant edits reset learning. The nuance teams miss is the boundary — the safe list is longer than feared, and the reset list includes quieter actions (like a long pause) than most audit checklists carry.',
+    pro: 'Meta-documented reset semantics. Resets: creative edits, targeting changes, optimization-event changes, bid-strategy changes, large budget moves, adding fresh creative to the set, and resuming after a 7-day pause. Non-resets: renames, minor budget nudges, schedule-end changes, pausing itself (briefly). Design your iteration cadence around the boundary.',
+  },
+  'r.next': {
+    kid: 'The machine reads people by their moments. Next: how your ad learns to call its own crowd.',
+    cmo: 'You know how the machine reads people. Next: how creative broadcasts the signal that assembles your audience.',
+    pro: 'Sequence side done. Next: creative-side signal and cohort assembly.',
+  },
+
   /* directory + placeholder copy */
   'machine.dir-title': { kid: 'The other rooms', cmo: 'The other rooms', pro: 'The other rooms' },
   'machine.dir-body': {
@@ -997,7 +1139,7 @@ var ROOMS = [
   { slug: 'machine',    name: 'The Machine',       ico: '⚙️', open: true },
   { slug: 'models',     name: 'The Model Room',    ico: '🧠', open: true },
   { slug: 'auction',    name: 'The Auction Floor', ico: '🔨', open: true },
-  { slug: 'recency',    name: 'Recency & Fatigue', ico: '🔁', open: false },
+  { slug: 'recency',    name: 'Recency & Fatigue', ico: '🔁', open: true },
   { slug: 'creative',   name: 'Creative Signal',   ico: '📡', open: false },
   { slug: 'scanner',    name: 'Brand Scanner',     ico: '🔍', open: false },
   { slug: 'dispatch',   name: 'The Dispatch',      ico: '📰', open: false },
@@ -1862,6 +2004,250 @@ function journeyStop() {
   if (J.io) J.io.disconnect();
   J.scenes = {};
 }
+
+/* ============================================================
+   RECENCY & FATIGUE — #/recency
+   ============================================================ */
+var GEM_ROUNDS = [
+  { evts: [['🎬', 'watched a trail-running Reel', '2 min ago'], ['🔍', 'searched “trail shoes”', '1 min ago'], ['🛒', 'put trail shoes in a cart, then left', 'just now']],
+    opts: ['A trail-shoe offer', 'A pizza ad', 'A gym membership'], correct: 0, reveal: 'r.g.r1' },
+  { evts: [['🛒', 'abandoned a trail-shoe cart', '3 weeks ago'], ['🔍', 'searched “trail shoes”', '2 weeks ago'], ['🎬', 'watched a trail-running Reel', 'just now']],
+    opts: ['A hard discount to close that old cart', 'Inspiring new-gear content', 'Nothing — the signal is gone'], correct: 1, reveal: 'r.g.r2' },
+  { evts: [['🔍', 'searched “standing desk”', '3 weeks ago'], ['🕒', 'three quiet weeks pass', ''], ['📺', 'binged cooking videos all week', 'this week']],
+    opts: ['A standing-desk ad', 'A cookware ad', 'Both, equally'], correct: 1, reveal: 'r.g.r3' },
+  { evts: [['❤️', 'liked a cat video', '4 days ago'], ['🔍', 'searched “kitten food”', '3 days ago'], ['🧳', 'searched “weekend flights”', '20 min ago'], ['🏨', 'viewed three hotel pages', '5 min ago']],
+    opts: ['Kitten food', 'A hotel deal', 'A cat-carrier for travel (clever, right?)'], correct: 1, reveal: 'r.g.r4' },
+  { evts: [['🗣️', 'talked about standing desks at dinner — phone in pocket, screen off', 'last night']],
+    q: { kid: 'A standing-desk ad appears the next morning. How did it know?!', cmo: 'A standing-desk ad appears the next morning. How?', pro: 'Standing-desk ad, next morning. Mechanism?' },
+    opts: ['It listened through the microphone', 'It predicted it from behavior patterns', 'Pure coincidence'], correct: 1, reveal: 'r.g.r5',
+    hidden: [['🧑‍🤝‍🧑', 'a friend searched desks on your home wifi', '2 days ago'], ['👥', 'people with your viewing pattern bought desks', 'this week'], ['🎬', 'you half-watched an office-setup Reel', '9 days ago'], ['🪑', 'you price-checked desk chairs', '6 days ago']] },
+];
+
+function viewRecency() {
+  return '<div class="view-pad">' +
+    '<p class="room-kicker">The Growth Den Lab · The Machine</p>' +
+    '<h1 class="room-title">🔁 Recency & Fatigue</h1>' +
+    '<p class="room-tag" style="margin-bottom:20px">' + d3('recency.tag') + '</p>' +
+
+    '<div class="card"><h2>Part one · Play as GEM</h2>' +
+    '<div style="font-size:14.5px;line-height:1.7;color:var(--muted);margin-bottom:14px">' + d3('r.intro') + '</div>' +
+    '<div class="gem-stage" id="gemBox"></div></div>' +
+
+    '<div class="card"><h2>Part two · The Fatigue Courtroom</h2>' +
+    '<div style="font-size:14.5px;line-height:1.7;color:var(--muted)">' + d3('r.court') + '</div></div>' +
+
+    '<div class="card case"><span class="verdict v-folk">verdict: folklore</span>' +
+    '<p class="case-quote">“High frequency kills ads.”</p>' +
+    '<p style="font-size:12.5px">' + claim('The fatigue trigger Meta actually surfaces is cost-based — your cost per result versus your own baseline — not any specific frequency number.', 'folklore', 'The “magic frequency number” itself: widely repeated, never verified', 'https://www.facebook.com/business/help') + '</p>' +
+    '<div style="font-size:13.5px;line-height:1.65;color:var(--muted)">' + d3('r.c1') + '</div>' +
+    '<div class="curve-box"><canvas id="crv1"></canvas></div></div>' +
+
+    '<div class="card case"><span class="verdict v-meas">verdict: measured</span>' +
+    '<p class="case-quote">“Creative Fatigue = cost ≥2× your baseline; Creative Limited = elevated but under 2×.”</p>' +
+    '<p style="font-size:12.5px">' + claim('These thresholds are practitioner documentation of observed flag behavior — consistent, useful, and not a Meta spec sheet.', 'measured', SRC.loomer.name, SRC.loomer.url) + '</p>' +
+    '<div style="font-size:13.5px;line-height:1.65;color:var(--muted)">' + d3('r.c2') + '</div>' +
+    '<div class="band-wrap"><div class="ctl"><span class="ctl-name"><span>your cost per result vs. your own history</span><b id="bandV">1.0×</b></span>' +
+    '<input type="range" id="bandSlide" min="80" max="300" value="100"></div>' +
+    '<div class="band-bar"><i class="b-ok">healthy</i><i class="b-lim">creative limited</i><i class="b-fat">creative fatigue</i></div>' +
+    '<p class="band-stamp" id="bandStamp"></p></div></div>' +
+
+    '<div class="card case"><span class="verdict v-meas">verdict: measured</span>' +
+    '<p class="case-quote">“Performance drops 45% after four exposures.”</p>' +
+    '<p style="font-size:12.5px">' + claim('Meta’s own 2022 research reported the ~45% decline — shown here with the caveats the research itself acknowledges.', 'measured', SRC.fatigue22.name, SRC.fatigue22.url) + '</p>' +
+    '<div style="font-size:13.5px;line-height:1.65;color:var(--muted)">' + d3('r.c3') + '</div>' +
+    '<div class="curve-box"><canvas id="crv3"></canvas></div>' +
+    '<div class="caveat-row">' +
+      '<button class="caveat" data-c="no time-window control" type="button">⚠ no time-window control</button>' +
+      '<button class="caveat" data-c="no placement control" type="button">⚠ no placement control</button>' +
+      '<button class="caveat" data-c="engagement-level confound" type="button">⚠ engagement confound</button>' +
+    '</div></div>' +
+
+    '<div class="card case"><span class="verdict v-doc">verdict: documented</span>' +
+    '<p class="case-quote">“Editing an ad resets learning.”</p>' +
+    '<p style="font-size:12.5px">' + claim('Significant edits reset the learning phase — documented directly by Meta, with a specific list of what counts.', 'meta', 'Meta Business Help Center — about the learning phase', 'https://www.facebook.com/business/help') + '</p>' +
+    '<div style="font-size:13.5px;line-height:1.65;color:var(--muted)">' + d3('r.c4') + '</div>' +
+    '<div class="duo">' +
+      '<div class="duo-col d-yes"><h4>↺ resets learning</h4><ul>' +
+        '<li>any creative change (image, video, text, link)</li><li>targeting changes</li><li>changing the optimization event</li>' +
+        '<li>bid-strategy changes</li><li>large budget changes</li><li>adding new ads to the ad set</li><li>resuming after a 7-day pause</li></ul></div>' +
+      '<div class="duo-col d-no"><h4>✓ safe to touch</h4><ul>' +
+        '<li>renaming campaigns, ad sets, ads</li><li>minor budget adjustments</li><li>changing the schedule end date</li>' +
+        '<li>a brief pause</li><li>duplicating (the copy starts fresh; the original keeps learning)</li></ul></div>' +
+    '</div></div>' +
+
+    '<a class="next-room" href="#/creative"><span class="nr-k">next room →</span>' +
+      '<span class="nr-t">📡 Creative Signal</span>' +
+      '<span style="font-size:13px;color:var(--muted);line-height:1.55">' + d3('r.next') + '</span></a>' +
+    '</div>';
+}
+
+INITS.recency = function () {
+  /* ---- part one: the game ---- */
+  var round = 0, score = 0;
+  var box = $('gemBox');
+  function evtHtml(e, i, ghost) {
+    return '<div class="evt' + (ghost ? ' ghosted' : '') + '" style="animation-delay:' + (i * .22) + 's">' +
+      '<span class="e-ico">' + e[0] + '</span><span class="e-lab">' + e[1] + '</span><span class="e-when">' + e[2] + '</span></div>';
+  }
+  function renderRound() {
+    var r = GEM_ROUNDS[round];
+    var q = r.q ? (depth === 'kid' ? r.q.kid : depth === 'cmo' ? r.q.cmo : r.q.pro)
+                : dtxt('What does the machine show this visitor next?', 'What does delivery predict next?', 'p(next) — your call:');
+    box.innerHTML = '<div class="gem-head"><span class="gh-t">' +
+      dtxt('Visitor', 'Round', 'Sequence') + ' ' + (round + 1) + ' of ' + GEM_ROUNDS.length +
+      '</span><span class="gem-score">score ' + score + '</span></div>' +
+      '<div class="evt-stream">' + r.evts.map(function (e, i) { return evtHtml(e, i, false); }).join('') + '</div>' +
+      '<p class="gem-q">' + q + '</p>' +
+      '<div class="opt-row">' + r.opts.map(function (o, i) {
+        return '<button class="opt" data-i="' + i + '" type="button">' + o + '</button>';
+      }).join('') + '</div><div id="gemReveal"></div>';
+    box.querySelectorAll('.opt').forEach(function (b) {
+      b.addEventListener('click', function () { answer(parseInt(b.dataset.i, 10)); });
+    });
+  }
+  function answer(i) {
+    var r = GEM_ROUNDS[round];
+    var right = i === r.correct;
+    if (right) score++;
+    box.querySelectorAll('.opt').forEach(function (b, bi) {
+      b.disabled = true;
+      if (bi === r.correct) b.classList.add('correct');
+      else if (bi === i) b.classList.add('wrong');
+    });
+    var extra = '';
+    if (r.hidden) {
+      extra = '<div class="evt-stream" style="margin-top:12px">' +
+        '<p style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sky)">' +
+        dtxt('the part of the story you couldn’t see', 'the sequence you couldn’t see', 'the latent sequence') + '</p>' +
+        r.hidden.map(function (e, j) { return evtHtml(e, j, true); }).join('') + '</div>';
+    }
+    $('gemReveal').innerHTML = extra +
+      '<div class="gem-reveal">' + d3(r.reveal) + '</div>' +
+      '<button class="run-btn gem-next" id="gemNext" type="button">' +
+      (round < GEM_ROUNDS.length - 1 ? dtxt('next visitor →', 'next round →', 'next sequence →') : dtxt('finish →', 'the verdict →', 'wrap →')) + '</button>';
+    box.querySelector('.gem-score').textContent = 'score ' + score;
+    $('gemNext').addEventListener('click', function () {
+      round++;
+      if (round < GEM_ROUNDS.length) renderRound(); else renderEnd();
+    });
+  }
+  function renderEnd() {
+    box.innerHTML = '<div class="gem-head"><span class="gh-t">' +
+      dtxt('You played the machine!', 'Game over', 'Sequence set complete') +
+      '</span><span class="gem-score">score ' + score + ' / ' + GEM_ROUNDS.length + '</span></div>' +
+      '<div style="font-size:14px;line-height:1.7;color:var(--muted)">' + d3('r.myth') + '</div>' +
+      '<button class="chip-btn" id="gemAgain" type="button" style="margin-top:12px">↺ ' + dtxt('play again', 'replay', 'replay') + '</button>';
+    $('gemAgain').addEventListener('click', function () { round = 0; score = 0; renderRound(); });
+  }
+  renderRound();
+
+  /* ---- part two: exhibits ---- */
+  function fitCanvas(cv) {
+    var r = cv.parentElement.getBoundingClientRect();
+    var dpr = Math.min(2, window.devicePixelRatio || 1);
+    cv.width = Math.round(r.width * dpr); cv.height = Math.round(r.height * dpr);
+    var ctx = cv.getContext('2d');
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    return { ctx: ctx, w: r.width, h: r.height };
+  }
+  /* exhibit 1: cost vs frequency — no cliff, a cost-based trigger line */
+  var c1mark = 3.2;
+  function costOf(f) { return 1 + Math.pow((f - 1) / 5.4, 2.05) * 2.4; }
+  function drawC1() {
+    var cv = $('crv1'); if (!cv) return;
+    var s = fitCanvas(cv), ctx = s.ctx, w = s.w, h = s.h;
+    var X = function (f) { return 44 + (f - 1) / 9 * (w - 64); };
+    var Y = function (c) { return h - 30 - (c - 1) / 2.6 * (h - 62); };
+    ctx.clearRect(0, 0, w, h);
+    ctx.strokeStyle = 'rgba(252,243,214,.3)'; ctx.lineWidth = 1.2;
+    ctx.beginPath(); ctx.moveTo(44, 14); ctx.lineTo(44, h - 30); ctx.lineTo(w - 16, h - 30); ctx.stroke();
+    ctx.setLineDash([6, 5]); ctx.strokeStyle = 'rgba(229,52,11,.75)'; ctx.lineWidth = 1.8;
+    ctx.beginPath(); ctx.moveTo(44, Y(2)); ctx.lineTo(w - 16, Y(2)); ctx.stroke(); ctx.setLineDash([]);
+    ctx.font = '600 10px Poppins, sans-serif'; ctx.fillStyle = 'rgba(229,52,11,.9)'; ctx.textAlign = 'left';
+    ctx.fillText(dtxt('the fair’s real alarm: costs doubled', 'Meta’s actual trigger: cost ≥ 2× baseline', 'flag condition: CPR ≥ 2× trailing baseline'), 50, Y(2) - 6);
+    ctx.strokeStyle = 'rgba(127,200,240,.9)'; ctx.lineWidth = 2.5; ctx.beginPath();
+    for (var f = 1; f <= 10; f += .2) { var x = X(f), y = Y(costOf(f)); f === 1 ? ctx.moveTo(x, y) : ctx.lineTo(x, y); }
+    ctx.stroke();
+    var mx = X(c1mark), my = Y(costOf(c1mark));
+    ctx.fillStyle = '#ffc545'; ctx.beginPath(); ctx.arc(mx, my, 7, 0, 6.29); ctx.fill();
+    ctx.fillStyle = 'rgba(252,243,214,.9)'; ctx.textAlign = 'center'; ctx.font = '700 12px Poppins, sans-serif';
+    var flag = costOf(c1mark) >= 2;
+    ctx.fillText('freq ' + c1mark.toFixed(1) + '× · cost ×' + costOf(c1mark).toFixed(2) + (flag ? ' · 🚩' : ' · no flag'), w / 2, 24);
+    ctx.font = '500 10px Poppins, sans-serif'; ctx.fillStyle = 'rgba(252,243,214,.5)'; ctx.textAlign = 'center';
+    ctx.fillText(dtxt('how many times each person saw it →', 'frequency →', 'frequency →'), w / 2, h - 10);
+    ctx.save(); ctx.translate(16, h / 2); ctx.rotate(-Math.PI / 2);
+    ctx.fillText(dtxt('cost per sale →', 'cost per result →', 'CPR vs baseline →'), 0, 0); ctx.restore();
+  }
+  function c1drag(e) {
+    var cv = $('crv1'), r = cv.getBoundingClientRect();
+    c1mark = clamp(1 + (e.clientX - r.left - 44) / (r.width - 64) * 9, 1, 10);
+    drawC1();
+  }
+  $('crv1').addEventListener('pointerdown', function (e) { c1drag(e); $('crv1').setPointerCapture(e.pointerId); });
+  $('crv1').addEventListener('pointermove', function (e) { if (e.buttons) c1drag(e); });
+
+  /* exhibit 2: the threshold bands */
+  function band() {
+    var v = parseInt($('bandSlide').value, 10) / 100;
+    $('bandV').textContent = v.toFixed(1) + '×';
+    var st = $('bandStamp');
+    if (v < 1.5) { st.textContent = dtxt('✅ healthy — the fair is happy', '✅ healthy', '✅ within band'); st.style.color = 'var(--green)'; }
+    else if (v < 2) { st.textContent = dtxt('🟡 “creative limited” — the yellow note', '🟡 Creative Limited (elevated, under 2×)', '🟡 Creative Limited band'); st.style.color = 'var(--gold)'; }
+    else { st.textContent = dtxt('🚩 “creative fatigue” — the red note', '🚩 Creative Fatigue (≥ 2× baseline)', '🚩 Fatigue flag threshold crossed'); st.style.color = '#ff8a70'; }
+  }
+  $('bandSlide').addEventListener('input', band); band();
+
+  /* exhibit 3: the 45% study, with caveats */
+  var c3mark = 4, caveatsOn = 0;
+  var PERF = [100, 88, 74, 62, 55, 51, 48, 46];
+  function drawC3() {
+    var cv = $('crv3'); if (!cv) return;
+    var s = fitCanvas(cv), ctx = s.ctx, w = s.w, h = s.h;
+    ctx.clearRect(0, 0, w, h);
+    var bw = (w - 70) / 8;
+    PERF.forEach(function (p, i) {
+      var x = 50 + i * bw, bh = p / 100 * (h - 66);
+      var hot = (i + 1) === Math.round(c3mark);
+      ctx.fillStyle = hot ? 'rgba(255,197,69,.9)' : (i >= 3 ? 'rgba(229,52,11,.45)' : 'rgba(127,200,240,.55)');
+      ctx.beginPath(); ctx.roundRect(x, h - 30 - bh, bw - 8, bh, 4); ctx.fill();
+      ctx.font = '600 9.5px Poppins, sans-serif'; ctx.fillStyle = 'rgba(252,243,214,.6)'; ctx.textAlign = 'center';
+      ctx.fillText(String(i + 1), x + (bw - 8) / 2, h - 14);
+      if (hot) { ctx.fillStyle = 'rgba(252,243,214,.95)'; ctx.font = '700 12px Poppins, sans-serif'; ctx.fillText(p + '%', x + (bw - 8) / 2, h - 40 - bh); }
+    });
+    ctx.font = '600 11px Poppins, sans-serif'; ctx.textAlign = 'left'; ctx.fillStyle = 'rgba(252,243,214,.75)';
+    ctx.fillText(dtxt('strength of the ad after N views', 'relative performance by exposure count', 'performance index vs exposure (2022 study)'), 50, 20);
+    if (caveatsOn > 0) {
+      ctx.fillStyle = 'rgba(127,200,240,.13)'; ctx.fillRect(0, 0, w, h);
+      ctx.font = 'italic 600 12px Poppins, sans-serif'; ctx.textAlign = 'center'; ctx.fillStyle = 'rgba(127,200,240,.95)';
+      ctx.fillText(dtxt('…but the study didn’t check everything (' + caveatsOn + ' caveat' + (caveatsOn > 1 ? 's' : '') + ' on)', 'correlation with ' + caveatsOn + ' acknowledged confound' + (caveatsOn > 1 ? 's' : '') + ' — not clean causation', caveatsOn + ' confound(s) active: exposure ∝ time ∝ everything else'), w / 2, h / 2);
+    }
+  }
+  function c3drag(e) {
+    var cv = $('crv3'), r = cv.getBoundingClientRect();
+    c3mark = clamp(1 + (e.clientX - r.left - 50) / (r.width - 70) * 8, 1, 8);
+    drawC3();
+  }
+  $('crv3').addEventListener('pointerdown', function (e) { c3drag(e); });
+  $('crv3').addEventListener('pointermove', function (e) { if (e.buttons) c3drag(e); });
+  document.querySelectorAll('.caveat').forEach(function (b) {
+    b.addEventListener('click', function () {
+      b.classList.toggle('on');
+      caveatsOn = document.querySelectorAll('.caveat.on').length;
+      drawC3();
+    });
+  });
+
+  function redrawAll() { drawC1(); drawC3(); }
+  redrawAll();
+  var dialRedraw = function () { setTimeout(redrawAll, 30); };
+  document.querySelectorAll('.dial-btn').forEach(function (b) { b.addEventListener('click', dialRedraw); });
+  window.addEventListener('resize', dialRedraw);
+  return function () {
+    document.querySelectorAll('.dial-btn').forEach(function (b) { b.removeEventListener('click', dialRedraw); });
+    window.removeEventListener('resize', dialRedraw);
+  };
+};
+VIEWS.recency = viewRecency;
 
 /* ============================================================
    THE MODEL ROOM — #/models · the hall of named machines
