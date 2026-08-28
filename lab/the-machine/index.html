@@ -349,6 +349,81 @@ h1.room-title {
 .big-btn:hover { transform: translateY(-2px); }
 .big-btn.ghost { background: transparent; color: var(--cream); border: 2px solid rgba(252,243,214,.45); box-shadow: none; }
 
+/* ---------- auction floor ---------- */
+.sim-grid { display: grid; grid-template-columns: 1fr 350px; gap: 16px; align-items: start; }
+.sim-stage {
+  position: relative; height: 480px;
+  border: 1px solid var(--line); border-radius: var(--r);
+  background: rgba(15,9,24,.72); overflow: hidden;
+  box-shadow: 0 24px 60px rgba(0,0,0,.4);
+}
+.sim-stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+.sim-cap {
+  position: absolute; left: 12px; right: 12px; bottom: 12px;
+  font-size: 12.5px; color: var(--cream); text-align: center;
+  background: rgba(26,16,37,.85); border: 1px solid var(--line);
+  border-radius: 12px; padding: 8px 12px; min-height: 34px;
+  display: grid; align-items: center; pointer-events: none;
+}
+.sim-cap > * { grid-area: 1 / 1; }
+.ctl { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
+.ctl-name { font-size: 12px; font-weight: 700; letter-spacing: .06em; color: var(--cream); display: flex; justify-content: space-between; }
+.ctl-name b { color: var(--your-ad); font-size: 14px; }
+.ctl input[type="range"] { -webkit-appearance: none; appearance: none; width: 100%; height: 34px; background: transparent; cursor: pointer; }
+.ctl input[type="range"]::-webkit-slider-runnable-track { height: 7px; border-radius: 5px; background: rgba(252,243,214,.16); }
+.ctl input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none; appearance: none; width: 24px; height: 24px; margin-top: -8.5px;
+  border-radius: 50%; background: var(--your-ad); border: 3px solid var(--deep);
+  box-shadow: 0 0 10px rgba(254,124,43,.6);
+}
+.ctl input[type="range"]::-moz-range-track { height: 7px; border-radius: 5px; background: rgba(252,243,214,.16); }
+.ctl input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius: 50%; background: var(--your-ad); border: 3px solid var(--deep); }
+.fresh-bar { height: 12px; border-radius: 7px; background: rgba(252,243,214,.14); overflow: hidden; }
+.fresh-bar i { display: block; height: 100%; width: 100%; background: linear-gradient(90deg, var(--your-ad), var(--gold)); transition: width .3s; }
+.chip-btn {
+  font-family: 'Poppins', sans-serif; font-weight: 600; font-size: 12px;
+  color: var(--cream); background: transparent;
+  border: 1.5px solid rgba(252,243,214,.4); border-radius: 100px;
+  padding: 8px 14px; min-height: 38px; cursor: pointer;
+}
+.chip-btn:hover { border-color: var(--cream); }
+.chip-btn.pressed { background: var(--red); border-color: var(--red); color: var(--white); }
+.run-btn {
+  font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 15px;
+  background: var(--your-ad); color: var(--white);
+  border: none; border-radius: 100px; padding: 12px 22px; min-height: 48px; cursor: pointer;
+  box-shadow: 0 4px 18px rgba(254,124,43,.45);
+}
+.run-btn:active { transform: scale(.97); }
+.run-btn.ghost { background: transparent; color: var(--cream); border: 2px solid rgba(252,243,214,.45); box-shadow: none; }
+.run-btn.ghost.pressed { background: var(--gold); color: var(--deep); border-color: var(--gold); }
+.sim-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 14px; }
+.sstat { background: rgba(252,243,214,.06); border: 1px solid var(--line); border-radius: 12px; padding: 8px 12px; }
+.sstat span { display: block; font-size: 10px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.sstat b { font-size: 17px; color: var(--cream); }
+.sstat.hero b { color: var(--your-ad); }
+.sstat .sub { font-size: 10.5px; color: var(--muted); }
+.scen-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 6px 0 12px; }
+.scen-cap { min-height: 40px; font-size: 13.5px; line-height: 1.6; color: var(--muted); }
+.scen-cap b { color: var(--cream); }
+.cmp-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 12.5px; }
+.cmp-table th, .cmp-table td { padding: 6px 10px; text-align: left; border-bottom: 1px dashed var(--line); color: var(--muted); }
+.cmp-table th { color: var(--cream); font-weight: 700; font-size: 11px; letter-spacing: .06em; text-transform: uppercase; }
+.cmp-table .you-row td { color: var(--your-ad); font-weight: 600; }
+.next-room {
+  display: flex; flex-direction: column; gap: 4px;
+  border: 1.5px solid rgba(255,197,69,.5); border-radius: var(--r);
+  background: var(--glass); padding: 20px 24px; text-decoration: none;
+  transition: transform .15s, border-color .2s; margin-bottom: 16px;
+}
+.next-room:hover { transform: translateY(-2px); border-color: var(--gold); }
+.next-room .nr-k { font-size: 11px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--gold); }
+.next-room .nr-t { font-size: 20px; font-weight: 800; color: var(--white); }
+@media (max-width: 900px) {
+  .sim-grid { grid-template-columns: 1fr; }
+  .sim-stage { height: 340px; }
+}
+
 /* ---------- placeholder rooms ---------- */
 .bench { text-align: center; padding: 52px 24px 46px; border-style: dashed; border-width: 1.5px; }
 .flask { font-size: 54px; display: inline-block; animation: bubble 2.6s ease-in-out infinite; }
@@ -665,6 +740,78 @@ var CONTENT = {
     pro: '<p>Render, log, learn: the outcome feeds back into training data for the next pass. ~100ms end to end, per impression, at feed scale.</p>',
   },
 
+  /* ============ the auction floor ============ */
+  'a.intro': {
+    kid: '<p>In the last room you watched the race from way up high. Down here on the floor, you are one of the racers. Eight other lemonade stands want the same visitors, and each has its own tickets, its own tastiness, and its own freshness — and they change a little every day.</p><p>Set your three dials, press <b>run a day</b>, and watch what the fair does with your choices. The buttons below the floor set up little experiments for you.</p>',
+    cmo: '<p>You are one advertiser among eight simulated competitors, each with hidden bid, action-rate, and quality stats that drift day to day. Your three levers are the same three terms from the value equation: what you offer, how strongly people respond, and how fresh the creative still is.</p><p>Run days, watch the readouts — especially the gap between what you <b>bid</b> and what you actually <b>paid</b>. Every number on this floor is computed from the value equation, not scripted. The scenario buttons stage the experiments worth running.</p>',
+    pro: '<p>A live second-price simulator on total value = bid × eAR + quality. Eight competitors with drifting hidden stats; four contest each auction. Your eAR is proxied by creative strength × freshness; freshness decays daily until refreshed. Wins clear at the minimum sufficient amount, so paid-vs-bid spread is the pays-minimum lesson made visible.</p><p>Readouts are derived, not vibes: win rate, effective CPM, spend, simulated results. Scenario buttons freeze the competitor set and run controlled comparisons.</p>',
+  },
+  'a.cap.idle': {
+    kid: 'The floor is quiet. Set your dials and run a day!',
+    cmo: 'Floor idle. Adjust your levers and run a day of auctions.',
+    pro: 'Idle. Configure and run — 120 auctions per simulated day.',
+  },
+  'a.cap.running': {
+    kid: 'Auctions bursting! Tallest stack wins each visitor.',
+    cmo: 'Each burst is one auction clearing on total value.',
+    pro: 'Sampled auctions rendering; full day computed exactly.',
+  },
+  'a.cap.sc1': {
+    kid: 'Same starting point, three tries: doubling your <b>tickets</b> wins more but costs more each time. Doubling your <b>tastiness</b> wins even more — and each win gets <b>cheaper</b>. Better lemonade beats bigger allowance.',
+    cmo: 'From one baseline: doubling bid buys volume at a worse price. Doubling creative strength buys more volume at a <b>better</b> price, because action rate raises your total value and divides your clearing price. Creative wins on cost.',
+    pro: 'Controlled comparison, frozen competitor set: 2× bid lifts win rate but clears richer runner-ups (eCPM up). 2× creative lifts win rate further while dividing the clearing price (eCPM down). The asymmetry is structural, not situational.',
+  },
+  'a.cap.sc2on': {
+    kid: 'Q4! Every stand raised its tickets and two new stands showed up. Same dials, pricier wins — the fair itself got more crowded.',
+    cmo: 'Q4 mode: competitor bids up ~50%, two extra entrants per auction. Identical settings now clear higher — seasonal CPM inflation is auction pressure, not a platform tax.',
+    pro: 'Density + bid inflation active. Clearing prices rise with runner-up values; your settings are unchanged. This is the whole mechanism behind seasonal CPM curves.',
+  },
+  'a.cap.sc2off': {
+    kid: 'The holidays ended. The extra stands packed up and prices calmed down.',
+    cmo: 'Q4 pressure removed. Same settings, softer clearing prices.',
+    pro: 'Competitor set restored to baseline density and bids.',
+  },
+  'a.cap.sc3on': {
+    kid: 'Uh oh — your sign turned tricky (“YOU WON’T BELIEVE THIS LEMONADE”). The fair docks tricky signs, so even big tickets stop winning.',
+    cmo: 'Engagement-bait penalty active: a negative quality term now drags your total value. Watch wins fall even if you raise bid — you cannot buy your way past a quality penalty efficiently.',
+    pro: 'Quality term now carries a fixed negative offset (documented penalty class). Total value falls linearly; clearing gets harder at every bid level. Bid compensation is possible but strictly more expensive than removing the penalty.',
+  },
+  'a.cap.sc3off': {
+    kid: 'You fixed the sign — honest again, and the fair stops docking you.',
+    cmo: 'Penalty cleared. Total value restored without touching bid.',
+    pro: 'Quality offset removed; clearing efficiency recovers immediately.',
+  },
+  'a.cap.sc4on': {
+    kid: 'You told the fair: “never pay more than $1.50 for a visitor.” Fine — but now you sit out every race that costs more, and you win way fewer.',
+    cmo: 'Aggressive cost cap on: auctions that would clear above your cap are skipped entirely. Cost per win is controlled; volume starves. Caps are a trade, not a discount.',
+    pro: 'Hard cap below typical clearing: participation gated on projected price. Spend and volume collapse while realized CPM stays under cap — the textbook cost-control/delivery trade-off.',
+  },
+  'a.cap.sc4off': {
+    kid: 'Cap removed — you race in every auction again.',
+    cmo: 'Cap lifted; full participation restored.',
+    pro: 'Participation gate removed.',
+  },
+  'a.cap.sc5': {
+    kid: 'Five days zoomed by without a new sign. Your lemonade got boring, the magnet got weak, and wins slipped away. Press <b>refresh creative</b> and watch it come back!',
+    cmo: 'Five simulated days of fatigue: freshness decayed, action rate with it, win rate down at identical bid. Refresh restores the prediction — budget never left, performance did.',
+    pro: 'Fast-forwarded decay: eAR ∝ freshness fell across five days; clearing worsened at fixed bid. Refresh resets freshness to 1.0. Fatigue is a delivery input, not a reporting artifact.',
+  },
+  'a.cap.refresh': {
+    kid: '✨ Fresh sign! Everyone is curious again.',
+    cmo: '✨ Creative refreshed — freshness back to 100%.',
+    pro: '✨ Freshness reset to 1.0; eAR restored.',
+  },
+  'a.cap.reset': {
+    kid: 'You changed a dial — the scoreboard starts over so you can see what it did.',
+    cmo: 'Settings changed; tallies reset for a clean read.',
+    pro: 'Config changed; counters zeroed.',
+  },
+  'a.next': {
+    kid: 'You know how the race is won. Next: how the machine figures out what each visitor wants — by watching what they just did.',
+    cmo: 'You have the clearing mechanics. Next: how the machine reads the person — sequences, recency, and why fatigue is measurable.',
+    pro: 'Clearing done. Next: sequence modeling, recency weighting, and fatigue diagnostics.',
+  },
+
   /* directory + placeholder copy */
   'machine.dir-title': { kid: 'The other rooms', cmo: 'The other rooms', pro: 'The other rooms' },
   'machine.dir-body': {
@@ -688,7 +835,7 @@ var CONTENT = {
 var ROOMS = [
   { slug: 'machine',    name: 'The Machine',       ico: '⚙️', open: true },
   { slug: 'model-room', name: 'The Model Room',    ico: '🧠', open: false },
-  { slug: 'auction',    name: 'The Auction Floor', ico: '🔨', open: false },
+  { slug: 'auction',    name: 'The Auction Floor', ico: '🔨', open: true },
   { slug: 'recency',    name: 'Recency & Fatigue', ico: '🔁', open: false },
   { slug: 'creative',   name: 'Creative Signal',   ico: '📡', open: false },
   { slug: 'scanner',    name: 'Brand Scanner',     ico: '🔍', open: false },
@@ -696,6 +843,9 @@ var ROOMS = [
 ];
 var DEPTHS = ['kid', 'cmo', 'pro'];
 var DEPTH_KEY = 'gd-machine-depth';
+/* room registries: each room may register a view builder and an init
+   that returns a cleanup fn (declared early — rooms assign into these) */
+var VIEWS = {}, INITS = {}, roomCleanup = null;
 
 function storedDepth() {
   try {
@@ -1551,6 +1701,299 @@ function journeyStop() {
   J.scenes = {};
 }
 
+/* ============================================================
+   THE AUCTION FLOOR — #/auction
+   Everything derives from: total value = bid × eAR + quality;
+   winner pays the minimum needed to beat #2.
+   ============================================================ */
+function viewAuction() {
+  return '<div class="view-pad">' +
+    '<p class="room-kicker">The Growth Den Lab · The Machine</p>' +
+    '<h1 class="room-title">🔨 The Auction Floor</h1>' +
+    '<p class="room-tag" style="margin-bottom:20px">' + d3('auction.tag') + '</p>' +
+
+    '<div class="card"><div style="font-size:14.5px;line-height:1.7;color:var(--muted)">' + d3('a.intro') + '</div>' +
+    '<p style="margin-top:10px;font-size:12.5px">' +
+      claim('The mechanics here follow the documented auction: winner = highest total value (bid × estimated action rate + quality), paying the minimum needed to win.', 'meta', SRC.auction.name, SRC.auction.url) + '</p>' +
+    '<p style="font-size:12.5px">' +
+      claim('The famous “learning phase needs ~50 optimization events per week” number is Meta-stated but has never been independently re-verified — treat the exact figure with folklore-grade caution.', 'folklore', 'Meta states ~50 events; no independent re-verification exists', 'https://www.facebook.com/business/help') + '</p></div>' +
+
+    '<div class="sim-grid">' +
+      '<div class="sim-stage"><canvas id="auCanvas"></canvas><p class="sim-cap" id="auCap">' + d3('a.cap.idle') + '</p></div>' +
+      '<div class="card" style="margin-bottom:0">' +
+        '<div class="ctl"><span class="ctl-name"><span>💰 YOUR BID</span><b id="auBidV">$2.50</b></span>' +
+          '<input type="range" id="auBid" min="0.5" max="10" step="0.5" value="2.5"></div>' +
+        '<div class="ctl"><span class="ctl-name"><span>🎨 CREATIVE STRENGTH</span><b id="auCsV">5</b></span>' +
+          '<input type="range" id="auCs" min="1" max="10" step="0.5" value="5"></div>' +
+        '<div class="ctl"><span class="ctl-name"><span>✨ FRESHNESS</span><b id="auFrV">100%</b></span>' +
+          '<div class="fresh-bar"><i id="auFrBar"></i></div>' +
+          '<button class="chip-btn" id="auRefresh" type="button" style="align-self:flex-start">🔄 refresh creative</button></div>' +
+        '<div style="display:flex;gap:8px;flex-wrap:wrap">' +
+          '<button class="run-btn" id="auRun" type="button">▶ Run a day</button>' +
+          '<button class="run-btn ghost" id="auAuto" type="button">⟳ auto-run</button>' +
+        '</div>' +
+        '<div class="sim-stats">' +
+          '<div class="sstat"><span>day</span><b id="stDay">1</b></div>' +
+          '<div class="sstat"><span>auctions</span><b id="stAuc">0</b></div>' +
+          '<div class="sstat"><span>win rate</span><b id="stWin">—</b></div>' +
+          '<div class="sstat hero"><span>effective CPM</span><b id="stCpm">—</b></div>' +
+          '<div class="sstat" style="grid-column:1/-1"><span>you bid vs you paid (avg)</span>' +
+            '<b id="stGap">—</b> <span class="sub" id="stGapSub"></span></div>' +
+          '<div class="sstat"><span>spend</span><b id="stSpend">$0.00</b></div>' +
+          '<div class="sstat"><span>results · cost/result</span><b id="stRes">0 · —</b></div>' +
+        '</div>' +
+      '</div>' +
+    '</div>' +
+
+    '<div class="card" style="margin-top:16px"><h2>The experiments worth running</h2>' +
+      '<div class="scen-row">' +
+        '<button class="chip-btn" id="sc1" type="button">⚖️ 2× bid vs 2× creative</button>' +
+        '<button class="chip-btn" id="sc2" type="button">🎄 Q4 arrives</button>' +
+        '<button class="chip-btn" id="sc3" type="button">🪤 engagement bait</button>' +
+        '<button class="chip-btn" id="sc4" type="button">🧊 aggressive cost cap</button>' +
+        '<button class="chip-btn" id="sc5" type="button">🥱 5 days of fatigue</button>' +
+      '</div>' +
+      '<div class="scen-cap" id="scenCap"></div>' +
+      '<div id="scenTable"></div>' +
+    '</div>' +
+
+    '<a class="next-room" href="#/recency"><span class="nr-k">next room →</span>' +
+      '<span class="nr-t">🔁 How the machine reads YOU</span>' +
+      '<span style="font-size:13px;color:var(--muted);line-height:1.55">' + d3('a.next') + '</span></a>' +
+    '</div>';
+}
+
+INITS.auction = function () {
+  var comps = [];
+  function rollComps() {
+    var tiers = [2, 4, 6, 8, 11, 13, 16, 20];
+    comps = tiers.map(function (t) {
+      var prod = t * (.85 + Math.random() * .3);
+      // stronger competitors carry stronger creative, so the product survives intact
+      var cs = clamp(2 + Math.round((t / 3 + Math.random() * 2) * 2) / 2, 2, 8);
+      return { bid: clamp(prod / cs, .5, 8), cs: cs, fresh: .6 + Math.random() * .4 };
+    });
+  }
+  rollComps();
+  var AU = { bid: 2.5, cs: 5, fresh: 1, day: 1, q4: false, bait: false, cap: false, auto: false };
+  var T = { auc: 0, wins: 0, paySum: 0, spend: 0, results: 0, capSkips: 0 };
+  var CAP_VAL = 1.5, animQ = [], curAnim = null, animT = 0, raf = 0, autoTm = 0, alive = true;
+
+  function uar() { return .012 * AU.cs * AU.fresh; }
+  function uq() { return AU.cs * AU.fresh * 6 + (AU.bait ? -35 : 0); }
+  function ctv(c, n) { return (c.bid * (AU.q4 ? 1.25 : 1) * (.012 * c.cs * c.fresh) * 1000 + c.cs * c.fresh * 6) * n; }
+
+  function runAuction(record) {
+    var pool = comps.slice();
+    if (AU.q4) pool = pool.concat([{ bid: 3, cs: 5.5, fresh: .9 }, { bid: 2.5, cs: 5, fresh: .9 }]);
+    pool.sort(function () { return Math.random() - .5; });
+    var field = pool.slice(0, 4).map(function (c) { return { v: ctv(c, .85 + Math.random() * .3) }; });
+    var un = .85 + Math.random() * .3;
+    var uv = (AU.bid * uar() * 1000 + uq()) * un;
+    var all = field.concat([{ v: uv, you: true }]).sort(function (a, b) { return b.v - a.v; });
+    T.auc++;
+    var res = { bars: all, pay: null, capped: false, won: false };
+    if (all[0].you) {
+      var needed = clamp((all[1].v - uq() * un) / (uar() * 1000 * un), .05, AU.bid);
+      if (AU.cap && needed > CAP_VAL) {
+        T.capSkips++; res.capped = true;
+      } else {
+        T.wins++; T.paySum += needed; T.spend += needed; res.won = true; res.pay = needed;
+        if (Math.random() < clamp(uar() * 6, .02, .85)) T.results++;
+      }
+    }
+    if (record) animQ.push(res);
+    return res;
+  }
+  function drift() {
+    comps.forEach(function (c) {
+      c.bid = clamp(c.bid + (Math.random() - .5) * .3, .5, 5.5);
+      if (Math.random() < .15) c.cs = clamp(c.cs + (Math.random() < .5 ? -.5 : .5), 2, 8);
+      c.fresh = clamp(c.fresh + (Math.random() - .45) * .08, .4, 1);
+    });
+  }
+  function runDay(silent) {
+    for (var i = 0; i < 120; i++) runAuction(!silent && i % 12 === 0);
+    AU.day++; AU.fresh = Math.max(.4, AU.fresh * .93);
+    drift();
+    if (!silent) setCapEl('a.cap.running');
+    syncUI();
+  }
+  function resetT(note) {
+    T = { auc: 0, wins: 0, paySum: 0, spend: 0, results: 0, capSkips: 0 };
+    if (note) setCapEl('a.cap.reset');
+    syncUI();
+  }
+  function setCapEl(key) { var el = $('auCap'); if (el) el.innerHTML = d3(key); }
+  function fm(v) { return '$' + v.toFixed(2); }
+  function syncUI() {
+    if (!$('stDay')) return;
+    $('auBidV').textContent = fm(AU.bid);
+    $('auCsV').textContent = AU.cs;
+    $('auFrV').textContent = Math.round(AU.fresh * 100) + '%';
+    $('auFrBar').style.width = Math.round(AU.fresh * 100) + '%';
+    $('stDay').textContent = AU.day;
+    $('stAuc').textContent = T.auc;
+    $('stWin').textContent = T.auc ? Math.round(T.wins / T.auc * 100) + '%' : '—';
+    var avg = T.wins ? T.paySum / T.wins : 0;
+    $('stCpm').textContent = T.wins ? fm(avg) : '—';
+    $('stGap').textContent = T.wins ? fm(AU.bid) + ' → ' + fm(avg) : '—';
+    $('stGapSub').textContent = T.wins ? 'the gap is the pays-minimum discount' : '';
+    $('stSpend').textContent = fm(T.spend);
+    $('stRes').textContent = T.results + ' · ' + (T.results ? fm(T.spend / T.results) : '—');
+  }
+
+  /* silent comparison for scenario 1 */
+  function measure(bid, cs, n) {
+    var wins = 0, pays = 0;
+    var save = { bid: AU.bid, cs: AU.cs }, saveT = T;
+    AU.bid = bid; AU.cs = cs; T = { auc: 0, wins: 0, paySum: 0, spend: 0, results: 0, capSkips: 0 };
+    for (var i = 0; i < n; i++) runAuction(false);
+    wins = T.wins; pays = T.paySum;
+    AU.bid = save.bid; AU.cs = save.cs; T = saveT;
+    return { wr: wins / n, cpm: wins ? pays / wins : 0 };
+  }
+
+  /* ---- canvas ---- */
+  var cv = $('auCanvas'), cx = cv.getContext('2d'), W = 0, H = 0, DPR = 1, t = 0;
+  function resize() {
+    var r = cv.parentElement.getBoundingClientRect();
+    DPR = Math.min(2, window.devicePixelRatio || 1);
+    W = r.width; H = r.height;
+    cv.width = Math.round(W * DPR); cv.height = Math.round(H * DPR);
+  }
+  resize();
+  var floaters = comps.map(function (c, i) {
+    return { x: .1 + Math.random() * .8, y: .15 + Math.random() * .55, ph: Math.random() * 6.28 };
+  });
+  var last = performance.now();
+  function loop(now) {
+    if (!alive) return;
+    var dt = Math.min(.05, (now - last) / 1000); last = now; t += dt;
+    cx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    cx.clearRect(0, 0, W, H);
+
+    if (curAnim) {
+      animT += dt;
+      drawAuction(curAnim, clamp(animT / .55, 0, 1));
+      if (animT > .62) curAnim = null;
+    }
+    if (!curAnim && animQ.length) { curAnim = animQ.shift(); animT = 0; }
+    if (!curAnim) drawIdle();
+    raf = requestAnimationFrame(loop);
+  }
+  function drawIdle() {
+    floaters.forEach(function (f, i) {
+      var c = comps[i];
+      var x = f.x * W, y = (f.y + Math.sin(t * .8 + f.ph) * .02) * H;
+      var r = 7 + c.bid * 2.2;
+      cx.save();
+      cx.shadowColor = 'rgba(127,200,240,.6)'; cx.shadowBlur = c.cs * 1.6;
+      cx.fillStyle = 'rgba(125,116,160,' + (.4 + c.fresh * .4) + ')';
+      cx.beginPath(); cx.arc(x, y, r, 0, 6.29); cx.fill();
+      cx.restore();
+    });
+    var yx = W * .5, yy = H * .82;
+    cx.save();
+    cx.shadowColor = 'rgba(254,124,43,.9)'; cx.shadowBlur = 8 + AU.cs * 2;
+    cx.fillStyle = 'rgba(254,124,43,' + (.55 + AU.fresh * .45) + ')';
+    cx.beginPath(); cx.arc(yx, yy, 9 + AU.bid * 2.2, 0, 6.29); cx.fill();
+    cx.restore();
+    cx.font = '700 11px Poppins, sans-serif'; cx.textAlign = 'center';
+    cx.fillStyle = 'rgba(254,124,43,.9)';
+    cx.fillText(dtxt('you', 'your ad', 'your ad'), yx, yy + 28);
+    cx.font = '600 11px Poppins, sans-serif';
+    cx.fillStyle = 'rgba(252,243,214,.5)';
+    cx.fillText(dtxt('the other stands drift and change each day', 'competitors drift daily — size = bid, glow = creative', 'competitor set · size=bid, glow=cs, alpha=freshness'), W / 2, 24);
+  }
+  function drawAuction(a, p) {
+    var n = a.bars.length, gap = Math.min(70, W * .13);
+    var x0 = W / 2 - gap * (n - 1) / 2, baseY = H * .78, maxV = a.bars[0].v;
+    a.bars.forEach(function (b, i) {
+      var bh = (b.v / maxV) * H * .5 * Math.min(1, p * 1.6);
+      var x = x0 + gap * i;
+      cx.fillStyle = b.you ? 'rgba(254,124,43,.92)' : 'rgba(125,116,160,.6)';
+      cx.beginPath(); cx.roundRect(x - 16, baseY - bh, 32, bh, 6); cx.fill();
+      if (i === 0 && p > .6) {
+        cx.font = '700 12px Poppins, sans-serif'; cx.textAlign = 'center';
+        cx.fillStyle = 'rgba(255,197,69,.95)';
+        cx.fillText(a.capped ? dtxt('too pricey — you sat out', 'over your cap — skipped', 'cap gate: no entry') : dtxt('wins!', 'wins the slot', 'clears'), x, baseY - bh - 12);
+      }
+    });
+    if (a.won && p > .7) {
+      cx.font = '800 15px Poppins, sans-serif'; cx.textAlign = 'center';
+      cx.fillStyle = 'rgba(143,214,148,' + clamp((p - .7) * 4, 0, 1) + ')';
+      cx.fillText('paid ' + fm(a.pay) + dtxt(' (you offered ' + fm(AU.bid) + ')', ' — bid was ' + fm(AU.bid), ' · bid ' + fm(AU.bid)), W / 2, H * .12);
+    }
+    cx.font = '600 10px Poppins, sans-serif'; cx.textAlign = 'center';
+    cx.fillStyle = 'rgba(252,243,214,.45)';
+    cx.fillText(dtxt('stacks = each racer’s total score', 'bars = total value per contender', 'bars = TV per contender, this auction'), W / 2, baseY + 22);
+  }
+  raf = requestAnimationFrame(loop);
+
+  /* ---- wiring ---- */
+  function on(id, ev, fn) { var el = $(id); if (el) el.addEventListener(ev, fn); }
+  on('auBid', 'input', function (e) { AU.bid = parseFloat(e.target.value); resetT(true); });
+  on('auCs', 'input', function (e) { AU.cs = parseFloat(e.target.value); resetT(true); });
+  on('auRefresh', 'click', function () { AU.fresh = 1; setCapEl('a.cap.refresh'); syncUI(); });
+  on('auRun', 'click', function () { runDay(false); });
+  on('auAuto', 'click', function () {
+    AU.auto = !AU.auto;
+    $('auAuto').classList.toggle('pressed', AU.auto);
+    clearInterval(autoTm);
+    if (AU.auto) autoTm = setInterval(function () { runDay(false); }, 1400);
+  });
+  function scen(id, fn) { on(id, 'click', fn); }
+  scen('sc1', function () {
+    var base = measure(AU.bid, AU.cs, 600);
+    var b2 = measure(AU.bid * 2, AU.cs, 600);
+    var c2 = measure(AU.bid, Math.min(10, AU.cs * 2), 600);
+    $('scenCap').innerHTML = d3('a.cap.sc1');
+    $('scenTable').innerHTML = '<table class="cmp-table"><tr><th>setup</th><th>win rate</th><th>effective CPM</th></tr>' +
+      '<tr><td>baseline (bid ' + fm(AU.bid) + ', creative ' + AU.cs + ')</td><td>' + Math.round(base.wr * 100) + '%</td><td>' + (base.cpm ? fm(base.cpm) : '—') + '</td></tr>' +
+      '<tr><td>2× bid</td><td>' + Math.round(b2.wr * 100) + '%</td><td>' + (b2.cpm ? fm(b2.cpm) : '—') + '</td></tr>' +
+      '<tr class="you-row"><td>2× creative strength</td><td>' + Math.round(c2.wr * 100) + '%</td><td>' + (c2.cpm ? fm(c2.cpm) : '—') + '</td></tr></table>';
+  });
+  scen('sc2', function () {
+    AU.q4 = !AU.q4;
+    $('sc2').classList.toggle('pressed', AU.q4);
+    $('scenCap').innerHTML = d3(AU.q4 ? 'a.cap.sc2on' : 'a.cap.sc2off');
+    $('scenTable').innerHTML = '';
+    resetT(false);
+  });
+  scen('sc3', function () {
+    AU.bait = !AU.bait;
+    $('sc3').classList.toggle('pressed', AU.bait);
+    $('scenCap').innerHTML = d3(AU.bait ? 'a.cap.sc3on' : 'a.cap.sc3off');
+    $('scenTable').innerHTML = '';
+    resetT(false);
+  });
+  scen('sc4', function () {
+    AU.cap = !AU.cap;
+    $('sc4').classList.toggle('pressed', AU.cap);
+    $('scenCap').innerHTML = d3(AU.cap ? 'a.cap.sc4on' : 'a.cap.sc4off');
+    $('scenTable').innerHTML = '';
+    resetT(false);
+  });
+  scen('sc5', function () {
+    for (var i = 0; i < 5; i++) runDay(true);
+    $('scenCap').innerHTML = d3('a.cap.sc5');
+    $('scenTable').innerHTML = '';
+    syncUI();
+  });
+  var rs = function () { resize(); };
+  window.addEventListener('resize', rs);
+  syncUI();
+
+  return function cleanup() {
+    alive = false;
+    cancelAnimationFrame(raf);
+    clearInterval(autoTm);
+    window.removeEventListener('resize', rs);
+  };
+};
+VIEWS.auction = viewAuction;
+
 /* ---------------- other views ---------------- */
 function viewPlaceholder(room) {
   return '<div class="view-pad">' +
@@ -1565,6 +2008,15 @@ function viewPlaceholder(room) {
     '</div></div>';
 }
 
+VIEWS.machine = viewJourney;
+INITS.machine = function () {
+  journeyStart();
+  document.querySelectorAll('#pipemap .node').forEach(function (n) {
+    n.addEventListener('click', function () { openDetail(n.dataset.node); });
+  });
+  return journeyStop;
+};
+
 function render() {
   var cur = parseHash();
   if (cur.params.d && DEPTHS.indexOf(cur.params.d) >= 0 && cur.params.d !== depth) {
@@ -1575,20 +2027,14 @@ function render() {
   CLAIMS.length = 0;
   popover.hidden = true;
   detail.hidden = true;
-  journeyStop();
+  if (roomCleanup) { try { roomCleanup(); } catch (e) { } roomCleanup = null; }
   var view = $('view');
-  view.innerHTML = room.slug === 'machine' ? viewJourney() : viewPlaceholder(room);
+  view.innerHTML = VIEWS[room.slug] ? VIEWS[room.slug]() : viewPlaceholder(room);
   view.style.animation = 'none';
   void view.offsetWidth;
   view.style.animation = '';
   renderTabs(room.slug);
-  if (room.slug === 'machine') {
-    journeyStart();
-    // pipeline nodes open their detail cards
-    document.querySelectorAll('#pipemap .node').forEach(function (n) {
-      n.addEventListener('click', function () { openDetail(n.dataset.node); });
-    });
-  }
+  if (INITS[room.slug]) roomCleanup = INITS[room.slug]() || null;
   document.title = (room.slug === 'machine' ? 'The Machine' : room.name + ' · The Machine') +
     ' — The Growth Den Lab';
   window.scrollTo(0, 0);
