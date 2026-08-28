@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-TR4S2MZM');</script>
+<!-- End Google Tag Manager -->
+<title>The Machine — how Meta's ad delivery system works · The Growth Den Lab</title>
+<meta name="description" content="A multi-room teaching portal about how Meta's ad delivery system actually works: the models, the auction, fatigue, creative signal — graded by how sure we really are.">
+<meta name="robots" content="noindex">
+<link rel="icon" href="../../favicon-32x32.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600&display=swap" rel="stylesheet">
+
+<style>
+/* ============ The Machine · The Growth Den Lab ============ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+:root {
+  /* Growth Den palette, from the main site's tokens */
+  --purple:  #341f44;
+  --deep:    #1a1025;
+  --blue:    #256493;
+  --red:     #e5340b;
+  --orange:  #fe7c2b;
+  --gold:    #ffc545;
+  --sky:     #7fc8f0;
+  --cream:   #fcf3d6;
+  --white:   #fefefe;
+  --muted:   rgba(252,243,214,.62);
+  --line:    rgba(252,243,214,.14);
+  --glass:   rgba(26,16,37,.68);
+  --r: 20px;
+
+  /* RESERVED across every visualization in every tab:
+     this color means "your ad" and is never used for anything else. */
+  --your-ad: #fe7c2b;
+
+  --topbar-h: 62px;
+  --tabs-h: 54px;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 300;
+  color: var(--cream);
+  background: var(--purple);
+  background-image:
+    radial-gradient(ellipse 90% 55% at 75% 5%, rgba(37,100,147,.38) 0%, transparent 60%),
+    radial-gradient(ellipse 55% 40% at 8% 95%, rgba(229,52,11,.13) 0%, transparent 55%),
+    repeating-linear-gradient(0deg, transparent 0 34px, rgba(252,243,214,.022) 34px 35px),
+    repeating-linear-gradient(90deg, transparent 0 34px, rgba(252,243,214,.022) 34px 35px);
+  background-attachment: fixed;
+  min-height: 100dvh;
+  display: flex; flex-direction: column;
+}
+
+img { display: block; max-width: 100%; }
+a { color: var(--gold); }
+b { font-weight: 600; }
+
+/* ---------- depth registers: stacked in place so the layout engine
+     reserves the tallest register per block — no shift on switch ---------- */
+.d3 { display: grid; }
+.d3 > span { grid-area: 1 / 1; transition: opacity .32s ease; }
+body.d-kid .d3 > .cmo, body.d-kid .d3 > .pro,
+body.d-cmo .d3 > .kid, body.d-cmo .d3 > .pro,
+body.d-pro .d3 > .kid, body.d-pro .d3 > .cmo { opacity: 0; pointer-events: none; user-select: none; }
+
+/* ---------- top bar ---------- */
+#topbar {
+  height: var(--topbar-h);
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  padding: 0 16px;
+  position: sticky; top: 0; z-index: 50;
+  background: rgba(26,16,37,.88); backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+}
+.logo { display: flex; align-items: center; gap: 8px; text-decoration: none; min-width: 0; }
+.logo img { height: 32px; width: auto; }
+.lab-tag {
+  font-size: 11px; font-weight: 700; letter-spacing: .14em;
+  color: var(--deep); background: var(--gold);
+  padding: 2px 10px; border-radius: 100px; transform: rotate(-3deg);
+  white-space: nowrap;
+}
+
+/* the Depth Dial */
+#dial {
+  display: flex; border: 1.5px solid rgba(252,243,214,.45); border-radius: 100px;
+  overflow: hidden; background: rgba(26,16,37,.7); flex: 0 0 auto;
+}
+.dial-btn {
+  font-family: 'Poppins', sans-serif; font-weight: 600; font-size: 12px;
+  border: none; background: transparent; color: var(--muted);
+  padding: 9px 13px; cursor: pointer; white-space: nowrap; min-height: 40px;
+  transition: background .25s, color .25s;
+}
+.dial-btn.active { background: var(--cream); color: var(--deep); font-weight: 700; }
+.dial-btn .short { display: none; }
+@media (max-width: 640px) {
+  .dial-btn { padding: 9px 10px; font-size: 11.5px; }
+  .dial-btn .full { display: none; }
+  .dial-btn .short { display: inline; }
+}
+
+/* ---------- tab pill bar ---------- */
+#tabbar {
+  position: sticky; top: var(--topbar-h); z-index: 40;
+  background: rgba(26,16,37,.82); backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+}
+#tabbar .rail {
+  display: flex; gap: 8px; align-items: center;
+  max-width: 1100px; margin: 0 auto;
+  padding: 8px 16px;
+  overflow-x: auto; -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+#tabbar .rail::-webkit-scrollbar { display: none; }
+.tab-pill {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 13px; font-weight: 500; color: var(--muted);
+  text-decoration: none; white-space: nowrap;
+  border: 1.5px solid transparent; border-radius: 100px;
+  padding: 8px 14px; min-height: 38px;
+  transition: color .2s, border-color .2s, background .2s;
+}
+.tab-pill:hover { color: var(--cream); border-color: rgba(252,243,214,.3); }
+.tab-pill[aria-current="page"] {
+  color: var(--deep); font-weight: 700;
+  background: var(--gold); border-color: var(--gold);
+}
+.tab-pill .ico { font-size: 15px; }
+
+/* ---------- view ---------- */
+#view {
+  flex: 1;
+  width: 100%; max-width: 1100px; margin: 0 auto;
+  padding: 34px 20px 60px;
+  animation: view-in .3s ease;
+}
+@keyframes view-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+.room-kicker {
+  font-size: 12px; font-weight: 600; letter-spacing: .18em; text-transform: uppercase;
+  color: var(--your-ad); margin-bottom: 10px;
+}
+h1.room-title {
+  font-size: clamp(30px, 5vw, 46px); font-weight: 800; letter-spacing: -.01em;
+  color: var(--white); line-height: 1.1; margin-bottom: 10px;
+}
+.room-tag { font-size: 16px; color: var(--muted); line-height: 1.6; max-width: 640px; margin-bottom: 26px; }
+
+.card {
+  background: var(--glass); backdrop-filter: blur(8px);
+  border: 1px solid var(--line); border-radius: var(--r);
+  padding: 22px 22px 20px; margin-bottom: 16px;
+  box-shadow: 0 18px 44px rgba(0,0,0,.32);
+}
+.card h2 { font-size: 19px; font-weight: 700; color: var(--white); margin-bottom: 10px; }
+.card p, .card li { font-size: 14.5px; line-height: 1.7; color: var(--muted); }
+.card p { margin-bottom: 10px; }
+.card p:last-child { margin-bottom: 0; }
+.card b { color: var(--cream); }
+.card i { color: var(--cream); }
+
+/* room directory grid */
+.dir-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px; margin-top: 6px; }
+.dir-card {
+  display: flex; flex-direction: column; gap: 6px;
+  background: rgba(252,243,214,.05); border: 1.5px solid var(--line); border-radius: 16px;
+  padding: 16px; text-decoration: none;
+  transition: border-color .2s, transform .15s;
+}
+.dir-card:hover { border-color: var(--gold); transform: translateY(-2px); }
+.dir-card .dc-name { font-size: 15px; font-weight: 700; color: var(--cream); }
+.dir-card .dc-tag { font-size: 12.5px; line-height: 1.55; color: var(--muted); }
+.dir-card .dc-state {
+  align-self: flex-start; margin-top: 4px;
+  font-size: 10px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--deep); background: var(--sky); border-radius: 100px; padding: 2px 9px;
+}
+.dir-card .dc-state.open { background: var(--gold); }
+
+/* ---------- confidence meter ---------- */
+.claim-line { position: relative; }
+.badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-family: 'Poppins', sans-serif; font-size: 10.5px; font-weight: 700;
+  letter-spacing: .06em; vertical-align: 2px;
+  border: 1.2px solid; border-radius: 100px;
+  padding: 1px 8px; margin-left: 7px; cursor: pointer;
+  background: rgba(26,16,37,.55); line-height: 1.7;
+}
+.badge .sym { font-size: 10px; }
+.badge.g-meta { color: var(--gold); border-color: rgba(255,197,69,.55); }
+.badge.g-measured { color: var(--sky); border-color: rgba(127,200,240,.55); }
+.badge.g-folklore { color: var(--muted); border-color: rgba(252,243,214,.35); }
+.badge:hover { filter: brightness(1.2); }
+
+#popover {
+  position: fixed; z-index: 80; max-width: 300px;
+  background: var(--white); color: var(--deep);
+  border-radius: 14px; padding: 13px 15px;
+  box-shadow: 0 16px 44px rgba(0,0,0,.5);
+  font-size: 12.5px; line-height: 1.55;
+  animation: pop-in .16s ease;
+}
+@keyframes pop-in { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+#popover .po-grade { font-weight: 800; font-size: 11px; letter-spacing: .1em; text-transform: uppercase; margin-bottom: 4px; }
+#popover .po-src { font-weight: 600; }
+#popover a { color: var(--blue); font-weight: 600; }
+#popover .po-note { color: #6b5f78; margin-top: 4px; }
+
+/* legend row on the home tab */
+.legend-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 4px; }
+.legend-chip { display: inline-flex; align-items: center; gap: 7px; font-size: 12.5px; color: var(--muted); }
+
+/* ---------- placeholder rooms ---------- */
+.bench {
+  text-align: center; padding: 52px 24px 46px;
+  border-style: dashed; border-width: 1.5px;
+}
+.flask { font-size: 54px; display: inline-block; animation: bubble 2.6s ease-in-out infinite; }
+@keyframes bubble {
+  0%, 100% { transform: rotate(-4deg) translateY(0); }
+  30% { transform: rotate(3deg) translateY(-6px); }
+  60% { transform: rotate(-2deg) translateY(-2px); }
+}
+.bench h2 { margin: 14px 0 6px; }
+.bench .bench-note { max-width: 480px; margin: 0 auto; }
+.bench .bench-link { margin-top: 18px; font-size: 12px; color: rgba(252,243,214,.45); }
+.bench .bench-link code {
+  font-family: ui-monospace, monospace; font-size: 11px;
+  background: rgba(252,243,214,.08); border-radius: 6px; padding: 2px 7px;
+}
+
+/* ---------- footer receipt ---------- */
+#foot {
+  border-top: 1px solid var(--line);
+  background: rgba(26,16,37,.6);
+  padding: 18px 20px 26px; text-align: center;
+}
+#foot .foot-line { font-size: 12.5px; color: var(--muted); }
+#foot .foot-line b { color: var(--cream); }
+#foot .stamp {
+  display: inline-block; margin-top: 8px;
+  font-family: ui-monospace, monospace; font-size: 11px; color: rgba(252,243,214,.4);
+  border: 1px dashed rgba(252,243,214,.2); border-radius: 8px; padding: 4px 12px;
+}
+#foot a { color: var(--muted); }
+
+@media (max-width: 640px) {
+  .logo img { height: 26px; }
+  #view { padding: 24px 16px 48px; }
+  .card { padding: 18px 16px 16px; }
+}
+@media (max-width: 480px) { .lab-tag { display: none; } }
+</style>
+</head>
+<body class="d-cmo">
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TR4S2MZM"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager -->
+
+<header id="topbar">
+  <a class="logo" href="/" aria-label="The Growth Den home">
+    <img src="../../uploads/Growth_Den__Logo_Horizontal_White.svg" alt="The Growth Den">
+    <span class="lab-tag">Lab · The Machine</span>
+  </a>
+  <div id="dial" role="group" aria-label="Depth dial — choose how deep the explanations go">
+    <button class="dial-btn" data-depth="kid" type="button"><span class="full">I'm 8</span><span class="short">8</span></button>
+    <button class="dial-btn" data-depth="cmo" type="button"><span class="full">I'm a CMO</span><span class="short">CMO</span></button>
+    <button class="dial-btn" data-depth="pro" type="button"><span class="full">I work in ads</span><span class="short">Pro</span></button>
+  </div>
+</header>
+
+<nav id="tabbar" aria-label="Rooms"><div class="rail" id="tabRail"></div></nav>
+
+<main id="view"></main>
+
+<footer id="foot">
+  <p class="foot-line">🧪 Built with AI · <b><a href="/">The Growth Den</a></b></p>
+  <!-- data-stamp: fill with real build time / prompt counts -->
+  <p><span class="stamp" id="dataStamp">build data: — sessions · — prompts · — hours —</span></p>
+</footer>
+
+<div id="popover" hidden></div>
+
+<script>
+/* ============================================================
+   The Machine — SPA shell.
+   Hash routes:  #/<room>?d=<kid|cmo|pro>
+   Depth:        localStorage 'gd-machine-depth' + URL (URL wins)
+   All copy lives in CONTENT as {kid, cmo, pro}.
+   ============================================================ */
+(function () {
+'use strict';
+
+var $ = function (id) { return document.getElementById(id); };
+
+/* ---------------- CONTENT: every text block, three registers ---------------- */
+var CONTENT = {
+  /* room taglines (also used on the directory cards) */
+  'machine.tag': {
+    kid: 'The big picture: what happens in the blink after someone opens the app.',
+    cmo: 'The end-to-end delivery pipeline, in one map — and how the rooms of this portal fit together.',
+    pro: 'System overview: signals in, auctions out, feedback loops everywhere. Start here, then pick a subsystem.',
+  },
+  'model-room.tag': {
+    kid: 'Where the computer practices guessing what you’ll tap on.',
+    cmo: 'How estimated action rates get made: the prediction models behind every delivery decision.',
+    pro: 'p(action) estimation — features, training cadence, calibration, and which inputs you can actually influence.',
+  },
+  'auction.tag': {
+    kid: 'The race every ad runs for one empty seat.',
+    cmo: 'Total value, pay-the-minimum pricing, and why quality is a standing subsidy.',
+    pro: 'Auction mechanics: total value composition, pacing multipliers, clearing dynamics.',
+  },
+  'recency.tag': {
+    kid: 'Why the same ad gets boring — and what boring costs you.',
+    cmo: 'Frequency, fatigue curves, and when to refresh creative.',
+    pro: 'Impression-level decay, caps vs. auction-native suppression, fatigue diagnostics that beat gut feel.',
+  },
+  'creative.tag': {
+    kid: 'How an ad whistles for its own audience.',
+    cmo: 'Creative as targeting: signal strength, concept diversity, and the bland tax.',
+    pro: 'Creative-side signal: hook taxonomy, diversity vs. account structure, the real cost of exploration.',
+  },
+  'scanner.tag': {
+    kid: 'Feed your ad to the scanner and see what the machine sees.',
+    cmo: 'Pre-flight your creative: quality flags, policy tripwires, a signal readout before you spend.',
+    pro: 'Static pre-flight heuristics: low-quality attributes, policy surface area, expected signal profile.',
+  },
+  'dispatch.tag': {
+    kid: 'Lab news! What we built, what broke, what we learned.',
+    cmo: 'Field notes from the lab: changes, experiments, and results as they land.',
+    pro: 'Changelog + methodology notes: what shipped, what’s measured, what’s still folklore.',
+  },
+
+  /* home room */
+  'machine.welcome': {
+    kid: 'Somewhere between you opening an app and an ad appearing, a giant machine makes a decision — faster than you can blink. This whole place is about that machine: how it guesses, how it chooses, and how it gets bored. Each room teaches one piece. And you can always turn the dial up top to make things simpler or fancier.',
+    cmo: 'Every impression on Meta is placed by a delivery system most advertisers use daily and few can describe. This portal teaches it room by room — the prediction models, the auction, fatigue, creative signal — at whatever depth you need. The dial up top rewrites every explanation on the page; your link remembers your setting.',
+    pro: 'A working mental model of Meta delivery, decomposed into subsystems: action-rate estimation, auction clearing, pacing, fatigue, and creative-side signal. Each room is interactive, each claim is graded by evidence class, and the depth dial rewrites the whole portal between three registers — shareable by URL.',
+  },
+  'machine.dial-title': {
+    kid: 'The dial up top is the whole trick',
+    cmo: 'One portal, three depths',
+    pro: 'One portal, three registers',
+  },
+  'machine.dial-body': {
+    kid: 'See those three buttons in the corner? Try them! “I’m 8” is for anyone who likes plain words. “I’m a CMO” is for bosses. “I work in ads” is for people who want ALL the gears showing. This very paragraph changes when you press them — go on, try it.',
+    cmo: 'The Depth Dial rewrites every explanation in place: same mechanism, three altitudes. “I’m 8” strips jargon entirely, “CMO” speaks in levers and economics, “I work in ads” shows the gears. This paragraph you’re reading changes with it — flip it and watch.',
+    pro: 'Three registers per content block, swapped in place with no layout shift (each block reserves the height of its tallest register). Depth persists to localStorage and travels in the URL (?d=pro), so a shared link lands at your altitude. This paragraph is one of those blocks.',
+  },
+  'machine.conf-title': {
+    kid: 'We tell you when we’re sure — and when we’re guessing',
+    cmo: 'Every claim is graded',
+    pro: 'Evidence classes on every claim',
+  },
+  'machine.conf-body': {
+    kid: 'Grown-ups repeat a LOT of things about ads that nobody ever checked. So around here, every fact wears a little badge: a full dot means Meta wrote it down themselves, a half dot means scientists measured it, and an empty dot means “everybody says this, but nobody has proved it.” Tap any badge to see where a fact comes from.',
+    cmo: 'Ad-land runs on received wisdom. Here, every factual claim carries a Confidence Meter: ● Meta-published (links the primary doc), ◐ independently measured (links the study), ○ practitioner folklore — widely repeated, never independently verified. Tap a badge for the source.',
+    pro: 'Claims are typed by evidence class: ● primary-source (Meta documentation), ◐ independent measurement (external study, linked), ○ folklore (unverified practitioner consensus — flagged as such, on purpose). Tap through to sources; absence of a link is itself information.',
+  },
+  'machine.demo-intro': {
+    kid: 'Here are three real facts wearing their badges — tap the badges!',
+    cmo: 'Three live examples — tap the badges:',
+    pro: 'Working examples of the three grades — tap through:',
+  },
+  'machine.dir-title': {
+    kid: 'The rooms',
+    cmo: 'The rooms',
+    pro: 'The rooms',
+  },
+  'machine.dir-body': {
+    kid: 'Most rooms are still being built — the flasks are bubbling. But you can peek at any door, and your link will still work when the room opens.',
+    cmo: 'Rooms open one at a time. Doors are live now — links (with your depth setting) survive each room’s opening day.',
+    pro: 'Rooms ship incrementally; routes are stable now. Deep-link anything — hash + depth param survive future builds.',
+  },
+  'machine.trips-title': {
+    kid: 'While the flasks bubble: two finished field trips',
+    cmo: 'Meanwhile: two finished lessons from this lab',
+    pro: 'Prior art from this lab (standalone lessons)',
+  },
+  'machine.trips-body': {
+    kid: 'We already built two playgrounds you can visit today — one where an ad literally finds its own crowd of people, and one where ads race for a seat with magnets and wind.',
+    cmo: 'Two interactive lessons already live: why creative does the targeting, and how the auction actually clears. Both carry an earlier two-position version of this dial.',
+    pro: 'Two shipped standalone lessons cover creative-side signal and auction mechanics; both will eventually be absorbed into their rooms here.',
+  },
+
+  /* shared placeholder copy */
+  'ph.state': {
+    kid: 'Still being built! The flasks are bubbling.',
+    cmo: 'Under construction in the lab.',
+    pro: 'Route reserved; build pending.',
+  },
+  'ph.note': {
+    kid: 'This room isn’t ready yet — but your link already works, and it even remembers your dial setting. Come back soon!',
+    cmo: 'This room is on the bench. The URL you’re on — including your depth setting — is stable and will open straight into the finished room.',
+    pro: 'Route and state handling are live; content lands in a later session. This exact URL (room + depth param) is the permalink.',
+  },
+};
+
+/* ---------------- rooms / routes ---------------- */
+var ROOMS = [
+  { slug: 'machine',    name: 'The Machine',       ico: '⚙️', open: true },
+  { slug: 'model-room', name: 'The Model Room',    ico: '🧠', open: false },
+  { slug: 'auction',    name: 'The Auction Floor', ico: '🔨', open: false },
+  { slug: 'recency',    name: 'Recency & Fatigue', ico: '🔁', open: false },
+  { slug: 'creative',   name: 'Creative Signal',   ico: '📡', open: false },
+  { slug: 'scanner',    name: 'Brand Scanner',     ico: '🔍', open: false },
+  { slug: 'dispatch',   name: 'The Dispatch',      ico: '📰', open: false },
+];
+var DEPTHS = ['kid', 'cmo', 'pro'];
+var DEPTH_KEY = 'gd-machine-depth';
+
+/* ---------------- depth helpers ---------------- */
+function storedDepth() {
+  try {
+    var d = localStorage.getItem(DEPTH_KEY);
+    if (DEPTHS.indexOf(d) >= 0) return d;
+    // carry over a choice made on the earlier two-position lab lessons
+    var legacy = localStorage.getItem('gd-auction-mode');
+    if (legacy === 'kid' || legacy === 'cmo') return legacy;
+  } catch (e) { }
+  return 'cmo';
+}
+var depth = storedDepth();
+
+function setDepth(d, fromUrl) {
+  if (DEPTHS.indexOf(d) < 0) d = 'cmo';
+  depth = d;
+  document.body.classList.remove('d-kid', 'd-cmo', 'd-pro');
+  document.body.classList.add('d-' + d);
+  document.querySelectorAll('.dial-btn').forEach(function (b) {
+    b.classList.toggle('active', b.dataset.depth === d);
+  });
+  try { localStorage.setItem(DEPTH_KEY, d); } catch (e) { }
+  if (!fromUrl) canonicalizeHash();
+}
+
+/* d3(key): a block that holds all three registers stacked in place.
+   The grid stack makes the browser measure every register and reserve
+   the tallest one, so flipping the dial never shifts the layout. */
+function d3(key) {
+  var c = CONTENT[key];
+  if (!c) return '<span class="d3"><span>[' + key + ']</span></span>';
+  return '<span class="d3">' +
+    '<span class="kid">' + c.kid + '</span>' +
+    '<span class="cmo">' + c.cmo + '</span>' +
+    '<span class="pro">' + c.pro + '</span></span>';
+}
+
+/* ---------------- confidence meter ---------------- */
+var GRADES = {
+  meta:     { sym: '●', label: 'Meta-published',         cls: 'g-meta',
+              note: 'Straight from Meta’s own published documentation.' },
+  measured: { sym: '◐', label: 'Independently measured', cls: 'g-measured',
+              note: 'Measured by researchers outside Meta.' },
+  folklore: { sym: '○', label: 'Practitioner folklore',  cls: 'g-folklore',
+              note: 'Widely repeated, never independently verified.' },
+};
+var CLAIMS = [];   // popover payloads, indexed by badge
+
+/* claim(text, grade, sourceName, sourceUrl) → HTML string.
+   Reusable everywhere: a factual sentence plus its evidence badge. */
+function claim(text, grade, sourceName, sourceUrl) {
+  var g = GRADES[grade] || GRADES.folklore;
+  var idx = CLAIMS.length;
+  CLAIMS.push({ grade: grade, sourceName: sourceName || null, sourceUrl: sourceUrl || null });
+  return '<span class="claim-line">' + text +
+    '<button class="badge ' + g.cls + '" type="button" data-claim="' + idx + '"' +
+    ' title="' + g.label + (grade === 'folklore' ? ' — ' + g.note : '') + '"' +
+    ' aria-label="Evidence: ' + g.label + '">' +
+    '<span class="sym">' + g.sym + '</span>' + g.label + '</button></span>';
+}
+
+var popover = $('popover');
+function openPopover(badgeEl) {
+  var data = CLAIMS[parseInt(badgeEl.dataset.claim, 10)];
+  if (!data) return;
+  var g = GRADES[data.grade] || GRADES.folklore;
+  var html = '<div class="po-grade">' + g.sym + ' ' + g.label + '</div>';
+  if (data.sourceName) html += '<div class="po-src">' + data.sourceName + '</div>';
+  if (data.sourceUrl) html += '<a href="' + data.sourceUrl + '" target="_blank" rel="noopener noreferrer">open source ↗</a>';
+  html += '<div class="po-note">' + g.note + '</div>';
+  popover.innerHTML = html;
+  popover.hidden = false;
+  var r = badgeEl.getBoundingClientRect();
+  var pw = Math.min(300, window.innerWidth - 24);
+  popover.style.maxWidth = pw + 'px';
+  var left = Math.max(12, Math.min(r.left, window.innerWidth - pw - 12));
+  var top = r.bottom + 8;
+  if (top + 140 > window.innerHeight) top = Math.max(12, r.top - 8 - 120);
+  popover.style.left = left + 'px';
+  popover.style.top = top + 'px';
+}
+document.addEventListener('pointerdown', function (e) {
+  var badge = e.target.closest('.badge');
+  if (badge) { e.preventDefault(); openPopover(badge); return; }
+  if (!e.target.closest('#popover')) popover.hidden = true;
+});
+document.addEventListener('keydown', function (e) { if (e.key === 'Escape') popover.hidden = true; });
+
+/* ---------------- routing ---------------- */
+function parseHash() {
+  var h = location.hash.replace(/^#\/?/, '');
+  var q = h.split('?');
+  var slug = q[0].replace(/\/+$/, '') || 'machine';
+  var params = {};
+  (q[1] || '').split('&').forEach(function (kv) {
+    var p = kv.split('=');
+    if (p[0]) params[p[0]] = decodeURIComponent(p[1] || '');
+  });
+  if (!ROOMS.some(function (r) { return r.slug === slug; })) slug = 'machine';
+  return { slug: slug, params: params };
+}
+function canonicalizeHash() {
+  var cur = parseHash();
+  history.replaceState(null, '', '#/' + cur.slug + '?d=' + depth);
+}
+
+/* in-page links carry only the room; the canonicalizer appends the live
+   depth to the address bar, so what you copy is always #/room?d=depth
+   and a dial flip never gets undone by a stale link */
+function roomLink(slug) { return '#/' + slug; }
+
+function renderTabs(active) {
+  $('tabRail').innerHTML = ROOMS.map(function (r) {
+    return '<a class="tab-pill" href="' + roomLink(r.slug) + '"' +
+      (r.slug === active ? ' aria-current="page"' : '') + '>' +
+      '<span class="ico">' + r.ico + '</span>' + r.name + '</a>';
+  }).join('');
+  var cur = $('tabRail').querySelector('[aria-current]');
+  if (cur && cur.scrollIntoView) cur.scrollIntoView({ block: 'nearest', inline: 'center' });
+}
+
+/* ---------------- views ---------------- */
+function viewHome() {
+  return '' +
+    '<p class="room-kicker">The Growth Den Lab · teaching portal</p>' +
+    '<h1 class="room-title">The Machine</h1>' +
+    '<p class="room-tag">' + d3('machine.tag') + '</p>' +
+
+    '<div class="card"><p>' + d3('machine.welcome') + '</p></div>' +
+
+    '<div class="card"><h2>' + d3('machine.dial-title') + '</h2>' +
+    '<p>' + d3('machine.dial-body') + '</p></div>' +
+
+    '<div class="card"><h2>' + d3('machine.conf-title') + '</h2>' +
+    '<p>' + d3('machine.conf-body') + '</p>' +
+    '<div class="legend-row">' +
+      '<span class="legend-chip"><span class="badge g-meta"><span class="sym">●</span>Meta-published</span></span>' +
+      '<span class="legend-chip"><span class="badge g-measured"><span class="sym">◐</span>Independently measured</span></span>' +
+      '<span class="legend-chip"><span class="badge g-folklore"><span class="sym">○</span>Practitioner folklore</span></span>' +
+    '</div>' +
+    '<p style="margin-top:14px">' + d3('machine.demo-intro') + '</p>' +
+    '<p>' + claim('The auction winner is the ad with the highest <b>total value</b>: bid × estimated action rate + ad quality — not the highest bid.',
+        'meta', 'Meta Ads Help Center — “About the ad auction”', 'https://www.facebook.com/business/help') + '</p>' +
+    '<p>' + claim('Creative quality drives roughly half of an ad campaign’s sales impact — more than targeting or reach levers.',
+        'measured', 'Nielsen Catalina Solutions, “Five Keys to Advertising Effectiveness” (no stable public link — ask us for the PDF)', null) + '</p>' +
+    '<p>' + claim('Launching new ads on a Monday performs better than launching on a Friday.',
+        'folklore', 'Repeated in every media-buyer group chat since 2019', null) + '</p></div>' +
+
+    '<div class="card"><h2>' + d3('machine.dir-title') + '</h2>' +
+    '<p>' + d3('machine.dir-body') + '</p>' +
+    '<div class="dir-grid">' + ROOMS.filter(function (r) { return r.slug !== 'machine'; }).map(function (r) {
+      return '<a class="dir-card" href="' + roomLink(r.slug) + '">' +
+        '<span class="dc-name">' + r.ico + ' ' + r.name + '</span>' +
+        '<span class="dc-tag">' + d3(r.slug + '.tag') + '</span>' +
+        '<span class="dc-state' + (r.open ? ' open' : '') + '">' + (r.open ? 'open' : 'in the works') + '</span></a>';
+    }).join('') + '</div></div>' +
+
+    '<div class="card"><h2>' + d3('machine.trips-title') + '</h2>' +
+    '<p>' + d3('machine.trips-body') + '</p>' +
+    '<div class="dir-grid">' +
+      '<a class="dir-card" href="/lab/creative-is-the-targeting/"><span class="dc-name">✨ Creative <i>is</i> the targeting</span>' +
+      '<span class="dc-tag">~2,000 dots with hidden traits; build an ad and watch its audience assemble itself.</span>' +
+      '<span class="dc-state open">live</span></a>' +
+      '<a class="dir-card" href="/lab/the-auction/"><span class="dc-name">🔨 The Auction, In Human Terms</span>' +
+      '<span class="dc-tag">Balls, magnets and wind: how total value decides who wins the impression.</span>' +
+      '<span class="dc-state open">live</span></a>' +
+    '</div></div>';
+}
+
+function viewPlaceholder(room) {
+  return '' +
+    '<p class="room-kicker">The Growth Den Lab · The Machine</p>' +
+    '<h1 class="room-title">' + room.ico + ' ' + room.name + '</h1>' +
+    '<p class="room-tag">' + d3(room.slug + '.tag') + '</p>' +
+    '<div class="card bench">' +
+      '<span class="flask" aria-hidden="true">⚗️</span>' +
+      '<h2>' + d3('ph.state') + '</h2>' +
+      '<p class="bench-note">' + d3('ph.note') + '</p>' +
+      '<p class="bench-link">permalink: <code>#/' + room.slug + '?d=' + depth + '</code></p>' +
+    '</div>';
+}
+
+function render() {
+  var cur = parseHash();
+  if (cur.params.d && DEPTHS.indexOf(cur.params.d) >= 0 && cur.params.d !== depth) {
+    setDepth(cur.params.d, true);
+  }
+  canonicalizeHash();
+  var room = ROOMS.filter(function (r) { return r.slug === cur.slug; })[0];
+  CLAIMS.length = 0;
+  popover.hidden = true;
+  var view = $('view');
+  view.innerHTML = room.slug === 'machine' ? viewHome() : viewPlaceholder(room);
+  view.style.animation = 'none';
+  void view.offsetWidth;               // restart the entry animation
+  view.style.animation = '';
+  renderTabs(room.slug);
+  document.title = (room.slug === 'machine' ? 'The Machine' : room.name + ' · The Machine') +
+    ' — The Growth Den Lab';
+  window.scrollTo(0, 0);
+}
+
+/* ---------------- wire up ---------------- */
+document.querySelectorAll('.dial-btn').forEach(function (b) {
+  b.addEventListener('click', function () {
+    setDepth(b.dataset.depth, false);
+    // permalink codes inside placeholder cards show the depth — refresh them in place
+    document.querySelectorAll('.bench-link code').forEach(function (c) {
+      c.textContent = '#/' + parseHash().slug + '?d=' + depth;
+    });
+  });
+});
+window.addEventListener('hashchange', render);
+
+setDepth(depth, true);
+render();
+})();
+</script>
+</body>
+</html>
