@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-TR4S2MZM');</script>
+<!-- End Google Tag Manager -->
+<title>Creative Is the Targeting — why the ad finds the people</title>
+<meta name="description" content="An interactive explainer of why, in modern Meta advertising, the creative itself does the audience targeting. Two thousand dots, hidden traits, and a creative builder that assembles its own audience.">
+<meta name="robots" content="noindex">
+<link rel="icon" href="../../favicon-32x32.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="mode-cmo">
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TR4S2MZM"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager -->
+
+<canvas id="field" aria-hidden="true"></canvas>
+<div id="dotTip" class="dot-tip" hidden></div>
+
+<header id="topbar">
+  <a class="logo" href="/" aria-label="The Growth Den home">
+    <img src="../../uploads/Growth_Den__Logo_Horizontal_White.svg" alt="The Growth Den">
+    <span class="lab-tag">Lab</span>
+  </a>
+  <div id="modeToggle" class="mode-toggle" role="group" aria-label="Explanation mode">
+    <button id="modeKidBtn" class="mode-btn" type="button">Explain like I'm 8</button>
+    <button id="modeCmoBtn" class="mode-btn active" type="button">Explain like I'm a CMO</button>
+  </div>
+</header>
+
+<nav id="rail" aria-label="Sections">
+  <div class="rail-track"><div class="rail-fill" id="railFill"></div></div>
+  <ol id="railDots">
+    <li data-target="hero"><i></i><span>The dots</span></li>
+    <li data-target="s1"><i></i><span>Old way</span></li>
+    <li data-target="s2"><i></i><span>New way</span></li>
+    <li data-target="s3"><i></i><span>Bland tax</span></li>
+    <li data-target="s4"><i></i><span>The lever</span></li>
+    <li data-target="s5"><i></i><span>You build</span></li>
+  </ol>
+</nav>
+
+<main>
+
+<!-- ============ HERO ============ -->
+<section class="beat" id="hero" data-mode="idle">
+  <div class="hero-inner">
+    <p class="kicker">The Growth Den Lab · lesson one</p>
+    <h1>Creative<br><em>Is the Targeting</em></h1>
+    <div class="dual hero-sub">
+      <p class="kid">See all those dots? Every single one is a person, with their own secret stuff they care about. <b>Tap any dot to meet them.</b> Then scroll — and watch what a good ad does to a crowd.</p>
+      <p class="cmo">~2,000 people, each with hidden traits the interface can't see. <b>Tap any dot to inspect one.</b> Then scroll: why broad targeting + strong creative beats interest-stack micromanagement.</p>
+    </div>
+    <p class="honesty dual">
+      <span class="kid">(This is a toy, not the real machine — Meta's actual computer is a zillion times messier. But the <i>idea</i> is the real idea. 😉)</span>
+      <span class="cmo">(Mechanism-level mental model, not a leaked spec — the internals are ML soup. But the behavior it predicts is the behavior practitioners observe. 😉)</span>
+    </p>
+    <div class="scroll-cue" aria-hidden="true"><span>scroll</span><i>↓</i></div>
+  </div>
+</section>
+
+<!-- ============ BEAT 1 · OLD WAY ============ -->
+<section class="beat" id="s1" data-mode="circles">
+  <div class="card">
+    <p class="kicker">01 · the old way</p>
+    <h2 class="dual"><span class="kid">Drawing circles around people.</span><span class="cmo">Hand-drawn interest circles.</span></h2>
+    <div class="dual body">
+      <div class="kid">
+        <p>People used to choose who sees an ad by hand — drawing circles around labels: <i>“parents”</i>, <i>“likes gadgets”</i>, <i>“ages 25–34”</i>.</p>
+        <p>But watch the circles form. They scoop up loads of people who <b>don't care at all</b>… and miss the exact people who <b>do</b> — because people are so much more than their labels.</p>
+      </div>
+      <div class="cmo">
+        <p>Interest stacks are proxies. <i>“Parenting”</i> catches the empty-nester who liked one reel; it misses the exhausted dad who never told the platform he's a dad.</p>
+        <p>Hand-drawn boxes optimize for what's legible to <b>you</b> — not for where the actual signal lives.</p>
+      </div>
+    </div>
+    <div class="live-stat">
+      <span class="ls-item bad">✗ <b id="cWrong">0</b> <span class="dual-inline"><span class="kid">don't-care people caught</span><span class="cmo">non-fits captured</span></span></span>
+      <span class="ls-item gold">◌ <b id="cMissed">0</b> <span class="dual-inline"><span class="kid">perfect people missed</span><span class="cmo">true fits missed</span></span></span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ BEAT 2 · NEW WAY ============ -->
+<section class="beat" id="s2" data-mode="signal">
+  <div class="card">
+    <p class="kicker">02 · the new way</p>
+    <h2 class="dual"><span class="kid">The ad is a whistle.</span><span class="cmo">The creative broadcasts; delivery finds resonance.</span></h2>
+    <div class="dual body">
+      <div class="kid">
+        <p>Now watch this. A really <b>specific</b> ad — <i>“POV: your kid actually brushes”</i> — is like a whistle only certain people can hear.</p>
+        <p>You show it to <b>everyone</b>… and the right people come to <b>it</b>. You didn't find them. The ad did.</p>
+      </div>
+      <div class="cmo">
+        <p>Delivery optimizes on response. Ship a specific concept broad, and early engagement teaches the system exactly who resonates.</p>
+        <p>Targeting didn't disappear — it <b>moved into the ad</b>. The creative emits the signal; the machine finds the resonance.</p>
+      </div>
+    </div>
+    <p class="demo-tag" id="s2Tag">▶ <span class="dual-inline"><span class="kid">now playing: “POV: your kid actually brushes”</span><span class="cmo">broadcasting: “POV: your kid actually brushes”</span></span></p>
+  </div>
+</section>
+
+<!-- ============ BEAT 3 · BLAND ============ -->
+<section class="beat" id="s3" data-mode="bland">
+  <div class="card">
+    <p class="kicker">03 · the bland tax</p>
+    <h2 class="dual"><span class="kid">A whistle that makes no sound.</span><span class="cmo">Weak signal = expensive scatter.</span></h2>
+    <div class="dual body">
+      <div class="kid">
+        <p>But what if the ad could be for <i>anybody</i>? <b>“The best toothbrush. Period.”</b> Stock photo of a smiling family. “Trust us.”</p>
+        <p>Blow the whistle… nothing. Nobody gathers, because it wasn't <i>for</i> anyone. Now the computer has to guess — and guessing costs money.</p>
+      </div>
+      <div class="cmo">
+        <p><b>“The best toothbrush. Period.”</b> is a flat response surface: the system can't learn who resonates, because nobody particularly does.</p>
+        <p>So it buys scatter — broader exploration, longer learning, higher CPA. Bland isn't the safe choice; it's the most expensive brief in the building.</p>
+      </div>
+    </div>
+    <div class="cost-meter">
+      <span class="dual-inline"><span class="kid">💸 cost per new customer</span><span class="cmo">💸 est. acquisition cost</span></span>
+      <div class="cost-bar"><i id="blandBar"></i></div>
+      <b id="blandCost">$—</b>
+    </div>
+  </div>
+</section>
+
+<!-- ============ BEAT 4 · TAKEAWAY ============ -->
+<section class="beat" id="s4" data-mode="multi">
+  <div class="card">
+    <p class="kicker">04 · the lever</p>
+    <h2 class="dual"><span class="kid">Make more whistles, not more settings.</span><span class="cmo">More concepts, not more dials.</span></h2>
+    <div class="dual body">
+      <div class="kid">
+        <p>So the trick isn't fiddling with the settings. It's making <b>more different whistles</b> — one for the worried mom, one for the gadget nerd, one for the person whose dentist yelled at them.</p>
+        <p>Look: three different ads, three different crowds. Same product. Same settings.</p>
+      </div>
+      <div class="cmo">
+        <p>The lever is creative <b>volume and diversity</b>: distinct hooks for distinct motivations, each recruiting its own pocket of the market you'd never have drawn a circle around.</p>
+        <p>Audience settings are one dial. Concepts are a keyboard. Three ads below, three cohorts — identical settings.</p>
+      </div>
+    </div>
+    <div class="legend3">
+      <span><i class="dot-a"></i> <span class="dual-inline"><span class="kid">“POV: your kid…”</span><span class="cmo">parent hook</span></span></span>
+      <span><i class="dot-b"></i> <span class="dual-inline"><span class="kid">“I tested 5 of these”</span><span class="cmo">reviewer hook</span></span></span>
+      <span><i class="dot-c"></i> <span class="dual-inline"><span class="kid">“My dentist yelled at me”</span><span class="cmo">confession hook</span></span></span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ BEAT 5 · BUILDER ============ -->
+<section class="beat builder" id="s5" data-mode="builder">
+  <div class="builder-grid">
+    <div class="card builder-intro">
+      <p class="kicker">05 · the floor is yours</p>
+      <h2 class="dual"><span class="kid">Now you build the whistle.</span><span class="cmo">Now you build the signal.</span></h2>
+      <div class="dual body">
+        <div class="kid"><p>Pick a hook, a look, a voice, and some proof. Watch who shows up. Then — this is the fun part — <b>make it boring on purpose</b> and watch everyone wander off.</p></div>
+        <div class="cmo"><p>Assemble a concept; the cohort assembles itself. Then select the generic chips and watch resolution collapse — that's your control group.</p></div>
+      </div>
+      <div class="preset-row">
+        <button class="chip-btn preset" id="btnSpecific" type="button">✨ <span class="dual-inline"><span class="kid">make it good</span><span class="cmo">specific preset</span></span></button>
+        <button class="chip-btn preset" id="btnGeneric" type="button">🥱 <span class="dual-inline"><span class="kid">make it boring</span><span class="cmo">generic preset</span></span></button>
+        <button class="chip-btn preset" id="btnClear" type="button">✕ <span class="dual-inline"><span class="kid">start over</span><span class="cmo">clear</span></span></button>
+      </div>
+    </div>
+
+    <div class="card chips-panel" id="chipsPanel">
+      <div class="chip-group" data-cat="hook">
+        <h3>HOOK <span class="dual-inline chip-sub"><span class="kid">· the first words</span><span class="cmo">· the first 2 seconds</span></span></h3>
+        <div class="chip-row"></div>
+      </div>
+      <div class="chip-group" data-cat="visual">
+        <h3>VISUAL <span class="dual-inline chip-sub"><span class="kid">· what you see</span><span class="cmo">· the frame</span></span></h3>
+        <div class="chip-row"></div>
+      </div>
+      <div class="chip-group" data-cat="tone">
+        <h3>TONE <span class="dual-inline chip-sub"><span class="kid">· the voice</span><span class="cmo">· the register</span></span></h3>
+        <div class="chip-row"></div>
+      </div>
+      <div class="chip-group" data-cat="proof">
+        <h3>PROOF <span class="dual-inline chip-sub"><span class="kid">· why believe you</span><span class="cmo">· the receipts</span></span></h3>
+        <div class="chip-row"></div>
+      </div>
+    </div>
+
+    <div class="card readout" id="readout">
+      <h3 class="ro-title dual"><span class="kid">Who showed up</span><span class="cmo">Assembled cohort</span></h3>
+      <p class="ro-persona dual" id="roPersona"><span class="dual-inline"><span class="kid">pick some chips and see…</span><span class="cmo">select chips to resolve a cohort…</span></span></p>
+      <div class="ro-stats">
+        <div class="ro-stat"><span class="dual-inline"><span class="kid">people gathered</span><span class="cmo">cohort size</span></span><b id="roCount">—</b></div>
+        <div class="ro-stat"><span class="dual-inline"><span class="kid">how tight the huddle is</span><span class="cmo">cluster tightness</span></span>
+          <div class="ro-bar"><i id="roTight"></i></div>
+        </div>
+        <div class="ro-stat"><span class="dual-inline"><span class="kid">cost per new customer</span><span class="cmo">est. acquisition cost</span></span><b id="roCost">—</b></div>
+      </div>
+      <p class="ro-note dual" id="roNote"></p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ NEXT LESSON ============ -->
+<section id="next-lesson">
+  <a class="next-card" href="/lab/the-auction/">
+    <span class="next-kicker">next lesson →</span>
+    <span class="next-title">The Auction, In Human Terms</span>
+    <span class="next-sub dual-inline"><span class="kid">So the right people gathered… now who wins the seat? Balls, magnets and wind await.</span><span class="cmo">Your cohort assembled — now see how total value decides who actually wins the impression.</span></span>
+  </a>
+</section>
+
+<!-- ============ RECEIPT FOOTER ============ -->
+<footer id="receipt-zone">
+  <div class="receipt" role="contentinfo">
+    <p class="r-store">THE GROWTH DEN — LAB</p>
+    <p class="r-line">************************************</p>
+    <p class="r-item"><span>HAND-DRAWN INTEREST CIRCLES</span><span>RETIRED</span></p>
+    <p class="r-item"><span>SPECIFIC CREATIVE = TARGETING SIGNAL</span><span>✓</span></p>
+    <p class="r-item"><span>BLAND CREATIVE = EXPENSIVE SCATTER</span><span>✓</span></p>
+    <p class="r-item"><span>MORE CONCEPTS, NOT MORE DIALS</span><span>✓</span></p>
+    <p class="r-line">************************************</p>
+    <p class="r-item r-total"><span>TOTAL</span><span>THE AD FINDS THE PEOPLE</span></p>
+    <p class="r-line">************************************</p>
+    <p class="r-small">CONSISTENT WITH META'S OWN ADVERTISER GUIDANCE (BROAD/ADVANTAGE+ TARGETING, CREATIVE DIVERSIFICATION — SEE <a href="https://www.facebook.com/business/help" rel="noopener noreferrer" target="_blank">FACEBOOK.COM/BUSINESS/HELP</a>).</p>
+    <p class="r-small">THIS PAGE IS A MENTAL MODEL, DRAWN WITH A WINK. THE DOTS ARE NOT REAL PEOPLE. NO DATA IS COLLECTED BY THIS PAGE. YOUR TOGGLE CHOICE IS SAVED IN YOUR BROWSER ONLY.</p>
+    <p class="r-small">NEXT LESSON: <a href="/lab/the-auction/">/LAB/THE-AUCTION/</a></p>
+    <p class="r-barcode" aria-hidden="true"></p>
+    <p class="r-store"><a href="/">THEGROWTHDEN.COM</a> · ENTER WITH PROBLEMS. EXIT WITH SYSTEMS.</p>
+  </div>
+</footer>
+
+</main>
+
+<script src="app.js"></script>
+</body>
+</html>
