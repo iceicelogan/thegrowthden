@@ -573,6 +573,44 @@ h1.room-title {
 .duo .d-no li::before { content: '✓'; position: absolute; left: 0; color: var(--green); }
 @media (max-width: 640px) { .duo { grid-template-columns: 1fr; } .case-quote { padding-right: 0; margin-top: 26px; } }
 
+/* ---------- creative signal field ---------- */
+.cgrid { display: grid; grid-template-columns: 1fr 340px; gap: 16px; align-items: start; }
+.cfield {
+  position: relative; height: 520px;
+  border: 1px solid var(--line); border-radius: var(--r);
+  background: rgba(15,9,24,.78); overflow: hidden;
+  box-shadow: 0 24px 60px rgba(0,0,0,.4);
+}
+.cfield canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+.cfield .sim-cap { pointer-events: none; }
+.cchip-group { margin-bottom: 12px; }
+.cchip-group h4 { font-size: 11px; font-weight: 800; letter-spacing: .12em; color: var(--cream); margin-bottom: 6px; }
+.cchip-row { display: flex; flex-wrap: wrap; gap: 6px; }
+.cchip {
+  font-family: 'Poppins', sans-serif; font-weight: 500; font-size: 12px;
+  color: var(--cream); background: rgba(252,243,214,.06);
+  border: 1.5px solid rgba(252,243,214,.28); border-radius: 100px;
+  padding: 8px 12px; min-height: 38px; cursor: pointer;
+  transition: transform .15s cubic-bezier(.3,1.6,.6,1), background .2s, border-color .2s;
+}
+.cchip:active { transform: scale(.94); }
+.cchip.selected {
+  background: var(--your-ad); border-color: var(--your-ad); color: var(--white); font-weight: 600;
+  box-shadow: 0 0 14px rgba(254,124,43,.5); transform: scale(1.03);
+}
+.cchip.generic.selected { background: #6f6690; border-color: #6f6690; box-shadow: none; }
+.cread { border-top: 1px dashed var(--line); margin-top: 12px; padding-top: 12px; }
+.cread .cr-p { font-size: 14.5px; font-weight: 600; line-height: 1.45; color: var(--your-ad); min-height: 42px; }
+.cread .cr-s { display: flex; justify-content: space-between; gap: 8px; font-size: 12px; color: var(--muted); margin-top: 8px; }
+.cread .cr-s b { color: var(--cream); font-size: 15px; }
+.cread .ro-bar { width: 110px; height: 9px; background: rgba(252,243,214,.14); border-radius: 6px; overflow: hidden; align-self: center; }
+.cread .ro-bar i { display: block; height: 100%; width: 0%; background: linear-gradient(90deg, var(--your-ad), var(--gold)); transition: width .4s; }
+.demo-active { outline: 2px solid var(--gold); outline-offset: 2px; }
+.split-table { width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 12px; }
+.split-table td, .split-table th { padding: 5px 8px; border-bottom: 1px dashed var(--line); color: var(--muted); text-align: left; }
+.split-table th { color: var(--cream); font-size: 10.5px; letter-spacing: .06em; text-transform: uppercase; }
+@media (max-width: 900px) { .cgrid { grid-template-columns: 1fr; } .cfield { height: 380px; } }
+
 /* ---------- placeholder rooms ---------- */
 .bench { text-align: center; padding: 52px 24px 46px; border-style: dashed; border-width: 1.5px; }
 .flask { font-size: 54px; display: inline-block; animation: bubble 2.6s ease-in-out infinite; }
@@ -1115,6 +1153,33 @@ var CONTENT = {
     pro: 'Sequence side done. Next: creative-side signal and cohort assembly.',
   },
 
+  /* ============ creative signal ============ */
+  'c.intro': {
+    kid: '<p>Every dot down there is a person, with secret likes the fair can’t see written on any list. Build an ad from the chips, and watch the right people <b>light up and walk over</b> — the ad calls its own crowd. Then try building the most boring ad possible and watch everyone wander off.</p><p>(This is a toy fair, not Meta’s real machine — but the idea is the real idea. 😉)</p>',
+    cmo: '<p>~2,000 simulated people with hidden traits. Assemble a concept from the chips and the matching cohort assembles itself — signal strength sets how tightly it gathers, and deliberately generic choices dissolve it. Below the builder, three research-grade demos show what this mechanism does to your tests, your variants, and your account structure.</p><p>(Mechanism-level mental model, not a leaked spec — the internals are ML soup, the behavior is what practitioners observe. 😉)</p>',
+    pro: '<p>Trait-vector cohort assembly: chips carry affinity vectors and a specificity scalar; per-person match scores drive glow and gravitation; cohort naming ranks traits by lift over base rate. Generic chips flatten the response surface — no resolvable cohort. Three demos below reproduce measured or reported delivery phenomena. (Toy model, honestly labeled. 😉)</p>',
+  },
+  'c.d1': {
+    kid: '<p><b>The sneaky split.</b> Put two different ads in one box, and the fair quietly sends each one to different kinds of people — the funny one to the parents, the deal one to the grandpas. So if the deal ad “wins,” was it better… or did it just meet different people? That’s why grown-up ad tests often fib.</p>',
+    cmo: '<p><b>Divergent delivery.</b> Two creatives in one ad set are silently routed to systematically different demographics — each ad finds its own pocket. The kicker: your “A beat B” conclusion is confounded, because A and B were never shown to the same audience. This is why in-platform A/B readings lie unless you force a split.</p>',
+    pro: '<p><b>Divergent delivery, reproduced.</b> Watch assignment: creative A recruits women 25–44, creative B recruits men 45+, from one ad set with identical settings. Any performance delta is audience×creative, not creative alone. The Kellogg team measured this at scale across 181,890 experiments; holdout-based lift or forced splits are the clean alternatives.</p>',
+  },
+  'c.d2': {
+    kid: '<p><b>The twin problem.</b> Make two ads that are almost the same, and the fair treats them like one ad — the two crowds melt into a single confused blob. Changing the background color is not a new idea.</p>',
+    cmo: '<p><b>Similarity collapse.</b> Near-identical creatives don’t buy you diversity — they compete for the same cohort and blur into one delivery blob, splitting learnings without adding reach. Cosmetic variants are one concept wearing two shirts.</p>',
+    pro: '<p><b>Similarity collapse, simulated.</b> Two profiles a few degrees apart recruit the same pocket; assignment flickers between them and the clusters merge. Note the honest badge: “similarity score” is a practitioner reconstruction, not a confirmed Meta metric — the observed behavior is what earns the concept its place.</p>',
+  },
+  'c.d3': {
+    kid: '<p><b>Twenty-five real ideas vs five copies pasted five times.</b> Flip between them: real different ideas light up little crowds all over the field. Copies pile onto the same crowd over and over and miss almost everyone.</p>',
+    cmo: '<p><b>The diversity sandbox.</b> One ad set with 25 genuinely different concepts reaches pockets all over the market; five ad sets of five clones re-reach one pocket five times. Concept diversity is a reach strategy, not a creative indulgence.</p>',
+    pro: '<p><b>Coverage comparison.</b> 25 distinct concepts ≈ broad trait-space coverage; 5×5 clones ≈ one neighborhood, oversampled. The oft-cited internal Meta test backing this exact comparison reached us secondhand — hence the folklore-grade badge on the specific numbers, while the mechanism itself follows from everything above.</p>',
+  },
+  'c.next': {
+    kid: 'Your ad calls the crowd. Next: meet the actual machines that make it all run.',
+    cmo: 'Creative is the signal. Next: the named systems that read it — Andromeda, GEM, Lattice.',
+    pro: 'Signal side complete. Next: the model estate.',
+  },
+
   /* directory + placeholder copy */
   'machine.dir-title': { kid: 'The other rooms', cmo: 'The other rooms', pro: 'The other rooms' },
   'machine.dir-body': {
@@ -1140,7 +1205,7 @@ var ROOMS = [
   { slug: 'models',     name: 'The Model Room',    ico: '🧠', open: true },
   { slug: 'auction',    name: 'The Auction Floor', ico: '🔨', open: true },
   { slug: 'recency',    name: 'Recency & Fatigue', ico: '🔁', open: true },
-  { slug: 'creative',   name: 'Creative Signal',   ico: '📡', open: false },
+  { slug: 'creative',   name: 'Creative Signal',   ico: '📡', open: true },
   { slug: 'scanner',    name: 'Brand Scanner',     ico: '🔍', open: false },
   { slug: 'dispatch',   name: 'The Dispatch',      ico: '📰', open: false },
 ];
@@ -2004,6 +2069,358 @@ function journeyStop() {
   if (J.io) J.io.disconnect();
   J.scenes = {};
 }
+
+/* ============================================================
+   CREATIVE SIGNAL — #/creative · the living field
+   ============================================================ */
+var CB = { PARENT: 1, GADGET: 2, ORAL: 4, HEALTH: 8, SKEPTIC: 16, BUDGET: 32, HUMOR: 64 };
+function makeDotSprite(color, glowy) {
+  var s = document.createElement('canvas'); s.width = s.height = 48;
+  var c = s.getContext('2d');
+  var g = c.createRadialGradient(24, 24, 0, 24, 24, 24);
+  g.addColorStop(0, color);
+  g.addColorStop(glowy ? .25 : .45, color);
+  g.addColorStop(1, 'rgba(0,0,0,0)');
+  c.fillStyle = g; c.fillRect(0, 0, 48, 48);
+  return s;
+}
+var SPRITE_BASE = makeDotSprite('rgba(232,222,240,.85)', false);
+var SPRITE_GLOW = [makeDotSprite('rgba(254,124,43,1)', true), makeDotSprite('rgba(255,197,69,1)', true), makeDotSprite('rgba(127,200,240,1)', true)];
+var CCHIPS = [
+  { cat: 'hook', label: '“My dentist yelled at me”', spec: .85, ages: [.5, .6, .75], ints: { 4: .95, 8: .6 } },
+  { cat: 'hook', label: '“POV: your kid actually brushes”', spec: .9, ages: [.15, .95, .35], ints: { 1: .98, 64: .5 } },
+  { cat: 'hook', label: '“I tested 5 of these”', spec: .8, ages: [.85, .7, .4], ints: { 2: .95, 16: .85 } },
+  { cat: 'hook', label: '“The best toothbrush. Period.”', spec: .08, flat: true },
+  { cat: 'visual', label: 'messy-bathroom kid demo', spec: .9, ages: [.1, .95, .3], ints: { 1: .95, 64: .6 } },
+  { cat: 'visual', label: 'before / after smile', spec: .8, ages: [.5, .6, .7], ints: { 4: .9, 8: .7 } },
+  { cat: 'visual', label: 'bristle macro / ASMR', spec: .75, ages: [.9, .6, .3], ints: { 2: .85 } },
+  { cat: 'visual', label: 'stock smiling family', spec: .1, flat: true },
+  { cat: 'tone', label: 'funny', spec: .6, ages: [.9, .7, .35], ints: { 64: .9, 1: .5 } },
+  { cat: 'tone', label: 'clinical', spec: .7, ages: [.3, .5, .9], ints: { 16: .8, 8: .8 } },
+  { cat: 'tone', label: 'professional™', spec: .1, flat: true },
+  { cat: 'proof', label: 'live plaque-reveal demo', spec: .85, ages: [.6, .7, .5], ints: { 4: .9, 2: .6 } },
+  { cat: 'proof', label: '4,132 five-star reviews', spec: .6, ages: [.6, .7, .6], ints: { 16: .85, 32: .6 } },
+  { cat: 'proof', label: '“trust us”', spec: .05, flat: true },
+];
+var CCATS = ['hook', 'visual', 'tone', 'proof'];
+var C_SPECIFIC = [1, 4, 8, 11], C_GENERIC = [3, 7, 10, 13];
+var CPERSONA = {
+  1: ['moms & dads whose kids fight the toothbrush', 'parents of picky brushers'],
+  4: ['people whose teeth have been complaining', 'oral-care strugglers'],
+  2: ['gadget fans who read reviews for fun', 'research-heavy gadget buyers'],
+  8: ['the health-careful folks', 'health-conscious buyers'],
+  16: ['the “prove it” crowd', 'skeptical evaluators'],
+  32: ['careful spenders', 'value-driven buyers'],
+  64: ['people here for a laugh', 'entertainment-first scrollers'],
+};
+
+function viewCreative() {
+  var chipHtml = CCATS.map(function (cat) {
+    var names = { hook: 'HOOK', visual: 'VISUAL', tone: 'TONE', proof: 'PROOF' };
+    return '<div class="cchip-group"><h4>' + names[cat] + '</h4><div class="cchip-row">' +
+      CCHIPS.map(function (c, i) {
+        if (c.cat !== cat) return '';
+        return '<button class="cchip' + (c.flat ? ' generic' : '') + '" data-ci="' + i + '" type="button">' + c.label + '</button>';
+      }).join('') + '</div></div>';
+  }).join('');
+  return '<div class="view-pad">' +
+    '<p class="room-kicker">The Growth Den Lab · The Machine</p>' +
+    '<h1 class="room-title">📡 Creative Signal</h1>' +
+    '<p class="room-tag" style="margin-bottom:20px">' + d3('creative.tag') + '</p>' +
+    '<div class="card"><div style="font-size:14.5px;line-height:1.7;color:var(--muted)">' + d3('c.intro') + '</div></div>' +
+
+    '<div class="cgrid">' +
+      '<div class="cfield"><canvas id="cfCanvas"></canvas><p class="sim-cap" id="cfCap"></p></div>' +
+      '<div class="card" style="margin-bottom:0" id="cPanel">' + chipHtml +
+        '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:4px">' +
+          '<button class="chip-btn" id="cSpec" type="button">✨ specific preset</button>' +
+          '<button class="chip-btn" id="cGen" type="button">🥱 generic preset</button>' +
+          '<button class="chip-btn" id="cClr" type="button">✕ clear</button>' +
+        '</div>' +
+        '<div class="cread"><p class="cr-p" id="crPersona"></p>' +
+          '<div class="cr-s"><span>cohort<br><b id="crN">—</b></span>' +
+          '<span>tightness<br><span class="ro-bar"><i id="crT"></i></span></span></div>' +
+          '<div id="crExtra"></div>' +
+        '</div>' +
+      '</div>' +
+    '</div>' +
+
+    '<div class="card" style="margin-top:16px" id="d1card"><h2>Demo 1 · Divergent delivery</h2>' +
+      '<div style="font-size:14px;line-height:1.7;color:var(--muted)">' + d3('c.d1') + '</div>' +
+      '<p style="font-size:12.5px">' + claim('Within one ad set, different creatives are delivered to systematically different demographic subgroups.', 'measured', SRC.kellogg.name, SRC.kellogg.url) + '</p>' +
+      '<button class="run-btn" data-demo="divergent" type="button">▶ run the split</button></div>' +
+
+    '<div class="card" id="d2card"><h2>Demo 2 · Similarity collapse</h2>' +
+      '<div style="font-size:14px;line-height:1.7;color:var(--muted)">' + d3('c.d2') + '</div>' +
+      '<p style="font-size:12.5px">' + claim('A per-ad “similarity score” is a practitioner reconstruction — not a confirmed Meta metric. The collapse behavior is what practitioners observe.', 'folklore', 'Practitioner reconstruction; no confirmed Meta metric exists', null) + '</p>' +
+      '<button class="run-btn" data-demo="similar" type="button">▶ merge the twins</button></div>' +
+
+    '<div class="card" id="d3card"><h2>Demo 3 · The diversity sandbox</h2>' +
+      '<div style="font-size:14px;line-height:1.7;color:var(--muted)">' + d3('c.d3') + '</div>' +
+      '<p style="font-size:12.5px">' + claim('The specific “25 diverse creatives beat 5×5 clones” internal Meta test is cited widely but reached the public secondhand — the mechanism stands on its own; the numbers wear this badge.', 'folklore', 'Meta internal test, relayed secondhand in trade press', null) + '</p>' +
+      '<div style="display:flex;gap:8px;flex-wrap:wrap">' +
+        '<button class="run-btn" data-demo="div25" type="button">▶ 25 real concepts</button>' +
+        '<button class="run-btn ghost" data-demo="div5" type="button">▶ 5×5 clones</button>' +
+      '</div></div>' +
+
+    '<div class="card"><button class="chip-btn" data-demo="builder" type="button">↩ back to the builder</button></div>' +
+
+    '<a class="next-room" href="#/models"><span class="nr-k">next room →</span>' +
+      '<span class="nr-t">🧠 The Model Room</span>' +
+      '<span style="font-size:13px;color:var(--muted)">' + d3('c.next') + '</span></a>' +
+    '</div>';
+}
+
+INITS.creative = function () {
+  var P = [], N = 0, mode = 'builder', alive = true, raf = 0, t = 0;
+  var sel = { hook: -1, visual: -1, tone: -1, proof: -1 };
+  var scoreB = null, sig = 0, sA = null, sB = null, conceptOf = null;
+  var cv = $('cfCanvas'), ctx = cv.getContext('2d'), W = 0, H = 0, DPR = 1;
+
+  function makeP() {
+    var a = Math.random(), age = a < .35 ? 0 : a < .75 ? 1 : 2;
+    var ints = 0;
+    if (Math.random() < (age === 1 ? .5 : .18)) ints |= CB.PARENT;
+    if (Math.random() < (age === 0 ? .45 : .25)) ints |= CB.GADGET;
+    if (Math.random() < .25) ints |= CB.ORAL;
+    if (Math.random() < (age === 2 ? .45 : .25)) ints |= CB.HEALTH;
+    if (Math.random() < .3) ints |= CB.SKEPTIC;
+    if (Math.random() < .25) ints |= CB.BUDGET;
+    if (Math.random() < (age === 0 ? .55 : .35)) ints |= CB.HUMOR;
+    return { x: Math.random(), y: Math.random(), vx: 0, vy: 0, z: .45 + Math.random() * .55,
+      tw: Math.random() * 6.28, sex: Math.random() < .5 ? 0 : 1, age: age, ints: ints,
+      glow: 0, gT: 0, col: 0, offR: .35 + Math.random() * .65, offA: Math.random() * 6.28, anchor: 0 };
+  }
+  function resize() {
+    var r = cv.parentElement.getBoundingClientRect();
+    DPR = Math.min(2, window.devicePixelRatio || 1);
+    W = r.width; H = r.height;
+    cv.width = Math.round(W * DPR); cv.height = Math.round(H * DPR);
+    var target = clamp(Math.round(W * H / 300), 700, 2000);
+    while (P.length < target) P.push(makeP());
+    P.length = N = target;
+    retarget();
+  }
+  function chipScore(c, p) {
+    if (c.flat) return .48 + (((p.ints * 7 + p.age * 13) % 10) / 10 - .5) * .06;
+    var iW = .15;
+    for (var bit in c.ints) if (p.ints & bit) iW = Math.max(iW, c.ints[bit]);
+    return .4 * c.ages[p.age] + .6 * iW;
+  }
+  function selIdxs() { return CCATS.map(function (c) { return sel[c]; }).filter(function (i) { return i >= 0; }); }
+  function computeBuilder() {
+    var idxs = selIdxs();
+    scoreB = new Float32Array(N);
+    if (idxs.length) {
+      for (var i = 0; i < N; i++) {
+        var s = 0;
+        idxs.forEach(function (ci) { s += chipScore(CCHIPS[ci], P[i]); });
+        scoreB[i] = s / idxs.length;
+      }
+      var spec = idxs.reduce(function (s, ci) { return s + CCHIPS[ci].spec; }, 0) / idxs.length;
+      sig = spec * (.45 + .55 * idxs.length / 4);
+    } else sig = 0;
+  }
+  function predA(p) { return .5 * ((p.ints & CB.PARENT) ? 1 : 0) + .3 * (p.sex === 0 ? 1 : 0) + .25 * (p.age === 1 ? 1 : 0) + Math.random() * .1; }
+  function predB(p) { return .45 * ((p.ints & CB.BUDGET) ? 1 : 0) + .32 * (p.sex === 1 ? 1 : 0) + .28 * (p.age === 2 ? 1 : 0) + Math.random() * .1; }
+  function retarget() {
+    if (mode === 'builder') { computeBuilder(); updateReadout(); }
+    else if (mode === 'divergent' || mode === 'similar') {
+      sA = new Float32Array(N); sB = new Float32Array(N);
+      for (var i = 0; i < N; i++) {
+        if (mode === 'divergent') { sA[i] = predA(P[i]); sB[i] = predB(P[i]); }
+        else { var base = predA(P[i]); sA[i] = base + Math.random() * .06; sB[i] = base + Math.random() * .06; }
+      }
+      updateReadout();
+    } else if (mode === 'div25' || mode === 'div5') {
+      conceptOf = new Int16Array(N);
+      for (var j = 0; j < N; j++) {
+        var p = P[j];
+        if (mode === 'div25') {
+          conceptOf[j] = (Math.random() < .72) ? ((p.ints * 31 + p.age * 7 + p.sex * 3) % 25) : -1;
+        } else {
+          conceptOf[j] = (predA(p) > .6) ? (j % 5) : -1;
+        }
+      }
+      updateReadout();
+    }
+  }
+  function anchor25(c) {
+    var col = c % 5, row = Math.floor(c / 5);
+    return { x: .14 + col * .18, y: .14 + row * .17 };
+  }
+  function anchor5(c) { return { x: .3 + (c % 5) * .1, y: .42 + (c % 2) * .08 }; }
+
+  function updateReadout() {
+    var pEl = $('crPersona'), nEl = $('crN'), tEl = $('crT'), ex = $('crExtra'), cap = $('cfCap');
+    if (!pEl) return;
+    ex.innerHTML = '';
+    if (mode === 'builder') {
+      var idxs = selIdxs();
+      if (!idxs.length) {
+        pEl.textContent = dtxt('pick some chips and see…', 'select chips to resolve a cohort…', 'select chips; cohort resolves live');
+        nEl.textContent = '—'; tEl.style.width = '0%';
+        cap.innerHTML = d3('c.intro') ? dtxt('every dot is a person — build them an ad', 'the field idles — assemble a concept', 'idle field; N=' + N) : '';
+        return;
+      }
+      var matched = 0, tally = {}, pop = {};
+      for (var i = 0; i < N; i++) {
+        for (var bit in CPERSONA) { if (P[i].ints & bit) pop[bit] = (pop[bit] || 0) + 1; }
+        if (scoreB[i] < .66) continue;
+        matched++;
+        for (var b2 in CPERSONA) if (P[i].ints & b2) tally[b2] = (tally[b2] || 0) + 1;
+      }
+      nEl.textContent = matched;
+      tEl.style.width = Math.round(sig * 100) + '%';
+      if (matched > 12) {
+        var lift = function (b) { return ((tally[b] || 0) / matched) / Math.max((pop[b] || 1) / N, .02); };
+        var top = Object.keys(CPERSONA).filter(function (b) { return (tally[b] || 0) / matched > .3; })
+          .sort(function (a, b) { return lift(b) - lift(a); })[0];
+        pEl.textContent = top ? CPERSONA[top][depth === 'kid' ? 0 : 1] : dtxt('a bit of everyone', 'a broad blend', 'low-lift blend');
+      } else pEl.textContent = dtxt('…nobody in particular showed up', '…no resolvable cohort', 'sub-threshold: no cohort');
+      cap.innerHTML = sig < .28
+        ? dtxt('a whistle nobody can hear…', 'weak signal — the crowd dissolves', 'sub-threshold signal: scatter')
+        : sig < .6 ? dtxt('a little crowd is forming!', 'partial resolution — sharpen a chip', 'partial resolution')
+        : dtxt('look at them huddle!', 'tight cohort — the ad found its people', 'high-resolution cohort assembled');
+    } else if (mode === 'divergent') {
+      var an = 0, af = 0, bn = 0, bm = 0;
+      for (var k = 0; k < N; k++) {
+        if (sA[k] > .6 && sA[k] > sB[k]) { an++; if (P[k].sex === 0) af++; }
+        else if (sB[k] > .6) { bn++; if (P[k].sex === 1) bm++; }
+      }
+      pEl.textContent = dtxt('one box, two secret crowds', 'one ad set, two silent audiences', 'divergent assignment, one ad set');
+      nEl.textContent = (an + bn); tEl.style.width = '70%';
+      ex.innerHTML = '<table class="split-table"><tr><th>creative</th><th>reached</th><th>skew</th></tr>' +
+        '<tr><td style="color:var(--your-ad)">A · kid demo</td><td>' + an + '</td><td>' + Math.round(af / Math.max(an, 1) * 100) + '% women, 25–44</td></tr>' +
+        '<tr><td style="color:var(--gold)">B · deal hook</td><td>' + bn + '</td><td>' + Math.round(bm / Math.max(bn, 1) * 100) + '% men, 45+</td></tr></table>';
+      cap.innerHTML = dtxt('same box — totally different people got each ad!', 'identical settings — systematically different audiences', 'assignment skew under identical targeting');
+    } else if (mode === 'similar') {
+      var both = 0, either = 0;
+      for (var m = 0; m < N; m++) {
+        var a = sA[m] > .62, b = sB[m] > .62;
+        if (a || b) either++;
+        if (a && b) both++;
+      }
+      pEl.textContent = dtxt('the twins melted together', 'two “variants,” one blob', 'near-duplicate profiles: merged cohort');
+      nEl.textContent = either; tEl.style.width = '30%';
+      ex.innerHTML = '<p style="font-size:12.5px;color:var(--muted);margin-top:8px">overlap: <b style="color:var(--cream)">' + Math.round(both / Math.max(either, 1) * 100) + '%</b> — ' + dtxt('they’re fighting over the same people', 'bidding against themselves for one pocket', 'internal competition, zero added reach') + '</p>';
+      cap.innerHTML = dtxt('two almost-same ads = one confused blob', 'cosmetic variants don’t buy diversity', 'variant similarity ⇒ cohort collapse');
+    } else {
+      var covered = 0;
+      for (var q = 0; q < N; q++) if (conceptOf[q] >= 0) covered++;
+      pEl.textContent = mode === 'div25' ? dtxt('little crowds everywhere!', '25 concepts, 25 pockets', '25-concept coverage') : dtxt('the same crowd, five times', '5×5 clones, one pocket', 'clone redundancy');
+      nEl.textContent = covered; tEl.style.width = Math.round(covered / N * 100) + '%';
+      ex.innerHTML = '<p style="font-size:12.5px;color:var(--muted);margin-top:8px">' + dtxt('people reached: ', 'market coverage: ', 'trait-space coverage: ') + '<b style="color:var(--cream)">' + Math.round(covered / N * 100) + '%</b></p>';
+      cap.innerHTML = mode === 'div25'
+        ? dtxt('twenty-five real ideas find twenty-five crowds', 'diverse concepts recruit across the whole market', 'distinct concepts ⇒ distributed coverage')
+        : dtxt('five copies keep finding the same crowd', 'clones re-reach one pocket five times', 'clones ⇒ oversampled single pocket');
+    }
+  }
+
+  function frame(dt) {
+    t += dt;
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    ctx.clearRect(0, 0, W, H);
+    for (var i = 0; i < N; i++) {
+      var p = P[i];
+      p.vx += (Math.random() - .5) * .012 * dt * 60; p.vy += (Math.random() - .5) * .012 * dt * 60;
+      p.vx *= .92; p.vy *= .92;
+      p.x += p.vx * dt * .06; p.y += p.vy * dt * .06;
+      var gT = 0, col = 0, ax = .5, ay = .45, spread = .3;
+      if (mode === 'builder' && sig > 0 && scoreB) {
+        gT = clamp((scoreB[i] - .66) / .22, 0, 1) * clamp(sig * 1.7, 0, 1);
+        spread = lerp(.32, .1, sig);
+      } else if (mode === 'divergent' || mode === 'similar') {
+        var a = sA[i], b = sB[i], th = mode === 'similar' ? .62 : .6;
+        if (mode === 'similar' && Math.random() < .01 && a > th && b > th) { var tmp = sA[i]; sA[i] = sB[i]; sB[i] = tmp; }
+        if (a > th && a >= b) { gT = clamp((a - th) / .3, 0, 1); col = 0; ax = mode === 'similar' ? .44 : .3; }
+        else if (b > th) { gT = clamp((b - th) / .3, 0, 1); col = 1; ax = mode === 'similar' ? .56 : .7; }
+        spread = mode === 'similar' ? .14 : .12;
+      } else if (mode === 'div25' || mode === 'div5') {
+        var c = conceptOf[i];
+        if (c >= 0) {
+          gT = .8; col = mode === 'div25' ? (c % 3) : 0;
+          var an2 = mode === 'div25' ? anchor25(c) : anchor5(c);
+          ax = an2.x; ay = an2.y; spread = mode === 'div25' ? .045 : .1;
+        }
+      }
+      p.gT = gT; if (gT > .01) p.col = col;
+      if (gT > .01) {
+        var rr = spread * p.offR + .015;
+        var tx = ax + Math.cos(p.offA) * rr, ty = ay + Math.sin(p.offA) * rr * .85;
+        var k = clamp(p.gT * dt * 2.4, 0, .2);
+        p.x += (tx - p.x) * k; p.y += (ty - p.y) * k;
+      }
+      if (p.x < -.02) p.x += 1.04; if (p.x > 1.02) p.x -= 1.04;
+      if (p.y < -.02) p.y += 1.04; if (p.y > 1.02) p.y -= 1.04;
+      p.glow = lerp(p.glow, p.gT, dt * 3);
+
+      var sx = p.x * W, sy = p.y * H;
+      var size = (1.5 + p.z * 2.4) * (1 + p.glow * .9);
+      var alpha = (.35 + p.z * .4) * (1 + Math.sin(t * 1.4 + p.tw) * .18);
+      ctx.globalAlpha = clamp(alpha, .08, 1);
+      ctx.drawImage(SPRITE_BASE, sx - size, sy - size, size * 2, size * 2);
+      if (p.glow > .05) {
+        ctx.globalAlpha = clamp(p.glow, 0, 1);
+        var gs = size * 1.9;
+        ctx.drawImage(SPRITE_GLOW[p.col], sx - gs, sy - gs, gs * 2, gs * 2);
+      }
+    }
+    ctx.globalAlpha = 1;
+  }
+  var last = performance.now();
+  function loop(now) {
+    if (!alive) return;
+    var dt = Math.min(.05, (now - last) / 1000); last = now;
+    frame(dt);
+    raf = requestAnimationFrame(loop);
+  }
+
+  /* wiring */
+  document.querySelectorAll('.cchip').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var ci = parseInt(b.dataset.ci, 10), cat = CCHIPS[ci].cat;
+      sel[cat] = sel[cat] === ci ? -1 : ci;
+      mode = 'builder'; syncChips(); retarget();
+    });
+  });
+  function syncChips() {
+    document.querySelectorAll('.cchip').forEach(function (b) {
+      var ci = parseInt(b.dataset.ci, 10);
+      b.classList.toggle('selected', CCATS.some(function (c) { return sel[c] === ci; }));
+    });
+    document.querySelectorAll('[data-demo]').forEach(function (b) {
+      b.classList.toggle('demo-active', b.dataset.demo === mode);
+    });
+  }
+  function preset(idxs) {
+    sel = { hook: -1, visual: -1, tone: -1, proof: -1 };
+    idxs.forEach(function (i) { sel[CCHIPS[i].cat] = i; });
+    mode = 'builder'; syncChips(); retarget();
+  }
+  $('cSpec').addEventListener('click', function () { preset(C_SPECIFIC); });
+  $('cGen').addEventListener('click', function () { preset(C_GENERIC); });
+  $('cClr').addEventListener('click', function () { preset([]); });
+  document.querySelectorAll('[data-demo]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      mode = b.dataset.demo;
+      if (mode !== 'builder') $('cfCanvas').scrollIntoView({ behavior: 'smooth', block: 'center' });
+      syncChips(); retarget();
+    });
+  });
+  var dialHook = function () { setTimeout(updateReadout, 30); };
+  document.querySelectorAll('.dial-btn').forEach(function (b) { b.addEventListener('click', dialHook); });
+  var rs = function () { resize(); };
+  window.addEventListener('resize', rs);
+  resize(); preset(C_SPECIFIC);
+  raf = requestAnimationFrame(loop);
+  return function () {
+    alive = false; cancelAnimationFrame(raf);
+    window.removeEventListener('resize', rs);
+    document.querySelectorAll('.dial-btn').forEach(function (b) { b.removeEventListener('click', dialHook); });
+  };
+};
+VIEWS.creative = viewCreative;
 
 /* ============================================================
    RECENCY & FATIGUE — #/recency
