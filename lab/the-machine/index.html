@@ -424,6 +424,80 @@ h1.room-title {
   .sim-stage { height: 340px; }
 }
 
+/* ---------- the model room (hall of machines) ---------- */
+.hall-wrap { position: relative; }
+.hall {
+  display: flex; gap: 0; align-items: stretch;
+  overflow-x: auto; scroll-snap-type: x mandatory;
+  padding: 6px 2px 16px; scrollbar-width: none;
+}
+.hall::-webkit-scrollbar { display: none; }
+.roomcard {
+  flex: 0 0 min(600px, 88vw); scroll-snap-align: center;
+  background: var(--glass); border: 1px solid var(--line); border-radius: var(--r);
+  padding: 24px 24px 20px; box-shadow: 0 18px 44px rgba(0,0,0,.32);
+}
+.roomcard h2 { font-size: 22px; font-weight: 800; color: var(--white); margin-bottom: 2px; }
+.roomcard .rc-sub { font-size: 12px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--sky); margin-bottom: 12px; }
+.roomcard .rc-body { font-size: 14px; line-height: 1.7; color: var(--muted); }
+.roomcard .rc-body p { margin-bottom: 10px; }
+.roomcard .rc-body b, .roomcard .rc-body i { color: var(--cream); }
+.hall-link {
+  flex: 0 0 84px; align-self: center; position: relative;
+  border-top: 2px dashed var(--gold); opacity: .8; margin: 0 -2px;
+}
+.hall-link span {
+  position: absolute; top: -22px; left: 50%; transform: translateX(-50%);
+  font-size: 9.5px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--gold); white-space: nowrap;
+}
+.hall-link.solid { border-top-style: solid; border-top-color: rgba(252,243,214,.5); }
+.hall-link.solid span { color: rgba(252,243,214,.6); }
+.flip-row { display: flex; gap: 8px; margin: 14px 0 10px; }
+.flip-btn {
+  flex: 1; font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 12px;
+  padding: 9px 10px; min-height: 40px; cursor: pointer;
+  background: transparent; color: var(--muted);
+  border: 1.5px solid rgba(252,243,214,.35); border-radius: 100px;
+}
+.flip-btn.on { background: var(--cream); color: var(--deep); border-color: var(--cream); }
+.flip-panel { font-size: 13px; line-height: 1.65; color: var(--muted); background: rgba(252,243,214,.05); border: 1px solid var(--line); border-radius: 14px; padding: 12px 14px; min-height: 92px; }
+.flip-panel b { color: var(--cream); }
+.tuesday {
+  margin-top: 12px; border-left: 3px solid var(--your-ad);
+  background: rgba(254,124,43,.07); border-radius: 0 14px 14px 0;
+  padding: 10px 14px; font-size: 13px; line-height: 1.65; color: var(--muted);
+}
+.tuesday .tue-k { display: block; font-size: 10px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: var(--your-ad); margin-bottom: 4px; }
+.tuesday b { color: var(--cream); }
+.plaque {
+  border: 1px solid rgba(252,243,214,.25); border-radius: 12px;
+  background: rgba(252,243,214,.04); padding: 12px 14px; margin-bottom: 10px;
+}
+.plaque .pl-t { font-size: 13px; font-weight: 700; color: var(--cream); }
+.plaque .pl-d { font-size: 11px; color: var(--sky); letter-spacing: .06em; margin-bottom: 4px; }
+.plaque .pl-b { font-size: 12.5px; line-height: 1.6; color: var(--muted); font-style: italic; }
+.tl { list-style: none; margin-top: 8px; }
+.tl li { position: relative; padding: 0 0 16px 22px; border-left: 2px solid rgba(252,243,214,.2); margin-left: 6px; }
+.tl li::before {
+  content: ''; position: absolute; left: -6px; top: 2px;
+  width: 10px; height: 10px; border-radius: 50%;
+  background: var(--gold); border: 2px solid var(--deep);
+}
+.tl li:last-child { border-left-color: transparent; }
+.tl .tl-y { font-size: 11px; font-weight: 800; letter-spacing: .1em; color: var(--gold); }
+.tl .tl-t { font-size: 13.5px; font-weight: 700; color: var(--cream); }
+.tl .tl-b { font-size: 12.5px; line-height: 1.6; color: var(--muted); }
+.hall-nav { display: flex; gap: 8px; justify-content: center; align-items: center; margin-top: 4px; }
+.hn-btn {
+  width: 42px; height: 42px; border-radius: 50%; cursor: pointer;
+  font-size: 17px; color: var(--cream); background: rgba(26,16,37,.7);
+  border: 1.5px solid rgba(252,243,214,.4);
+}
+.hn-dots { display: flex; gap: 6px; }
+.hn-dots i { width: 8px; height: 8px; border-radius: 50%; border: 1.5px solid var(--muted); }
+.hn-dots i.on { background: var(--gold); border-color: var(--gold); }
+
 /* ---------- placeholder rooms ---------- */
 .bench { text-align: center; padding: 52px 24px 46px; border-style: dashed; border-width: 1.5px; }
 .flask { font-size: 54px; display: inline-block; animation: bubble 2.6s ease-in-out infinite; }
@@ -520,6 +594,11 @@ var SRC = {
   auction: { name: 'Meta Business Help Center — the ad auction', url: 'https://www.facebook.com/business/help' },
   quality: { name: 'Meta Business Help Center — ad quality', url: 'https://www.facebook.com/business/help' },
   kellogg: { name: 'Kellogg School of Management — study of 181,890 Meta A/B tests', url: 'https://www.kellogg.northwestern.edu/academics-research/research/detail/2025/characterizing-and-minimizing-divergent-delivery-in-meta-advertising-experiments' },
+  lattice: { name: 'Meta AI — “Meta Lattice” · arXiv:2512.09200', url: 'https://arxiv.org/abs/2512.09200' },
+  earnings: { name: 'Meta Q2 2026 earnings call', url: 'https://investor.atmeta.com' },
+  theinfo: { name: 'Reported by The Information / trade press — not Meta on-record', url: 'https://www.theinformation.com' },
+  loomer: { name: 'Jon Loomer — practitioner documentation of Meta’s fatigue thresholds', url: 'https://www.jonloomer.com' },
+  fatigue22: { name: 'Meta 2022 creative-fatigue research (shown with its caveats)', url: 'https://www.facebook.com/business/news' },
 };
 
 /* ---------------- CONTENT: every text block, three registers ---------------- */
@@ -529,7 +608,7 @@ var CONTENT = {
     cmo: 'Follow one impression through the delivery pipeline: retrieval, ranking, the value equation, the auction — all inside about 100 milliseconds.',
     pro: 'One impression, end to end: Andromeda retrieval, multi-stage ranking under GEM-lineage models, total-value auction clearing. ~100ms budget.',
   },
-  'model-room.tag': {
+  'models.tag': {
     kid: 'Where the computer practices guessing what you’ll tap on.',
     cmo: 'How estimated action rates get made: the prediction models behind every delivery decision.',
     pro: 'p(action) estimation — features, training cadence, calibration, and which inputs you can actually influence.',
@@ -812,6 +891,88 @@ var CONTENT = {
     pro: 'Clearing done. Next: sequence modeling, recency weighting, and fatigue diagnostics.',
   },
 
+  /* ============ the model room ============ */
+  'm.intro': {
+    kid: '<p>Behind the fair there is a long hallway of machine rooms — the actual contraptions that run everything you have seen so far. Walk the hall and peek into each one. Some doors have solid signs (Meta showed us what is inside), and the dashed ropes between rooms mean we are guessing how they connect.</p>',
+    cmo: '<p>This is the hall of named systems: the machines behind retrieval, ranking, and the roadmap. Each room tells you what the system replaced, why it exists, and what it changes about your Tuesday. Solid facts carry badges; the dashed connectors between rooms mean the wiring is inferred, not published.</p>',
+    pro: '<p>The named stack, room by room: Andromeda (retrieval), GEM (foundation model), Lattice (ranking consolidation), the pre-2024 museum, and the stated roadmap. Claims are badged; inter-system wiring is dashed wherever Meta has not published the linkage. Swipe or use the arrows.</p>',
+  },
+  'm.and.body': {
+    kid: '<p>This is the sorting-sweep machine from the big room — up close. It exists because of a flood: once computers started helping everyone make ads, there were suddenly <b>way</b> too many signs for the old sorting shelves to handle. So Meta built a much bigger, much faster sorter, with special super-fast computer chips to run it.</p>',
+    cmo: '<p>Andromeda replaced rules-and-heuristics candidate sourcing with a learned retrieval engine. The pressure that forced it: AI-generated creative exploded the number of live ads, and the old shortlisting simply could not sift a universe that size per-person in real time.</p><p>It runs on hardware co-designed for the job — retrieval at this scale is as much a silicon story as a model story.</p>',
+    pro: '<p>NN-based hierarchical retrieval replacing heuristic candidate sourcing; built explicitly for the post-generative-creative candidate explosion. Meta describes co-designing it with accelerator hardware (GPU-class inference at retrieval latency budgets) — the capacity increase is a hardware-plus-architecture story, not a tuning pass.</p>',
+  },
+  'm.and.old': {
+    kid: '<b>The old way:</b> the helpers checked signs against checklists — “is this kid in the parents section? the gadget section?” — and grabbed whatever passed the checklist first.',
+    cmo: '<b>The old way:</b> candidate sourcing by rules and interest-list heuristics. Legible to advertisers, coarse in practice, and blind to anything the checklists did not encode.',
+    pro: '<b>Old:</b> heuristic/rules-based sourcing over interest taxonomies and simple recall models — bounded capacity, checklist-shaped blind spots.',
+  },
+  'm.and.new': {
+    kid: '<b>The new way:</b> a learned sorter that has watched millions of visitors and just… knows which shelf to sweep first. No checklists anywhere.',
+    cmo: '<b>The new way:</b> a learned neural index — retrieval decides who even enters scoring based on modeled fit, not declared interests. There is no checkbox to game anymore.',
+    pro: '<b>New:</b> learned hierarchical NN index, user-conditioned from the first stage; 10,000× capacity vs. prior retrieval models.',
+  },
+  'm.and.tue': {
+    kid: 'What it means for your Tuesday: make signs that are clearly <b>for someone</b>. The sorter can only find your ad if your ad is findable.',
+    cmo: 'Your Tuesday: your ad must be <b>indexable</b>. Distinct concepts with clear who-is-this-for signal get retrieved; forty cosmetic clones of one idea give the sorter one thing to find, not forty.',
+    pro: 'Tuesday: optimize for retrievability — concept-level diversity over variant volume; distinct hooks map to distinct index neighborhoods.',
+  },
+  'm.gem.body': {
+    kid: '<p>This room holds the wise teacher from the judging line. The teacher reads a visitor’s whole recent story — thousands of little moments, in order — and trains hundreds of helper-judges to guess what each visitor wants next.</p>',
+    cmo: '<p>GEM is the central foundation model: trained at very large scale, then distilled into the hundreds of specialist ranking models that actually serve traffic. Its defining trick is reading <b>sequences</b> — up to thousands of user events, in order — which is how recency and momentum became first-class delivery inputs.</p>',
+    pro: '<p>Ads foundation model trained at LLM scale; knowledge distilled into vertical rankers per surface. Consumes ordered event sequences (up to thousands of actions). The distillation pattern means ranking improvements ship platform-wide without per-surface retraining from scratch.</p>',
+  },
+  'm.gem.old': {
+    kid: '<b>The old way:</b> every corner of the fair had its own little judge, each learning alone, none of them sharing notes.',
+    cmo: '<b>The old way:</b> bespoke per-surface models, separately trained, duplicating effort and diverging in quality across Feed, Reels, Stories.',
+    pro: '<b>Old:</b> independent per-surface ranking stacks; fragmented training, inconsistent calibration across placements.',
+  },
+  'm.gem.new': {
+    kid: '<b>The new way:</b> one wise teacher trains every judge in the fair. When the teacher learns something, everybody judges better at once.',
+    cmo: '<b>The new way:</b> one foundation model teaching all of them — a single central brain whose improvements propagate everywhere through distillation.',
+    pro: '<b>New:</b> central foundation model + distillation into vertical rankers; stated lifts ~+5% conversions (Instagram), ~+3% (FB Feed).',
+  },
+  'm.gem.tue': {
+    kid: 'Your Tuesday: the machine watches what people did <b>just now</b>, not what group they belong to. Catch people in their moment.',
+    cmo: 'Your Tuesday: sequences beat segments. Plan creative for <b>moments</b> (just searched, just abandoned, just binged a topic) rather than demographics — that is literally what the model reads.',
+    pro: 'Tuesday: recency-weighted sequence features dominate static traits; creative and offer timing against behavioral moments is the addressable surface.',
+  },
+  'm.lat.body': {
+    kid: '<p>The newest room, still smelling of fresh paint. Meta took hundreds of separate judging machines and rebuilt them as <b>one giant machine</b> with a trillion little dials inside.</p>',
+    cmo: '<p>Lattice is the consolidation move: hundreds of separate ranking models folded into one very large architecture. Fewer, bigger models that learn across surfaces at once — the same direction the whole industry is heading.</p>',
+    pro: '<p>Trillion-parameter unified ranking architecture consolidating hundreds of legacy models. The consolidation is the point: shared learning across objectives and surfaces, less per-model drift, one optimization surface for Meta to improve.</p>',
+  },
+  'm.lat.old': {
+    kid: '<b>The old way:</b> hundreds of separate little machines, each doing one job, each needing its own repairs.',
+    cmo: '<b>The old way:</b> a model zoo — hundreds of specialized rankers, each a maintenance surface, each learning only from its own slice.',
+    pro: '<b>Old:</b> fragmented model estate; per-model training pipelines; cross-surface transfer approximately zero.',
+  },
+  'm.lat.new': {
+    kid: '<b>The new way:</b> one enormous machine that does all those jobs at once — and gets smarter everywhere every time it learns anywhere.',
+    cmo: '<b>The new way:</b> one trillion-parameter lattice. Meta reported an ~8% ads-quality lift in an Instagram test from the consolidation alone.',
+    pro: '<b>New:</b> unified architecture, joint multi-objective training; ~8% quality lift reported on Instagram testing.',
+  },
+  'm.lat.tue': {
+    kid: 'Your Tuesday: the fair keeps taking dials away from the grown-ups and turning them itself. The dials you still own are your sign and your lemonade.',
+    cmo: 'Your Tuesday: the optimization surface keeps migrating from your account settings into the model. Every consolidation shrinks what you can tune and concentrates your leverage in <b>creative and offer</b>.',
+    pro: 'Tuesday: expect continued deprecation of manual levers; treat account structure as commodity and concentrate effort where the model cannot substitute — concept diversity, offer design, landing experience.',
+  },
+  'm.gho.body': {
+    kid: '<p>The museum wing. These machines used to run the whole fair, and every grown-up playbook was written about them. Read the plaques and whisper — they can’t hear you anymore.</p>',
+    cmo: '<p>The pre-2024 stack, preserved with plaques. Worth a walk because an enormous amount of received wisdom — interest stacks, 25 ad sets, bid babysitting — was written for these machines. They are off now.</p>',
+    pro: '<p>The deprecated estate. Most agency folklore is a fossil record of this wing: practices that were locally optimal against MTML-era ranking and interest-gated sourcing, carried forward into a stack where they no longer bind.</p>',
+  },
+  'm.gho.tue': {
+    kid: 'Your Tuesday: if a grown-up’s advice starts with “always make 25 tiny audiences,” they are describing a museum piece.',
+    cmo: 'Your Tuesday: audit your playbook line by line and ask, “which machine was this written for?” If the answer hangs on this wall, retire the tactic with it.',
+    pro: 'Tuesday: any optimization ritual whose causal story routes through interest-gated sourcing or per-surface MTML ranking deserves a re-test before it survives another quarter.',
+  },
+  'm.tl.intro': {
+    kid: '<p>The last wall shows where the fair has been and where it says it is going: a fair that runs itself — you hand it a goal and some tickets, and it makes the signs too.</p>',
+    cmo: '<p>The trajectory in one wall: from the model zoo to the foundation era to the stated end-state — automation end to end, creative included. Plan your team for the direction, not the snapshot.</p>',
+    pro: '<p>2020 → today → stated end-state. The through-line is consolidation plus automation; the badges mark which waypoints are Meta on-record and which are trade-press reporting.</p>',
+  },
+
   /* directory + placeholder copy */
   'machine.dir-title': { kid: 'The other rooms', cmo: 'The other rooms', pro: 'The other rooms' },
   'machine.dir-body': {
@@ -834,7 +995,7 @@ var CONTENT = {
 /* ---------------- rooms / depth ---------------- */
 var ROOMS = [
   { slug: 'machine',    name: 'The Machine',       ico: '⚙️', open: true },
-  { slug: 'model-room', name: 'The Model Room',    ico: '🧠', open: false },
+  { slug: 'models',     name: 'The Model Room',    ico: '🧠', open: true },
   { slug: 'auction',    name: 'The Auction Floor', ico: '🔨', open: true },
   { slug: 'recency',    name: 'Recency & Fatigue', ico: '🔁', open: false },
   { slug: 'creative',   name: 'Creative Signal',   ico: '📡', open: false },
@@ -944,6 +1105,7 @@ function parseHash() {
     var p = kv.split('=');
     if (p[0]) params[p[0]] = decodeURIComponent(p[1] || '');
   });
+  if (slug === 'model-room') slug = 'models';   // legacy alias
   if (!ROOMS.some(function (r) { return r.slug === slug; })) slug = 'machine';
   return { slug: slug, params: params };
 }
@@ -1700,6 +1862,115 @@ function journeyStop() {
   if (J.io) J.io.disconnect();
   J.scenes = {};
 }
+
+/* ============================================================
+   THE MODEL ROOM — #/models · the hall of named machines
+   ============================================================ */
+function hallCard(ico, name, sub, bodyKey, claimsHtml, flipId, oldKey, newKey, tueKey, extraHtml) {
+  var flip = '';
+  if (flipId) {
+    flip = '<div class="flip-row" data-flip="' + flipId + '">' +
+      '<button class="flip-btn on" data-side="old" type="button">the old way</button>' +
+      '<button class="flip-btn" data-side="new" type="button">the new way</button></div>' +
+      '<div class="flip-panel" data-old="' + oldKey + '" data-new="' + newKey + '">' + d3(oldKey) + '</div>';
+  }
+  return '<article class="roomcard">' +
+    '<h2>' + ico + ' ' + name + '</h2><p class="rc-sub">' + sub + '</p>' +
+    '<div class="rc-body">' + d3(bodyKey) + '</div>' +
+    (claimsHtml ? '<div style="font-size:12.5px;line-height:1.6;margin-top:6px">' + claimsHtml + '</div>' : '') +
+    flip + (extraHtml || '') +
+    (tueKey ? '<div class="tuesday"><span class="tue-k">what this means for your Tuesday</span>' + d3(tueKey) + '</div>' : '') +
+    '</article>';
+}
+function viewModels() {
+  var link = function (label, solid) {
+    return '<div class="hall-link' + (solid ? ' solid' : '') + '"><span>' + label + '</span></div>';
+  };
+  return '<div class="view-pad">' +
+    '<p class="room-kicker">The Growth Den Lab · The Machine</p>' +
+    '<h1 class="room-title">🧠 The Model Room</h1>' +
+    '<p class="room-tag" style="margin-bottom:14px">' + d3('models.tag') + '</p>' +
+    '<div class="card" style="margin-bottom:14px"><div style="font-size:14.5px;line-height:1.7;color:var(--muted)">' + d3('m.intro') + '</div></div>' +
+
+    '<div class="hall-wrap"><div class="hall" id="hall">' +
+    hallCard('🌌', 'Andromeda', 'the retrieval engine · Dec 2024', 'm.and.body',
+      '<p>' + claim('Meta’s published figures: 10,000× model capacity, +6% recall, +8% ads quality in selected segments.', 'meta', SRC.andromeda.name, SRC.andromeda.url) + '</p>',
+      'and', 'm.and.old', 'm.and.new', 'm.and.tue') +
+    link('connection inferred') +
+    hallCard('🧠', 'GEM', 'the central brain · Nov 2025', 'm.gem.body',
+      '<p>' + claim('Stated lifts: roughly +5% conversions on Instagram, +3% on Facebook Feed.', 'meta', SRC.gem2.name, SRC.gem2.url) + '</p>' +
+      '<p>' + claim('Reads sequences of up to thousands of user events, in order.', 'meta', SRC.gem.name, SRC.gem.url) + '</p>',
+      'gem', 'm.gem.old', 'm.gem.new', 'm.gem.tue') +
+    link('connection inferred') +
+    hallCard('🕸️', 'Lattice', 'ranking, consolidated · 2026', 'm.lat.body',
+      '<p>' + claim('Hundreds of ranking models consolidated into one trillion-parameter architecture; ~8% ads-quality lift in an Instagram test.', 'meta', SRC.lattice.name, SRC.lattice.url) + '</p>',
+      'lat', 'm.lat.old', 'm.lat.new', 'm.lat.tue') +
+    link('the past', true) +
+    hallCard('👻', 'The Ghosts', 'museum wing · pre-2024', 'm.gho.body', '',
+      null, null, null, 'm.gho.tue',
+      '<div class="plaque"><p class="pl-t">MTML multi-task models</p><p class="pl-d">c. 2020–2023</p>' +
+        '<p class="pl-b">Ranked many objectives at once with shared layers. Served faithfully through the interest-targeting era. Superseded by the foundation-model line.</p></div>' +
+      '<div class="plaque"><p class="pl-t">Interest-gated candidate sourcing</p><p class="pl-d">c. 2012–2024</p>' +
+        '<p class="pl-b">Ads entered the room by checkbox: declared interests, lookalikes, hand-drawn stacks. Retired when retrieval learned to find fit directly.</p></div>' +
+      '<div class="plaque"><p class="pl-t">The 25-ad-set account structure</p><p class="pl-d">folk architecture, undated</p>' +
+        '<p class="pl-b">Not a Meta system — a practitioner ritual built to steer the machines above. Persists in the wild long after its habitat vanished.</p></div>') +
+    link('the future', true) +
+    hallCard('🧭', 'The Timeline Wall', '2020 → the stated end-state', 'm.tl.intro',
+      '<p>' + claim('Meta reports Advantage+ end-to-end at a $75B annual revenue run-rate, the Muse image model, and 9M small businesses using at least one AI creative tool.', 'meta', SRC.earnings.name, SRC.earnings.url) + '</p>' +
+      '<p>' + claim('A target of fully automated ad creation — “objective + budget in, ads out” — by end of 2026 has been reported by trade press, but is not Meta on-record.', 'measured', SRC.theinfo.name, SRC.theinfo.url) + '</p>',
+      null, null, null, null,
+      '<ol class="tl">' +
+      '<li><span class="tl-y">2020</span><p class="tl-t">The MTML era</p><p class="tl-b">Per-surface multi-task rankers; interest targeting at its peak; the playbooks most teams still run were written here.</p></li>' +
+      '<li><span class="tl-y">2022</span><p class="tl-t">The fatigue research year</p><p class="tl-b">Meta publishes creative-fatigue findings; frequency becomes a measured phenomenon rather than a hunch.</p></li>' +
+      '<li><span class="tl-y">DEC 2024</span><p class="tl-t">Andromeda</p><p class="tl-b">Retrieval rebuilt for the generative-creative flood. The interest checkbox stops being a gate.</p></li>' +
+      '<li><span class="tl-y">NOV 2025</span><p class="tl-t">GEM</p><p class="tl-b">The central brain: one foundation model teaching hundreds of rankers; sequences become the first-class input.</p></li>' +
+      '<li><span class="tl-y">2026</span><p class="tl-t">Lattice + Advantage+ end-to-end</p><p class="tl-b">Ranking consolidates; automation reaches a $75B run-rate; the reported (not confirmed) end-state: objective and budget in, finished ads out.</p></li>' +
+      '</ol>') +
+    '</div>' +
+    '<div class="hall-nav">' +
+      '<button class="hn-btn" id="hallPrev" type="button" aria-label="Previous room">‹</button>' +
+      '<div class="hn-dots" id="hallDots"></div>' +
+      '<button class="hn-btn" id="hallNext" type="button" aria-label="Next room">›</button>' +
+    '</div></div>' +
+
+    '<a class="next-room" href="#/dispatch" style="margin-top:16px"><span class="nr-k">next room →</span>' +
+      '<span class="nr-t">📰 The Dispatch</span>' +
+      '<span style="font-size:13px;color:var(--muted)">The machines keep changing. The logbook keeps up.</span></a>' +
+    '</div>';
+}
+INITS.models = function () {
+  document.querySelectorAll('.flip-row').forEach(function (row) {
+    var panel = row.nextElementSibling;
+    row.querySelectorAll('.flip-btn').forEach(function (b) {
+      b.addEventListener('click', function () {
+        row.querySelectorAll('.flip-btn').forEach(function (x) { x.classList.toggle('on', x === b); });
+        panel.innerHTML = d3(panel.dataset[b.dataset.side]);
+      });
+    });
+  });
+  var hall = $('hall'), dots = $('hallDots');
+  var cards = hall.querySelectorAll('.roomcard');
+  dots.innerHTML = Array.from(cards).map(function () { return '<i></i>'; }).join('');
+  function upDots() {
+    var idx = 0, best = 1e9, mid = hall.scrollLeft + hall.clientWidth / 2;
+    cards.forEach(function (c, i) {
+      var cm = c.offsetLeft + c.offsetWidth / 2;
+      if (Math.abs(cm - mid) < best) { best = Math.abs(cm - mid); idx = i; }
+    });
+    dots.querySelectorAll('i').forEach(function (d, i) { d.classList.toggle('on', i === idx); });
+    return idx;
+  }
+  function go(dir) {
+    var idx = clamp(upDots() + dir, 0, cards.length - 1);
+    hall.scrollTo({ left: cards[idx].offsetLeft - (hall.clientWidth - cards[idx].offsetWidth) / 2, behavior: 'smooth' });
+  }
+  $('hallPrev').addEventListener('click', function () { go(-1); });
+  $('hallNext').addEventListener('click', function () { go(1); });
+  hall.addEventListener('scroll', function () { upDots(); }, { passive: true });
+  upDots();
+  return null;
+};
+VIEWS.models = viewModels;
 
 /* ============================================================
    THE AUCTION FLOOR — #/auction
