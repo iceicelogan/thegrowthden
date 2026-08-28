@@ -41,7 +41,7 @@ b { font-weight: 600; }
 main, #topbar, #rail { position: relative; z-index: 2; }
 /* let taps land on the crowd everywhere except the actual UI */
 main { pointer-events: none; }
-.card, .hero-inner, .next-card, .receipt { pointer-events: auto; }
+.card, .hero-inner, .next-card, #plain-foot { pointer-events: auto; }
 
 /* dot tooltip */
 .dot-tip {
@@ -145,12 +145,21 @@ body.mode-kid .dot-tip .cmo, body.mode-cmo .dot-tip .kid { display: none; }
 
 /* ---------- hero ---------- */
 #hero { min-height: 100svh; padding-left: 150px; }
-.hero-inner { max-width: 620px; }
+.hero-inner {
+  max-width: 660px;
+  background: var(--glass); backdrop-filter: blur(10px);
+  border: 1px solid var(--line); border-radius: var(--r);
+  padding: 34px 36px 30px;
+  box-shadow: 0 24px 60px rgba(0,0,0,.4);
+}
 #hero h1 {
-  font-size: clamp(42px, 7.5vw, 88px); font-weight: 800; line-height: 1.02;
+  font-size: clamp(40px, 7vw, 80px); font-weight: 800; line-height: 1.04;
   letter-spacing: -.02em; color: var(--white); margin-bottom: 20px;
 }
-#hero h1 em { font-style: normal; color: var(--gold); }
+#hero h1 em.the-is {
+  font-style: italic; font-weight: 900; color: var(--gold);
+  font-size: 1.22em; line-height: 1; padding: 0 .04em;
+}
 .hero-sub p { font-size: 17px; line-height: 1.65; color: var(--muted); max-width: 520px; }
 .hero-sub b { color: var(--accent); }
 .honesty { margin-top: 18px; max-width: 500px; }
@@ -171,6 +180,7 @@ body.mode-kid .dot-tip .cmo, body.mode-cmo .dot-tip .kid { display: none; }
 .ls-item.gold b { color: var(--gold); }
 
 .demo-tag {
+  display: flex; gap: 8px; align-items: flex-start;
   margin-top: 14px; font-size: 13px; font-weight: 600; color: var(--accent);
   border: 1.5px dashed rgba(254,124,43,.5); border-radius: 12px; padding: 9px 13px;
   animation: pulse-tag 2.4s ease-in-out infinite;
@@ -254,30 +264,14 @@ body.mode-kid .dot-tip .cmo, body.mode-cmo .dot-tip .kid { display: none; }
 .next-title { font-size: clamp(22px, 3vw, 30px); font-weight: 800; color: var(--white); }
 .next-sub > * { font-size: 14px; color: var(--muted); line-height: 1.55; }
 
-/* ---------- receipt footer ---------- */
-#receipt-zone { display: flex; justify-content: center; padding: 4svh 20px 12svh; }
-.receipt {
-  width: 420px; max-width: 100%;
-  background: var(--white); color: #2a2a2a;
-  font-family: 'Courier New', ui-monospace, monospace;
-  font-size: 12px; line-height: 1.75;
-  padding: 26px 22px 30px;
-  transform: rotate(-.6deg);
-  box-shadow: 0 30px 60px rgba(0,0,0,.5);
-  clip-path: polygon(0 1%, 4% 0, 8% 1%, 12% 0, 16% 1%, 20% 0, 24% 1%, 28% 0, 32% 1%, 36% 0, 40% 1%, 44% 0, 48% 1%, 52% 0, 56% 1%, 60% 0, 64% 1%, 68% 0, 72% 1%, 76% 0, 80% 1%, 84% 0, 88% 1%, 92% 0, 96% 1%, 100% 0, 100% 99%, 96% 100%, 92% 99%, 88% 100%, 84% 99%, 80% 100%, 76% 99%, 72% 100%, 68% 99%, 64% 100%, 60% 99%, 56% 100%, 52% 99%, 48% 100%, 44% 99%, 40% 100%, 36% 99%, 32% 100%, 28% 99%, 24% 100%, 20% 99%, 16% 100%, 12% 99%, 8% 100%, 4% 99%, 0 100%);
+/* ---------- footer ---------- */
+#plain-foot {
+  max-width: 620px; margin: 0 auto;
+  padding: 2svh 32px 10svh;
+  text-align: center; pointer-events: auto;
 }
-.r-store { text-align: center; font-weight: 700; letter-spacing: .1em; }
-.r-store a { color: inherit; }
-.r-line { text-align: center; overflow: hidden; white-space: nowrap; opacity: .8; }
-.r-item { display: flex; justify-content: space-between; gap: 12px; }
-.r-item span:first-child { flex: 1; }
-.r-total { font-weight: 700; }
-.r-small { font-size: 10px; line-height: 1.6; margin-top: 8px; opacity: .85; }
-.r-small a { color: inherit; }
-.r-barcode {
-  height: 44px; margin: 14px auto 6px; width: 78%;
-  background: repeating-linear-gradient(90deg, #222 0 2px, transparent 2px 5px, #222 5px 6px, transparent 6px 10px, #222 10px 13px, transparent 13px 15px);
-}
+#plain-foot p { font-size: 12px; line-height: 1.7; color: rgba(252,243,214,.5); margin-bottom: 10px; }
+#plain-foot a { color: rgba(252,243,214,.75); }
 
 /* ---------- mobile ---------- */
 @media (max-width: 980px) {
