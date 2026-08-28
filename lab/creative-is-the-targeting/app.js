@@ -384,10 +384,13 @@ function draw(circles, beacons, a) {
     ctx.beginPath();
     ctx.roundRect(x - 21 * s, y - 15 * s, 42 * s, 30 * s, 7 * s);
     ctx.fill(); ctx.stroke();
+    // labeled "AD" — it marks where the ad is, it isn't a video to play
     ctx.fillStyle = cols[colIdx];
-    ctx.beginPath();
-    ctx.moveTo(x - 5 * s, y - 7 * s); ctx.lineTo(x + 8 * s, y); ctx.lineTo(x - 5 * s, y + 7 * s);
-    ctx.closePath(); ctx.fill();
+    ctx.font = '800 ' + Math.round(13 * s) + 'px Poppins, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('AD', x, y + 1);
+    ctx.textBaseline = 'alphabetic';
   }
   if (mode === 'signal' || (mode === 'builder' && selectedIdxs().length) || mode === 'bland') drawBeacon(a.x, a.y, 0, 1);
   if (mode === 'multi') beacons.forEach((b, i) => drawBeacon(b.x, b.y, i, .8));
