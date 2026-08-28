@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-TR4S2MZM');</script>
+<!-- End Google Tag Manager -->
+<title>Lemonade Economy — run a lemonade stand for one summer</title>
+<meta name="description" content="Run a lemonade stand for 14 summer days in a little simulated town. Set your price, pick your recipe, paint a sign — and secretly learn real economics.">
+<meta name="robots" content="noindex">
+<link rel="icon" href="../../favicon-32x32.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;0,900;1,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="mode-kid">
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TR4S2MZM"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager -->
+
+<header id="topbar">
+  <a class="logo" href="/" aria-label="The Growth Den home">
+    <img src="../../uploads/Growth_Den__Logo_Horizontal_Primary.svg" alt="The Growth Den">
+    <span class="lab-tag">Lab</span>
+  </a>
+  <div class="top-actions">
+    <div id="modeToggle" class="mode-toggle" role="group" aria-label="Explanation mode">
+      <button id="modeKidBtn" class="mode-btn active" type="button">🧒 I'm 8</button>
+      <button id="modeCmoBtn" class="mode-btn" type="button">💼 I'm a CMO</button>
+    </div>
+    <button id="muteBtn" class="icon-btn" type="button" aria-label="Sound on or off">🔊</button>
+  </div>
+</header>
+
+<main id="game">
+
+  <!-- ============ TITLE ============ -->
+  <section id="screen-title" class="screen active">
+    <div class="title-card wobble-card">
+      <div class="title-art" aria-hidden="true">
+        <span class="big-lemon">🍋</span><span class="big-cup">🥤</span><span class="big-sun">☀️</span>
+      </div>
+      <h1 class="game-title">Lemonade Economy</h1>
+      <p class="subtitle">
+        <span class="kid">Run your very own lemonade stand for 14 summer days. Pick your price, make yummy lemonade, and see how much money you can make!</span>
+        <span class="cmo">A 14-day demand simulation with ~120 autonomous customer agents — price elasticity, COGS, marketing reach and competitive response, disguised as a lemonade stand.</span>
+      </p>
+      <button id="btnContinue" class="btn-big btn-go hidden" type="button">▶️ Keep playing my summer</button>
+      <button id="btnNewGame" class="btn-big btn-go" type="button">🍋 Start my summer!</button>
+      <button id="btnResetTitle" class="btn-small-ghost hidden" type="button">🗑 Start over from Day 1</button>
+      <p class="fine-print">Part of <a href="/">The Growth Den</a> Lab · plays right in your browser, nothing to sign up for.</p>
+    </div>
+  </section>
+
+  <!-- ============ MORNING ============ -->
+  <section id="screen-morning" class="screen">
+    <div class="day-banner">
+      <span class="day-label">☀️ Morning · <b id="mDayNum">Day 1</b> of 14</span>
+      <div class="day-dots" id="dayDots" aria-hidden="true"></div>
+    </div>
+
+    <div class="news-card wobble-card">
+      <div class="news-masthead">🗞 The Sunnyville Times</div>
+      <div class="news-row">
+        <span class="news-icon" id="newsWeatherIcon">☀️</span>
+        <div class="news-text">
+          <b class="kid">Weather guess:</b><b class="cmo">Forecast (imperfect):</b>
+          <span id="newsWeatherText">Sunny</span>
+          <span class="cmo cmo-note" id="cmoWeatherNote">Weather is your seasonality — demand moves with it.</span>
+        </div>
+      </div>
+      <div class="news-row" id="newsEventRow">
+        <span class="news-icon" id="newsEventIcon">📣</span>
+        <div class="news-text" id="newsEventText"></div>
+      </div>
+    </div>
+
+    <div class="controls-card wobble-card">
+      <h2 class="control-title"><span class="kid">1 · How much for one cup?</span><span class="cmo">1 · Set your price point</span></h2>
+      <div class="price-row">
+        <span class="price-display" id="priceDisplay">$1.00</span>
+      </div>
+      <input type="range" id="priceSlider" min="25" max="300" step="25" value="100" aria-label="Price per cup">
+      <div class="slider-ends" aria-hidden="true"><span>25¢ cheap!</span><span>$3.00 fancy!</span></div>
+      <p class="margin-line" id="marginLine"></p>
+
+      <h2 class="control-title"><span class="kid">2 · What kind of lemonade?</span><span class="cmo">2 · Product quality (drives COGS + retention)</span></h2>
+      <div class="recipe-row">
+        <button class="recipe-card" id="recipeCheap" type="button">
+          <span class="recipe-emoji">🧃</span>
+          <span class="recipe-name"><span class="kid">Cheap mix</span><span class="cmo">Powder mix</span></span>
+          <span class="recipe-cost">20¢ a cup</span>
+          <span class="recipe-note"><span class="kid">Costs less… tastes okay 😐</span><span class="cmo">Low COGS, weak repeat rate</span></span>
+        </button>
+        <button class="recipe-card" id="recipeFresh" type="button">
+          <span class="recipe-emoji">🍋✨</span>
+          <span class="recipe-name">Fresh-squeezed</span>
+          <span class="recipe-cost">50¢ a cup</span>
+          <span class="recipe-note"><span class="kid">Costs more… people come back! 😋</span><span class="cmo">Higher COGS, builds loyalty/LTV</span></span>
+        </button>
+      </div>
+
+      <h2 class="control-title"><span class="kid">3 · Paint a big sign?</span><span class="cmo">3 · Marketing spend</span></h2>
+      <button class="sign-card" id="signToggle" type="button">
+        <span class="sign-emoji">🪧</span>
+        <span class="sign-text">
+          <b><span class="kid">Hand-drawn sign — $2 today</span><span class="cmo">Sign — $2/day (awareness radius +)</span></b>
+          <span class="sign-sub"><span class="kid">More people will notice your stand!</span><span class="cmo">Boosts reach; converts strangers into aware prospects.</span></span>
+        </span>
+        <span class="sign-check" id="signCheck">＋</span>
+      </button>
+
+      <div class="piggy-row">🐷 <span class="kid">Piggy bank:</span><span class="cmo">Cumulative P&amp;L:</span> <b id="piggyBank">$0.00</b></div>
+      <button id="btnOpenStand" class="btn-big btn-go" type="button">🔔 Open the stand!</button>
+    </div>
+  </section>
+
+  <!-- ============ MIDDAY ============ -->
+  <section id="screen-midday" class="screen">
+    <div class="day-banner">
+      <span class="day-label">🌞 Midday · <b id="dDayNum">Day 1</b></span>
+      <div class="hud">
+        <span class="hud-chip">🥤 <b id="hudCups">0</b></span>
+        <span class="hud-chip">💰 <b id="hudMoney">$0.00</b></span>
+      </div>
+    </div>
+    <div id="canvasWrap">
+      <canvas id="street" width="800" height="450" aria-label="Your lemonade stand street, with townspeople walking by"></canvas>
+    </div>
+    <p class="ticker" id="ticker">The town wakes up…</p>
+    <div class="midday-controls">
+      <button id="btnSpeed" class="btn-mid" type="button">⏩ 2× speed</button>
+      <button id="btnSkipDay" class="btn-mid" type="button">🌇 Skip to evening</button>
+    </div>
+  </section>
+
+  <!-- ============ EVENING ============ -->
+  <section id="screen-evening" class="screen">
+    <div class="day-banner"><span class="day-label">🌙 Evening · <b id="eDayNum">Day 1</b></span></div>
+
+    <div class="results-card wobble-card">
+      <h2 class="results-title"><span class="kid">How did today go?</span><span class="cmo">Daily P&amp;L</span></h2>
+      <div class="stat-row"><span class="stat-emoji">🥤</span><span class="stat-name"><span class="kid">Cups sold</span><span class="cmo">Units sold</span></span><b class="stat-val" id="evCups">0</b></div>
+      <div class="stat-row"><span class="stat-emoji">💰</span><span class="stat-name"><span class="kid">Money in</span><span class="cmo">Revenue</span></span><b class="stat-val" id="evRevenue">$0.00</b></div>
+      <div class="stat-row"><span class="stat-emoji">🧾</span><span class="stat-name"><span class="kid">Money out</span><span class="cmo">COGS + marketing</span></span><b class="stat-val" id="evCost">$0.00</b></div>
+      <div class="stat-row profit-row"><span class="stat-emoji">⭐</span><span class="stat-name">PROFIT</span><b class="stat-val profit-val" id="evProfit">$0.00</b></div>
+
+      <div class="cmo cmo-panel" id="cmoPanel">
+        <div class="cmo-stat">Foot traffic: <b id="cmoTraffic">0</b> · Conversion: <b id="cmoConv">0%</b></div>
+        <div class="cmo-stat">Repeat buyers: <b id="cmoRepeat">0</b> · Priced out: <b id="cmoPriced">0</b> · Lost to competitor: <b id="cmoRival">0</b></div>
+      </div>
+    </div>
+
+    <div class="insight-card wobble-card">
+      <img class="denny" src="../../uploads/Growth_Den__Illustration_Denny.png" alt="" aria-hidden="true">
+      <div class="insight-bubble">
+        <b class="insight-who">Denny says:</b>
+        <p id="insightText"></p>
+      </div>
+    </div>
+
+    <button id="btnNextDay" class="btn-big btn-go" type="button">😴 Go to sleep → Day 2</button>
+  </section>
+
+  <!-- ============ REPORT CARD ============ -->
+  <section id="screen-report" class="screen">
+    <div class="report-card wobble-card">
+      <div class="report-head">
+        <h2>🎓 Summer Report Card</h2>
+        <span class="report-sub"><span class="kid">Your whole summer, in one page!</span><span class="cmo">End-of-season performance review</span></span>
+      </div>
+
+      <div class="report-profit">
+        <span class="kid">Total money you kept:</span><span class="cmo">Net profit, 14 days:</span>
+        <b id="rpProfit">$0.00</b>
+        <span class="badge" id="rpBadge">⭐</span>
+      </div>
+
+      <div class="report-grid">
+        <div class="report-stat">🥤 <b id="rpCups">0</b><span><span class="kid">cups all summer</span><span class="cmo">total units</span></span></div>
+        <div class="report-stat">🔁 <b id="rpRepeat">0</b><span><span class="kid">friends who came back</span><span class="cmo">repeat customers</span></span></div>
+        <div class="report-stat">📅 <b id="rpBestDay">—</b><span><span class="kid">your best day</span><span class="cmo">peak revenue day</span></span></div>
+        <div class="report-stat">🌧 <b id="rpRainAvg">—</b><span><span class="kid">cups on rainy days</span><span class="cmo">avg units, rain days</span></span></div>
+      </div>
+
+      <div class="report-best">
+        <h3>🏅 <span class="kid">Best thing you did:</span><span class="cmo">Highest-leverage decision:</span></h3>
+        <p id="rpBestDecision"></p>
+      </div>
+
+      <div class="report-curve">
+        <h3><span class="kid">The secret picture your summer drew 🤫</span><span class="cmo">Your demand curve (actual data)</span></h3>
+        <canvas id="curveCanvas" width="640" height="400" aria-label="A chart of your prices versus cups sold"></canvas>
+        <p id="curveCaption" class="curve-caption"></p>
+      </div>
+
+      <button id="btnNewSummer" class="btn-big btn-go" type="button">🍋 Start a brand-new summer</button>
+    </div>
+  </section>
+
+</main>
+
+<script src="app.js"></script>
+</body>
+</html>
