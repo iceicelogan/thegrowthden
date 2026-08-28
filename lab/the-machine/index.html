@@ -647,6 +647,79 @@ h1.room-title {
   color: var(--deep); background: var(--gold); border-radius: 4px; padding: 1px 6px; margin-right: 6px;
 }
 
+/* ---------- ask the machine (chat) ---------- */
+#askBtn {
+  position: fixed; right: 16px; bottom: 16px; z-index: 65;
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 13px;
+  color: var(--deep); background: var(--gold);
+  border: none; border-radius: 100px; padding: 12px 18px; min-height: 48px;
+  cursor: pointer; box-shadow: 0 10px 30px rgba(0,0,0,.45);
+}
+#askBtn:active { transform: scale(.96); }
+#askPanel {
+  position: fixed; right: 12px; bottom: 12px; z-index: 70;
+  width: min(420px, calc(100vw - 24px)); height: min(560px, 78svh);
+  display: flex; flex-direction: column;
+  background: rgba(26,16,37,.97); backdrop-filter: blur(12px);
+  border: 1px solid rgba(252,243,214,.3); border-radius: 20px;
+  box-shadow: 0 30px 80px rgba(0,0,0,.6);
+  transform: translateY(calc(100% + 24px)); transition: transform .3s ease;
+}
+#askPanel.open { transform: none; }
+.ask-head { display: flex; align-items: center; justify-content: space-between; padding: 14px 16px 10px; border-bottom: 1px solid var(--line); }
+.ask-head b { font-size: 14px; color: var(--white); }
+.ask-head .ask-sub { display: block; font-size: 10.5px; color: var(--muted); font-weight: 400; }
+.ask-close { background: none; border: none; color: var(--cream); font-size: 18px; cursor: pointer; padding: 6px 10px; }
+.ask-msgs { flex: 1; overflow-y: auto; padding: 14px; display: flex; flex-direction: column; gap: 10px; }
+.msg { max-width: 88%; font-size: 13px; line-height: 1.6; padding: 9px 13px; border-radius: 14px; }
+.msg.user { align-self: flex-end; background: var(--your-ad); color: var(--white); border-bottom-right-radius: 4px; }
+.msg.bot { align-self: flex-start; background: rgba(252,243,214,.08); color: var(--cream); border-bottom-left-radius: 4px; }
+.msg.bot i { color: var(--muted); }
+.ask-row { display: flex; gap: 8px; padding: 12px; border-top: 1px solid var(--line); }
+.ask-row input {
+  flex: 1; font-family: 'Poppins', sans-serif; font-size: 13px;
+  color: var(--cream); background: rgba(252,243,214,.07);
+  border: 1.5px solid rgba(252,243,214,.3); border-radius: 100px;
+  padding: 10px 16px; min-height: 44px; outline: none;
+}
+.ask-row input:focus { border-color: var(--gold); }
+.ask-send {
+  font-size: 16px; width: 44px; height: 44px; border-radius: 50%;
+  background: var(--your-ad); color: var(--white); border: none; cursor: pointer; flex: 0 0 auto;
+}
+
+/* ---------- brand scanner ---------- */
+.scan-row { display: flex; gap: 8px; flex-wrap: wrap; }
+.scan-row input {
+  flex: 1; min-width: 220px; font-family: 'Poppins', sans-serif; font-size: 14px;
+  color: var(--cream); background: rgba(252,243,214,.07);
+  border: 1.5px solid rgba(252,243,214,.35); border-radius: 100px;
+  padding: 12px 18px; min-height: 48px; outline: none;
+}
+.scan-row input:focus { border-color: var(--gold); }
+.honesty-panel {
+  border: 1.5px dashed rgba(255,197,69,.55); border-radius: 14px;
+  background: rgba(255,197,69,.06); padding: 14px 16px;
+  font-size: 13px; line-height: 1.65; color: var(--muted); margin: 14px 0;
+}
+.honesty-panel b { color: var(--gold); }
+.scan-status { font-size: 13px; color: var(--sky); min-height: 22px; margin-top: 10px; }
+.report { margin-top: 6px; }
+.report h3 {
+  font-size: 16px; font-weight: 800; color: var(--gold);
+  border-bottom: 1px dashed var(--line); padding-bottom: 6px; margin: 18px 0 10px;
+}
+.report p, .report li { font-size: 13.5px; line-height: 1.7; color: var(--muted); }
+.report li { margin: 0 0 7px 18px; }
+.report b { color: var(--cream); }
+.sig-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 8px; margin-top: 10px; }
+.sig {
+  background: rgba(252,243,214,.05); border: 1px solid var(--line); border-radius: 12px;
+  padding: 9px 12px; font-size: 12px; color: var(--muted); word-break: break-word;
+}
+.sig b { display: block; font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: var(--sky); }
+
 /* ---------- placeholder rooms ---------- */
 .bench { text-align: center; padding: 52px 24px 46px; border-style: dashed; border-width: 1.5px; }
 .flask { font-size: 54px; display: inline-block; animation: bubble 2.6s ease-in-out infinite; }
@@ -721,6 +794,19 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <div id="popover" hidden></div>
 <div id="detail" hidden><div class="detail-card" id="detailCard"></div></div>
+
+<button id="askBtn" type="button">🤖 Ask the Machine</button>
+<div id="askPanel" aria-label="Ask the Machine chat">
+  <div class="ask-head">
+    <span><b>🤖 Ask the Machine</b><span class="ask-sub">answers only from this portal · at your dial setting</span></span>
+    <button class="ask-close" id="askClose" type="button" aria-label="Close">✕</button>
+  </div>
+  <div class="ask-msgs" id="askMsgs"></div>
+  <div class="ask-row">
+    <input id="askInput" type="text" placeholder="ask about the auction, GEM, fatigue…" autocomplete="off">
+    <button class="ask-send" id="askSend" type="button" aria-label="Send">↑</button>
+  </div>
+</div>
 
 <script>
 /* ============================================================
@@ -1228,6 +1314,23 @@ var CONTENT = {
     pro: 'Maintenance model: monthly hand-curation against primary sources. No auto-ingestion; the grading is the editorial product.',
   },
 
+  /* ============ brand scanner + chat ============ */
+  's.intro': {
+    kid: '<p>Type in any brand’s website, and the scanner reads it the way the fair’s machines would: what the site is about, whether it wears the fair’s little tracking pin, and what kinds of signs it could make. Then our helper writes a report card. Try the demo button — it scans our own site!</p>',
+    cmo: '<p>Point the scanner at a brand’s homepage. It reads the public signals a site feeds delivery — title, description, detectable Meta pixel, offer language — links you to their live ads in Meta’s own transparency tool, and then writes “How the Machine Sees This Brand” at your current depth, ending with ten genuinely different angle opportunities.</p>',
+    pro: '<p>Client-side parse of the fetched homepage (title, meta, fbq detection, offer/category signals) → deep link into the Ad Library (we link, never scrape) → one model call producing the delivery-signal read and ten distinct angle territories. Inference from public signals, labeled as such.</p>',
+  },
+  's.honesty': {
+    kid: '<b>The honest part:</b> nobody outside a company can see how much they spend on ads or how many people saw them. Anyone who shows you those numbers is guessing. What you CAN see: every ad they’re running right now, in Meta’s own public library.',
+    cmo: '<b>The honest part:</b> no spend, reach, or audience data exists publicly for commercial advertisers — anyone showing you competitor “spend” numbers is estimating from panels. What is public: their live creative, in Meta’s Ad Library.',
+    pro: '<b>The honest part:</b> spend/reach/audience data is not public for commercial advertisers (EU DSA transparency covers reach for EU-delivered ads only; political ads carry spend ranges). Panel-based “spend intelligence” is estimation. Ground truth available: live creatives via the Ad Library.',
+  },
+  'ask.hello': {
+    kid: 'Hi! I only know what’s inside this lab — the auction, the magnet-machines, the fatigue stuff. Ask me anything about those and I’ll explain it your way!',
+    cmo: 'I answer from this portal’s content only — auction mechanics, the model stack, fatigue, creative signal. Ask away; I’ll match your dial setting.',
+    pro: 'Grounded on the portal corpus (pro registers + graded claims). Outside-corpus queries get an honest “not covered.” Fire away.',
+  },
+
   /* directory + placeholder copy */
   'machine.dir-title': { kid: 'The other rooms', cmo: 'The other rooms', pro: 'The other rooms' },
   'machine.dir-body': {
@@ -1254,7 +1357,7 @@ var ROOMS = [
   { slug: 'auction',    name: 'The Auction Floor', ico: '🔨', open: true },
   { slug: 'recency',    name: 'Recency & Fatigue', ico: '🔁', open: true },
   { slug: 'creative',   name: 'Creative Signal',   ico: '📡', open: true },
-  { slug: 'scanner',    name: 'Brand Scanner',     ico: '🔍', open: false },
+  { slug: 'scanner',    name: 'Brand Scanner',     ico: '🔍', open: true },
   { slug: 'dispatch',   name: 'The Dispatch',      ico: '📰', open: true },
 ];
 var DEPTHS = ['kid', 'cmo', 'pro'];
@@ -2117,6 +2220,252 @@ function journeyStop() {
   if (J.io) J.io.disconnect();
   J.scenes = {};
 }
+
+/* ============================================================
+   AI WIRING — the proxy, Ask the Machine, and the Brand Scanner
+   NOTE: the proxy only answers pages served from thegrowthden.com;
+   local previews get a friendly explanation instead.
+   ============================================================ */
+var PROXY_URL = 'https://growth-den-lab-proxy.growth-den-lab-proxy.workers.dev';
+var MSG_BUSY = { kid: '🥼 The lab is super busy right now — every bench is taken! Try again in a minute.', cmo: '🥼 The lab is busy — rate limit reached. Give it a minute.', pro: '🥼 429: lab at capacity. Retry shortly.' };
+var MSG_NAP = { kid: '😴 The AI is taking a nap. Even machines rest! Try again soon.', cmo: '😴 The AI is napping (upstream unavailable). Try again shortly.', pro: '😴 503 upstream. Retry shortly.' };
+var MSG_LOCAL = { kid: 'The talking part only works on the real website (thegrowthden.com) — this is just the workshop copy!', cmo: 'AI features run only on the live site — the proxy rejects local previews. Push, then test on thegrowthden.com.', pro: 'Origin-locked proxy: serve from thegrowthden.com to exercise AI paths.' };
+function depthMsg(m) { return m[depth] || m.cmo; }
+
+function stripTags(s) { return String(s).replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim(); }
+var CORPUS = null;
+function buildCorpus() {
+  if (CORPUS) return CORPUS;
+  var out = ['THE GROWTH DEN — “THE MACHINE” PORTAL CORPUS (pro register + graded claims)'];
+  Object.keys(CONTENT).forEach(function (k) {
+    var c = CONTENT[k];
+    if (c && c.pro) out.push('[' + k + '] ' + stripTags(c.pro));
+  });
+  out.push('GRADED CLAIMS: ' +
+    '● Meta-published: auction winner = highest total value (bid × estimated action rate + ad quality), pays minimum needed to win (Meta Business Help Center). ' +
+    '● Quality includes negative signals: hide/report feedback, clickbait/engagement bait, poor landing experience (Meta Business Help Center). ' +
+    '● Andromeda retrieval: tens of millions → few thousand; 10,000× capacity, +6% recall, +8% quality in selected segments (engineering.fb.com Dec 2024). ' +
+    '● GEM foundation model distills into hundreds of vertical rankers; reads sequences up to thousands of events; ~+5% conversions Instagram, ~+3% FB Feed (engineering.fb.com Nov 2025, Aug 2026). ' +
+    '● Lattice: hundreds of rankers consolidated into one trillion-parameter architecture; ~8% quality lift Instagram test (ai.meta.com, arXiv:2512.09200). ' +
+    '● Editing an ad (significant edits) resets learning (Meta). ' +
+    '● Advantage+ $75B run-rate; Muse image model; 9M SMBs using ≥1 AI creative tool (Meta Q2 2026 earnings). ' +
+    '◐ Divergent delivery within one ad set measured across 181,890 A/B tests (Kellogg). ' +
+    '◐ Fatigue thresholds: Creative Limited <2×, Creative Fatigue ≥2× cost baseline (practitioner documentation, Jon Loomer). ' +
+    '◐ ~45% performance drop after 4 exposures, with caveats (Meta 2022 research). ' +
+    '◐ Fully automated ad creation by end of 2026 (trade press, not Meta on-record). ' +
+    '○ Folklore (flagged as unverified): “~50 optimization events/week” exact figure; frequency kill-numbers; Monday launches; similarity scores; the 25-vs-clones internal test numbers. ' +
+    'HONESTY RULES: no public spend/reach/audience data exists for commercial advertisers; Andromeda/GEM/Lattice production wiring is partly inferred.');
+  CORPUS = out.join('\n');
+  return CORPUS;
+}
+var REGISTER_DESC = {
+  kid: 'kid — plain words an 8-year-old understands; the lemonade-fair analogy is welcome; short sentences',
+  cmo: 'cmo — business leverage and cost language for a marketing executive; no jargon without a gloss',
+  pro: 'pro — precise technical register for an ads practitioner; component names and numbers welcome',
+};
+
+/* stream a /claude call; onDelta receives text chunks. Throws {code} on HTTP errors. */
+function streamClaude(payload, onDelta) {
+  return fetch(PROXY_URL + '/claude', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+  }).then(function (res) {
+    if (res.status === 429) throw { code: 429 };
+    if (res.status === 503) throw { code: 503 };
+    if (!res.ok) throw { code: res.status };
+    if (!payload.stream) return res.json().then(function (j) {
+      var txt = (j.content || []).map(function (b) { return b.text || ''; }).join('');
+      onDelta(txt); return txt;
+    });
+    var reader = res.body.getReader(), dec = new TextDecoder(), buf = '', full = '';
+    function pump() {
+      return reader.read().then(function (r) {
+        if (r.done) return full;
+        buf += dec.decode(r.value, { stream: true });
+        var lines = buf.split('\n');
+        buf = lines.pop();
+        lines.forEach(function (ln) {
+          ln = ln.trim();
+          if (ln.indexOf('data:') !== 0) return;
+          try {
+            var ev = JSON.parse(ln.slice(5));
+            if (ev.type === 'content_block_delta' && ev.delta && ev.delta.text) {
+              full += ev.delta.text; onDelta(ev.delta.text);
+            }
+          } catch (e) { }
+        });
+        return pump();
+      });
+    }
+    return pump();
+  });
+}
+
+/* ---- Ask the Machine (global, every tab) ---- */
+(function wireAsk() {
+  var panel = $('askPanel'), msgs = $('askMsgs'), input = $('askInput');
+  var history = [], busy = false, greeted = false;
+  function addMsg(cls, html) {
+    var d = document.createElement('div');
+    d.className = 'msg ' + cls;
+    d.innerHTML = html;
+    msgs.appendChild(d);
+    msgs.scrollTop = msgs.scrollHeight;
+    return d;
+  }
+  $('askBtn').addEventListener('click', function () {
+    panel.classList.toggle('open');
+    if (panel.classList.contains('open') && !greeted) {
+      greeted = true;
+      addMsg('bot', d3('ask.hello'));
+    }
+    if (panel.classList.contains('open')) input.focus();
+  });
+  $('askClose').addEventListener('click', function () { panel.classList.remove('open'); });
+  function send() {
+    var q = input.value.trim();
+    if (!q || busy) return;
+    input.value = '';
+    addMsg('user', q.replace(/</g, '&lt;'));
+    history.push({ role: 'user', content: q });
+    var bot = addMsg('bot', '<i>thinking…</i>');
+    busy = true;
+    var started = false;
+    var sys = 'You are “Ask the Machine”, the assistant inside The Growth Den’s teaching portal about Meta’s ad delivery system. ' +
+      'Answer ONLY from the PORTAL CORPUS below. Answer at this register: ' + REGISTER_DESC[depth] + '. ' +
+      'If asked something the corpus does not cover, say plainly what the portal doesn’t cover and point to the closest covered topic — never guess. ' +
+      'Keep every answer under 150 words. Never claim that spend, reach, or audience data exists publicly for commercial advertisers.\n\nPORTAL CORPUS:\n' + buildCorpus();
+    streamClaude({ model: 'claude-haiku-4-5', max_tokens: 300, stream: true, system: sys, messages: history.slice(-8) },
+      function (delta) {
+        if (!started) { started = true; bot.textContent = ''; }
+        bot.textContent += delta;
+        msgs.scrollTop = msgs.scrollHeight;
+      }).then(function (full) {
+        history.push({ role: 'assistant', content: full || '(no reply)' });
+      }).catch(function (err) {
+        bot.textContent = err && err.code === 429 ? depthMsg(MSG_BUSY)
+          : err && err.code === 503 ? depthMsg(MSG_NAP)
+          : depthMsg(MSG_LOCAL);
+        history.pop();
+      }).then(function () { busy = false; });
+  }
+  $('askSend').addEventListener('click', send);
+  input.addEventListener('keydown', function (e) { if (e.key === 'Enter') send(); });
+})();
+
+/* ---- Brand Scanner — #/scanner ---- */
+function viewScanner() {
+  return '<div class="view-pad">' +
+    '<p class="room-kicker">The Growth Den Lab · The Machine</p>' +
+    '<h1 class="room-title">🔍 Brand Scanner</h1>' +
+    '<p class="room-tag" style="margin-bottom:20px">' + d3('scanner.tag') + '</p>' +
+    '<div class="card"><div style="font-size:14.5px;line-height:1.7;color:var(--muted)">' + d3('s.intro') + '</div>' +
+      '<div class="scan-row" style="margin-top:14px">' +
+        '<input id="scanUrl" type="url" placeholder="https://a-brand-you-admire.com" autocomplete="off">' +
+        '<button class="run-btn" id="scanGo" type="button">🔍 scan</button>' +
+        '<button class="run-btn ghost" id="scanDemo" type="button">▶ scan thegrowthden.com</button>' +
+      '</div>' +
+      '<p class="scan-status" id="scanStatus"></p>' +
+    '</div>' +
+    '<div class="honesty-panel">' + d3('s.honesty') +
+      ' <a href="https://www.facebook.com/ads/library/" target="_blank" rel="noopener noreferrer">→ the Ad Library</a></div>' +
+    '<div class="card" id="scanReport" style="display:none"></div>' +
+    '</div>';
+}
+INITS.scanner = function () {
+  var busy = false;
+  function status(t) { var el = $('scanStatus'); if (el) el.innerHTML = t; }
+  function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+  function mdLite(s) {
+    var lines = esc(s).split('\n'), out = [], inList = false;
+    lines.forEach(function (ln) {
+      ln = ln.trim();
+      var isLi = /^(\d+[.)]|[-*•])\s+/.test(ln);
+      if (inList && !isLi) { out.push('</ol>'); inList = false; }
+      if (/^#{1,3}\s+/.test(ln)) out.push('<h3>' + ln.replace(/^#{1,3}\s+/, '') + '</h3>');
+      else if (isLi) { if (!inList) { out.push('<ol>'); inList = true; } out.push('<li>' + ln.replace(/^(\d+[.)]|[-*•])\s+/, '') + '</li>'); }
+      else if (ln) out.push('<p>' + ln + '</p>');
+    });
+    if (inList) out.push('</ol>');
+    return out.join('').replace(/\*\*([^*]+)\*\*/g, '<b>$1</b>');
+  }
+  function parseSite(html, url) {
+    var doc = new DOMParser().parseFromString(html, 'text/html');
+    var pick = function (sel, attr) { var el = doc.querySelector(sel); return el ? (attr ? el.getAttribute(attr) : el.textContent).trim() : ''; };
+    var pixel = /fbq\s*\(\s*['"]init['"]\s*,\s*['"](\d+)['"]/.exec(html);
+    var h1s = Array.from(doc.querySelectorAll('h1, h2')).slice(0, 4).map(function (h) { return h.textContent.replace(/\s+/g, ' ').trim(); }).filter(Boolean);
+    var siteName = pick('meta[property="og:site_name"]', 'content') || '';
+    var title = pick('title') || '';
+    var brand = siteName || title.split(/[|–—-]/)[0].trim() || url.replace(/^https?:\/\/(www\.)?/, '').split('/')[0];
+    return {
+      url: url, brand: brand, title: title,
+      description: pick('meta[name="description"]', 'content') || pick('meta[property="og:description"]', 'content'),
+      metaPixel: pixel ? { present: true, id: pixel[1] } : { present: false },
+      headlines: h1s,
+      ogType: pick('meta[property="og:type"]', 'content'),
+    };
+  }
+  function scan(url) {
+    if (busy) return;
+    busy = true;
+    var report = $('scanReport');
+    report.style.display = 'none';
+    status('📡 ' + (depth === 'kid' ? 'knocking on their front door…' : 'fetching the homepage…'));
+    fetch(PROXY_URL + '/fetch', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ url: url }),
+    }).then(function (r) {
+      if (r.status === 429) throw { code: 429 };
+      if (r.status === 503) throw { code: 503 };
+      if (!r.ok) throw { code: r.status };
+      return r.json();
+    }).then(function (f) {
+      if (!f.html || (f.status && f.status >= 400)) throw { code: 'blocked' };
+      var sig = parseSite(f.html, f.finalUrl || url);
+      var adlib = 'https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=ALL&q=' + encodeURIComponent(sig.brand);
+      status('🧠 ' + (depth === 'kid' ? 'the helper is writing the report card…' : 'generating the read…'));
+      report.style.display = 'block';
+      report.innerHTML = '<h2>How the Machine Sees ' + esc(sig.brand) + '</h2>' +
+        '<div class="sig-grid">' +
+          '<div class="sig"><b>title</b>' + esc(sig.title || '—') + '</div>' +
+          '<div class="sig"><b>description</b>' + esc((sig.description || '—').slice(0, 140)) + '</div>' +
+          '<div class="sig"><b>meta pixel</b>' + (sig.metaPixel.present ? '✅ detected (id ' + sig.metaPixel.id + ')' : '❌ not detected') + '</div>' +
+          '<div class="sig"><b>their live ads</b><a href="' + adlib + '" target="_blank" rel="noopener noreferrer">see them in Meta’s own transparency tool →</a></div>' +
+        '</div><div class="report" id="scanMd"><p><i>…</i></p></div>';
+      var sys = 'You are the Brand Scanner inside The Growth Den’s teaching portal “The Machine”, which explains Meta’s ad delivery system (retrieval/Andromeda, ranking/GEM, the total-value auction, quality penalties, creative-as-targeting, fatigue). ' +
+        'You receive parsed PUBLIC signals from a brand’s homepage. Produce “How the Machine Sees This Brand” in markdown with EXACTLY these sections: ' +
+        '“## What the site feeds delivery” (read the actual signals: pixel present or absent and what that means, clarity of offer/category, 4-6 sentences); ' +
+        '“## Mechanisms they’re using well — or fighting” (tie specifically to retrieval indexability, creative signal strength, quality surface, learning consolidation); ' +
+        '“## 10 genuinely different angles” (numbered list of ten creative angle opportunities, each a DISTINCT buyer motivation or hook territory — never cosmetic variants of one idea; one concrete line each). ' +
+        'Write at this register: ' + REGISTER_DESC[depth] + '. ' +
+        'Rules: infer only from the provided signals; never invent spend, reach, or audience numbers — none are public; total under 600 words.';
+      var el = null, started = false;
+      return streamClaude({ model: 'claude-sonnet-4-5', max_tokens: 3000, stream: true, system: sys,
+        messages: [{ role: 'user', content: 'SIGNALS:\n' + JSON.stringify(sig, null, 1) }] },
+        function () { }).then(function (full) {
+          $('scanMd').innerHTML = mdLite(full);
+          status('✅ ' + (depth === 'kid' ? 'report card done!' : 'scan complete.'));
+        });
+    }).catch(function (err) {
+      if (err && err.code === 429) status(depthMsg(MSG_BUSY));
+      else if (err && err.code === 503) status(depthMsg(MSG_NAP));
+      else if (err && err.code === 'blocked') status('🚪 ' + (depth === 'kid' ? 'That site slammed the door on our scanner — some do! Try the demo scan instead.' : 'That site blocked the fetch (some do). Try the demo scan — thegrowthden.com always answers.'));
+      else status(depthMsg(MSG_LOCAL) + ' · ' + (depth === 'kid' ? 'or try the demo!' : 'demo scan works on the live site.'));
+      busy = false;
+    }).then(function () { busy = false; });
+  }
+  $('scanGo').addEventListener('click', function () {
+    var u = $('scanUrl').value.trim();
+    if (!u) { status(depth === 'kid' ? 'type a website first!' : 'enter a URL first.'); return; }
+    if (!/^https?:\/\//.test(u)) u = 'https://' + u;
+    scan(u);
+  });
+  $('scanUrl').addEventListener('keydown', function (e) { if (e.key === 'Enter') $('scanGo').click(); });
+  $('scanDemo').addEventListener('click', function () { $('scanUrl').value = 'https://thegrowthden.com'; scan('https://thegrowthden.com'); });
+  return null;
+};
+VIEWS.scanner = viewScanner;
 
 /* ============================================================
    THE DISPATCH — #/dispatch · lab logbook
