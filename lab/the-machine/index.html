@@ -349,6 +349,377 @@ h1.room-title {
 .big-btn:hover { transform: translateY(-2px); }
 .big-btn.ghost { background: transparent; color: var(--cream); border: 2px solid rgba(252,243,214,.45); box-shadow: none; }
 
+/* ---------- auction floor ---------- */
+.sim-grid { display: grid; grid-template-columns: 1fr 350px; gap: 16px; align-items: start; }
+.sim-stage {
+  position: relative; height: 480px;
+  border: 1px solid var(--line); border-radius: var(--r);
+  background: rgba(15,9,24,.72); overflow: hidden;
+  box-shadow: 0 24px 60px rgba(0,0,0,.4);
+}
+.sim-stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+.sim-cap {
+  position: absolute; left: 12px; right: 12px; bottom: 12px;
+  font-size: 12.5px; color: var(--cream); text-align: center;
+  background: rgba(26,16,37,.85); border: 1px solid var(--line);
+  border-radius: 12px; padding: 8px 12px; min-height: 34px;
+  display: grid; align-items: center; pointer-events: none;
+}
+.sim-cap > * { grid-area: 1 / 1; }
+.ctl { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
+.ctl-name { font-size: 12px; font-weight: 700; letter-spacing: .06em; color: var(--cream); display: flex; justify-content: space-between; }
+.ctl-name b { color: var(--your-ad); font-size: 14px; }
+.ctl input[type="range"] { -webkit-appearance: none; appearance: none; width: 100%; height: 34px; background: transparent; cursor: pointer; }
+.ctl input[type="range"]::-webkit-slider-runnable-track { height: 7px; border-radius: 5px; background: rgba(252,243,214,.16); }
+.ctl input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none; appearance: none; width: 24px; height: 24px; margin-top: -8.5px;
+  border-radius: 50%; background: var(--your-ad); border: 3px solid var(--deep);
+  box-shadow: 0 0 10px rgba(254,124,43,.6);
+}
+.ctl input[type="range"]::-moz-range-track { height: 7px; border-radius: 5px; background: rgba(252,243,214,.16); }
+.ctl input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius: 50%; background: var(--your-ad); border: 3px solid var(--deep); }
+.fresh-bar { height: 12px; border-radius: 7px; background: rgba(252,243,214,.14); overflow: hidden; }
+.fresh-bar i { display: block; height: 100%; width: 100%; background: linear-gradient(90deg, var(--your-ad), var(--gold)); transition: width .3s; }
+.chip-btn {
+  font-family: 'Poppins', sans-serif; font-weight: 600; font-size: 12px;
+  color: var(--cream); background: transparent;
+  border: 1.5px solid rgba(252,243,214,.4); border-radius: 100px;
+  padding: 8px 14px; min-height: 38px; cursor: pointer;
+}
+.chip-btn:hover { border-color: var(--cream); }
+.chip-btn.pressed { background: var(--red); border-color: var(--red); color: var(--white); }
+.run-btn {
+  font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 15px;
+  background: var(--your-ad); color: var(--white);
+  border: none; border-radius: 100px; padding: 12px 22px; min-height: 48px; cursor: pointer;
+  box-shadow: 0 4px 18px rgba(254,124,43,.45);
+}
+.run-btn:active { transform: scale(.97); }
+.run-btn.ghost { background: transparent; color: var(--cream); border: 2px solid rgba(252,243,214,.45); box-shadow: none; }
+.run-btn.ghost.pressed { background: var(--gold); color: var(--deep); border-color: var(--gold); }
+.sim-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 14px; }
+.sstat { background: rgba(252,243,214,.06); border: 1px solid var(--line); border-radius: 12px; padding: 8px 12px; }
+.sstat span { display: block; font-size: 10px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.sstat b { font-size: 17px; color: var(--cream); }
+.sstat.hero b { color: var(--your-ad); }
+.sstat .sub { font-size: 10.5px; color: var(--muted); }
+.scen-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 6px 0 12px; }
+.scen-cap { min-height: 40px; font-size: 13.5px; line-height: 1.6; color: var(--muted); }
+.scen-cap b { color: var(--cream); }
+.cmp-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 12.5px; }
+.cmp-table th, .cmp-table td { padding: 6px 10px; text-align: left; border-bottom: 1px dashed var(--line); color: var(--muted); }
+.cmp-table th { color: var(--cream); font-weight: 700; font-size: 11px; letter-spacing: .06em; text-transform: uppercase; }
+.cmp-table .you-row td { color: var(--your-ad); font-weight: 600; }
+.next-room {
+  display: flex; flex-direction: column; gap: 4px;
+  border: 1.5px solid rgba(255,197,69,.5); border-radius: var(--r);
+  background: var(--glass); padding: 20px 24px; text-decoration: none;
+  transition: transform .15s, border-color .2s; margin-bottom: 16px;
+}
+.next-room:hover { transform: translateY(-2px); border-color: var(--gold); }
+.next-room .nr-k { font-size: 11px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--gold); }
+.next-room .nr-t { font-size: 20px; font-weight: 800; color: var(--white); }
+@media (max-width: 900px) {
+  .sim-grid { grid-template-columns: 1fr; }
+  .sim-stage { height: 340px; }
+}
+
+/* ---------- the model room (hall of machines) ---------- */
+.hall-wrap { position: relative; }
+.hall {
+  display: flex; gap: 0; align-items: stretch;
+  overflow-x: auto; scroll-snap-type: x mandatory;
+  padding: 6px 2px 16px; scrollbar-width: none;
+}
+.hall::-webkit-scrollbar { display: none; }
+.roomcard {
+  flex: 0 0 min(600px, 88vw); scroll-snap-align: center;
+  background: var(--glass); border: 1px solid var(--line); border-radius: var(--r);
+  padding: 24px 24px 20px; box-shadow: 0 18px 44px rgba(0,0,0,.32);
+}
+.roomcard h2 { font-size: 22px; font-weight: 800; color: var(--white); margin-bottom: 2px; }
+.roomcard .rc-sub { font-size: 12px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--sky); margin-bottom: 12px; }
+.roomcard .rc-body { font-size: 14px; line-height: 1.7; color: var(--muted); }
+.roomcard .rc-body p { margin-bottom: 10px; }
+.roomcard .rc-body b, .roomcard .rc-body i { color: var(--cream); }
+.hall-link {
+  flex: 0 0 84px; align-self: center; position: relative;
+  border-top: 2px dashed var(--gold); opacity: .8; margin: 0 -2px;
+}
+.hall-link span {
+  position: absolute; top: -22px; left: 50%; transform: translateX(-50%);
+  font-size: 9.5px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--gold); white-space: nowrap;
+}
+.hall-link.solid { border-top-style: solid; border-top-color: rgba(252,243,214,.5); }
+.hall-link.solid span { color: rgba(252,243,214,.6); }
+.flip-row { display: flex; gap: 8px; margin: 14px 0 10px; }
+.flip-btn {
+  flex: 1; font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 12px;
+  padding: 9px 10px; min-height: 40px; cursor: pointer;
+  background: transparent; color: var(--muted);
+  border: 1.5px solid rgba(252,243,214,.35); border-radius: 100px;
+}
+.flip-btn.on { background: var(--cream); color: var(--deep); border-color: var(--cream); }
+.flip-panel { font-size: 13px; line-height: 1.65; color: var(--muted); background: rgba(252,243,214,.05); border: 1px solid var(--line); border-radius: 14px; padding: 12px 14px; min-height: 92px; }
+.flip-panel b { color: var(--cream); }
+.tuesday {
+  margin-top: 12px; border-left: 3px solid var(--your-ad);
+  background: rgba(254,124,43,.07); border-radius: 0 14px 14px 0;
+  padding: 10px 14px; font-size: 13px; line-height: 1.65; color: var(--muted);
+}
+.tuesday .tue-k { display: block; font-size: 10px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: var(--your-ad); margin-bottom: 4px; }
+.tuesday b { color: var(--cream); }
+.plaque {
+  border: 1px solid rgba(252,243,214,.25); border-radius: 12px;
+  background: rgba(252,243,214,.04); padding: 12px 14px; margin-bottom: 10px;
+}
+.plaque .pl-t { font-size: 13px; font-weight: 700; color: var(--cream); }
+.plaque .pl-d { font-size: 11px; color: var(--sky); letter-spacing: .06em; margin-bottom: 4px; }
+.plaque .pl-b { font-size: 12.5px; line-height: 1.6; color: var(--muted); font-style: italic; }
+.tl { list-style: none; margin-top: 8px; }
+.tl li { position: relative; padding: 0 0 16px 22px; border-left: 2px solid rgba(252,243,214,.2); margin-left: 6px; }
+.tl li::before {
+  content: ''; position: absolute; left: -6px; top: 2px;
+  width: 10px; height: 10px; border-radius: 50%;
+  background: var(--gold); border: 2px solid var(--deep);
+}
+.tl li:last-child { border-left-color: transparent; }
+.tl .tl-y { font-size: 11px; font-weight: 800; letter-spacing: .1em; color: var(--gold); }
+.tl .tl-t { font-size: 13.5px; font-weight: 700; color: var(--cream); }
+.tl .tl-b { font-size: 12.5px; line-height: 1.6; color: var(--muted); }
+.hall-nav { display: flex; gap: 8px; justify-content: center; align-items: center; margin-top: 4px; }
+.hn-btn {
+  width: 42px; height: 42px; border-radius: 50%; cursor: pointer;
+  font-size: 17px; color: var(--cream); background: rgba(26,16,37,.7);
+  border: 1.5px solid rgba(252,243,214,.4);
+}
+.hn-dots { display: flex; gap: 6px; }
+.hn-dots i { width: 8px; height: 8px; border-radius: 50%; border: 1.5px solid var(--muted); }
+.hn-dots i.on { background: var(--gold); border-color: var(--gold); }
+
+/* ---------- recency: play-as-GEM game ---------- */
+.gem-stage { background: rgba(15,9,24,.72); border: 1px solid var(--line); border-radius: var(--r); padding: 20px; }
+.gem-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+.gem-head .gh-t { font-size: 15px; font-weight: 800; color: var(--cream); }
+.gem-score { font-size: 12px; font-weight: 700; color: var(--gold); background: rgba(255,197,69,.12); border: 1px solid rgba(255,197,69,.4); border-radius: 100px; padding: 4px 12px; }
+.evt-stream { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
+.evt {
+  display: flex; align-items: center; gap: 10px;
+  background: rgba(252,243,214,.06); border: 1px solid var(--line); border-radius: 12px;
+  padding: 9px 12px; opacity: 0; transform: translateX(-14px);
+  animation: evt-in .4s ease forwards;
+}
+@keyframes evt-in { to { opacity: 1; transform: none; } }
+.evt .e-ico { font-size: 19px; }
+.evt .e-lab { flex: 1; font-size: 13.5px; color: var(--cream); }
+.evt .e-when { font-size: 11px; color: var(--sky); white-space: nowrap; }
+.evt.ghosted { opacity: .45; border-style: dashed; }
+.gem-q { font-size: 14.5px; font-weight: 700; color: var(--white); margin: 4px 0 10px; }
+.opt-row { display: flex; flex-direction: column; gap: 8px; }
+.opt {
+  text-align: left; font-family: 'Poppins', sans-serif; font-size: 13.5px; font-weight: 500;
+  color: var(--cream); background: rgba(252,243,214,.05);
+  border: 1.5px solid rgba(252,243,214,.3); border-radius: 12px;
+  padding: 12px 14px; min-height: 46px; cursor: pointer; transition: border-color .15s;
+}
+.opt:hover { border-color: var(--cream); }
+.opt.correct { border-color: var(--green); background: rgba(143,214,148,.12); }
+.opt.wrong { border-color: var(--red); background: rgba(229,52,11,.1); opacity: .8; }
+.opt:disabled { cursor: default; }
+.gem-reveal {
+  margin-top: 12px; border-left: 3px solid var(--gold);
+  background: rgba(255,197,69,.07); border-radius: 0 12px 12px 0;
+  padding: 11px 14px; font-size: 13.5px; line-height: 1.65; color: var(--muted);
+}
+.gem-reveal b { color: var(--cream); }
+.gem-next { margin-top: 12px; }
+
+/* ---------- fatigue courtroom ---------- */
+.case { position: relative; }
+.verdict {
+  position: absolute; top: 18px; right: 18px; transform: rotate(4deg);
+  font-size: 11px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase;
+  border: 2px solid; border-radius: 8px; padding: 4px 10px;
+}
+.verdict.v-folk { color: var(--muted); border-color: rgba(252,243,214,.4); }
+.verdict.v-meas { color: var(--sky); border-color: rgba(127,200,240,.6); }
+.verdict.v-doc { color: var(--gold); border-color: rgba(255,197,69,.6); }
+.case-quote { font-size: 16px; font-weight: 600; font-style: italic; color: var(--white); margin-bottom: 10px; padding-right: 120px; }
+.curve-box { position: relative; height: 210px; margin-top: 12px; border: 1px solid var(--line); border-radius: 14px; background: rgba(15,9,24,.6); overflow: hidden; }
+.curve-box canvas { position: absolute; inset: 0; width: 100%; height: 100%; touch-action: none; cursor: crosshair; }
+.band-wrap { margin-top: 12px; }
+.band-bar { display: flex; height: 34px; border-radius: 10px; overflow: hidden; border: 1px solid var(--line); }
+.band-bar i { display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 800; letter-spacing: .06em; font-style: normal; }
+.band-bar .b-ok { flex: 7; background: rgba(143,214,148,.25); color: var(--green); }
+.band-bar .b-lim { flex: 5; background: rgba(255,197,69,.22); color: var(--gold); }
+.band-bar .b-fat { flex: 10; background: rgba(229,52,11,.22); color: #ff8a70; }
+.band-stamp { margin-top: 8px; font-size: 14px; font-weight: 800; }
+.caveat-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.caveat {
+  font-size: 11.5px; font-weight: 600; color: var(--muted);
+  border: 1.5px dashed rgba(252,243,214,.4); border-radius: 100px;
+  background: transparent; padding: 6px 12px; cursor: pointer; min-height: 34px;
+  font-family: 'Poppins', sans-serif;
+}
+.caveat.on { color: var(--deep); background: var(--sky); border-color: var(--sky); border-style: solid; }
+.duo { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
+.duo .duo-col { border: 1px solid var(--line); border-radius: 14px; padding: 12px; }
+.duo h4 { font-size: 12px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; margin-bottom: 8px; }
+.duo .d-yes h4 { color: #ff8a70; }
+.duo .d-no h4 { color: var(--green); }
+.duo li { list-style: none; font-size: 12.5px; color: var(--muted); padding: 4px 0 4px 18px; position: relative; line-height: 1.5; }
+.duo .d-yes li::before { content: '↺'; position: absolute; left: 0; color: #ff8a70; }
+.duo .d-no li::before { content: '✓'; position: absolute; left: 0; color: var(--green); }
+@media (max-width: 640px) { .duo { grid-template-columns: 1fr; } .case-quote { padding-right: 0; margin-top: 26px; } }
+
+/* ---------- creative signal field ---------- */
+.cgrid { display: grid; grid-template-columns: 1fr 340px; gap: 16px; align-items: start; }
+.cfield {
+  position: relative; height: 520px;
+  border: 1px solid var(--line); border-radius: var(--r);
+  background: rgba(15,9,24,.78); overflow: hidden;
+  box-shadow: 0 24px 60px rgba(0,0,0,.4);
+}
+.cfield canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+.cfield .sim-cap { pointer-events: none; }
+.cchip-group { margin-bottom: 12px; }
+.cchip-group h4 { font-size: 11px; font-weight: 800; letter-spacing: .12em; color: var(--cream); margin-bottom: 6px; }
+.cchip-row { display: flex; flex-wrap: wrap; gap: 6px; }
+.cchip {
+  font-family: 'Poppins', sans-serif; font-weight: 500; font-size: 12px;
+  color: var(--cream); background: rgba(252,243,214,.06);
+  border: 1.5px solid rgba(252,243,214,.28); border-radius: 100px;
+  padding: 8px 12px; min-height: 38px; cursor: pointer;
+  transition: transform .15s cubic-bezier(.3,1.6,.6,1), background .2s, border-color .2s;
+}
+.cchip:active { transform: scale(.94); }
+.cchip.selected {
+  background: var(--your-ad); border-color: var(--your-ad); color: var(--white); font-weight: 600;
+  box-shadow: 0 0 14px rgba(254,124,43,.5); transform: scale(1.03);
+}
+.cchip.generic.selected { background: #6f6690; border-color: #6f6690; box-shadow: none; }
+.cread { border-top: 1px dashed var(--line); margin-top: 12px; padding-top: 12px; }
+.cread .cr-p { font-size: 14.5px; font-weight: 600; line-height: 1.45; color: var(--your-ad); min-height: 42px; }
+.cread .cr-s { display: flex; justify-content: space-between; gap: 8px; font-size: 12px; color: var(--muted); margin-top: 8px; }
+.cread .cr-s b { color: var(--cream); font-size: 15px; }
+.cread .ro-bar { width: 110px; height: 9px; background: rgba(252,243,214,.14); border-radius: 6px; overflow: hidden; align-self: center; }
+.cread .ro-bar i { display: block; height: 100%; width: 0%; background: linear-gradient(90deg, var(--your-ad), var(--gold)); transition: width .4s; }
+.demo-active { outline: 2px solid var(--gold); outline-offset: 2px; }
+.split-table { width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 12px; }
+.split-table td, .split-table th { padding: 5px 8px; border-bottom: 1px dashed var(--line); color: var(--muted); text-align: left; }
+.split-table th { color: var(--cream); font-size: 10.5px; letter-spacing: .06em; text-transform: uppercase; }
+@media (max-width: 900px) { .cgrid { grid-template-columns: 1fr; } .cfield { height: 380px; } }
+
+/* ---------- the dispatch (lab logbook) ---------- */
+.log-filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+.log-entry {
+  position: relative; border-left: 3px solid rgba(252,243,214,.25);
+  padding: 4px 0 18px 18px; margin-left: 6px;
+}
+.log-entry::before {
+  content: ''; position: absolute; left: -7px; top: 8px;
+  width: 11px; height: 11px; border-radius: 50%;
+  background: var(--deep); border: 2.5px solid var(--gold);
+}
+.log-date { font-family: ui-monospace, monospace; font-size: 11px; color: var(--sky); letter-spacing: .05em; }
+.log-title { font-size: 16px; font-weight: 700; color: var(--white); margin: 2px 0 6px; }
+.log-meta { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-bottom: 8px; }
+.topic-chip {
+  font-size: 10px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase;
+  border-radius: 100px; padding: 2px 10px;
+}
+.topic-chip.t-delivery { background: rgba(127,200,240,.18); color: var(--sky); }
+.topic-chip.t-creative { background: rgba(254,124,43,.18); color: var(--your-ad); }
+.topic-chip.t-measurement { background: rgba(143,214,148,.16); color: var(--green); }
+.topic-chip.t-policy { background: rgba(229,52,11,.16); color: #ff8a70; }
+.verdict-tag {
+  font-size: 10px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase;
+  border: 1.5px solid; border-radius: 8px; padding: 2px 9px;
+}
+.verdict-tag.v-do { color: var(--your-ad); border-color: rgba(254,124,43,.6); }
+.verdict-tag.v-know { color: var(--sky); border-color: rgba(127,200,240,.55); }
+.verdict-tag.v-ignore { color: var(--muted); border-color: rgba(252,243,214,.35); }
+.log-body { font-size: 13.5px; line-height: 1.65; color: var(--muted); }
+.log-body b { color: var(--cream); }
+.sample-flag {
+  font-size: 9.5px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--deep); background: var(--gold); border-radius: 4px; padding: 1px 6px; margin-right: 6px;
+}
+
+/* ---------- ask the machine (chat) ---------- */
+#askBtn {
+  position: fixed; right: 16px; bottom: 16px; z-index: 65;
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 13px;
+  color: var(--deep); background: var(--gold);
+  border: none; border-radius: 100px; padding: 12px 18px; min-height: 48px;
+  cursor: pointer; box-shadow: 0 10px 30px rgba(0,0,0,.45);
+}
+#askBtn:active { transform: scale(.96); }
+#askPanel {
+  position: fixed; right: 12px; bottom: 12px; z-index: 70;
+  width: min(420px, calc(100vw - 24px)); height: min(560px, 78svh);
+  display: flex; flex-direction: column;
+  background: rgba(26,16,37,.97); backdrop-filter: blur(12px);
+  border: 1px solid rgba(252,243,214,.3); border-radius: 20px;
+  box-shadow: 0 30px 80px rgba(0,0,0,.6);
+  transform: translateY(calc(100% + 24px)); transition: transform .3s ease;
+}
+#askPanel.open { transform: none; }
+.ask-head { display: flex; align-items: center; justify-content: space-between; padding: 14px 16px 10px; border-bottom: 1px solid var(--line); }
+.ask-head b { font-size: 14px; color: var(--white); }
+.ask-head .ask-sub { display: block; font-size: 10.5px; color: var(--muted); font-weight: 400; }
+.ask-close { background: none; border: none; color: var(--cream); font-size: 18px; cursor: pointer; padding: 6px 10px; }
+.ask-msgs { flex: 1; overflow-y: auto; padding: 14px; display: flex; flex-direction: column; gap: 10px; }
+.msg { max-width: 88%; font-size: 13px; line-height: 1.6; padding: 9px 13px; border-radius: 14px; }
+.msg.user { align-self: flex-end; background: var(--your-ad); color: var(--white); border-bottom-right-radius: 4px; }
+.msg.bot { align-self: flex-start; background: rgba(252,243,214,.08); color: var(--cream); border-bottom-left-radius: 4px; }
+.msg.bot i { color: var(--muted); }
+.ask-row { display: flex; gap: 8px; padding: 12px; border-top: 1px solid var(--line); }
+.ask-row input {
+  flex: 1; font-family: 'Poppins', sans-serif; font-size: 13px;
+  color: var(--cream); background: rgba(252,243,214,.07);
+  border: 1.5px solid rgba(252,243,214,.3); border-radius: 100px;
+  padding: 10px 16px; min-height: 44px; outline: none;
+}
+.ask-row input:focus { border-color: var(--gold); }
+.ask-send {
+  font-size: 16px; width: 44px; height: 44px; border-radius: 50%;
+  background: var(--your-ad); color: var(--white); border: none; cursor: pointer; flex: 0 0 auto;
+}
+
+/* ---------- brand scanner ---------- */
+.scan-row { display: flex; gap: 8px; flex-wrap: wrap; }
+.scan-row input {
+  flex: 1; min-width: 220px; font-family: 'Poppins', sans-serif; font-size: 14px;
+  color: var(--cream); background: rgba(252,243,214,.07);
+  border: 1.5px solid rgba(252,243,214,.35); border-radius: 100px;
+  padding: 12px 18px; min-height: 48px; outline: none;
+}
+.scan-row input:focus { border-color: var(--gold); }
+.honesty-panel {
+  border: 1.5px dashed rgba(255,197,69,.55); border-radius: 14px;
+  background: rgba(255,197,69,.06); padding: 14px 16px;
+  font-size: 13px; line-height: 1.65; color: var(--muted); margin: 14px 0;
+}
+.honesty-panel b { color: var(--gold); }
+.scan-status { font-size: 13px; color: var(--sky); min-height: 22px; margin-top: 10px; }
+.report { margin-top: 6px; }
+.report h3 {
+  font-size: 16px; font-weight: 800; color: var(--gold);
+  border-bottom: 1px dashed var(--line); padding-bottom: 6px; margin: 18px 0 10px;
+}
+.report p, .report li { font-size: 13.5px; line-height: 1.7; color: var(--muted); }
+.report li { margin: 0 0 7px 18px; }
+.report b { color: var(--cream); }
+.sig-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 8px; margin-top: 10px; }
+.sig {
+  background: rgba(252,243,214,.05); border: 1px solid var(--line); border-radius: 12px;
+  padding: 9px 12px; font-size: 12px; color: var(--muted); word-break: break-word;
+}
+.sig b { display: block; font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: var(--sky); }
+
 /* ---------- placeholder rooms ---------- */
 .bench { text-align: center; padding: 52px 24px 46px; border-style: dashed; border-width: 1.5px; }
 .flask { font-size: 54px; display: inline-block; animation: bubble 2.6s ease-in-out infinite; }
@@ -424,6 +795,19 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <div id="popover" hidden></div>
 <div id="detail" hidden><div class="detail-card" id="detailCard"></div></div>
 
+<button id="askBtn" type="button">🤖 Ask the Machine</button>
+<div id="askPanel" aria-label="Ask the Machine chat">
+  <div class="ask-head">
+    <span><b>🤖 Ask the Machine</b><span class="ask-sub">answers only from this portal · at your dial setting</span></span>
+    <button class="ask-close" id="askClose" type="button" aria-label="Close">✕</button>
+  </div>
+  <div class="ask-msgs" id="askMsgs"></div>
+  <div class="ask-row">
+    <input id="askInput" type="text" placeholder="ask about the auction, GEM, fatigue…" autocomplete="off">
+    <button class="ask-send" id="askSend" type="button" aria-label="Send">↑</button>
+  </div>
+</div>
+
 <script>
 /* ============================================================
    The Machine — portal shell + the #/machine journey.
@@ -445,6 +829,11 @@ var SRC = {
   auction: { name: 'Meta Business Help Center — the ad auction', url: 'https://www.facebook.com/business/help' },
   quality: { name: 'Meta Business Help Center — ad quality', url: 'https://www.facebook.com/business/help' },
   kellogg: { name: 'Kellogg School of Management — study of 181,890 Meta A/B tests', url: 'https://www.kellogg.northwestern.edu/academics-research/research/detail/2025/characterizing-and-minimizing-divergent-delivery-in-meta-advertising-experiments' },
+  lattice: { name: 'Meta AI — “Meta Lattice” · arXiv:2512.09200', url: 'https://arxiv.org/abs/2512.09200' },
+  earnings: { name: 'Meta Q2 2026 earnings call', url: 'https://investor.atmeta.com' },
+  theinfo: { name: 'Reported by The Information / trade press — not Meta on-record', url: 'https://www.theinformation.com' },
+  loomer: { name: 'Jon Loomer — practitioner documentation of Meta’s fatigue thresholds', url: 'https://www.jonloomer.com' },
+  fatigue22: { name: 'Meta 2022 creative-fatigue research (shown with its caveats)', url: 'https://www.facebook.com/business/news' },
 };
 
 /* ---------------- CONTENT: every text block, three registers ---------------- */
@@ -454,7 +843,7 @@ var CONTENT = {
     cmo: 'Follow one impression through the delivery pipeline: retrieval, ranking, the value equation, the auction — all inside about 100 milliseconds.',
     pro: 'One impression, end to end: Andromeda retrieval, multi-stage ranking under GEM-lineage models, total-value auction clearing. ~100ms budget.',
   },
-  'model-room.tag': {
+  'models.tag': {
     kid: 'Where the computer practices guessing what you’ll tap on.',
     cmo: 'How estimated action rates get made: the prediction models behind every delivery decision.',
     pro: 'p(action) estimation — features, training cadence, calibration, and which inputs you can actually influence.',
@@ -665,12 +1054,289 @@ var CONTENT = {
     pro: '<p>Render, log, learn: the outcome feeds back into training data for the next pass. ~100ms end to end, per impression, at feed scale.</p>',
   },
 
+  /* ============ the auction floor ============ */
+  'a.intro': {
+    kid: '<p>In the last room you watched the race from way up high. Down here on the floor, you are one of the racers. Eight other lemonade stands want the same visitors, and each has its own tickets, its own tastiness, and its own freshness — and they change a little every day.</p><p>Set your three dials, press <b>run a day</b>, and watch what the fair does with your choices. The buttons below the floor set up little experiments for you.</p>',
+    cmo: '<p>You are one advertiser among eight simulated competitors, each with hidden bid, action-rate, and quality stats that drift day to day. Your three levers are the same three terms from the value equation: what you offer, how strongly people respond, and how fresh the creative still is.</p><p>Run days, watch the readouts — especially the gap between what you <b>bid</b> and what you actually <b>paid</b>. Every number on this floor is computed from the value equation, not scripted. The scenario buttons stage the experiments worth running.</p>',
+    pro: '<p>A live second-price simulator on total value = bid × eAR + quality. Eight competitors with drifting hidden stats; four contest each auction. Your eAR is proxied by creative strength × freshness; freshness decays daily until refreshed. Wins clear at the minimum sufficient amount, so paid-vs-bid spread is the pays-minimum lesson made visible.</p><p>Readouts are derived, not vibes: win rate, effective CPM, spend, simulated results. Scenario buttons freeze the competitor set and run controlled comparisons.</p>',
+  },
+  'a.cap.idle': {
+    kid: 'The floor is quiet. Set your dials and run a day!',
+    cmo: 'Floor idle. Adjust your levers and run a day of auctions.',
+    pro: 'Idle. Configure and run — 120 auctions per simulated day.',
+  },
+  'a.cap.running': {
+    kid: 'Auctions bursting! Tallest stack wins each visitor.',
+    cmo: 'Each burst is one auction clearing on total value.',
+    pro: 'Sampled auctions rendering; full day computed exactly.',
+  },
+  'a.cap.sc1': {
+    kid: 'Same starting point, three tries: doubling your <b>tickets</b> wins more but costs more each time. Doubling your <b>tastiness</b> wins even more — and each win gets <b>cheaper</b>. Better lemonade beats bigger allowance.',
+    cmo: 'From one baseline: doubling bid buys volume at a worse price. Doubling creative strength buys more volume at a <b>better</b> price, because action rate raises your total value and divides your clearing price. Creative wins on cost.',
+    pro: 'Controlled comparison, frozen competitor set: 2× bid lifts win rate but clears richer runner-ups (eCPM up). 2× creative lifts win rate further while dividing the clearing price (eCPM down). The asymmetry is structural, not situational.',
+  },
+  'a.cap.sc2on': {
+    kid: 'Q4! Every stand raised its tickets and two new stands showed up. Same dials, pricier wins — the fair itself got more crowded.',
+    cmo: 'Q4 mode: competitor bids up ~50%, two extra entrants per auction. Identical settings now clear higher — seasonal CPM inflation is auction pressure, not a platform tax.',
+    pro: 'Density + bid inflation active. Clearing prices rise with runner-up values; your settings are unchanged. This is the whole mechanism behind seasonal CPM curves.',
+  },
+  'a.cap.sc2off': {
+    kid: 'The holidays ended. The extra stands packed up and prices calmed down.',
+    cmo: 'Q4 pressure removed. Same settings, softer clearing prices.',
+    pro: 'Competitor set restored to baseline density and bids.',
+  },
+  'a.cap.sc3on': {
+    kid: 'Uh oh — your sign turned tricky (“YOU WON’T BELIEVE THIS LEMONADE”). The fair docks tricky signs, so even big tickets stop winning.',
+    cmo: 'Engagement-bait penalty active: a negative quality term now drags your total value. Watch wins fall even if you raise bid — you cannot buy your way past a quality penalty efficiently.',
+    pro: 'Quality term now carries a fixed negative offset (documented penalty class). Total value falls linearly; clearing gets harder at every bid level. Bid compensation is possible but strictly more expensive than removing the penalty.',
+  },
+  'a.cap.sc3off': {
+    kid: 'You fixed the sign — honest again, and the fair stops docking you.',
+    cmo: 'Penalty cleared. Total value restored without touching bid.',
+    pro: 'Quality offset removed; clearing efficiency recovers immediately.',
+  },
+  'a.cap.sc4on': {
+    kid: 'You told the fair: “never pay more than $1.50 for a visitor.” Fine — but now you sit out every race that costs more, and you win way fewer.',
+    cmo: 'Aggressive cost cap on: auctions that would clear above your cap are skipped entirely. Cost per win is controlled; volume starves. Caps are a trade, not a discount.',
+    pro: 'Hard cap below typical clearing: participation gated on projected price. Spend and volume collapse while realized CPM stays under cap — the textbook cost-control/delivery trade-off.',
+  },
+  'a.cap.sc4off': {
+    kid: 'Cap removed — you race in every auction again.',
+    cmo: 'Cap lifted; full participation restored.',
+    pro: 'Participation gate removed.',
+  },
+  'a.cap.sc5': {
+    kid: 'Five days zoomed by without a new sign. Your lemonade got boring, the magnet got weak, and wins slipped away. Press <b>refresh creative</b> and watch it come back!',
+    cmo: 'Five simulated days of fatigue: freshness decayed, action rate with it, win rate down at identical bid. Refresh restores the prediction — budget never left, performance did.',
+    pro: 'Fast-forwarded decay: eAR ∝ freshness fell across five days; clearing worsened at fixed bid. Refresh resets freshness to 1.0. Fatigue is a delivery input, not a reporting artifact.',
+  },
+  'a.cap.refresh': {
+    kid: '✨ Fresh sign! Everyone is curious again.',
+    cmo: '✨ Creative refreshed — freshness back to 100%.',
+    pro: '✨ Freshness reset to 1.0; eAR restored.',
+  },
+  'a.cap.reset': {
+    kid: 'You changed a dial — the scoreboard starts over so you can see what it did.',
+    cmo: 'Settings changed; tallies reset for a clean read.',
+    pro: 'Config changed; counters zeroed.',
+  },
+  'a.next': {
+    kid: 'You know how the race is won. Next: how the machine figures out what each visitor wants — by watching what they just did.',
+    cmo: 'You have the clearing mechanics. Next: how the machine reads the person — sequences, recency, and why fatigue is measurable.',
+    pro: 'Clearing done. Next: sequence modeling, recency weighting, and fatigue diagnostics.',
+  },
+
+  /* ============ the model room ============ */
+  'm.intro': {
+    kid: '<p>Behind the fair there is a long hallway of machine rooms — the actual contraptions that run everything you have seen so far. Walk the hall and peek into each one. Some doors have solid signs (Meta showed us what is inside), and the dashed ropes between rooms mean we are guessing how they connect.</p>',
+    cmo: '<p>This is the hall of named systems: the machines behind retrieval, ranking, and the roadmap. Each room tells you what the system replaced, why it exists, and what it changes about your Tuesday. Solid facts carry badges; the dashed connectors between rooms mean the wiring is inferred, not published.</p>',
+    pro: '<p>The named stack, room by room: Andromeda (retrieval), GEM (foundation model), Lattice (ranking consolidation), the pre-2024 museum, and the stated roadmap. Claims are badged; inter-system wiring is dashed wherever Meta has not published the linkage. Swipe or use the arrows.</p>',
+  },
+  'm.and.body': {
+    kid: '<p>This is the sorting-sweep machine from the big room — up close. It exists because of a flood: once computers started helping everyone make ads, there were suddenly <b>way</b> too many signs for the old sorting shelves to handle. So Meta built a much bigger, much faster sorter, with special super-fast computer chips to run it.</p>',
+    cmo: '<p>Andromeda replaced rules-and-heuristics candidate sourcing with a learned retrieval engine. The pressure that forced it: AI-generated creative exploded the number of live ads, and the old shortlisting simply could not sift a universe that size per-person in real time.</p><p>It runs on hardware co-designed for the job — retrieval at this scale is as much a silicon story as a model story.</p>',
+    pro: '<p>NN-based hierarchical retrieval replacing heuristic candidate sourcing; built explicitly for the post-generative-creative candidate explosion. Meta describes co-designing it with accelerator hardware (GPU-class inference at retrieval latency budgets) — the capacity increase is a hardware-plus-architecture story, not a tuning pass.</p>',
+  },
+  'm.and.old': {
+    kid: '<b>The old way:</b> the helpers checked signs against checklists — “is this kid in the parents section? the gadget section?” — and grabbed whatever passed the checklist first.',
+    cmo: '<b>The old way:</b> candidate sourcing by rules and interest-list heuristics. Legible to advertisers, coarse in practice, and blind to anything the checklists did not encode.',
+    pro: '<b>Old:</b> heuristic/rules-based sourcing over interest taxonomies and simple recall models — bounded capacity, checklist-shaped blind spots.',
+  },
+  'm.and.new': {
+    kid: '<b>The new way:</b> a learned sorter that has watched millions of visitors and just… knows which shelf to sweep first. No checklists anywhere.',
+    cmo: '<b>The new way:</b> a learned neural index — retrieval decides who even enters scoring based on modeled fit, not declared interests. There is no checkbox to game anymore.',
+    pro: '<b>New:</b> learned hierarchical NN index, user-conditioned from the first stage; 10,000× capacity vs. prior retrieval models.',
+  },
+  'm.and.tue': {
+    kid: 'What it means for your Tuesday: make signs that are clearly <b>for someone</b>. The sorter can only find your ad if your ad is findable.',
+    cmo: 'Your Tuesday: your ad must be <b>indexable</b>. Distinct concepts with clear who-is-this-for signal get retrieved; forty cosmetic clones of one idea give the sorter one thing to find, not forty.',
+    pro: 'Tuesday: optimize for retrievability — concept-level diversity over variant volume; distinct hooks map to distinct index neighborhoods.',
+  },
+  'm.gem.body': {
+    kid: '<p>This room holds the wise teacher from the judging line. The teacher reads a visitor’s whole recent story — thousands of little moments, in order — and trains hundreds of helper-judges to guess what each visitor wants next.</p>',
+    cmo: '<p>GEM is the central foundation model: trained at very large scale, then distilled into the hundreds of specialist ranking models that actually serve traffic. Its defining trick is reading <b>sequences</b> — up to thousands of user events, in order — which is how recency and momentum became first-class delivery inputs.</p>',
+    pro: '<p>Ads foundation model trained at LLM scale; knowledge distilled into vertical rankers per surface. Consumes ordered event sequences (up to thousands of actions). The distillation pattern means ranking improvements ship platform-wide without per-surface retraining from scratch.</p>',
+  },
+  'm.gem.old': {
+    kid: '<b>The old way:</b> every corner of the fair had its own little judge, each learning alone, none of them sharing notes.',
+    cmo: '<b>The old way:</b> bespoke per-surface models, separately trained, duplicating effort and diverging in quality across Feed, Reels, Stories.',
+    pro: '<b>Old:</b> independent per-surface ranking stacks; fragmented training, inconsistent calibration across placements.',
+  },
+  'm.gem.new': {
+    kid: '<b>The new way:</b> one wise teacher trains every judge in the fair. When the teacher learns something, everybody judges better at once.',
+    cmo: '<b>The new way:</b> one foundation model teaching all of them — a single central brain whose improvements propagate everywhere through distillation.',
+    pro: '<b>New:</b> central foundation model + distillation into vertical rankers; stated lifts ~+5% conversions (Instagram), ~+3% (FB Feed).',
+  },
+  'm.gem.tue': {
+    kid: 'Your Tuesday: the machine watches what people did <b>just now</b>, not what group they belong to. Catch people in their moment.',
+    cmo: 'Your Tuesday: sequences beat segments. Plan creative for <b>moments</b> (just searched, just abandoned, just binged a topic) rather than demographics — that is literally what the model reads.',
+    pro: 'Tuesday: recency-weighted sequence features dominate static traits; creative and offer timing against behavioral moments is the addressable surface.',
+  },
+  'm.lat.body': {
+    kid: '<p>The newest room, still smelling of fresh paint. Meta took hundreds of separate judging machines and rebuilt them as <b>one giant machine</b> with a trillion little dials inside.</p>',
+    cmo: '<p>Lattice is the consolidation move: hundreds of separate ranking models folded into one very large architecture. Fewer, bigger models that learn across surfaces at once — the same direction the whole industry is heading.</p>',
+    pro: '<p>Trillion-parameter unified ranking architecture consolidating hundreds of legacy models. The consolidation is the point: shared learning across objectives and surfaces, less per-model drift, one optimization surface for Meta to improve.</p>',
+  },
+  'm.lat.old': {
+    kid: '<b>The old way:</b> hundreds of separate little machines, each doing one job, each needing its own repairs.',
+    cmo: '<b>The old way:</b> a model zoo — hundreds of specialized rankers, each a maintenance surface, each learning only from its own slice.',
+    pro: '<b>Old:</b> fragmented model estate; per-model training pipelines; cross-surface transfer approximately zero.',
+  },
+  'm.lat.new': {
+    kid: '<b>The new way:</b> one enormous machine that does all those jobs at once — and gets smarter everywhere every time it learns anywhere.',
+    cmo: '<b>The new way:</b> one trillion-parameter lattice. Meta reported an ~8% ads-quality lift in an Instagram test from the consolidation alone.',
+    pro: '<b>New:</b> unified architecture, joint multi-objective training; ~8% quality lift reported on Instagram testing.',
+  },
+  'm.lat.tue': {
+    kid: 'Your Tuesday: the fair keeps taking dials away from the grown-ups and turning them itself. The dials you still own are your sign and your lemonade.',
+    cmo: 'Your Tuesday: the optimization surface keeps migrating from your account settings into the model. Every consolidation shrinks what you can tune and concentrates your leverage in <b>creative and offer</b>.',
+    pro: 'Tuesday: expect continued deprecation of manual levers; treat account structure as commodity and concentrate effort where the model cannot substitute — concept diversity, offer design, landing experience.',
+  },
+  'm.gho.body': {
+    kid: '<p>The museum wing. These machines used to run the whole fair, and every grown-up playbook was written about them. Read the plaques and whisper — they can’t hear you anymore.</p>',
+    cmo: '<p>The pre-2024 stack, preserved with plaques. Worth a walk because an enormous amount of received wisdom — interest stacks, 25 ad sets, bid babysitting — was written for these machines. They are off now.</p>',
+    pro: '<p>The deprecated estate. Most agency folklore is a fossil record of this wing: practices that were locally optimal against MTML-era ranking and interest-gated sourcing, carried forward into a stack where they no longer bind.</p>',
+  },
+  'm.gho.tue': {
+    kid: 'Your Tuesday: if a grown-up’s advice starts with “always make 25 tiny audiences,” they are describing a museum piece.',
+    cmo: 'Your Tuesday: audit your playbook line by line and ask, “which machine was this written for?” If the answer hangs on this wall, retire the tactic with it.',
+    pro: 'Tuesday: any optimization ritual whose causal story routes through interest-gated sourcing or per-surface MTML ranking deserves a re-test before it survives another quarter.',
+  },
+  'm.tl.intro': {
+    kid: '<p>The last wall shows where the fair has been and where it says it is going: a fair that runs itself — you hand it a goal and some tickets, and it makes the signs too.</p>',
+    cmo: '<p>The trajectory in one wall: from the model zoo to the foundation era to the stated end-state — automation end to end, creative included. Plan your team for the direction, not the snapshot.</p>',
+    pro: '<p>2020 → today → stated end-state. The through-line is consolidation plus automation; the badges mark which waypoints are Meta on-record and which are trade-press reporting.</p>',
+  },
+
+  /* ============ recency & fatigue ============ */
+  'r.intro': {
+    kid: '<p>The machine never asks who you are. It watches what you <b>just did</b> — in order — and guesses what you want next. For the next minute, you get to be the machine. Read each visitor’s little story and make the guess yourself.</p>',
+    cmo: '<p>Delivery predictions come from sequences: recent events, in order, with recency weighting. The fastest way to understand what that means for your media plan is to make the predictions yourself. Five rounds; the reveals show how order and timing change the answer.</p>',
+    pro: '<p>Sequence-conditioned prediction, playable. Each round is an ordered event stream; you produce p(next action). The reveals demonstrate order sensitivity, recency decay, and why narrative composition is not what the model does.</p>',
+  },
+  'r.g.r1': {
+    kid: '<b>Easy one!</b> The story goes: watched shoes, searched shoes, almost bought shoes — all in the last few minutes. The freshest, strongest wish wins: show the shoes.',
+    cmo: '<b>Stacked intent, all recent.</b> View → search → cart-abandon inside minutes is the cleanest buy signal a sequence can carry. The prediction almost writes itself — and this is the moment retargeting-like delivery happens on its own.',
+    pro: '<b>Dense recent intent.</b> Three escalating events inside one session; recency weight and funnel position agree. Highest-confidence prediction in the game.',
+  },
+  'r.g.r2': {
+    kid: '<b>Same three things — flipped around!</b> The almost-bought part happened weeks ago, so that wish went cold. The freshest thing is watching fun shoe videos, so the machine shows fun shoe stuff, not a “finish buying!” nag.',
+    cmo: '<b>Identical events, reversed order — different ad.</b> The cart is three weeks stale; the fresh signal is renewed browsing interest. A discount would answer a question this person stopped asking. Order alone changed the correct creative.',
+    pro: '<b>Order sensitivity, isolated.</b> Same event set, permuted: stale transactional intent decays below fresh upper-funnel signal. The optimal creative changes with sequence order while the feature <i>set</i> is constant — the whole argument for sequence models in one round.',
+  },
+  'r.g.r3': {
+    kid: '<b>Three quiet weeks is a long time.</b> The desk wish faded away, and the new wish — cooking — is loud and fresh. The moment passed. Machines respect that.',
+    cmo: '<b>Decay in action.</b> Three silent weeks take the desk signal below threshold; the active stream is cookware. Timing beats history — which is also why “we retargeted site visitors from last month” underperforms.',
+    pro: '<b>Recency decay dominating.</b> A 3-week-old query with no reinforcement loses to a dense fresh stream. Decay is monotone in silence; reinforcement resets it.',
+  },
+  'r.g.r4': {
+    kid: '<b>Tricky!</b> The cat-carrier answer feels clever because it connects both stories. But the machine doesn’t write stories — it follows the freshest trail, and the freshest trail says: this person is booking a trip.',
+    cmo: '<b>The composition trap.</b> A human strategist invents “cat owner who travels → carrier.” The model doesn’t compose narratives across signals; it predicts the next action from the dominant recent pattern — hotels. Clever cross-signal creative briefs often target predictions the machine will never make.',
+    pro: '<b>No narrative composition.</b> Sequence models predict next-action from recent pattern density, not from human-legible conjunctions of older signals. The travel stream dominates; the pet stream is context, not intent.',
+  },
+  'r.g.r5': {
+    kid: '<b>It didn’t listen. It didn’t need to.</b> Look at the hidden part of the story that just unfolded — the machine had a week of quiet little clues. The spooky ad was a <b>prediction</b>, like a weather forecast that happens to be about you.',
+    cmo: '<b>No microphone required.</b> Expand the sequence and the ad explains itself: household and lookalike signals, a nine-day-old Reel view, a price check. The prediction preceded the dinner conversation — you talked about desks <i>because</i> desk-thoughts were already in your week.',
+    pro: '<b>The reveal:</b> the conversation and the ad share a common cause — the accumulated sequence. Prediction from behavioral priors beats audio surveillance on cost, legality, and detection risk, and it produces exactly this uncanny timing.',
+  },
+  'r.myth': {
+    kid: '<p><b>So… is the phone listening?</b> It really, truly isn’t — and here is the whole story, because you deserve the whole story.</p><p>The feeling is real. You talk about something, and the ad shows up. That is genuinely spooky, and nobody should laugh at you for wondering.</p><p>But scientists have hooked phones up to machines that watch every single thing the phone sends, waiting to catch it whispering. It doesn’t. Listening to everyone all day would take mountains of computer power, it would show up in your battery, and it would break serious laws.</p><p>Here is the secret nobody tells you: the machine doesn’t need your voice. Your taps and pauses and searches already tell it what you’re about to want — sometimes before <i>you</i> notice. The truth is stranger than the myth: nobody is listening, and it still knows.</p>',
+    cmo: '<p><b>The microphone myth, handled completely.</b> The experience driving it is real and common: conversation, then the ad. Dismissing it insults your customers’ pattern recognition — they noticed something true. They just attributed it wrong.</p><p>The evidence against audio capture is strong: network-traffic studies have specifically hunted for it and found nothing; always-on transcription at billions-of-users scale would be a visible compute and battery signature; and the legal exposure would dwarf any targeting benefit. Meta denies it on the record, and — more persuasively — doesn’t need it.</p><p>What actually happens: sequences. The topic entered the household’s behavior stream days earlier — a search on shared wifi, a friend’s purchase, a Reel half-watched. The conversation and the ad are both downstream of the same signals. For your brand, the lesson is practical: you don’t need creepy data to be uncannily relevant. You need to catch moments.</p>',
+    pro: '<p><b>Full treatment, no strawmen.</b> Claim: ambient audio drives ad targeting. Against it: (1) independent traffic analyses — notably the 2018 Northeastern study instrumenting 17,000+ apps — found no evidence of covert audio exfiltration; (2) the compute, battery, and bandwidth signature of always-on ASR at Meta’s scale would be detectable and enormous; (3) wiretap-adjacent legal exposure is asymmetric to the marginal targeting lift; (4) sequence prediction from behavioral, household, and graph signals already produces the observed uncanny relevance — the myth survives because the <i>outputs</i> are indistinguishable to the person experiencing them.</p><p>The professional takeaway: uncanny timing is a property of sequence models operating on shared-environment signals. Build for it honestly — moment-level creative against behavioral triggers — and you get the “how did they know” effect without touching a microphone.</p>',
+  },
+  'r.court': {
+    kid: '<p>Now the courtroom! Grown-ups say lots of confident things about ads getting “worn out.” Each claim goes on trial: some are just campfire stories, some are half-true, and one is written in the fair’s own rulebook. Poke the little charts to see for yourself.</p>',
+    cmo: '<p>Fatigue folklore, on trial. Four claims your team has probably repeated in a meeting — each gets a verdict, a badge, and an interactive exhibit. The pattern to notice: Meta’s actual fatigue machinery is <b>cost-based</b>, while the folklore is <b>frequency-number</b>-based.</p>',
+    pro: '<p>Claims triaged by evidence class. Note the structural distinction the exhibits keep surfacing: platform triggers key on cost-per-result deltas vs. your own baseline; folklore keys on absolute frequency thresholds. Those are different measurement systems, and only one of them ships in the product.</p>',
+  },
+  'r.c1': {
+    kid: 'People love saying “after X views, an ad dies.” But there is no magic number in the rulebook. The fair only raises a flag when your lemonade starts <b>costing too much</b> compared to how you were doing before — however many views that takes.',
+    cmo: 'There is no documented frequency cliff. The trigger Meta actually surfaces is cost-based — your cost per result versus your own history. Frequency correlates with cost creep, which is why the folklore survives, but the number itself (“3”, “5”, whatever your agency says) is not a mechanism.',
+    pro: 'No frequency-threshold trigger exists in the documented product surface. The flag condition is a cost-per-result delta against trailing baseline. Frequency is a correlate and a useful diagnostic input — it is not the trigger, and any specific “kill number” is unfalsifiable folklore.',
+  },
+  'r.c2': {
+    kid: 'A very careful grown-up named Jon read the fair’s messages closely and wrote down when each warning shows up: “a little worse” gets a yellow note, “twice as expensive” gets the red one. The fair hasn’t framed his notes on its wall, so we mark them half-sure.',
+    cmo: 'The specific thresholds — Creative Limited at elevated-but-under-2×, Creative Fatigue at ≥2× your historical cost per result — come from practitioner documentation (Jon Loomer’s work), not from a Meta spec sheet. They match observed behavior well; they carry a ◐, not a ●.',
+    pro: 'Thresholds per practitioner reverse-documentation: Creative Limited = elevated CPR below 2× trailing baseline; Creative Fatigue = ≥2×. Consistent with the observed flag behavior, unconfirmed as spec. Grade accordingly and treat the boundary values as approximate.',
+  },
+  'r.c3': {
+    kid: 'Meta’s own scientists once measured ads getting <b>45% weaker</b> after people saw them four times. Sounds scary! But their own footnotes admit the study didn’t check everything — so it’s a clue, not a law.',
+    cmo: 'Meta’s 2022 research reported a ~45% performance decline after four exposures. Use it — with its own caveats attached: the analysis didn’t control for time window, placement mix, or engagement level, so exposure count is entangled with everything else that accumulates over a campaign. Directionally real, numerically soft.',
+    pro: 'The 2022 figure: ~45% drop in performance beyond four exposures. Confounds acknowledged in the work itself: no time-window control (exposure count ∝ elapsed time), no placement normalization, no engagement stratification. Read it as decay-exists-and-is-large, not as a universal constant.',
+  },
+  'r.c4': {
+    kid: 'This one is real rulebook stuff: change your ad, and the fair’s magnet starts learning all over again. But not every touch counts — the two lists show exactly which touches wake the reset and which are safe.',
+    cmo: 'Documented directly by Meta: significant edits reset learning. The nuance teams miss is the boundary — the safe list is longer than feared, and the reset list includes quieter actions (like a long pause) than most audit checklists carry.',
+    pro: 'Meta-documented reset semantics. Resets: creative edits, targeting changes, optimization-event changes, bid-strategy changes, large budget moves, adding fresh creative to the set, and resuming after a 7-day pause. Non-resets: renames, minor budget nudges, schedule-end changes, pausing itself (briefly). Design your iteration cadence around the boundary.',
+  },
+  'r.next': {
+    kid: 'The machine reads people by their moments. Next: how your ad learns to call its own crowd.',
+    cmo: 'You know how the machine reads people. Next: how creative broadcasts the signal that assembles your audience.',
+    pro: 'Sequence side done. Next: creative-side signal and cohort assembly.',
+  },
+
+  /* ============ creative signal ============ */
+  'c.intro': {
+    kid: '<p>Every dot down there is a person, with secret likes the fair can’t see written on any list. Build an ad from the chips, and watch the right people <b>light up and walk over</b> — the ad calls its own crowd. Then try building the most boring ad possible and watch everyone wander off.</p><p>(This is a toy fair, not Meta’s real machine — but the idea is the real idea. 😉)</p>',
+    cmo: '<p>~2,000 simulated people with hidden traits. Assemble a concept from the chips and the matching cohort assembles itself — signal strength sets how tightly it gathers, and deliberately generic choices dissolve it. Below the builder, three research-grade demos show what this mechanism does to your tests, your variants, and your account structure.</p><p>(Mechanism-level mental model, not a leaked spec — the internals are ML soup, the behavior is what practitioners observe. 😉)</p>',
+    pro: '<p>Trait-vector cohort assembly: chips carry affinity vectors and a specificity scalar; per-person match scores drive glow and gravitation; cohort naming ranks traits by lift over base rate. Generic chips flatten the response surface — no resolvable cohort. Three demos below reproduce measured or reported delivery phenomena. (Toy model, honestly labeled. 😉)</p>',
+  },
+  'c.d1': {
+    kid: '<p><b>The sneaky split.</b> Put two different ads in one box, and the fair quietly sends each one to different kinds of people — the funny one to the parents, the deal one to the grandpas. So if the deal ad “wins,” was it better… or did it just meet different people? That’s why grown-up ad tests often fib.</p>',
+    cmo: '<p><b>Divergent delivery.</b> Two creatives in one ad set are silently routed to systematically different demographics — each ad finds its own pocket. The kicker: your “A beat B” conclusion is confounded, because A and B were never shown to the same audience. This is why in-platform A/B readings lie unless you force a split.</p>',
+    pro: '<p><b>Divergent delivery, reproduced.</b> Watch assignment: creative A recruits women 25–44, creative B recruits men 45+, from one ad set with identical settings. Any performance delta is audience×creative, not creative alone. The Kellogg team measured this at scale across 181,890 experiments; holdout-based lift or forced splits are the clean alternatives.</p>',
+  },
+  'c.d2': {
+    kid: '<p><b>The twin problem.</b> Make two ads that are almost the same, and the fair treats them like one ad — the two crowds melt into a single confused blob. Changing the background color is not a new idea.</p>',
+    cmo: '<p><b>Similarity collapse.</b> Near-identical creatives don’t buy you diversity — they compete for the same cohort and blur into one delivery blob, splitting learnings without adding reach. Cosmetic variants are one concept wearing two shirts.</p>',
+    pro: '<p><b>Similarity collapse, simulated.</b> Two profiles a few degrees apart recruit the same pocket; assignment flickers between them and the clusters merge. Note the honest badge: “similarity score” is a practitioner reconstruction, not a confirmed Meta metric — the observed behavior is what earns the concept its place.</p>',
+  },
+  'c.d3': {
+    kid: '<p><b>Twenty-five real ideas vs five copies pasted five times.</b> Flip between them: real different ideas light up little crowds all over the field. Copies pile onto the same crowd over and over and miss almost everyone.</p>',
+    cmo: '<p><b>The diversity sandbox.</b> One ad set with 25 genuinely different concepts reaches pockets all over the market; five ad sets of five clones re-reach one pocket five times. Concept diversity is a reach strategy, not a creative indulgence.</p>',
+    pro: '<p><b>Coverage comparison.</b> 25 distinct concepts ≈ broad trait-space coverage; 5×5 clones ≈ one neighborhood, oversampled. The oft-cited internal Meta test backing this exact comparison reached us secondhand — hence the folklore-grade badge on the specific numbers, while the mechanism itself follows from everything above.</p>',
+  },
+  'c.next': {
+    kid: 'Your ad calls the crowd. Next: meet the actual machines that make it all run.',
+    cmo: 'Creative is the signal. Next: the named systems that read it — Andromeda, GEM, Lattice.',
+    pro: 'Signal side complete. Next: the model estate.',
+  },
+
+  /* ============ the dispatch ============ */
+  'd.intro': {
+    kid: '<p>The fair changes its rules and machines all the time, and most of the news about it is either boring or panicky. This logbook keeps only the changes that matter, says how sure we are about each one, and stamps every entry with what to actually do: fix something, just know it, or ignore the panic.</p>',
+    cmo: '<p>A curated changelog of Meta ads platform changes — filtered for consequence, graded for evidence, and stamped with a verdict: <b>do something</b>, <b>know about it</b>, or <b>ignore the panic</b>. The stamp is the product; most industry news deserves the third one.</p>',
+    pro: '<p>Hand-curated platform changelog. Each entry: evidence grade, primary source, topic, and an action verdict. Deliberately low-volume — the filter is “would this change a decision,” not “did this make headlines.”</p>',
+  },
+  'd.current': {
+    kid: 'How this stays fresh: a human reads the news every month and writes down only the parts that matter. No robots deciding what’s important.',
+    cmo: 'How this stays current: updated monthly, hand-curated. Entries are added when something clears the “would this change a decision” bar — not on a content calendar.',
+    pro: 'Maintenance model: monthly hand-curation against primary sources. No auto-ingestion; the grading is the editorial product.',
+  },
+
+  /* ============ brand scanner + chat ============ */
+  's.intro': {
+    kid: '<p>Type in any brand’s website, and the scanner reads it the way the fair’s machines would: what the site is about, whether it wears the fair’s little tracking pin, and what kinds of signs it could make. Then our helper writes a report card. Try the demo button — it scans our own site!</p>',
+    cmo: '<p>Point the scanner at a brand’s homepage. It reads the public signals a site feeds delivery — title, description, detectable Meta pixel, offer language — links you to their live ads in Meta’s own transparency tool, and then writes “How the Machine Sees This Brand” at your current depth, ending with ten genuinely different angle opportunities.</p>',
+    pro: '<p>Client-side parse of the fetched homepage (title, meta, fbq detection, offer/category signals) → deep link into the Ad Library (we link, never scrape) → one model call producing the delivery-signal read and ten distinct angle territories. Inference from public signals, labeled as such.</p>',
+  },
+  's.honesty': {
+    kid: '<b>The honest part:</b> nobody outside a company can see how much they spend on ads or how many people saw them. Anyone who shows you those numbers is guessing. What you CAN see: every ad they’re running right now, in Meta’s own public library.',
+    cmo: '<b>The honest part:</b> no spend, reach, or audience data exists publicly for commercial advertisers — anyone showing you competitor “spend” numbers is estimating from panels. What is public: their live creative, in Meta’s Ad Library.',
+    pro: '<b>The honest part:</b> spend/reach/audience data is not public for commercial advertisers (EU DSA transparency covers reach for EU-delivered ads only; political ads carry spend ranges). Panel-based “spend intelligence” is estimation. Ground truth available: live creatives via the Ad Library.',
+  },
+  'ask.hello': {
+    kid: 'Hi! I only know what’s inside this lab — the auction, the magnet-machines, the fatigue stuff. Ask me anything about those and I’ll explain it your way!',
+    cmo: 'I answer from this portal’s content only — auction mechanics, the model stack, fatigue, creative signal. Ask away; I’ll match your dial setting.',
+    pro: 'Grounded on the portal corpus (pro registers + graded claims). Outside-corpus queries get an honest “not covered.” Fire away.',
+  },
+
   /* directory + placeholder copy */
   'machine.dir-title': { kid: 'The other rooms', cmo: 'The other rooms', pro: 'The other rooms' },
   'machine.dir-body': {
-    kid: 'Most rooms are still being built — the flasks are bubbling. Peek at any door; your link will still work when it opens.',
-    cmo: 'Rooms open one at a time. Doors are live now — links (with your depth setting) survive each room’s opening day.',
-    pro: 'Rooms ship incrementally; routes are stable. Deep-link anything — hash + depth param survive future builds.',
+    kid: 'Every room is open now! Wander wherever looks fun — your dial setting follows you through every door.',
+    cmo: 'All rooms are open. Every link carries your depth setting, so share any door at any altitude.',
+    pro: 'Full estate live. All routes stable and deep-linkable; hash + depth param are the permalink.',
   },
   'ph.state': {
     kid: 'Still being built! The flasks are bubbling.',
@@ -687,15 +1353,18 @@ var CONTENT = {
 /* ---------------- rooms / depth ---------------- */
 var ROOMS = [
   { slug: 'machine',    name: 'The Machine',       ico: '⚙️', open: true },
-  { slug: 'model-room', name: 'The Model Room',    ico: '🧠', open: false },
-  { slug: 'auction',    name: 'The Auction Floor', ico: '🔨', open: false },
-  { slug: 'recency',    name: 'Recency & Fatigue', ico: '🔁', open: false },
-  { slug: 'creative',   name: 'Creative Signal',   ico: '📡', open: false },
-  { slug: 'scanner',    name: 'Brand Scanner',     ico: '🔍', open: false },
-  { slug: 'dispatch',   name: 'The Dispatch',      ico: '📰', open: false },
+  { slug: 'models',     name: 'The Model Room',    ico: '🧠', open: true },
+  { slug: 'auction',    name: 'The Auction Floor', ico: '🔨', open: true },
+  { slug: 'recency',    name: 'Recency & Fatigue', ico: '🔁', open: true },
+  { slug: 'creative',   name: 'Creative Signal',   ico: '📡', open: true },
+  { slug: 'scanner',    name: 'Brand Scanner',     ico: '🔍', open: true },
+  { slug: 'dispatch',   name: 'The Dispatch',      ico: '📰', open: true },
 ];
 var DEPTHS = ['kid', 'cmo', 'pro'];
 var DEPTH_KEY = 'gd-machine-depth';
+/* room registries: each room may register a view builder and an init
+   that returns a cleanup fn (declared early — rooms assign into these) */
+var VIEWS = {}, INITS = {}, roomCleanup = null;
 
 function storedDepth() {
   try {
@@ -794,6 +1463,7 @@ function parseHash() {
     var p = kv.split('=');
     if (p[0]) params[p[0]] = decodeURIComponent(p[1] || '');
   });
+  if (slug === 'model-room') slug = 'models';   // legacy alias
   if (!ROOMS.some(function (r) { return r.slug === slug; })) slug = 'machine';
   return { slug: slug, params: params };
 }
@@ -1551,6 +2221,1315 @@ function journeyStop() {
   J.scenes = {};
 }
 
+/* ============================================================
+   AI WIRING — the proxy, Ask the Machine, and the Brand Scanner
+   NOTE: the proxy only answers pages served from thegrowthden.com;
+   local previews get a friendly explanation instead.
+   ============================================================ */
+var PROXY_URL = 'https://growth-den-lab-proxy.growth-den-lab-proxy.workers.dev';
+var MSG_BUSY = { kid: '🥼 The lab is super busy right now — every bench is taken! Try again in a minute.', cmo: '🥼 The lab is busy — rate limit reached. Give it a minute.', pro: '🥼 429: lab at capacity. Retry shortly.' };
+var MSG_NAP = { kid: '😴 The AI is taking a nap. Even machines rest! Try again soon.', cmo: '😴 The AI is napping (upstream unavailable). Try again shortly.', pro: '😴 503 upstream. Retry shortly.' };
+var MSG_LOCAL = { kid: 'The talking part only works on the real website (thegrowthden.com) — this is just the workshop copy!', cmo: 'AI features run only on the live site — the proxy rejects local previews. Push, then test on thegrowthden.com.', pro: 'Origin-locked proxy: serve from thegrowthden.com to exercise AI paths.' };
+function depthMsg(m) { return m[depth] || m.cmo; }
+
+function stripTags(s) { return String(s).replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim(); }
+var CORPUS = null;
+function buildCorpus() {
+  if (CORPUS) return CORPUS;
+  var out = ['THE GROWTH DEN — “THE MACHINE” PORTAL CORPUS (pro register + graded claims)'];
+  Object.keys(CONTENT).forEach(function (k) {
+    var c = CONTENT[k];
+    if (c && c.pro) out.push('[' + k + '] ' + stripTags(c.pro));
+  });
+  out.push('GRADED CLAIMS: ' +
+    '● Meta-published: auction winner = highest total value (bid × estimated action rate + ad quality), pays minimum needed to win (Meta Business Help Center). ' +
+    '● Quality includes negative signals: hide/report feedback, clickbait/engagement bait, poor landing experience (Meta Business Help Center). ' +
+    '● Andromeda retrieval: tens of millions → few thousand; 10,000× capacity, +6% recall, +8% quality in selected segments (engineering.fb.com Dec 2024). ' +
+    '● GEM foundation model distills into hundreds of vertical rankers; reads sequences up to thousands of events; ~+5% conversions Instagram, ~+3% FB Feed (engineering.fb.com Nov 2025, Aug 2026). ' +
+    '● Lattice: hundreds of rankers consolidated into one trillion-parameter architecture; ~8% quality lift Instagram test (ai.meta.com, arXiv:2512.09200). ' +
+    '● Editing an ad (significant edits) resets learning (Meta). ' +
+    '● Advantage+ $75B run-rate; Muse image model; 9M SMBs using ≥1 AI creative tool (Meta Q2 2026 earnings). ' +
+    '◐ Divergent delivery within one ad set measured across 181,890 A/B tests (Kellogg). ' +
+    '◐ Fatigue thresholds: Creative Limited <2×, Creative Fatigue ≥2× cost baseline (practitioner documentation, Jon Loomer). ' +
+    '◐ ~45% performance drop after 4 exposures, with caveats (Meta 2022 research). ' +
+    '◐ Fully automated ad creation by end of 2026 (trade press, not Meta on-record). ' +
+    '○ Folklore (flagged as unverified): “~50 optimization events/week” exact figure; frequency kill-numbers; Monday launches; similarity scores; the 25-vs-clones internal test numbers. ' +
+    'HONESTY RULES: no public spend/reach/audience data exists for commercial advertisers; Andromeda/GEM/Lattice production wiring is partly inferred.');
+  CORPUS = out.join('\n');
+  return CORPUS;
+}
+var REGISTER_DESC = {
+  kid: 'kid — plain words an 8-year-old understands; the lemonade-fair analogy is welcome; short sentences',
+  cmo: 'cmo — business leverage and cost language for a marketing executive; no jargon without a gloss',
+  pro: 'pro — precise technical register for an ads practitioner; component names and numbers welcome',
+};
+
+/* stream a /claude call; onDelta receives text chunks. Throws {code} on HTTP errors. */
+function streamClaude(payload, onDelta) {
+  return fetch(PROXY_URL + '/claude', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+  }).then(function (res) {
+    if (res.status === 429) throw { code: 429 };
+    if (res.status === 503) throw { code: 503 };
+    if (!res.ok) throw { code: res.status };
+    if (!payload.stream) return res.json().then(function (j) {
+      var txt = (j.content || []).map(function (b) { return b.text || ''; }).join('');
+      onDelta(txt); return txt;
+    });
+    var reader = res.body.getReader(), dec = new TextDecoder(), buf = '', full = '';
+    function pump() {
+      return reader.read().then(function (r) {
+        if (r.done) return full;
+        buf += dec.decode(r.value, { stream: true });
+        var lines = buf.split('\n');
+        buf = lines.pop();
+        lines.forEach(function (ln) {
+          ln = ln.trim();
+          if (ln.indexOf('data:') !== 0) return;
+          try {
+            var ev = JSON.parse(ln.slice(5));
+            if (ev.type === 'content_block_delta' && ev.delta && ev.delta.text) {
+              full += ev.delta.text; onDelta(ev.delta.text);
+            }
+          } catch (e) { }
+        });
+        return pump();
+      });
+    }
+    return pump();
+  });
+}
+
+/* ---- Ask the Machine (global, every tab) ---- */
+(function wireAsk() {
+  var panel = $('askPanel'), msgs = $('askMsgs'), input = $('askInput');
+  var history = [], busy = false, greeted = false;
+  function addMsg(cls, html) {
+    var d = document.createElement('div');
+    d.className = 'msg ' + cls;
+    d.innerHTML = html;
+    msgs.appendChild(d);
+    msgs.scrollTop = msgs.scrollHeight;
+    return d;
+  }
+  $('askBtn').addEventListener('click', function () {
+    panel.classList.toggle('open');
+    if (panel.classList.contains('open') && !greeted) {
+      greeted = true;
+      addMsg('bot', d3('ask.hello'));
+    }
+    if (panel.classList.contains('open')) input.focus();
+  });
+  $('askClose').addEventListener('click', function () { panel.classList.remove('open'); });
+  function send() {
+    var q = input.value.trim();
+    if (!q || busy) return;
+    input.value = '';
+    addMsg('user', q.replace(/</g, '&lt;'));
+    history.push({ role: 'user', content: q });
+    var bot = addMsg('bot', '<i>thinking…</i>');
+    busy = true;
+    var started = false;
+    var sys = 'You are “Ask the Machine”, the assistant inside The Growth Den’s teaching portal about Meta’s ad delivery system. ' +
+      'Answer ONLY from the PORTAL CORPUS below. Answer at this register: ' + REGISTER_DESC[depth] + '. ' +
+      'If asked something the corpus does not cover, say plainly what the portal doesn’t cover and point to the closest covered topic — never guess. ' +
+      'Keep every answer under 150 words. Never claim that spend, reach, or audience data exists publicly for commercial advertisers.\n\nPORTAL CORPUS:\n' + buildCorpus();
+    streamClaude({ model: 'claude-haiku-4-5', max_tokens: 300, stream: true, system: sys, messages: history.slice(-8) },
+      function (delta) {
+        if (!started) { started = true; bot.textContent = ''; }
+        bot.textContent += delta;
+        msgs.scrollTop = msgs.scrollHeight;
+      }).then(function (full) {
+        history.push({ role: 'assistant', content: full || '(no reply)' });
+      }).catch(function (err) {
+        bot.textContent = err && err.code === 429 ? depthMsg(MSG_BUSY)
+          : err && err.code === 503 ? depthMsg(MSG_NAP)
+          : depthMsg(MSG_LOCAL);
+        history.pop();
+      }).then(function () { busy = false; });
+  }
+  $('askSend').addEventListener('click', send);
+  input.addEventListener('keydown', function (e) { if (e.key === 'Enter') send(); });
+})();
+
+/* ---- Brand Scanner — #/scanner ---- */
+function viewScanner() {
+  return '<div class="view-pad">' +
+    '<p class="room-kicker">The Growth Den Lab · The Machine</p>' +
+    '<h1 class="room-title">🔍 Brand Scanner</h1>' +
+    '<p class="room-tag" style="margin-bottom:20px">' + d3('scanner.tag') + '</p>' +
+    '<div class="card"><div style="font-size:14.5px;line-height:1.7;color:var(--muted)">' + d3('s.intro') + '</div>' +
+      '<div class="scan-row" style="margin-top:14px">' +
+        '<input id="scanUrl" type="url" placeholder="https://a-brand-you-admire.com" autocomplete="off">' +
+        '<button class="run-btn" id="scanGo" type="button">🔍 scan</button>' +
+        '<button class="run-btn ghost" id="scanDemo" type="button">▶ scan thegrowthden.com</button>' +
+      '</div>' +
+      '<p class="scan-status" id="scanStatus"></p>' +
+    '</div>' +
+    '<div class="honesty-panel">' + d3('s.honesty') +
+      ' <a href="https://www.facebook.com/ads/library/" target="_blank" rel="noopener noreferrer">→ the Ad Library</a></div>' +
+    '<div class="card" id="scanReport" style="display:none"></div>' +
+    '</div>';
+}
+INITS.scanner = function () {
+  var busy = false;
+  function status(t) { var el = $('scanStatus'); if (el) el.innerHTML = t; }
+  function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+  function mdLite(s) {
+    var lines = esc(s).split('\n'), out = [], inList = false;
+    lines.forEach(function (ln) {
+      ln = ln.trim();
+      var isLi = /^(\d+[.)]|[-*•])\s+/.test(ln);
+      if (inList && !isLi) { out.push('</ol>'); inList = false; }
+      if (/^#{1,3}\s+/.test(ln)) out.push('<h3>' + ln.replace(/^#{1,3}\s+/, '') + '</h3>');
+      else if (isLi) { if (!inList) { out.push('<ol>'); inList = true; } out.push('<li>' + ln.replace(/^(\d+[.)]|[-*•])\s+/, '') + '</li>'); }
+      else if (ln) out.push('<p>' + ln + '</p>');
+    });
+    if (inList) out.push('</ol>');
+    return out.join('').replace(/\*\*([^*]+)\*\*/g, '<b>$1</b>');
+  }
+  function parseSite(html, url) {
+    var doc = new DOMParser().parseFromString(html, 'text/html');
+    var pick = function (sel, attr) { var el = doc.querySelector(sel); return el ? (attr ? el.getAttribute(attr) : el.textContent).trim() : ''; };
+    var pixel = /fbq\s*\(\s*['"]init['"]\s*,\s*['"](\d+)['"]/.exec(html);
+    var h1s = Array.from(doc.querySelectorAll('h1, h2')).slice(0, 4).map(function (h) { return h.textContent.replace(/\s+/g, ' ').trim(); }).filter(Boolean);
+    var siteName = pick('meta[property="og:site_name"]', 'content') || '';
+    var title = pick('title') || '';
+    var brand = siteName || title.split(/[|–—-]/)[0].trim() || url.replace(/^https?:\/\/(www\.)?/, '').split('/')[0];
+    return {
+      url: url, brand: brand, title: title,
+      description: pick('meta[name="description"]', 'content') || pick('meta[property="og:description"]', 'content'),
+      metaPixel: pixel ? { present: true, id: pixel[1] } : { present: false },
+      headlines: h1s,
+      ogType: pick('meta[property="og:type"]', 'content'),
+    };
+  }
+  function scan(url) {
+    if (busy) return;
+    busy = true;
+    var report = $('scanReport');
+    report.style.display = 'none';
+    status('📡 ' + (depth === 'kid' ? 'knocking on their front door…' : 'fetching the homepage…'));
+    fetch(PROXY_URL + '/fetch', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ url: url }),
+    }).then(function (r) {
+      if (r.status === 429) throw { code: 429 };
+      if (r.status === 503) throw { code: 503 };
+      if (!r.ok) throw { code: r.status };
+      return r.json();
+    }).then(function (f) {
+      if (!f.html || (f.status && f.status >= 400)) throw { code: 'blocked' };
+      var sig = parseSite(f.html, f.finalUrl || url);
+      var adlib = 'https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=ALL&q=' + encodeURIComponent(sig.brand);
+      status('🧠 ' + (depth === 'kid' ? 'the helper is writing the report card…' : 'generating the read…'));
+      report.style.display = 'block';
+      report.innerHTML = '<h2>How the Machine Sees ' + esc(sig.brand) + '</h2>' +
+        '<div class="sig-grid">' +
+          '<div class="sig"><b>title</b>' + esc(sig.title || '—') + '</div>' +
+          '<div class="sig"><b>description</b>' + esc((sig.description || '—').slice(0, 140)) + '</div>' +
+          '<div class="sig"><b>meta pixel</b>' + (sig.metaPixel.present ? '✅ detected (id ' + sig.metaPixel.id + ')' : '❌ not detected') + '</div>' +
+          '<div class="sig"><b>their live ads</b><a href="' + adlib + '" target="_blank" rel="noopener noreferrer">see them in Meta’s own transparency tool →</a></div>' +
+        '</div><div class="report" id="scanMd"><p><i>…</i></p></div>';
+      var sys = 'You are the Brand Scanner inside The Growth Den’s teaching portal “The Machine”, which explains Meta’s ad delivery system (retrieval/Andromeda, ranking/GEM, the total-value auction, quality penalties, creative-as-targeting, fatigue). ' +
+        'You receive parsed PUBLIC signals from a brand’s homepage. Produce “How the Machine Sees This Brand” in markdown with EXACTLY these sections: ' +
+        '“## What the site feeds delivery” (read the actual signals: pixel present or absent and what that means, clarity of offer/category, 4-6 sentences); ' +
+        '“## Mechanisms they’re using well — or fighting” (tie specifically to retrieval indexability, creative signal strength, quality surface, learning consolidation); ' +
+        '“## 10 genuinely different angles” (numbered list of ten creative angle opportunities, each a DISTINCT buyer motivation or hook territory — never cosmetic variants of one idea; one concrete line each). ' +
+        'Write at this register: ' + REGISTER_DESC[depth] + '. ' +
+        'Rules: infer only from the provided signals; never invent spend, reach, or audience numbers — none are public; total under 600 words.';
+      var el = null, started = false;
+      return streamClaude({ model: 'claude-sonnet-4-5', max_tokens: 3000, stream: true, system: sys,
+        messages: [{ role: 'user', content: 'SIGNALS:\n' + JSON.stringify(sig, null, 1) }] },
+        function () { }).then(function (full) {
+          $('scanMd').innerHTML = mdLite(full);
+          status('✅ ' + (depth === 'kid' ? 'report card done!' : 'scan complete.'));
+        });
+    }).catch(function (err) {
+      if (err && err.code === 429) status(depthMsg(MSG_BUSY));
+      else if (err && err.code === 503) status(depthMsg(MSG_NAP));
+      else if (err && err.code === 'blocked') status('🚪 ' + (depth === 'kid' ? 'That site slammed the door on our scanner — some do! Try the demo scan instead.' : 'That site blocked the fetch (some do). Try the demo scan — thegrowthden.com always answers.'));
+      else status(depthMsg(MSG_LOCAL) + ' · ' + (depth === 'kid' ? 'or try the demo!' : 'demo scan works on the live site.'));
+      busy = false;
+    }).then(function () { busy = false; });
+  }
+  $('scanGo').addEventListener('click', function () {
+    var u = $('scanUrl').value.trim();
+    if (!u) { status(depth === 'kid' ? 'type a website first!' : 'enter a URL first.'); return; }
+    if (!/^https?:\/\//.test(u)) u = 'https://' + u;
+    scan(u);
+  });
+  $('scanUrl').addEventListener('keydown', function (e) { if (e.key === 'Enter') $('scanGo').click(); });
+  $('scanDemo').addEventListener('click', function () { $('scanUrl').value = 'https://thegrowthden.com'; scan('https://thegrowthden.com'); });
+  return null;
+};
+VIEWS.scanner = viewScanner;
+
+/* ============================================================
+   THE DISPATCH — #/dispatch · lab logbook
+   Entries live in dispatch.json; embedded fallback for offline.
+   ============================================================ */
+var DISPATCH_FALLBACK = { entries: [] };  // populated from dispatch.json at runtime
+function viewDispatch() {
+  return '<div class="view-pad">' +
+    '<p class="room-kicker">The Growth Den Lab · The Machine</p>' +
+    '<h1 class="room-title">📰 The Dispatch</h1>' +
+    '<p class="room-tag" style="margin-bottom:20px">' + d3('dispatch.tag') + '</p>' +
+    '<div class="card"><div style="font-size:14.5px;line-height:1.7;color:var(--muted)">' + d3('d.intro') + '</div>' +
+    '<p style="margin-top:10px;font-size:12px;color:rgba(252,243,214,.5)">' + d3('d.current') + '</p></div>' +
+    '<div class="card">' +
+      '<div class="log-filters" id="logFilters">' +
+        ['all', 'delivery', 'creative', 'measurement', 'policy'].map(function (t, i) {
+          return '<button class="chip-btn' + (i === 0 ? ' pressed' : '') + '" data-topic="' + t + '" type="button">' + t + '</button>';
+        }).join('') +
+      '</div>' +
+      '<div id="logList"><p style="color:var(--muted);font-size:13px">loading the logbook…</p></div>' +
+    '</div></div>';
+}
+INITS.dispatch = function () {
+  var entries = [], topic = 'all';
+  function verdictCls(v) { return v === 'do something' ? 'v-do' : v === 'know about it' ? 'v-know' : 'v-ignore'; }
+  function renderList() {
+    var list = $('logList'); if (!list) return;
+    var shown = entries.filter(function (e) { return topic === 'all' || e.topic === topic; });
+    if (!shown.length) { list.innerHTML = '<p style="color:var(--muted);font-size:13px">nothing logged under this topic yet.</p>'; return; }
+    list.innerHTML = shown.map(function (e) {
+      var sample = /^SAMPLE/i.test(e.title);
+      var g = GRADES[e.grade] || GRADES.folklore;
+      var idx = CLAIMS.length;
+      CLAIMS.push({ grade: e.grade, sourceName: e.sourceName, sourceUrl: e.sourceUrl });
+      return '<div class="log-entry">' +
+        '<p class="log-date">' + e.date + '</p>' +
+        '<p class="log-title">' + (sample ? '<span class="sample-flag">sample</span>' : '') + e.title.replace(/^SAMPLE\s*·\s*/i, '') + '</p>' +
+        '<div class="log-meta">' +
+          '<span class="topic-chip t-' + e.topic + '">' + e.topic + '</span>' +
+          '<span class="verdict-tag ' + verdictCls(e.verdict) + '">' + e.verdict + '</span>' +
+          '<button class="badge ' + g.cls + '" type="button" data-claim="' + idx + '"><span class="sym">' + g.sym + '</span>' + g.label + '</button>' +
+        '</div>' +
+        '<div class="log-body"><span class="d3">' +
+          '<span class="kid">' + e.registers.kid + '</span>' +
+          '<span class="cmo">' + e.registers.cmo + '</span>' +
+          '<span class="pro">' + e.registers.pro + '</span></span></div>' +
+      '</div>';
+    }).join('');
+  }
+  fetch('dispatch.json').then(function (r) { return r.json(); }).then(function (data) {
+    entries = data.entries || [];
+    renderList();
+  }).catch(function () {
+    var list = $('logList');
+    if (list) list.innerHTML = '<p style="color:var(--muted);font-size:13px">The logbook file could not be loaded in this preview. On the live site, entries come from <code style="font-family:ui-monospace,monospace">dispatch.json</code> — three sample entries ship with the portal.</p>';
+  });
+  $('logFilters').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-topic]'); if (!b) return;
+    topic = b.dataset.topic;
+    document.querySelectorAll('#logFilters .chip-btn').forEach(function (x) { x.classList.toggle('pressed', x === b); });
+    renderList();
+  });
+  return null;
+};
+VIEWS.dispatch = viewDispatch;
+
+/* ============================================================
+   CREATIVE SIGNAL — #/creative · the living field
+   ============================================================ */
+var CB = { PARENT: 1, GADGET: 2, ORAL: 4, HEALTH: 8, SKEPTIC: 16, BUDGET: 32, HUMOR: 64 };
+function makeDotSprite(color, glowy) {
+  var s = document.createElement('canvas'); s.width = s.height = 48;
+  var c = s.getContext('2d');
+  var g = c.createRadialGradient(24, 24, 0, 24, 24, 24);
+  g.addColorStop(0, color);
+  g.addColorStop(glowy ? .25 : .45, color);
+  g.addColorStop(1, 'rgba(0,0,0,0)');
+  c.fillStyle = g; c.fillRect(0, 0, 48, 48);
+  return s;
+}
+var SPRITE_BASE = makeDotSprite('rgba(232,222,240,.85)', false);
+var SPRITE_GLOW = [makeDotSprite('rgba(254,124,43,1)', true), makeDotSprite('rgba(255,197,69,1)', true), makeDotSprite('rgba(127,200,240,1)', true)];
+var CCHIPS = [
+  { cat: 'hook', label: '“My dentist yelled at me”', spec: .85, ages: [.5, .6, .75], ints: { 4: .95, 8: .6 } },
+  { cat: 'hook', label: '“POV: your kid actually brushes”', spec: .9, ages: [.15, .95, .35], ints: { 1: .98, 64: .5 } },
+  { cat: 'hook', label: '“I tested 5 of these”', spec: .8, ages: [.85, .7, .4], ints: { 2: .95, 16: .85 } },
+  { cat: 'hook', label: '“The best toothbrush. Period.”', spec: .08, flat: true },
+  { cat: 'visual', label: 'messy-bathroom kid demo', spec: .9, ages: [.1, .95, .3], ints: { 1: .95, 64: .6 } },
+  { cat: 'visual', label: 'before / after smile', spec: .8, ages: [.5, .6, .7], ints: { 4: .9, 8: .7 } },
+  { cat: 'visual', label: 'bristle macro / ASMR', spec: .75, ages: [.9, .6, .3], ints: { 2: .85 } },
+  { cat: 'visual', label: 'stock smiling family', spec: .1, flat: true },
+  { cat: 'tone', label: 'funny', spec: .6, ages: [.9, .7, .35], ints: { 64: .9, 1: .5 } },
+  { cat: 'tone', label: 'clinical', spec: .7, ages: [.3, .5, .9], ints: { 16: .8, 8: .8 } },
+  { cat: 'tone', label: 'professional™', spec: .1, flat: true },
+  { cat: 'proof', label: 'live plaque-reveal demo', spec: .85, ages: [.6, .7, .5], ints: { 4: .9, 2: .6 } },
+  { cat: 'proof', label: '4,132 five-star reviews', spec: .6, ages: [.6, .7, .6], ints: { 16: .85, 32: .6 } },
+  { cat: 'proof', label: '“trust us”', spec: .05, flat: true },
+];
+var CCATS = ['hook', 'visual', 'tone', 'proof'];
+var C_SPECIFIC = [1, 4, 8, 11], C_GENERIC = [3, 7, 10, 13];
+var CPERSONA = {
+  1: ['moms & dads whose kids fight the toothbrush', 'parents of picky brushers'],
+  4: ['people whose teeth have been complaining', 'oral-care strugglers'],
+  2: ['gadget fans who read reviews for fun', 'research-heavy gadget buyers'],
+  8: ['the health-careful folks', 'health-conscious buyers'],
+  16: ['the “prove it” crowd', 'skeptical evaluators'],
+  32: ['careful spenders', 'value-driven buyers'],
+  64: ['people here for a laugh', 'entertainment-first scrollers'],
+};
+
+function viewCreative() {
+  var chipHtml = CCATS.map(function (cat) {
+    var names = { hook: 'HOOK', visual: 'VISUAL', tone: 'TONE', proof: 'PROOF' };
+    return '<div class="cchip-group"><h4>' + names[cat] + '</h4><div class="cchip-row">' +
+      CCHIPS.map(function (c, i) {
+        if (c.cat !== cat) return '';
+        return '<button class="cchip' + (c.flat ? ' generic' : '') + '" data-ci="' + i + '" type="button">' + c.label + '</button>';
+      }).join('') + '</div></div>';
+  }).join('');
+  return '<div class="view-pad">' +
+    '<p class="room-kicker">The Growth Den Lab · The Machine</p>' +
+    '<h1 class="room-title">📡 Creative Signal</h1>' +
+    '<p class="room-tag" style="margin-bottom:20px">' + d3('creative.tag') + '</p>' +
+    '<div class="card"><div style="font-size:14.5px;line-height:1.7;color:var(--muted)">' + d3('c.intro') + '</div></div>' +
+
+    '<div class="cgrid">' +
+      '<div class="cfield"><canvas id="cfCanvas"></canvas><p class="sim-cap" id="cfCap"></p></div>' +
+      '<div class="card" style="margin-bottom:0" id="cPanel">' + chipHtml +
+        '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:4px">' +
+          '<button class="chip-btn" id="cSpec" type="button">✨ specific preset</button>' +
+          '<button class="chip-btn" id="cGen" type="button">🥱 generic preset</button>' +
+          '<button class="chip-btn" id="cClr" type="button">✕ clear</button>' +
+        '</div>' +
+        '<div class="cread"><p class="cr-p" id="crPersona"></p>' +
+          '<div class="cr-s"><span>cohort<br><b id="crN">—</b></span>' +
+          '<span>tightness<br><span class="ro-bar"><i id="crT"></i></span></span></div>' +
+          '<div id="crExtra"></div>' +
+        '</div>' +
+      '</div>' +
+    '</div>' +
+
+    '<div class="card" style="margin-top:16px" id="d1card"><h2>Demo 1 · Divergent delivery</h2>' +
+      '<div style="font-size:14px;line-height:1.7;color:var(--muted)">' + d3('c.d1') + '</div>' +
+      '<p style="font-size:12.5px">' + claim('Within one ad set, different creatives are delivered to systematically different demographic subgroups.', 'measured', SRC.kellogg.name, SRC.kellogg.url) + '</p>' +
+      '<button class="run-btn" data-demo="divergent" type="button">▶ run the split</button></div>' +
+
+    '<div class="card" id="d2card"><h2>Demo 2 · Similarity collapse</h2>' +
+      '<div style="font-size:14px;line-height:1.7;color:var(--muted)">' + d3('c.d2') + '</div>' +
+      '<p style="font-size:12.5px">' + claim('A per-ad “similarity score” is a practitioner reconstruction — not a confirmed Meta metric. The collapse behavior is what practitioners observe.', 'folklore', 'Practitioner reconstruction; no confirmed Meta metric exists', null) + '</p>' +
+      '<button class="run-btn" data-demo="similar" type="button">▶ merge the twins</button></div>' +
+
+    '<div class="card" id="d3card"><h2>Demo 3 · The diversity sandbox</h2>' +
+      '<div style="font-size:14px;line-height:1.7;color:var(--muted)">' + d3('c.d3') + '</div>' +
+      '<p style="font-size:12.5px">' + claim('The specific “25 diverse creatives beat 5×5 clones” internal Meta test is cited widely but reached the public secondhand — the mechanism stands on its own; the numbers wear this badge.', 'folklore', 'Meta internal test, relayed secondhand in trade press', null) + '</p>' +
+      '<div style="display:flex;gap:8px;flex-wrap:wrap">' +
+        '<button class="run-btn" data-demo="div25" type="button">▶ 25 real concepts</button>' +
+        '<button class="run-btn ghost" data-demo="div5" type="button">▶ 5×5 clones</button>' +
+      '</div></div>' +
+
+    '<div class="card"><button class="chip-btn" data-demo="builder" type="button">↩ back to the builder</button></div>' +
+
+    '<a class="next-room" href="#/models"><span class="nr-k">next room →</span>' +
+      '<span class="nr-t">🧠 The Model Room</span>' +
+      '<span style="font-size:13px;color:var(--muted)">' + d3('c.next') + '</span></a>' +
+    '</div>';
+}
+
+INITS.creative = function () {
+  var P = [], N = 0, mode = 'builder', alive = true, raf = 0, t = 0;
+  var sel = { hook: -1, visual: -1, tone: -1, proof: -1 };
+  var scoreB = null, sig = 0, sA = null, sB = null, conceptOf = null;
+  var cv = $('cfCanvas'), ctx = cv.getContext('2d'), W = 0, H = 0, DPR = 1;
+
+  function makeP() {
+    var a = Math.random(), age = a < .35 ? 0 : a < .75 ? 1 : 2;
+    var ints = 0;
+    if (Math.random() < (age === 1 ? .5 : .18)) ints |= CB.PARENT;
+    if (Math.random() < (age === 0 ? .45 : .25)) ints |= CB.GADGET;
+    if (Math.random() < .25) ints |= CB.ORAL;
+    if (Math.random() < (age === 2 ? .45 : .25)) ints |= CB.HEALTH;
+    if (Math.random() < .3) ints |= CB.SKEPTIC;
+    if (Math.random() < .25) ints |= CB.BUDGET;
+    if (Math.random() < (age === 0 ? .55 : .35)) ints |= CB.HUMOR;
+    return { x: Math.random(), y: Math.random(), vx: 0, vy: 0, z: .45 + Math.random() * .55,
+      tw: Math.random() * 6.28, sex: Math.random() < .5 ? 0 : 1, age: age, ints: ints,
+      glow: 0, gT: 0, col: 0, offR: .35 + Math.random() * .65, offA: Math.random() * 6.28, anchor: 0 };
+  }
+  function resize() {
+    var r = cv.parentElement.getBoundingClientRect();
+    DPR = Math.min(2, window.devicePixelRatio || 1);
+    W = r.width; H = r.height;
+    cv.width = Math.round(W * DPR); cv.height = Math.round(H * DPR);
+    var target = clamp(Math.round(W * H / 300), 700, 2000);
+    while (P.length < target) P.push(makeP());
+    P.length = N = target;
+    retarget();
+  }
+  function chipScore(c, p) {
+    if (c.flat) return .48 + (((p.ints * 7 + p.age * 13) % 10) / 10 - .5) * .06;
+    var iW = .15;
+    for (var bit in c.ints) if (p.ints & bit) iW = Math.max(iW, c.ints[bit]);
+    return .4 * c.ages[p.age] + .6 * iW;
+  }
+  function selIdxs() { return CCATS.map(function (c) { return sel[c]; }).filter(function (i) { return i >= 0; }); }
+  function computeBuilder() {
+    var idxs = selIdxs();
+    scoreB = new Float32Array(N);
+    if (idxs.length) {
+      for (var i = 0; i < N; i++) {
+        var s = 0;
+        idxs.forEach(function (ci) { s += chipScore(CCHIPS[ci], P[i]); });
+        scoreB[i] = s / idxs.length;
+      }
+      var spec = idxs.reduce(function (s, ci) { return s + CCHIPS[ci].spec; }, 0) / idxs.length;
+      sig = spec * (.45 + .55 * idxs.length / 4);
+    } else sig = 0;
+  }
+  function predA(p) { return .5 * ((p.ints & CB.PARENT) ? 1 : 0) + .3 * (p.sex === 0 ? 1 : 0) + .25 * (p.age === 1 ? 1 : 0) + Math.random() * .1; }
+  function predB(p) { return .45 * ((p.ints & CB.BUDGET) ? 1 : 0) + .32 * (p.sex === 1 ? 1 : 0) + .28 * (p.age === 2 ? 1 : 0) + Math.random() * .1; }
+  function retarget() {
+    if (mode === 'builder') { computeBuilder(); updateReadout(); }
+    else if (mode === 'divergent' || mode === 'similar') {
+      sA = new Float32Array(N); sB = new Float32Array(N);
+      for (var i = 0; i < N; i++) {
+        if (mode === 'divergent') { sA[i] = predA(P[i]); sB[i] = predB(P[i]); }
+        else { var base = predA(P[i]); sA[i] = base + Math.random() * .06; sB[i] = base + Math.random() * .06; }
+      }
+      updateReadout();
+    } else if (mode === 'div25' || mode === 'div5') {
+      conceptOf = new Int16Array(N);
+      for (var j = 0; j < N; j++) {
+        var p = P[j];
+        if (mode === 'div25') {
+          conceptOf[j] = (Math.random() < .72) ? ((p.ints * 31 + p.age * 7 + p.sex * 3) % 25) : -1;
+        } else {
+          conceptOf[j] = (predA(p) > .6) ? (j % 5) : -1;
+        }
+      }
+      updateReadout();
+    }
+  }
+  function anchor25(c) {
+    var col = c % 5, row = Math.floor(c / 5);
+    return { x: .14 + col * .18, y: .14 + row * .17 };
+  }
+  function anchor5(c) { return { x: .3 + (c % 5) * .1, y: .42 + (c % 2) * .08 }; }
+
+  function updateReadout() {
+    var pEl = $('crPersona'), nEl = $('crN'), tEl = $('crT'), ex = $('crExtra'), cap = $('cfCap');
+    if (!pEl) return;
+    ex.innerHTML = '';
+    if (mode === 'builder') {
+      var idxs = selIdxs();
+      if (!idxs.length) {
+        pEl.textContent = dtxt('pick some chips and see…', 'select chips to resolve a cohort…', 'select chips; cohort resolves live');
+        nEl.textContent = '—'; tEl.style.width = '0%';
+        cap.innerHTML = d3('c.intro') ? dtxt('every dot is a person — build them an ad', 'the field idles — assemble a concept', 'idle field; N=' + N) : '';
+        return;
+      }
+      var matched = 0, tally = {}, pop = {};
+      for (var i = 0; i < N; i++) {
+        for (var bit in CPERSONA) { if (P[i].ints & bit) pop[bit] = (pop[bit] || 0) + 1; }
+        if (scoreB[i] < .66) continue;
+        matched++;
+        for (var b2 in CPERSONA) if (P[i].ints & b2) tally[b2] = (tally[b2] || 0) + 1;
+      }
+      nEl.textContent = matched;
+      tEl.style.width = Math.round(sig * 100) + '%';
+      if (matched > 12) {
+        var lift = function (b) { return ((tally[b] || 0) / matched) / Math.max((pop[b] || 1) / N, .02); };
+        var top = Object.keys(CPERSONA).filter(function (b) { return (tally[b] || 0) / matched > .3; })
+          .sort(function (a, b) { return lift(b) - lift(a); })[0];
+        pEl.textContent = top ? CPERSONA[top][depth === 'kid' ? 0 : 1] : dtxt('a bit of everyone', 'a broad blend', 'low-lift blend');
+      } else pEl.textContent = dtxt('…nobody in particular showed up', '…no resolvable cohort', 'sub-threshold: no cohort');
+      cap.innerHTML = sig < .28
+        ? dtxt('a whistle nobody can hear…', 'weak signal — the crowd dissolves', 'sub-threshold signal: scatter')
+        : sig < .6 ? dtxt('a little crowd is forming!', 'partial resolution — sharpen a chip', 'partial resolution')
+        : dtxt('look at them huddle!', 'tight cohort — the ad found its people', 'high-resolution cohort assembled');
+    } else if (mode === 'divergent') {
+      var an = 0, af = 0, bn = 0, bm = 0;
+      for (var k = 0; k < N; k++) {
+        if (sA[k] > .6 && sA[k] > sB[k]) { an++; if (P[k].sex === 0) af++; }
+        else if (sB[k] > .6) { bn++; if (P[k].sex === 1) bm++; }
+      }
+      pEl.textContent = dtxt('one box, two secret crowds', 'one ad set, two silent audiences', 'divergent assignment, one ad set');
+      nEl.textContent = (an + bn); tEl.style.width = '70%';
+      ex.innerHTML = '<table class="split-table"><tr><th>creative</th><th>reached</th><th>skew</th></tr>' +
+        '<tr><td style="color:var(--your-ad)">A · kid demo</td><td>' + an + '</td><td>' + Math.round(af / Math.max(an, 1) * 100) + '% women, 25–44</td></tr>' +
+        '<tr><td style="color:var(--gold)">B · deal hook</td><td>' + bn + '</td><td>' + Math.round(bm / Math.max(bn, 1) * 100) + '% men, 45+</td></tr></table>';
+      cap.innerHTML = dtxt('same box — totally different people got each ad!', 'identical settings — systematically different audiences', 'assignment skew under identical targeting');
+    } else if (mode === 'similar') {
+      var both = 0, either = 0;
+      for (var m = 0; m < N; m++) {
+        var a = sA[m] > .62, b = sB[m] > .62;
+        if (a || b) either++;
+        if (a && b) both++;
+      }
+      pEl.textContent = dtxt('the twins melted together', 'two “variants,” one blob', 'near-duplicate profiles: merged cohort');
+      nEl.textContent = either; tEl.style.width = '30%';
+      ex.innerHTML = '<p style="font-size:12.5px;color:var(--muted);margin-top:8px">overlap: <b style="color:var(--cream)">' + Math.round(both / Math.max(either, 1) * 100) + '%</b> — ' + dtxt('they’re fighting over the same people', 'bidding against themselves for one pocket', 'internal competition, zero added reach') + '</p>';
+      cap.innerHTML = dtxt('two almost-same ads = one confused blob', 'cosmetic variants don’t buy diversity', 'variant similarity ⇒ cohort collapse');
+    } else {
+      var covered = 0;
+      for (var q = 0; q < N; q++) if (conceptOf[q] >= 0) covered++;
+      pEl.textContent = mode === 'div25' ? dtxt('little crowds everywhere!', '25 concepts, 25 pockets', '25-concept coverage') : dtxt('the same crowd, five times', '5×5 clones, one pocket', 'clone redundancy');
+      nEl.textContent = covered; tEl.style.width = Math.round(covered / N * 100) + '%';
+      ex.innerHTML = '<p style="font-size:12.5px;color:var(--muted);margin-top:8px">' + dtxt('people reached: ', 'market coverage: ', 'trait-space coverage: ') + '<b style="color:var(--cream)">' + Math.round(covered / N * 100) + '%</b></p>';
+      cap.innerHTML = mode === 'div25'
+        ? dtxt('twenty-five real ideas find twenty-five crowds', 'diverse concepts recruit across the whole market', 'distinct concepts ⇒ distributed coverage')
+        : dtxt('five copies keep finding the same crowd', 'clones re-reach one pocket five times', 'clones ⇒ oversampled single pocket');
+    }
+  }
+
+  function frame(dt) {
+    t += dt;
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    ctx.clearRect(0, 0, W, H);
+    for (var i = 0; i < N; i++) {
+      var p = P[i];
+      p.vx += (Math.random() - .5) * .012 * dt * 60; p.vy += (Math.random() - .5) * .012 * dt * 60;
+      p.vx *= .92; p.vy *= .92;
+      p.x += p.vx * dt * .06; p.y += p.vy * dt * .06;
+      var gT = 0, col = 0, ax = .5, ay = .45, spread = .3;
+      if (mode === 'builder' && sig > 0 && scoreB) {
+        gT = clamp((scoreB[i] - .66) / .22, 0, 1) * clamp(sig * 1.7, 0, 1);
+        spread = lerp(.32, .1, sig);
+      } else if (mode === 'divergent' || mode === 'similar') {
+        var a = sA[i], b = sB[i], th = mode === 'similar' ? .62 : .6;
+        if (mode === 'similar' && Math.random() < .01 && a > th && b > th) { var tmp = sA[i]; sA[i] = sB[i]; sB[i] = tmp; }
+        if (a > th && a >= b) { gT = clamp((a - th) / .3, 0, 1); col = 0; ax = mode === 'similar' ? .44 : .3; }
+        else if (b > th) { gT = clamp((b - th) / .3, 0, 1); col = 1; ax = mode === 'similar' ? .56 : .7; }
+        spread = mode === 'similar' ? .14 : .12;
+      } else if (mode === 'div25' || mode === 'div5') {
+        var c = conceptOf[i];
+        if (c >= 0) {
+          gT = .8; col = mode === 'div25' ? (c % 3) : 0;
+          var an2 = mode === 'div25' ? anchor25(c) : anchor5(c);
+          ax = an2.x; ay = an2.y; spread = mode === 'div25' ? .045 : .1;
+        }
+      }
+      p.gT = gT; if (gT > .01) p.col = col;
+      if (gT > .01) {
+        var rr = spread * p.offR + .015;
+        var tx = ax + Math.cos(p.offA) * rr, ty = ay + Math.sin(p.offA) * rr * .85;
+        var k = clamp(p.gT * dt * 2.4, 0, .2);
+        p.x += (tx - p.x) * k; p.y += (ty - p.y) * k;
+      }
+      if (p.x < -.02) p.x += 1.04; if (p.x > 1.02) p.x -= 1.04;
+      if (p.y < -.02) p.y += 1.04; if (p.y > 1.02) p.y -= 1.04;
+      p.glow = lerp(p.glow, p.gT, dt * 3);
+
+      var sx = p.x * W, sy = p.y * H;
+      var size = (1.5 + p.z * 2.4) * (1 + p.glow * .9);
+      var alpha = (.35 + p.z * .4) * (1 + Math.sin(t * 1.4 + p.tw) * .18);
+      ctx.globalAlpha = clamp(alpha, .08, 1);
+      ctx.drawImage(SPRITE_BASE, sx - size, sy - size, size * 2, size * 2);
+      if (p.glow > .05) {
+        ctx.globalAlpha = clamp(p.glow, 0, 1);
+        var gs = size * 1.9;
+        ctx.drawImage(SPRITE_GLOW[p.col], sx - gs, sy - gs, gs * 2, gs * 2);
+      }
+    }
+    ctx.globalAlpha = 1;
+  }
+  var last = performance.now();
+  function loop(now) {
+    if (!alive) return;
+    var dt = Math.min(.05, (now - last) / 1000); last = now;
+    frame(dt);
+    raf = requestAnimationFrame(loop);
+  }
+
+  /* wiring */
+  document.querySelectorAll('.cchip').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var ci = parseInt(b.dataset.ci, 10), cat = CCHIPS[ci].cat;
+      sel[cat] = sel[cat] === ci ? -1 : ci;
+      mode = 'builder'; syncChips(); retarget();
+    });
+  });
+  function syncChips() {
+    document.querySelectorAll('.cchip').forEach(function (b) {
+      var ci = parseInt(b.dataset.ci, 10);
+      b.classList.toggle('selected', CCATS.some(function (c) { return sel[c] === ci; }));
+    });
+    document.querySelectorAll('[data-demo]').forEach(function (b) {
+      b.classList.toggle('demo-active', b.dataset.demo === mode);
+    });
+  }
+  function preset(idxs) {
+    sel = { hook: -1, visual: -1, tone: -1, proof: -1 };
+    idxs.forEach(function (i) { sel[CCHIPS[i].cat] = i; });
+    mode = 'builder'; syncChips(); retarget();
+  }
+  $('cSpec').addEventListener('click', function () { preset(C_SPECIFIC); });
+  $('cGen').addEventListener('click', function () { preset(C_GENERIC); });
+  $('cClr').addEventListener('click', function () { preset([]); });
+  document.querySelectorAll('[data-demo]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      mode = b.dataset.demo;
+      if (mode !== 'builder') $('cfCanvas').scrollIntoView({ behavior: 'smooth', block: 'center' });
+      syncChips(); retarget();
+    });
+  });
+  var dialHook = function () { setTimeout(updateReadout, 30); };
+  document.querySelectorAll('.dial-btn').forEach(function (b) { b.addEventListener('click', dialHook); });
+  var rs = function () { resize(); };
+  window.addEventListener('resize', rs);
+  resize(); preset(C_SPECIFIC);
+  raf = requestAnimationFrame(loop);
+  return function () {
+    alive = false; cancelAnimationFrame(raf);
+    window.removeEventListener('resize', rs);
+    document.querySelectorAll('.dial-btn').forEach(function (b) { b.removeEventListener('click', dialHook); });
+  };
+};
+VIEWS.creative = viewCreative;
+
+/* ============================================================
+   RECENCY & FATIGUE — #/recency
+   ============================================================ */
+var GEM_ROUNDS = [
+  { evts: [['🎬', 'watched a trail-running Reel', '2 min ago'], ['🔍', 'searched “trail shoes”', '1 min ago'], ['🛒', 'put trail shoes in a cart, then left', 'just now']],
+    opts: ['A trail-shoe offer', 'A pizza ad', 'A gym membership'], correct: 0, reveal: 'r.g.r1' },
+  { evts: [['🛒', 'abandoned a trail-shoe cart', '3 weeks ago'], ['🔍', 'searched “trail shoes”', '2 weeks ago'], ['🎬', 'watched a trail-running Reel', 'just now']],
+    opts: ['A hard discount to close that old cart', 'Inspiring new-gear content', 'Nothing — the signal is gone'], correct: 1, reveal: 'r.g.r2' },
+  { evts: [['🔍', 'searched “standing desk”', '3 weeks ago'], ['🕒', 'three quiet weeks pass', ''], ['📺', 'binged cooking videos all week', 'this week']],
+    opts: ['A standing-desk ad', 'A cookware ad', 'Both, equally'], correct: 1, reveal: 'r.g.r3' },
+  { evts: [['❤️', 'liked a cat video', '4 days ago'], ['🔍', 'searched “kitten food”', '3 days ago'], ['🧳', 'searched “weekend flights”', '20 min ago'], ['🏨', 'viewed three hotel pages', '5 min ago']],
+    opts: ['Kitten food', 'A hotel deal', 'A cat-carrier for travel (clever, right?)'], correct: 1, reveal: 'r.g.r4' },
+  { evts: [['🗣️', 'talked about standing desks at dinner — phone in pocket, screen off', 'last night']],
+    q: { kid: 'A standing-desk ad appears the next morning. How did it know?!', cmo: 'A standing-desk ad appears the next morning. How?', pro: 'Standing-desk ad, next morning. Mechanism?' },
+    opts: ['It listened through the microphone', 'It predicted it from behavior patterns', 'Pure coincidence'], correct: 1, reveal: 'r.g.r5',
+    hidden: [['🧑‍🤝‍🧑', 'a friend searched desks on your home wifi', '2 days ago'], ['👥', 'people with your viewing pattern bought desks', 'this week'], ['🎬', 'you half-watched an office-setup Reel', '9 days ago'], ['🪑', 'you price-checked desk chairs', '6 days ago']] },
+];
+
+function viewRecency() {
+  return '<div class="view-pad">' +
+    '<p class="room-kicker">The Growth Den Lab · The Machine</p>' +
+    '<h1 class="room-title">🔁 Recency & Fatigue</h1>' +
+    '<p class="room-tag" style="margin-bottom:20px">' + d3('recency.tag') + '</p>' +
+
+    '<div class="card"><h2>Part one · Play as GEM</h2>' +
+    '<div style="font-size:14.5px;line-height:1.7;color:var(--muted);margin-bottom:14px">' + d3('r.intro') + '</div>' +
+    '<div class="gem-stage" id="gemBox"></div></div>' +
+
+    '<div class="card"><h2>Part two · The Fatigue Courtroom</h2>' +
+    '<div style="font-size:14.5px;line-height:1.7;color:var(--muted)">' + d3('r.court') + '</div></div>' +
+
+    '<div class="card case"><span class="verdict v-folk">verdict: folklore</span>' +
+    '<p class="case-quote">“High frequency kills ads.”</p>' +
+    '<p style="font-size:12.5px">' + claim('The fatigue trigger Meta actually surfaces is cost-based — your cost per result versus your own baseline — not any specific frequency number.', 'folklore', 'The “magic frequency number” itself: widely repeated, never verified', 'https://www.facebook.com/business/help') + '</p>' +
+    '<div style="font-size:13.5px;line-height:1.65;color:var(--muted)">' + d3('r.c1') + '</div>' +
+    '<div class="curve-box"><canvas id="crv1"></canvas></div></div>' +
+
+    '<div class="card case"><span class="verdict v-meas">verdict: measured</span>' +
+    '<p class="case-quote">“Creative Fatigue = cost ≥2× your baseline; Creative Limited = elevated but under 2×.”</p>' +
+    '<p style="font-size:12.5px">' + claim('These thresholds are practitioner documentation of observed flag behavior — consistent, useful, and not a Meta spec sheet.', 'measured', SRC.loomer.name, SRC.loomer.url) + '</p>' +
+    '<div style="font-size:13.5px;line-height:1.65;color:var(--muted)">' + d3('r.c2') + '</div>' +
+    '<div class="band-wrap"><div class="ctl"><span class="ctl-name"><span>your cost per result vs. your own history</span><b id="bandV">1.0×</b></span>' +
+    '<input type="range" id="bandSlide" min="80" max="300" value="100"></div>' +
+    '<div class="band-bar"><i class="b-ok">healthy</i><i class="b-lim">creative limited</i><i class="b-fat">creative fatigue</i></div>' +
+    '<p class="band-stamp" id="bandStamp"></p></div></div>' +
+
+    '<div class="card case"><span class="verdict v-meas">verdict: measured</span>' +
+    '<p class="case-quote">“Performance drops 45% after four exposures.”</p>' +
+    '<p style="font-size:12.5px">' + claim('Meta’s own 2022 research reported the ~45% decline — shown here with the caveats the research itself acknowledges.', 'measured', SRC.fatigue22.name, SRC.fatigue22.url) + '</p>' +
+    '<div style="font-size:13.5px;line-height:1.65;color:var(--muted)">' + d3('r.c3') + '</div>' +
+    '<div class="curve-box"><canvas id="crv3"></canvas></div>' +
+    '<div class="caveat-row">' +
+      '<button class="caveat" data-c="no time-window control" type="button">⚠ no time-window control</button>' +
+      '<button class="caveat" data-c="no placement control" type="button">⚠ no placement control</button>' +
+      '<button class="caveat" data-c="engagement-level confound" type="button">⚠ engagement confound</button>' +
+    '</div></div>' +
+
+    '<div class="card case"><span class="verdict v-doc">verdict: documented</span>' +
+    '<p class="case-quote">“Editing an ad resets learning.”</p>' +
+    '<p style="font-size:12.5px">' + claim('Significant edits reset the learning phase — documented directly by Meta, with a specific list of what counts.', 'meta', 'Meta Business Help Center — about the learning phase', 'https://www.facebook.com/business/help') + '</p>' +
+    '<div style="font-size:13.5px;line-height:1.65;color:var(--muted)">' + d3('r.c4') + '</div>' +
+    '<div class="duo">' +
+      '<div class="duo-col d-yes"><h4>↺ resets learning</h4><ul>' +
+        '<li>any creative change (image, video, text, link)</li><li>targeting changes</li><li>changing the optimization event</li>' +
+        '<li>bid-strategy changes</li><li>large budget changes</li><li>adding new ads to the ad set</li><li>resuming after a 7-day pause</li></ul></div>' +
+      '<div class="duo-col d-no"><h4>✓ safe to touch</h4><ul>' +
+        '<li>renaming campaigns, ad sets, ads</li><li>minor budget adjustments</li><li>changing the schedule end date</li>' +
+        '<li>a brief pause</li><li>duplicating (the copy starts fresh; the original keeps learning)</li></ul></div>' +
+    '</div></div>' +
+
+    '<a class="next-room" href="#/creative"><span class="nr-k">next room →</span>' +
+      '<span class="nr-t">📡 Creative Signal</span>' +
+      '<span style="font-size:13px;color:var(--muted);line-height:1.55">' + d3('r.next') + '</span></a>' +
+    '</div>';
+}
+
+INITS.recency = function () {
+  /* ---- part one: the game ---- */
+  var round = 0, score = 0;
+  var box = $('gemBox');
+  function evtHtml(e, i, ghost) {
+    return '<div class="evt' + (ghost ? ' ghosted' : '') + '" style="animation-delay:' + (i * .22) + 's">' +
+      '<span class="e-ico">' + e[0] + '</span><span class="e-lab">' + e[1] + '</span><span class="e-when">' + e[2] + '</span></div>';
+  }
+  function renderRound() {
+    var r = GEM_ROUNDS[round];
+    var q = r.q ? (depth === 'kid' ? r.q.kid : depth === 'cmo' ? r.q.cmo : r.q.pro)
+                : dtxt('What does the machine show this visitor next?', 'What does delivery predict next?', 'p(next) — your call:');
+    box.innerHTML = '<div class="gem-head"><span class="gh-t">' +
+      dtxt('Visitor', 'Round', 'Sequence') + ' ' + (round + 1) + ' of ' + GEM_ROUNDS.length +
+      '</span><span class="gem-score">score ' + score + '</span></div>' +
+      '<div class="evt-stream">' + r.evts.map(function (e, i) { return evtHtml(e, i, false); }).join('') + '</div>' +
+      '<p class="gem-q">' + q + '</p>' +
+      '<div class="opt-row">' + r.opts.map(function (o, i) {
+        return '<button class="opt" data-i="' + i + '" type="button">' + o + '</button>';
+      }).join('') + '</div><div id="gemReveal"></div>';
+    box.querySelectorAll('.opt').forEach(function (b) {
+      b.addEventListener('click', function () { answer(parseInt(b.dataset.i, 10)); });
+    });
+  }
+  function answer(i) {
+    var r = GEM_ROUNDS[round];
+    var right = i === r.correct;
+    if (right) score++;
+    box.querySelectorAll('.opt').forEach(function (b, bi) {
+      b.disabled = true;
+      if (bi === r.correct) b.classList.add('correct');
+      else if (bi === i) b.classList.add('wrong');
+    });
+    var extra = '';
+    if (r.hidden) {
+      extra = '<div class="evt-stream" style="margin-top:12px">' +
+        '<p style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sky)">' +
+        dtxt('the part of the story you couldn’t see', 'the sequence you couldn’t see', 'the latent sequence') + '</p>' +
+        r.hidden.map(function (e, j) { return evtHtml(e, j, true); }).join('') + '</div>';
+    }
+    $('gemReveal').innerHTML = extra +
+      '<div class="gem-reveal">' + d3(r.reveal) + '</div>' +
+      '<button class="run-btn gem-next" id="gemNext" type="button">' +
+      (round < GEM_ROUNDS.length - 1 ? dtxt('next visitor →', 'next round →', 'next sequence →') : dtxt('finish →', 'the verdict →', 'wrap →')) + '</button>';
+    box.querySelector('.gem-score').textContent = 'score ' + score;
+    $('gemNext').addEventListener('click', function () {
+      round++;
+      if (round < GEM_ROUNDS.length) renderRound(); else renderEnd();
+    });
+  }
+  function renderEnd() {
+    box.innerHTML = '<div class="gem-head"><span class="gh-t">' +
+      dtxt('You played the machine!', 'Game over', 'Sequence set complete') +
+      '</span><span class="gem-score">score ' + score + ' / ' + GEM_ROUNDS.length + '</span></div>' +
+      '<div style="font-size:14px;line-height:1.7;color:var(--muted)">' + d3('r.myth') + '</div>' +
+      '<button class="chip-btn" id="gemAgain" type="button" style="margin-top:12px">↺ ' + dtxt('play again', 'replay', 'replay') + '</button>';
+    $('gemAgain').addEventListener('click', function () { round = 0; score = 0; renderRound(); });
+  }
+  renderRound();
+
+  /* ---- part two: exhibits ---- */
+  function fitCanvas(cv) {
+    var r = cv.parentElement.getBoundingClientRect();
+    var dpr = Math.min(2, window.devicePixelRatio || 1);
+    cv.width = Math.round(r.width * dpr); cv.height = Math.round(r.height * dpr);
+    var ctx = cv.getContext('2d');
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    return { ctx: ctx, w: r.width, h: r.height };
+  }
+  /* exhibit 1: cost vs frequency — no cliff, a cost-based trigger line */
+  var c1mark = 3.2;
+  function costOf(f) { return 1 + Math.pow((f - 1) / 5.4, 2.05) * 2.4; }
+  function drawC1() {
+    var cv = $('crv1'); if (!cv) return;
+    var s = fitCanvas(cv), ctx = s.ctx, w = s.w, h = s.h;
+    var X = function (f) { return 44 + (f - 1) / 9 * (w - 64); };
+    var Y = function (c) { return h - 30 - (c - 1) / 2.6 * (h - 62); };
+    ctx.clearRect(0, 0, w, h);
+    ctx.strokeStyle = 'rgba(252,243,214,.3)'; ctx.lineWidth = 1.2;
+    ctx.beginPath(); ctx.moveTo(44, 14); ctx.lineTo(44, h - 30); ctx.lineTo(w - 16, h - 30); ctx.stroke();
+    ctx.setLineDash([6, 5]); ctx.strokeStyle = 'rgba(229,52,11,.75)'; ctx.lineWidth = 1.8;
+    ctx.beginPath(); ctx.moveTo(44, Y(2)); ctx.lineTo(w - 16, Y(2)); ctx.stroke(); ctx.setLineDash([]);
+    ctx.font = '600 10px Poppins, sans-serif'; ctx.fillStyle = 'rgba(229,52,11,.9)'; ctx.textAlign = 'left';
+    ctx.fillText(dtxt('the fair’s real alarm: costs doubled', 'Meta’s actual trigger: cost ≥ 2× baseline', 'flag condition: CPR ≥ 2× trailing baseline'), 50, Y(2) - 6);
+    ctx.strokeStyle = 'rgba(127,200,240,.9)'; ctx.lineWidth = 2.5; ctx.beginPath();
+    for (var f = 1; f <= 10; f += .2) { var x = X(f), y = Y(costOf(f)); f === 1 ? ctx.moveTo(x, y) : ctx.lineTo(x, y); }
+    ctx.stroke();
+    var mx = X(c1mark), my = Y(costOf(c1mark));
+    ctx.fillStyle = '#ffc545'; ctx.beginPath(); ctx.arc(mx, my, 7, 0, 6.29); ctx.fill();
+    ctx.fillStyle = 'rgba(252,243,214,.9)'; ctx.textAlign = 'center'; ctx.font = '700 12px Poppins, sans-serif';
+    var flag = costOf(c1mark) >= 2;
+    ctx.fillText('freq ' + c1mark.toFixed(1) + '× · cost ×' + costOf(c1mark).toFixed(2) + (flag ? ' · 🚩' : ' · no flag'), w / 2, 24);
+    ctx.font = '500 10px Poppins, sans-serif'; ctx.fillStyle = 'rgba(252,243,214,.5)'; ctx.textAlign = 'center';
+    ctx.fillText(dtxt('how many times each person saw it →', 'frequency →', 'frequency →'), w / 2, h - 10);
+    ctx.save(); ctx.translate(16, h / 2); ctx.rotate(-Math.PI / 2);
+    ctx.fillText(dtxt('cost per sale →', 'cost per result →', 'CPR vs baseline →'), 0, 0); ctx.restore();
+  }
+  function c1drag(e) {
+    var cv = $('crv1'), r = cv.getBoundingClientRect();
+    c1mark = clamp(1 + (e.clientX - r.left - 44) / (r.width - 64) * 9, 1, 10);
+    drawC1();
+  }
+  $('crv1').addEventListener('pointerdown', function (e) { c1drag(e); $('crv1').setPointerCapture(e.pointerId); });
+  $('crv1').addEventListener('pointermove', function (e) { if (e.buttons) c1drag(e); });
+
+  /* exhibit 2: the threshold bands */
+  function band() {
+    var v = parseInt($('bandSlide').value, 10) / 100;
+    $('bandV').textContent = v.toFixed(1) + '×';
+    var st = $('bandStamp');
+    if (v < 1.5) { st.textContent = dtxt('✅ healthy — the fair is happy', '✅ healthy', '✅ within band'); st.style.color = 'var(--green)'; }
+    else if (v < 2) { st.textContent = dtxt('🟡 “creative limited” — the yellow note', '🟡 Creative Limited (elevated, under 2×)', '🟡 Creative Limited band'); st.style.color = 'var(--gold)'; }
+    else { st.textContent = dtxt('🚩 “creative fatigue” — the red note', '🚩 Creative Fatigue (≥ 2× baseline)', '🚩 Fatigue flag threshold crossed'); st.style.color = '#ff8a70'; }
+  }
+  $('bandSlide').addEventListener('input', band); band();
+
+  /* exhibit 3: the 45% study, with caveats */
+  var c3mark = 4, caveatsOn = 0;
+  var PERF = [100, 88, 74, 62, 55, 51, 48, 46];
+  function drawC3() {
+    var cv = $('crv3'); if (!cv) return;
+    var s = fitCanvas(cv), ctx = s.ctx, w = s.w, h = s.h;
+    ctx.clearRect(0, 0, w, h);
+    var bw = (w - 70) / 8;
+    PERF.forEach(function (p, i) {
+      var x = 50 + i * bw, bh = p / 100 * (h - 66);
+      var hot = (i + 1) === Math.round(c3mark);
+      ctx.fillStyle = hot ? 'rgba(255,197,69,.9)' : (i >= 3 ? 'rgba(229,52,11,.45)' : 'rgba(127,200,240,.55)');
+      ctx.beginPath(); ctx.roundRect(x, h - 30 - bh, bw - 8, bh, 4); ctx.fill();
+      ctx.font = '600 9.5px Poppins, sans-serif'; ctx.fillStyle = 'rgba(252,243,214,.6)'; ctx.textAlign = 'center';
+      ctx.fillText(String(i + 1), x + (bw - 8) / 2, h - 14);
+      if (hot) { ctx.fillStyle = 'rgba(252,243,214,.95)'; ctx.font = '700 12px Poppins, sans-serif'; ctx.fillText(p + '%', x + (bw - 8) / 2, h - 40 - bh); }
+    });
+    ctx.font = '600 11px Poppins, sans-serif'; ctx.textAlign = 'left'; ctx.fillStyle = 'rgba(252,243,214,.75)';
+    ctx.fillText(dtxt('strength of the ad after N views', 'relative performance by exposure count', 'performance index vs exposure (2022 study)'), 50, 20);
+    if (caveatsOn > 0) {
+      ctx.fillStyle = 'rgba(127,200,240,.13)'; ctx.fillRect(0, 0, w, h);
+      ctx.font = 'italic 600 12px Poppins, sans-serif'; ctx.textAlign = 'center'; ctx.fillStyle = 'rgba(127,200,240,.95)';
+      ctx.fillText(dtxt('…but the study didn’t check everything (' + caveatsOn + ' caveat' + (caveatsOn > 1 ? 's' : '') + ' on)', 'correlation with ' + caveatsOn + ' acknowledged confound' + (caveatsOn > 1 ? 's' : '') + ' — not clean causation', caveatsOn + ' confound(s) active: exposure ∝ time ∝ everything else'), w / 2, h / 2);
+    }
+  }
+  function c3drag(e) {
+    var cv = $('crv3'), r = cv.getBoundingClientRect();
+    c3mark = clamp(1 + (e.clientX - r.left - 50) / (r.width - 70) * 8, 1, 8);
+    drawC3();
+  }
+  $('crv3').addEventListener('pointerdown', function (e) { c3drag(e); });
+  $('crv3').addEventListener('pointermove', function (e) { if (e.buttons) c3drag(e); });
+  document.querySelectorAll('.caveat').forEach(function (b) {
+    b.addEventListener('click', function () {
+      b.classList.toggle('on');
+      caveatsOn = document.querySelectorAll('.caveat.on').length;
+      drawC3();
+    });
+  });
+
+  function redrawAll() { drawC1(); drawC3(); }
+  redrawAll();
+  var dialRedraw = function () { setTimeout(redrawAll, 30); };
+  document.querySelectorAll('.dial-btn').forEach(function (b) { b.addEventListener('click', dialRedraw); });
+  window.addEventListener('resize', dialRedraw);
+  return function () {
+    document.querySelectorAll('.dial-btn').forEach(function (b) { b.removeEventListener('click', dialRedraw); });
+    window.removeEventListener('resize', dialRedraw);
+  };
+};
+VIEWS.recency = viewRecency;
+
+/* ============================================================
+   THE MODEL ROOM — #/models · the hall of named machines
+   ============================================================ */
+function hallCard(ico, name, sub, bodyKey, claimsHtml, flipId, oldKey, newKey, tueKey, extraHtml) {
+  var flip = '';
+  if (flipId) {
+    flip = '<div class="flip-row" data-flip="' + flipId + '">' +
+      '<button class="flip-btn on" data-side="old" type="button">the old way</button>' +
+      '<button class="flip-btn" data-side="new" type="button">the new way</button></div>' +
+      '<div class="flip-panel" data-old="' + oldKey + '" data-new="' + newKey + '">' + d3(oldKey) + '</div>';
+  }
+  return '<article class="roomcard">' +
+    '<h2>' + ico + ' ' + name + '</h2><p class="rc-sub">' + sub + '</p>' +
+    '<div class="rc-body">' + d3(bodyKey) + '</div>' +
+    (claimsHtml ? '<div style="font-size:12.5px;line-height:1.6;margin-top:6px">' + claimsHtml + '</div>' : '') +
+    flip + (extraHtml || '') +
+    (tueKey ? '<div class="tuesday"><span class="tue-k">what this means for your Tuesday</span>' + d3(tueKey) + '</div>' : '') +
+    '</article>';
+}
+function viewModels() {
+  var link = function (label, solid) {
+    return '<div class="hall-link' + (solid ? ' solid' : '') + '"><span>' + label + '</span></div>';
+  };
+  return '<div class="view-pad">' +
+    '<p class="room-kicker">The Growth Den Lab · The Machine</p>' +
+    '<h1 class="room-title">🧠 The Model Room</h1>' +
+    '<p class="room-tag" style="margin-bottom:14px">' + d3('models.tag') + '</p>' +
+    '<div class="card" style="margin-bottom:14px"><div style="font-size:14.5px;line-height:1.7;color:var(--muted)">' + d3('m.intro') + '</div></div>' +
+
+    '<div class="hall-wrap"><div class="hall" id="hall">' +
+    hallCard('🌌', 'Andromeda', 'the retrieval engine · Dec 2024', 'm.and.body',
+      '<p>' + claim('Meta’s published figures: 10,000× model capacity, +6% recall, +8% ads quality in selected segments.', 'meta', SRC.andromeda.name, SRC.andromeda.url) + '</p>',
+      'and', 'm.and.old', 'm.and.new', 'm.and.tue') +
+    link('connection inferred') +
+    hallCard('🧠', 'GEM', 'the central brain · Nov 2025', 'm.gem.body',
+      '<p>' + claim('Stated lifts: roughly +5% conversions on Instagram, +3% on Facebook Feed.', 'meta', SRC.gem2.name, SRC.gem2.url) + '</p>' +
+      '<p>' + claim('Reads sequences of up to thousands of user events, in order.', 'meta', SRC.gem.name, SRC.gem.url) + '</p>',
+      'gem', 'm.gem.old', 'm.gem.new', 'm.gem.tue') +
+    link('connection inferred') +
+    hallCard('🕸️', 'Lattice', 'ranking, consolidated · 2026', 'm.lat.body',
+      '<p>' + claim('Hundreds of ranking models consolidated into one trillion-parameter architecture; ~8% ads-quality lift in an Instagram test.', 'meta', SRC.lattice.name, SRC.lattice.url) + '</p>',
+      'lat', 'm.lat.old', 'm.lat.new', 'm.lat.tue') +
+    link('the past', true) +
+    hallCard('👻', 'The Ghosts', 'museum wing · pre-2024', 'm.gho.body', '',
+      null, null, null, 'm.gho.tue',
+      '<div class="plaque"><p class="pl-t">MTML multi-task models</p><p class="pl-d">c. 2020–2023</p>' +
+        '<p class="pl-b">Ranked many objectives at once with shared layers. Served faithfully through the interest-targeting era. Superseded by the foundation-model line.</p></div>' +
+      '<div class="plaque"><p class="pl-t">Interest-gated candidate sourcing</p><p class="pl-d">c. 2012–2024</p>' +
+        '<p class="pl-b">Ads entered the room by checkbox: declared interests, lookalikes, hand-drawn stacks. Retired when retrieval learned to find fit directly.</p></div>' +
+      '<div class="plaque"><p class="pl-t">The 25-ad-set account structure</p><p class="pl-d">folk architecture, undated</p>' +
+        '<p class="pl-b">Not a Meta system — a practitioner ritual built to steer the machines above. Persists in the wild long after its habitat vanished.</p></div>') +
+    link('the future', true) +
+    hallCard('🧭', 'The Timeline Wall', '2020 → the stated end-state', 'm.tl.intro',
+      '<p>' + claim('Meta reports Advantage+ end-to-end at a $75B annual revenue run-rate, the Muse image model, and 9M small businesses using at least one AI creative tool.', 'meta', SRC.earnings.name, SRC.earnings.url) + '</p>' +
+      '<p>' + claim('A target of fully automated ad creation — “objective + budget in, ads out” — by end of 2026 has been reported by trade press, but is not Meta on-record.', 'measured', SRC.theinfo.name, SRC.theinfo.url) + '</p>',
+      null, null, null, null,
+      '<ol class="tl">' +
+      '<li><span class="tl-y">2020</span><p class="tl-t">The MTML era</p><p class="tl-b">Per-surface multi-task rankers; interest targeting at its peak; the playbooks most teams still run were written here.</p></li>' +
+      '<li><span class="tl-y">2022</span><p class="tl-t">The fatigue research year</p><p class="tl-b">Meta publishes creative-fatigue findings; frequency becomes a measured phenomenon rather than a hunch.</p></li>' +
+      '<li><span class="tl-y">DEC 2024</span><p class="tl-t">Andromeda</p><p class="tl-b">Retrieval rebuilt for the generative-creative flood. The interest checkbox stops being a gate.</p></li>' +
+      '<li><span class="tl-y">NOV 2025</span><p class="tl-t">GEM</p><p class="tl-b">The central brain: one foundation model teaching hundreds of rankers; sequences become the first-class input.</p></li>' +
+      '<li><span class="tl-y">2026</span><p class="tl-t">Lattice + Advantage+ end-to-end</p><p class="tl-b">Ranking consolidates; automation reaches a $75B run-rate; the reported (not confirmed) end-state: objective and budget in, finished ads out.</p></li>' +
+      '</ol>') +
+    '</div>' +
+    '<div class="hall-nav">' +
+      '<button class="hn-btn" id="hallPrev" type="button" aria-label="Previous room">‹</button>' +
+      '<div class="hn-dots" id="hallDots"></div>' +
+      '<button class="hn-btn" id="hallNext" type="button" aria-label="Next room">›</button>' +
+    '</div></div>' +
+
+    '<a class="next-room" href="#/dispatch" style="margin-top:16px"><span class="nr-k">next room →</span>' +
+      '<span class="nr-t">📰 The Dispatch</span>' +
+      '<span style="font-size:13px;color:var(--muted)">The machines keep changing. The logbook keeps up.</span></a>' +
+    '</div>';
+}
+INITS.models = function () {
+  document.querySelectorAll('.flip-row').forEach(function (row) {
+    var panel = row.nextElementSibling;
+    row.querySelectorAll('.flip-btn').forEach(function (b) {
+      b.addEventListener('click', function () {
+        row.querySelectorAll('.flip-btn').forEach(function (x) { x.classList.toggle('on', x === b); });
+        panel.innerHTML = d3(panel.dataset[b.dataset.side]);
+      });
+    });
+  });
+  var hall = $('hall'), dots = $('hallDots');
+  var cards = hall.querySelectorAll('.roomcard');
+  dots.innerHTML = Array.from(cards).map(function () { return '<i></i>'; }).join('');
+  function upDots() {
+    var idx = 0, best = 1e9, mid = hall.scrollLeft + hall.clientWidth / 2;
+    cards.forEach(function (c, i) {
+      var cm = c.offsetLeft + c.offsetWidth / 2;
+      if (Math.abs(cm - mid) < best) { best = Math.abs(cm - mid); idx = i; }
+    });
+    dots.querySelectorAll('i').forEach(function (d, i) { d.classList.toggle('on', i === idx); });
+    return idx;
+  }
+  function go(dir) {
+    var idx = clamp(upDots() + dir, 0, cards.length - 1);
+    hall.scrollTo({ left: cards[idx].offsetLeft - (hall.clientWidth - cards[idx].offsetWidth) / 2, behavior: 'smooth' });
+  }
+  $('hallPrev').addEventListener('click', function () { go(-1); });
+  $('hallNext').addEventListener('click', function () { go(1); });
+  hall.addEventListener('scroll', function () { upDots(); }, { passive: true });
+  upDots();
+  return null;
+};
+VIEWS.models = viewModels;
+
+/* ============================================================
+   THE AUCTION FLOOR — #/auction
+   Everything derives from: total value = bid × eAR + quality;
+   winner pays the minimum needed to beat #2.
+   ============================================================ */
+function viewAuction() {
+  return '<div class="view-pad">' +
+    '<p class="room-kicker">The Growth Den Lab · The Machine</p>' +
+    '<h1 class="room-title">🔨 The Auction Floor</h1>' +
+    '<p class="room-tag" style="margin-bottom:20px">' + d3('auction.tag') + '</p>' +
+
+    '<div class="card"><div style="font-size:14.5px;line-height:1.7;color:var(--muted)">' + d3('a.intro') + '</div>' +
+    '<p style="margin-top:10px;font-size:12.5px">' +
+      claim('The mechanics here follow the documented auction: winner = highest total value (bid × estimated action rate + quality), paying the minimum needed to win.', 'meta', SRC.auction.name, SRC.auction.url) + '</p>' +
+    '<p style="font-size:12.5px">' +
+      claim('The famous “learning phase needs ~50 optimization events per week” number is Meta-stated but has never been independently re-verified — treat the exact figure with folklore-grade caution.', 'folklore', 'Meta states ~50 events; no independent re-verification exists', 'https://www.facebook.com/business/help') + '</p></div>' +
+
+    '<div class="sim-grid">' +
+      '<div class="sim-stage"><canvas id="auCanvas"></canvas><p class="sim-cap" id="auCap">' + d3('a.cap.idle') + '</p></div>' +
+      '<div class="card" style="margin-bottom:0">' +
+        '<div class="ctl"><span class="ctl-name"><span>💰 YOUR BID</span><b id="auBidV">$2.50</b></span>' +
+          '<input type="range" id="auBid" min="0.5" max="10" step="0.5" value="2.5"></div>' +
+        '<div class="ctl"><span class="ctl-name"><span>🎨 CREATIVE STRENGTH</span><b id="auCsV">5</b></span>' +
+          '<input type="range" id="auCs" min="1" max="10" step="0.5" value="5"></div>' +
+        '<div class="ctl"><span class="ctl-name"><span>✨ FRESHNESS</span><b id="auFrV">100%</b></span>' +
+          '<div class="fresh-bar"><i id="auFrBar"></i></div>' +
+          '<button class="chip-btn" id="auRefresh" type="button" style="align-self:flex-start">🔄 refresh creative</button></div>' +
+        '<div style="display:flex;gap:8px;flex-wrap:wrap">' +
+          '<button class="run-btn" id="auRun" type="button">▶ Run a day</button>' +
+          '<button class="run-btn ghost" id="auAuto" type="button">⟳ auto-run</button>' +
+        '</div>' +
+        '<div class="sim-stats">' +
+          '<div class="sstat"><span>day</span><b id="stDay">1</b></div>' +
+          '<div class="sstat"><span>auctions</span><b id="stAuc">0</b></div>' +
+          '<div class="sstat"><span>win rate</span><b id="stWin">—</b></div>' +
+          '<div class="sstat hero"><span>effective CPM</span><b id="stCpm">—</b></div>' +
+          '<div class="sstat" style="grid-column:1/-1"><span>you bid vs you paid (avg)</span>' +
+            '<b id="stGap">—</b> <span class="sub" id="stGapSub"></span></div>' +
+          '<div class="sstat"><span>spend</span><b id="stSpend">$0.00</b></div>' +
+          '<div class="sstat"><span>results · cost/result</span><b id="stRes">0 · —</b></div>' +
+        '</div>' +
+      '</div>' +
+    '</div>' +
+
+    '<div class="card" style="margin-top:16px"><h2>The experiments worth running</h2>' +
+      '<div class="scen-row">' +
+        '<button class="chip-btn" id="sc1" type="button">⚖️ 2× bid vs 2× creative</button>' +
+        '<button class="chip-btn" id="sc2" type="button">🎄 Q4 arrives</button>' +
+        '<button class="chip-btn" id="sc3" type="button">🪤 engagement bait</button>' +
+        '<button class="chip-btn" id="sc4" type="button">🧊 aggressive cost cap</button>' +
+        '<button class="chip-btn" id="sc5" type="button">🥱 5 days of fatigue</button>' +
+      '</div>' +
+      '<div class="scen-cap" id="scenCap"></div>' +
+      '<div id="scenTable"></div>' +
+    '</div>' +
+
+    '<a class="next-room" href="#/recency"><span class="nr-k">next room →</span>' +
+      '<span class="nr-t">🔁 How the machine reads YOU</span>' +
+      '<span style="font-size:13px;color:var(--muted);line-height:1.55">' + d3('a.next') + '</span></a>' +
+    '</div>';
+}
+
+INITS.auction = function () {
+  var comps = [];
+  function rollComps() {
+    var tiers = [2, 4, 6, 8, 11, 13, 16, 20];
+    comps = tiers.map(function (t) {
+      var prod = t * (.85 + Math.random() * .3);
+      // stronger competitors carry stronger creative, so the product survives intact
+      var cs = clamp(2 + Math.round((t / 3 + Math.random() * 2) * 2) / 2, 2, 8);
+      return { bid: clamp(prod / cs, .5, 8), cs: cs, fresh: .6 + Math.random() * .4 };
+    });
+  }
+  rollComps();
+  var AU = { bid: 2.5, cs: 5, fresh: 1, day: 1, q4: false, bait: false, cap: false, auto: false };
+  var T = { auc: 0, wins: 0, paySum: 0, spend: 0, results: 0, capSkips: 0 };
+  var CAP_VAL = 1.5, animQ = [], curAnim = null, animT = 0, raf = 0, autoTm = 0, alive = true;
+
+  function uar() { return .012 * AU.cs * AU.fresh; }
+  function uq() { return AU.cs * AU.fresh * 6 + (AU.bait ? -35 : 0); }
+  function ctv(c, n) { return (c.bid * (AU.q4 ? 1.25 : 1) * (.012 * c.cs * c.fresh) * 1000 + c.cs * c.fresh * 6) * n; }
+
+  function runAuction(record) {
+    var pool = comps.slice();
+    if (AU.q4) pool = pool.concat([{ bid: 3, cs: 5.5, fresh: .9 }, { bid: 2.5, cs: 5, fresh: .9 }]);
+    pool.sort(function () { return Math.random() - .5; });
+    var field = pool.slice(0, 4).map(function (c) { return { v: ctv(c, .85 + Math.random() * .3) }; });
+    var un = .85 + Math.random() * .3;
+    var uv = (AU.bid * uar() * 1000 + uq()) * un;
+    var all = field.concat([{ v: uv, you: true }]).sort(function (a, b) { return b.v - a.v; });
+    T.auc++;
+    var res = { bars: all, pay: null, capped: false, won: false };
+    if (all[0].you) {
+      var needed = clamp((all[1].v - uq() * un) / (uar() * 1000 * un), .05, AU.bid);
+      if (AU.cap && needed > CAP_VAL) {
+        T.capSkips++; res.capped = true;
+      } else {
+        T.wins++; T.paySum += needed; T.spend += needed; res.won = true; res.pay = needed;
+        if (Math.random() < clamp(uar() * 6, .02, .85)) T.results++;
+      }
+    }
+    if (record) animQ.push(res);
+    return res;
+  }
+  function drift() {
+    comps.forEach(function (c) {
+      c.bid = clamp(c.bid + (Math.random() - .5) * .3, .5, 5.5);
+      if (Math.random() < .15) c.cs = clamp(c.cs + (Math.random() < .5 ? -.5 : .5), 2, 8);
+      c.fresh = clamp(c.fresh + (Math.random() - .45) * .08, .4, 1);
+    });
+  }
+  function runDay(silent) {
+    for (var i = 0; i < 120; i++) runAuction(!silent && i % 12 === 0);
+    AU.day++; AU.fresh = Math.max(.4, AU.fresh * .93);
+    drift();
+    if (!silent) setCapEl('a.cap.running');
+    syncUI();
+  }
+  function resetT(note) {
+    T = { auc: 0, wins: 0, paySum: 0, spend: 0, results: 0, capSkips: 0 };
+    if (note) setCapEl('a.cap.reset');
+    syncUI();
+  }
+  function setCapEl(key) { var el = $('auCap'); if (el) el.innerHTML = d3(key); }
+  function fm(v) { return '$' + v.toFixed(2); }
+  function syncUI() {
+    if (!$('stDay')) return;
+    $('auBidV').textContent = fm(AU.bid);
+    $('auCsV').textContent = AU.cs;
+    $('auFrV').textContent = Math.round(AU.fresh * 100) + '%';
+    $('auFrBar').style.width = Math.round(AU.fresh * 100) + '%';
+    $('stDay').textContent = AU.day;
+    $('stAuc').textContent = T.auc;
+    $('stWin').textContent = T.auc ? Math.round(T.wins / T.auc * 100) + '%' : '—';
+    var avg = T.wins ? T.paySum / T.wins : 0;
+    $('stCpm').textContent = T.wins ? fm(avg) : '—';
+    $('stGap').textContent = T.wins ? fm(AU.bid) + ' → ' + fm(avg) : '—';
+    $('stGapSub').textContent = T.wins ? 'the gap is the pays-minimum discount' : '';
+    $('stSpend').textContent = fm(T.spend);
+    $('stRes').textContent = T.results + ' · ' + (T.results ? fm(T.spend / T.results) : '—');
+  }
+
+  /* silent comparison for scenario 1 */
+  function measure(bid, cs, n) {
+    var wins = 0, pays = 0;
+    var save = { bid: AU.bid, cs: AU.cs }, saveT = T;
+    AU.bid = bid; AU.cs = cs; T = { auc: 0, wins: 0, paySum: 0, spend: 0, results: 0, capSkips: 0 };
+    for (var i = 0; i < n; i++) runAuction(false);
+    wins = T.wins; pays = T.paySum;
+    AU.bid = save.bid; AU.cs = save.cs; T = saveT;
+    return { wr: wins / n, cpm: wins ? pays / wins : 0 };
+  }
+
+  /* ---- canvas ---- */
+  var cv = $('auCanvas'), cx = cv.getContext('2d'), W = 0, H = 0, DPR = 1, t = 0;
+  function resize() {
+    var r = cv.parentElement.getBoundingClientRect();
+    DPR = Math.min(2, window.devicePixelRatio || 1);
+    W = r.width; H = r.height;
+    cv.width = Math.round(W * DPR); cv.height = Math.round(H * DPR);
+  }
+  resize();
+  var floaters = comps.map(function (c, i) {
+    return { x: .1 + Math.random() * .8, y: .15 + Math.random() * .55, ph: Math.random() * 6.28 };
+  });
+  var last = performance.now();
+  function loop(now) {
+    if (!alive) return;
+    var dt = Math.min(.05, (now - last) / 1000); last = now; t += dt;
+    cx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    cx.clearRect(0, 0, W, H);
+
+    if (curAnim) {
+      animT += dt;
+      drawAuction(curAnim, clamp(animT / .55, 0, 1));
+      if (animT > .62) curAnim = null;
+    }
+    if (!curAnim && animQ.length) { curAnim = animQ.shift(); animT = 0; }
+    if (!curAnim) drawIdle();
+    raf = requestAnimationFrame(loop);
+  }
+  function drawIdle() {
+    floaters.forEach(function (f, i) {
+      var c = comps[i];
+      var x = f.x * W, y = (f.y + Math.sin(t * .8 + f.ph) * .02) * H;
+      var r = 7 + c.bid * 2.2;
+      cx.save();
+      cx.shadowColor = 'rgba(127,200,240,.6)'; cx.shadowBlur = c.cs * 1.6;
+      cx.fillStyle = 'rgba(125,116,160,' + (.4 + c.fresh * .4) + ')';
+      cx.beginPath(); cx.arc(x, y, r, 0, 6.29); cx.fill();
+      cx.restore();
+    });
+    var yx = W * .5, yy = H * .82;
+    cx.save();
+    cx.shadowColor = 'rgba(254,124,43,.9)'; cx.shadowBlur = 8 + AU.cs * 2;
+    cx.fillStyle = 'rgba(254,124,43,' + (.55 + AU.fresh * .45) + ')';
+    cx.beginPath(); cx.arc(yx, yy, 9 + AU.bid * 2.2, 0, 6.29); cx.fill();
+    cx.restore();
+    cx.font = '700 11px Poppins, sans-serif'; cx.textAlign = 'center';
+    cx.fillStyle = 'rgba(254,124,43,.9)';
+    cx.fillText(dtxt('you', 'your ad', 'your ad'), yx, yy + 28);
+    cx.font = '600 11px Poppins, sans-serif';
+    cx.fillStyle = 'rgba(252,243,214,.5)';
+    cx.fillText(dtxt('the other stands drift and change each day', 'competitors drift daily — size = bid, glow = creative', 'competitor set · size=bid, glow=cs, alpha=freshness'), W / 2, 24);
+  }
+  function drawAuction(a, p) {
+    var n = a.bars.length, gap = Math.min(70, W * .13);
+    var x0 = W / 2 - gap * (n - 1) / 2, baseY = H * .78, maxV = a.bars[0].v;
+    a.bars.forEach(function (b, i) {
+      var bh = (b.v / maxV) * H * .5 * Math.min(1, p * 1.6);
+      var x = x0 + gap * i;
+      cx.fillStyle = b.you ? 'rgba(254,124,43,.92)' : 'rgba(125,116,160,.6)';
+      cx.beginPath(); cx.roundRect(x - 16, baseY - bh, 32, bh, 6); cx.fill();
+      if (i === 0 && p > .6) {
+        cx.font = '700 12px Poppins, sans-serif'; cx.textAlign = 'center';
+        cx.fillStyle = 'rgba(255,197,69,.95)';
+        cx.fillText(a.capped ? dtxt('too pricey — you sat out', 'over your cap — skipped', 'cap gate: no entry') : dtxt('wins!', 'wins the slot', 'clears'), x, baseY - bh - 12);
+      }
+    });
+    if (a.won && p > .7) {
+      cx.font = '800 15px Poppins, sans-serif'; cx.textAlign = 'center';
+      cx.fillStyle = 'rgba(143,214,148,' + clamp((p - .7) * 4, 0, 1) + ')';
+      cx.fillText('paid ' + fm(a.pay) + dtxt(' (you offered ' + fm(AU.bid) + ')', ' — bid was ' + fm(AU.bid), ' · bid ' + fm(AU.bid)), W / 2, H * .12);
+    }
+    cx.font = '600 10px Poppins, sans-serif'; cx.textAlign = 'center';
+    cx.fillStyle = 'rgba(252,243,214,.45)';
+    cx.fillText(dtxt('stacks = each racer’s total score', 'bars = total value per contender', 'bars = TV per contender, this auction'), W / 2, baseY + 22);
+  }
+  raf = requestAnimationFrame(loop);
+
+  /* ---- wiring ---- */
+  function on(id, ev, fn) { var el = $(id); if (el) el.addEventListener(ev, fn); }
+  on('auBid', 'input', function (e) { AU.bid = parseFloat(e.target.value); resetT(true); });
+  on('auCs', 'input', function (e) { AU.cs = parseFloat(e.target.value); resetT(true); });
+  on('auRefresh', 'click', function () { AU.fresh = 1; setCapEl('a.cap.refresh'); syncUI(); });
+  on('auRun', 'click', function () { runDay(false); });
+  on('auAuto', 'click', function () {
+    AU.auto = !AU.auto;
+    $('auAuto').classList.toggle('pressed', AU.auto);
+    clearInterval(autoTm);
+    if (AU.auto) autoTm = setInterval(function () { runDay(false); }, 1400);
+  });
+  function scen(id, fn) { on(id, 'click', fn); }
+  scen('sc1', function () {
+    var base = measure(AU.bid, AU.cs, 600);
+    var b2 = measure(AU.bid * 2, AU.cs, 600);
+    var c2 = measure(AU.bid, Math.min(10, AU.cs * 2), 600);
+    $('scenCap').innerHTML = d3('a.cap.sc1');
+    $('scenTable').innerHTML = '<table class="cmp-table"><tr><th>setup</th><th>win rate</th><th>effective CPM</th></tr>' +
+      '<tr><td>baseline (bid ' + fm(AU.bid) + ', creative ' + AU.cs + ')</td><td>' + Math.round(base.wr * 100) + '%</td><td>' + (base.cpm ? fm(base.cpm) : '—') + '</td></tr>' +
+      '<tr><td>2× bid</td><td>' + Math.round(b2.wr * 100) + '%</td><td>' + (b2.cpm ? fm(b2.cpm) : '—') + '</td></tr>' +
+      '<tr class="you-row"><td>2× creative strength</td><td>' + Math.round(c2.wr * 100) + '%</td><td>' + (c2.cpm ? fm(c2.cpm) : '—') + '</td></tr></table>';
+  });
+  scen('sc2', function () {
+    AU.q4 = !AU.q4;
+    $('sc2').classList.toggle('pressed', AU.q4);
+    $('scenCap').innerHTML = d3(AU.q4 ? 'a.cap.sc2on' : 'a.cap.sc2off');
+    $('scenTable').innerHTML = '';
+    resetT(false);
+  });
+  scen('sc3', function () {
+    AU.bait = !AU.bait;
+    $('sc3').classList.toggle('pressed', AU.bait);
+    $('scenCap').innerHTML = d3(AU.bait ? 'a.cap.sc3on' : 'a.cap.sc3off');
+    $('scenTable').innerHTML = '';
+    resetT(false);
+  });
+  scen('sc4', function () {
+    AU.cap = !AU.cap;
+    $('sc4').classList.toggle('pressed', AU.cap);
+    $('scenCap').innerHTML = d3(AU.cap ? 'a.cap.sc4on' : 'a.cap.sc4off');
+    $('scenTable').innerHTML = '';
+    resetT(false);
+  });
+  scen('sc5', function () {
+    for (var i = 0; i < 5; i++) runDay(true);
+    $('scenCap').innerHTML = d3('a.cap.sc5');
+    $('scenTable').innerHTML = '';
+    syncUI();
+  });
+  var rs = function () { resize(); };
+  window.addEventListener('resize', rs);
+  syncUI();
+
+  return function cleanup() {
+    alive = false;
+    cancelAnimationFrame(raf);
+    clearInterval(autoTm);
+    window.removeEventListener('resize', rs);
+  };
+};
+VIEWS.auction = viewAuction;
+
 /* ---------------- other views ---------------- */
 function viewPlaceholder(room) {
   return '<div class="view-pad">' +
@@ -1565,6 +3544,15 @@ function viewPlaceholder(room) {
     '</div></div>';
 }
 
+VIEWS.machine = viewJourney;
+INITS.machine = function () {
+  journeyStart();
+  document.querySelectorAll('#pipemap .node').forEach(function (n) {
+    n.addEventListener('click', function () { openDetail(n.dataset.node); });
+  });
+  return journeyStop;
+};
+
 function render() {
   var cur = parseHash();
   if (cur.params.d && DEPTHS.indexOf(cur.params.d) >= 0 && cur.params.d !== depth) {
@@ -1575,20 +3563,14 @@ function render() {
   CLAIMS.length = 0;
   popover.hidden = true;
   detail.hidden = true;
-  journeyStop();
+  if (roomCleanup) { try { roomCleanup(); } catch (e) { } roomCleanup = null; }
   var view = $('view');
-  view.innerHTML = room.slug === 'machine' ? viewJourney() : viewPlaceholder(room);
+  view.innerHTML = VIEWS[room.slug] ? VIEWS[room.slug]() : viewPlaceholder(room);
   view.style.animation = 'none';
   void view.offsetWidth;
   view.style.animation = '';
   renderTabs(room.slug);
-  if (room.slug === 'machine') {
-    journeyStart();
-    // pipeline nodes open their detail cards
-    document.querySelectorAll('#pipemap .node').forEach(function (n) {
-      n.addEventListener('click', function () { openDetail(n.dataset.node); });
-    });
-  }
+  if (INITS[room.slug]) roomCleanup = INITS[room.slug]() || null;
   document.title = (room.slug === 'machine' ? 'The Machine' : room.name + ' · The Machine') +
     ' — The Growth Den Lab';
   window.scrollTo(0, 0);

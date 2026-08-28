@@ -1,0 +1,47 @@
+{
+  "note": "The Dispatch back-catalog. Entries are hand-curated. The three entries below are SAMPLES demonstrating the format — replace with the real back-catalog. Fields: date (YYYY-MM-DD), title, topic (delivery|creative|measurement|policy), grade (meta|measured|folklore), sourceName, sourceUrl, verdict (do something|know about it|ignore the panic), registers {kid, cmo, pro}.",
+  "entries": [
+    {
+      "date": "2026-07-15",
+      "title": "SAMPLE · Lattice ranking expands to more of Feed",
+      "topic": "delivery",
+      "grade": "meta",
+      "sourceName": "Meta AI — “Meta Lattice” · arXiv:2512.09200",
+      "sourceUrl": "https://arxiv.org/abs/2512.09200",
+      "verdict": "know about it",
+      "registers": {
+        "kid": "The fair swapped in more of its giant new judging machine. You don’t have to do anything — your lemonade just gets judged by a smarter judge now.",
+        "cmo": "The consolidated ranking architecture is serving more Feed traffic. No action required; expect small unattributed performance drift in either direction while it settles, and resist the urge to explain that drift with your own changes.",
+        "pro": "Lattice serving share increased on Feed. Practical note: ranking-side migrations produce short-window CPA noise that is easy to misattribute to creative or budget changes made the same week. Freeze conclusions for ~2 weeks around platform migrations."
+      }
+    },
+    {
+      "date": "2026-06-02",
+      "title": "SAMPLE · New study quantifies divergent delivery in A/B tests",
+      "topic": "measurement",
+      "grade": "measured",
+      "sourceName": "Kellogg School of Management — 181,890 Meta A/B tests",
+      "sourceUrl": "https://www.kellogg.northwestern.edu/academics-research/research/detail/2025/characterizing-and-minimizing-divergent-delivery-in-meta-advertising-experiments",
+      "verdict": "do something",
+      "registers": {
+        "kid": "Scientists proved the sneaky-split is real: two ads in one box get shown to different kinds of people, so the “winner” might just have met an easier crowd. If a grown-up says “ad B won,” ask: shown to the same people?",
+        "cmo": "Independent confirmation at scale that in-ad-set creative comparisons are confounded by audience assignment. Do something: stop reading same-ad-set performance deltas as creative verdicts; use holdout-based lift or forced splits for any decision that matters.",
+        "pro": "181,890-experiment analysis of divergent delivery. Action: treat within-ad-set creative deltas as audience×creative composites; reserve ship/kill decisions for conversion-lift or split-test designs; annotate historical “winners” decided the confounded way."
+      }
+    },
+    {
+      "date": "2026-05-20",
+      "title": "SAMPLE · “Engagement bait is now banned outright” makes the rounds",
+      "topic": "policy",
+      "grade": "folklore",
+      "sourceName": "Group-chat telephone; the actual policy is a quality demotion, not a ban",
+      "sourceUrl": "https://www.facebook.com/business/help",
+      "verdict": "ignore the panic",
+      "registers": {
+        "kid": "A scary rumor said tricky signs get you kicked out of the fair. Not true — tricky signs just get docked points, which quietly costs you money. Don’t panic; just don’t be tricky.",
+        "cmo": "The viral version (“accounts banned for engagement bait”) overstates a real mechanism: bait triggers quality penalties that raise your costs, not removal. Ignore the panic; keep the real lesson — the penalty class is documented and it prices like a tax.",
+        "pro": "Policy telephone: demotion mechanics reported as enforcement mechanics. The documented behavior remains a negative quality term (with severity tiers), not account action absent other violations. No workflow change; keep bait patterns out of creative for economic reasons, not fear."
+      }
+    }
+  ]
+}
