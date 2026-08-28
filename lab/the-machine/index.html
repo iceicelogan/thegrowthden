@@ -11,7 +11,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 })(window,document,'script','dataLayer','GTM-TR4S2MZM');</script>
 <!-- End Google Tag Manager -->
 <title>The Machine — how Meta's ad delivery system works · The Growth Den Lab</title>
-<meta name="description" content="A multi-room teaching portal about how Meta's ad delivery system actually works: the models, the auction, fatigue, creative signal — graded by how sure we really are.">
+<meta name="description" content="Follow one impression through Meta's ad delivery pipeline — retrieval, ranking, the value equation, the auction — in the ~100ms before an ad appears.">
 <meta name="robots" content="noindex">
 <link rel="icon" href="../../favicon-32x32.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -31,6 +31,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   --orange:  #fe7c2b;
   --gold:    #ffc545;
   --sky:     #7fc8f0;
+  --green:   #8fd694;
   --cream:   #fcf3d6;
   --white:   #fefefe;
   --muted:   rgba(252,243,214,.62);
@@ -44,6 +45,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
   --topbar-h: 62px;
   --tabs-h: 54px;
+  --pin-top: calc(var(--topbar-h) + var(--tabs-h));
 }
 
 html { scroll-behavior: smooth; }
@@ -142,12 +144,8 @@ body.d-pro .d3 > .kid, body.d-pro .d3 > .cmo { opacity: 0; pointer-events: none;
 .tab-pill .ico { font-size: 15px; }
 
 /* ---------- view ---------- */
-#view {
-  flex: 1;
-  width: 100%; max-width: 1100px; margin: 0 auto;
-  padding: 34px 20px 60px;
-  animation: view-in .3s ease;
-}
+#view { flex: 1; width: 100%; animation: view-in .3s ease; }
+.view-pad { max-width: 1100px; margin: 0 auto; padding: 34px 20px 30px; }
 @keyframes view-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
 
 .room-kicker {
@@ -158,7 +156,7 @@ h1.room-title {
   font-size: clamp(30px, 5vw, 46px); font-weight: 800; letter-spacing: -.01em;
   color: var(--white); line-height: 1.1; margin-bottom: 10px;
 }
-.room-tag { font-size: 16px; color: var(--muted); line-height: 1.6; max-width: 640px; margin-bottom: 26px; }
+.room-tag { font-size: 16px; color: var(--muted); line-height: 1.6; max-width: 680px; margin-bottom: 8px; }
 
 .card {
   background: var(--glass); backdrop-filter: blur(8px);
@@ -221,15 +219,138 @@ h1.room-title {
 #popover a { color: var(--blue); font-weight: 600; }
 #popover .po-note { color: #6b5f78; margin-top: 4px; }
 
-/* legend row on the home tab */
-.legend-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 4px; }
+.legend-row { display: flex; flex-wrap: wrap; gap: 10px; margin: 8px 0 2px; }
 .legend-chip { display: inline-flex; align-items: center; gap: 7px; font-size: 12.5px; color: var(--muted); }
 
-/* ---------- placeholder rooms ---------- */
-.bench {
-  text-align: center; padding: 52px 24px 46px;
-  border-style: dashed; border-width: 1.5px;
+/* ---------- the journey (pinned scroll scenes) ---------- */
+.jstep { position: relative; min-height: 235svh; }
+.jpin {
+  position: sticky; top: var(--pin-top);
+  height: calc(100svh - var(--pin-top));
+  display: flex; align-items: center; overflow: hidden;
 }
+.jgrid {
+  width: 100%; max-width: 1100px; margin: 0 auto;
+  padding: 14px 20px;
+  display: grid; grid-template-columns: minmax(300px, 420px) 1fr;
+  gap: 28px; align-items: center; height: 100%;
+}
+.jcopy h2 { font-size: clamp(22px, 2.6vw, 32px); font-weight: 700; line-height: 1.16; color: var(--white); margin-bottom: 12px; }
+.jcopy .jbody p { font-size: 14px; line-height: 1.68; color: var(--muted); margin-bottom: 10px; }
+.jcopy .jbody b, .jcopy .jbody i { color: var(--cream); }
+.jcopy .jclaims { margin-top: 10px; border-top: 1px dashed var(--line); padding-top: 10px; }
+.jcopy .jclaims p { font-size: 12.5px; line-height: 1.65; color: var(--muted); margin-bottom: 8px; }
+
+.jstage {
+  position: relative; height: min(76svh, 640px); min-height: 340px;
+  border: 1px solid var(--line); border-radius: var(--r);
+  background: rgba(15,9,24,.72); overflow: hidden;
+  box-shadow: 0 24px 60px rgba(0,0,0,.4);
+}
+.jstage canvas { position: absolute; inset: 0; width: 100%; height: 100%; touch-action: pan-y; }
+.jcap {
+  position: absolute; left: 12px; right: 12px; bottom: 12px;
+  text-align: center; font-size: 13px; font-weight: 500; color: var(--cream);
+  background: rgba(26,16,37,.82); backdrop-filter: blur(6px);
+  border: 1px solid var(--line); border-radius: 12px; padding: 8px 14px;
+  pointer-events: none; min-height: 36px;
+  display: grid; align-items: center;
+}
+.jcap > * { grid-area: 1 / 1; }
+
+/* slow-mo scrubber (retrieval scene) */
+.scrub {
+  position: absolute; left: 14px; right: 14px; bottom: 58px;
+  display: flex; align-items: center; gap: 10px;
+  background: rgba(26,16,37,.82); border: 1px solid var(--line);
+  border-radius: 100px; padding: 6px 14px;
+}
+.scrub label { font-size: 11px; font-weight: 600; color: var(--muted); white-space: nowrap; }
+.scrub input[type="range"] {
+  -webkit-appearance: none; appearance: none; flex: 1;
+  height: 28px; background: transparent; cursor: pointer;
+}
+.scrub input::-webkit-slider-runnable-track { height: 5px; border-radius: 4px; background: rgba(252,243,214,.2); }
+.scrub input::-webkit-slider-thumb {
+  -webkit-appearance: none; appearance: none;
+  width: 20px; height: 20px; margin-top: -7.5px; border-radius: 50%;
+  background: var(--gold); border: 2px solid var(--deep);
+}
+.scrub input::-moz-range-track { height: 5px; border-radius: 4px; background: rgba(252,243,214,.2); }
+.scrub input::-moz-range-thumb { width: 18px; height: 18px; border-radius: 50%; background: var(--gold); border: 2px solid var(--deep); }
+
+/* tap-to-advance (touch devices) */
+.jnext {
+  display: none;
+  position: absolute; right: 12px; top: 12px; z-index: 5;
+  font-family: 'Poppins', sans-serif; font-weight: 600; font-size: 12px;
+  color: var(--cream); background: rgba(26,16,37,.8);
+  border: 1.5px solid rgba(252,243,214,.4); border-radius: 100px;
+  padding: 8px 14px; min-height: 38px; cursor: pointer;
+}
+@media (hover: none) { .jnext { display: inline-flex; align-items: center; gap: 5px; } }
+
+/* ---------- pipeline diagram ---------- */
+.map-wrap { overflow-x: auto; }
+#pipemap { width: 100%; min-width: 560px; height: auto; display: block; }
+#pipemap .node { cursor: pointer; }
+#pipemap .node rect { fill: rgba(252,243,214,.06); stroke: rgba(252,243,214,.4); stroke-width: 1.4; rx: 12; transition: stroke .2s; }
+#pipemap .node:hover rect { stroke: var(--gold); }
+#pipemap .node text { fill: var(--cream); font-family: 'Poppins', sans-serif; }
+#pipemap .n-name { font-size: 13px; font-weight: 700; }
+#pipemap .n-sub { font-size: 9.5px; fill: rgba(252,243,214,.55); }
+#pipemap .edge { stroke: rgba(252,243,214,.55); stroke-width: 2; fill: none; marker-end: url(#arrow); }
+#pipemap .edge.inferred { stroke: var(--gold); stroke-dasharray: 6 6; opacity: .8; }
+#pipemap .e-label { font-size: 9px; fill: rgba(252,243,214,.5); font-family: 'Poppins', sans-serif; }
+#pipemap .e-label.inf { fill: var(--gold); font-weight: 600; }
+.map-legend { display: flex; flex-wrap: wrap; gap: 18px; margin-top: 10px; font-size: 12px; color: var(--muted); }
+.map-legend .lg { display: inline-flex; align-items: center; gap: 8px; }
+.map-legend .lg i { display: inline-block; width: 34px; height: 0; border-top: 2px solid rgba(252,243,214,.55); }
+.map-legend .lg i.dash { border-top: 2px dashed var(--gold); }
+
+/* node detail modal */
+#detail {
+  position: fixed; inset: 0; z-index: 90;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(15,9,24,.7); backdrop-filter: blur(4px);
+  padding: 20px;
+}
+#detail[hidden] { display: none; }
+.detail-card {
+  width: min(560px, 100%); max-height: 82svh; overflow-y: auto;
+  background: var(--glass); border: 1px solid rgba(252,243,214,.3);
+  border-radius: var(--r); padding: 24px;
+  box-shadow: 0 30px 80px rgba(0,0,0,.6);
+}
+.detail-card h3 { font-size: 20px; font-weight: 700; color: var(--white); margin-bottom: 10px; padding-right: 40px; }
+.detail-card p { font-size: 14px; line-height: 1.7; color: var(--muted); margin-bottom: 10px; }
+.detail-card b { color: var(--cream); }
+.detail-close {
+  position: absolute; margin-left: auto;
+  float: right;
+  font-size: 16px; font-weight: 700; color: var(--cream);
+  background: rgba(252,243,214,.1); border: 1.5px solid rgba(252,243,214,.35);
+  border-radius: 50%; width: 36px; height: 36px; cursor: pointer;
+}
+
+/* closing panel */
+.close-panel { text-align: center; padding: 40px 24px; }
+.close-panel h2 { font-size: clamp(24px, 3.4vw, 36px); margin-bottom: 12px; }
+.close-btns { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-top: 18px; }
+.big-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 15px;
+  color: var(--white); background: var(--your-ad);
+  border: none; border-radius: 100px; padding: 14px 26px; min-height: 50px;
+  text-decoration: none; cursor: pointer;
+  box-shadow: 0 4px 20px rgba(254,124,43,.45);
+  transition: transform .15s;
+}
+.big-btn:hover { transform: translateY(-2px); }
+.big-btn.ghost { background: transparent; color: var(--cream); border: 2px solid rgba(252,243,214,.45); box-shadow: none; }
+
+/* ---------- placeholder rooms ---------- */
+.bench { text-align: center; padding: 52px 24px 46px; border-style: dashed; border-width: 1.5px; }
 .flask { font-size: 54px; display: inline-block; animation: bubble 2.6s ease-in-out infinite; }
 @keyframes bubble {
   0%, 100% { transform: rotate(-4deg) translateY(0); }
@@ -244,24 +365,31 @@ h1.room-title {
   background: rgba(252,243,214,.08); border-radius: 6px; padding: 2px 7px;
 }
 
-/* ---------- footer receipt ---------- */
+/* ---------- footer ---------- */
 #foot {
   border-top: 1px solid var(--line);
   background: rgba(26,16,37,.6);
-  padding: 18px 20px 26px; text-align: center;
+  padding: 18px 20px 24px; text-align: center;
 }
-#foot .foot-line { font-size: 12.5px; color: var(--muted); }
-#foot .foot-line b { color: var(--cream); }
-#foot .stamp {
-  display: inline-block; margin-top: 8px;
-  font-family: ui-monospace, monospace; font-size: 11px; color: rgba(252,243,214,.4);
-  border: 1px dashed rgba(252,243,214,.2); border-radius: 8px; padding: 4px 12px;
-}
-#foot a { color: var(--muted); }
+#foot p { font-size: 12px; color: rgba(252,243,214,.5); }
+#foot a { color: rgba(252,243,214,.75); }
 
+@media (max-width: 900px) {
+  .jgrid {
+    grid-template-columns: 1fr; grid-template-rows: auto minmax(180px, 1fr);
+    gap: 12px; align-content: stretch; padding: 10px 14px 14px; height: 100%;
+  }
+  .jcopy h2 { font-size: 19px; margin-bottom: 8px; }
+  .jcopy .jbody p { font-size: 12.5px; line-height: 1.58; margin-bottom: 6px; }
+  .jcopy .jclaims { margin-top: 6px; padding-top: 6px; }
+  .jcopy .jclaims p { font-size: 11px; line-height: 1.55; margin-bottom: 5px; }
+  .jstage { height: 100%; min-height: 0; }
+  .jcap { font-size: 11.5px; padding: 6px 10px; }
+  .scrub { bottom: 52px; padding: 4px 12px; }
+}
 @media (max-width: 640px) {
   .logo img { height: 26px; }
-  #view { padding: 24px 16px 48px; }
+  .view-pad { padding: 24px 16px 24px; }
   .card { padding: 18px 16px 16px; }
 }
 @media (max-width: 480px) { .lab-tag { display: none; } }
@@ -290,32 +418,41 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <main id="view"></main>
 
 <footer id="foot">
-  <p class="foot-line">🧪 Built with AI · <b><a href="/">The Growth Den</a></b></p>
-  <!-- data-stamp: fill with real build time / prompt counts -->
-  <p><span class="stamp" id="dataStamp">build data: — sessions · — prompts · — hours —</span></p>
+  <p>Built with AI · <a href="/">The Growth Den</a> · Enter with problems. Exit with systems.</p>
 </footer>
 
 <div id="popover" hidden></div>
+<div id="detail" hidden><div class="detail-card" id="detailCard"></div></div>
 
 <script>
 /* ============================================================
-   The Machine — SPA shell.
+   The Machine — portal shell + the #/machine journey.
    Hash routes:  #/<room>?d=<kid|cmo|pro>
-   Depth:        localStorage 'gd-machine-depth' + URL (URL wins)
    All copy lives in CONTENT as {kid, cmo, pro}.
    ============================================================ */
 (function () {
 'use strict';
 
 var $ = function (id) { return document.getElementById(id); };
+var clamp = function (v, a, b) { return Math.min(b, Math.max(a, v)); };
+var lerp = function (a, b, t) { return a + (b - a) * clamp(t, 0, 1); };
+
+/* ---------------- sources ---------------- */
+var SRC = {
+  andromeda: { name: 'Meta Engineering — Andromeda (Dec 2024)', url: 'https://engineering.fb.com/2024/12/02/production-engineering/meta-andromeda-advantage-automation-next-gen-personalized-ads-retrieval-engine/' },
+  gem: { name: 'Meta Engineering — GEM (Nov 2025)', url: 'https://engineering.fb.com/2025/11/10/ml-applications/metas-generative-ads-model-gem-the-central-brain-accelerating-ads-recommendation-ai-innovation/' },
+  gem2: { name: 'Meta Engineering — Training GEM at LLM scale (Aug 2026)', url: 'https://engineering.fb.com/2026/08/03/ml-applications/training-gem-at-llm-scale-meta-ads-recommendation-foundation-model/' },
+  auction: { name: 'Meta Business Help Center — the ad auction', url: 'https://www.facebook.com/business/help' },
+  quality: { name: 'Meta Business Help Center — ad quality', url: 'https://www.facebook.com/business/help' },
+  kellogg: { name: 'Kellogg School of Management — study of 181,890 Meta A/B tests', url: 'https://www.kellogg.northwestern.edu/academics-research/research/detail/2025/characterizing-and-minimizing-divergent-delivery-in-meta-advertising-experiments' },
+};
 
 /* ---------------- CONTENT: every text block, three registers ---------------- */
 var CONTENT = {
-  /* room taglines (also used on the directory cards) */
   'machine.tag': {
-    kid: 'The big picture: what happens in the blink after someone opens the app.',
-    cmo: 'The end-to-end delivery pipeline, in one map — and how the rooms of this portal fit together.',
-    pro: 'System overview: signals in, auctions out, feedback loops everywhere. Start here, then pick a subsystem.',
+    kid: 'Follow one visitor through the fair, and see how the helper picks one sign out of forty million — faster than a blink.',
+    cmo: 'Follow one impression through the delivery pipeline: retrieval, ranking, the value equation, the auction — all inside about 100 milliseconds.',
+    pro: 'One impression, end to end: Andromeda retrieval, multi-stage ranking under GEM-lineage models, total-value auction clearing. ~100ms budget.',
   },
   'model-room.tag': {
     kid: 'Where the computer practices guessing what you’ll tap on.',
@@ -348,59 +485,193 @@ var CONTENT = {
     pro: 'Changelog + methodology notes: what shipped, what’s measured, what’s still folklore.',
   },
 
-  /* home room */
-  'machine.welcome': {
-    kid: 'Somewhere between you opening an app and an ad appearing, a giant machine makes a decision — faster than you can blink. This whole place is about that machine: how it guesses, how it chooses, and how it gets bored. Each room teaches one piece. And you can always turn the dial up top to make things simpler or fancier.',
-    cmo: 'Every impression on Meta is placed by a delivery system most advertisers use daily and few can describe. This portal teaches it room by room — the prediction models, the auction, fatigue, creative signal — at whatever depth you need. The dial up top rewrites every explanation on the page; your link remembers your setting.',
-    pro: 'A working mental model of Meta delivery, decomposed into subsystems: action-rate estimation, auction clearing, pacing, fatigue, and creative-side signal. Each room is interactive, each claim is graded by evidence class, and the depth dial rewrites the whole portal between three registers — shareable by URL.',
+  /* ============ the journey ============ */
+  'j.open.title': {
+    kid: 'A visitor walks into the fair.',
+    cmo: 'Someone opens Instagram.',
+    pro: 'Someone opens Instagram.',
   },
-  'machine.dial-title': {
-    kid: 'The dial up top is the whole trick',
-    cmo: 'One portal, three depths',
-    pro: 'One portal, three registers',
+  'j.open.body': {
+    kid: '<p>Somewhere in the dark, forty million kids are holding up signs for their lemonade stands, and every one of them hopes this visitor will look their way. One very fast helper has about a tenth of a second to choose exactly one sign for exactly this visitor.</p><p>Here is the part that changed everything. The helper doesn’t start with the signs. It starts with the <b>visitor</b>, and asks: which sign fits <i>them</i>?</p>',
+    cmo: '<p>The moment the feed loads, a slot opens — and tens of millions of active ads are technically eligible to fill it. The system has roughly a tenth of a second to pick one.</p><p>The strategic shift hides in the order of that sentence. The machine no longer starts from your audience settings and asks which people qualify for your ad. It starts from the <b>person</b> and asks which ad fits them. Delivery got inverted — and most media plans haven’t caught up.</p>',
+    pro: '<p>One impression opportunity. Tens of millions of eligible candidates. A latency budget on the order of 100ms, end to end.</p><p>The modern stack frames this as <b>candidate selection per user</b>, not audience qualification per ad — retrieval is user-conditioned from the very first stage. That inversion, formalized in Meta’s 2024-onward retrieval and ranking rebuild, is the structural reason account-level targeting lost leverage and creative gained it.</p>',
   },
-  'machine.dial-body': {
-    kid: 'See those three buttons in the corner? Try them! “I’m 8” is for anyone who likes plain words. “I’m a CMO” is for bosses. “I work in ads” is for people who want ALL the gears showing. This very paragraph changes when you press them — go on, try it.',
-    cmo: 'The Depth Dial rewrites every explanation in place: same mechanism, three altitudes. “I’m 8” strips jargon entirely, “CMO” speaks in levers and economics, “I work in ads” shows the gears. This paragraph you’re reading changes with it — flip it and watch.',
-    pro: 'Three registers per content block, swapped in place with no layout shift (each block reserves the height of its tallest register). Depth persists to localStorage and travels in the URL (?d=pro), so a shared link lands at your altitude. This paragraph is one of those blocks.',
+  'j.open.cap.a': {
+    kid: 'One visitor. One empty spot on their screen.',
+    cmo: 'One person. One open slot.',
+    pro: 'One request. One slot. The clock starts.',
   },
-  'machine.conf-title': {
-    kid: 'We tell you when we’re sure — and when we’re guessing',
-    cmo: 'Every claim is graded',
-    pro: 'Evidence classes on every claim',
+  'j.open.cap.b': {
+    kid: 'And in the dark: forty million signs, all hoping.',
+    cmo: 'Tens of millions of eligible ads wake up. One of them is yours.',
+    pro: 'The candidate universe: every active ad that could legally fill this slot.',
   },
-  'machine.conf-body': {
-    kid: 'Grown-ups repeat a LOT of things about ads that nobody ever checked. So around here, every fact wears a little badge: a full dot means Meta wrote it down themselves, a half dot means scientists measured it, and an empty dot means “everybody says this, but nobody has proved it.” Tap any badge to see where a fact comes from.',
-    cmo: 'Ad-land runs on received wisdom. Here, every factual claim carries a Confidence Meter: ● Meta-published (links the primary doc), ◐ independently measured (links the study), ○ practitioner folklore — widely repeated, never independently verified. Tap a badge for the source.',
-    pro: 'Claims are typed by evidence class: ● primary-source (Meta documentation), ◐ independent measurement (external study, linked), ○ folklore (unverified practitioner consensus — flagged as such, on purpose). Tap through to sources; absence of a link is itself information.',
-  },
-  'machine.demo-intro': {
-    kid: 'Here are three real facts wearing their badges — tap the badges!',
-    cmo: 'Three live examples — tap the badges:',
-    pro: 'Working examples of the three grades — tap through:',
-  },
-  'machine.dir-title': {
-    kid: 'The rooms',
-    cmo: 'The rooms',
-    pro: 'The rooms',
-  },
-  'machine.dir-body': {
-    kid: 'Most rooms are still being built — the flasks are bubbling. But you can peek at any door, and your link will still work when the room opens.',
-    cmo: 'Rooms open one at a time. Doors are live now — links (with your depth setting) survive each room’s opening day.',
-    pro: 'Rooms ship incrementally; routes are stable now. Deep-link anything — hash + depth param survive future builds.',
-  },
-  'machine.trips-title': {
-    kid: 'While the flasks bubble: two finished field trips',
-    cmo: 'Meanwhile: two finished lessons from this lab',
-    pro: 'Prior art from this lab (standalone lessons)',
-  },
-  'machine.trips-body': {
-    kid: 'We already built two playgrounds you can visit today — one where an ad literally finds its own crowd of people, and one where ads race for a seat with magnets and wind.',
-    cmo: 'Two interactive lessons already live: why creative does the targeting, and how the auction actually clears. Both carry an earlier two-position version of this dial.',
-    pro: 'Two shipped standalone lessons cover creative-side signal and auction mechanics; both will eventually be absorbed into their rooms here.',
+  'j.open.cap.c': {
+    kid: 'The question isn’t “who fits this sign?” It’s “which sign fits this visitor?”',
+    cmo: 'The question inverted: not “who fits this ad” — “which ad fits this person.”',
+    pro: 'User-conditioned selection: the query is the person, the corpus is the ads.',
   },
 
-  /* shared placeholder copy */
+  'j.retr.title': {
+    kid: 'The great sorting sweep.',
+    cmo: 'The collapse: retrieval.',
+    pro: 'Retrieval: Andromeda.',
+  },
+  'j.retr.body': {
+    kid: '<p>Nobody can read forty million signs one at a time — not even the fast helper. So the fair is organized like shelves inside shelves. Whole neighborhoods of signs get skipped in a single glance. Then whole rows. Then whole boxes. In a few blinks, only a few thousand signs that might fit this visitor are left standing.</p><p>Try the slow-motion slider on the scene — the sweep is worth watching twice.</p>',
+    cmo: '<p>No system scores tens of millions of ads individually in real time. The first stage — Meta calls its engine <b>Andromeda</b> — prunes the universe hierarchically: discard almost everything cheaply, keep a few thousand plausible candidates for real scoring.</p><p>For your budget, this is the stage that decides whether your ad is even <i>in the room</i>. What gets you into the room is signal the system can index — creative that says clearly who it is for.</p>',
+    pro: '<p><b>Andromeda</b> is the NN-based retrieval layer: a hierarchical index sweep that takes the eligible set from tens of millions to a few thousand in single-digit milliseconds, spending almost nothing per discarded candidate.</p><p>Retrieval is learned, not rules-based — there is no interest-checkbox gate to game. Drag the scrubber to replay the collapse slowly; each band is an index level lighting up and dimming.</p>',
+  },
+  'j.retr.cap.a': {
+    kid: 'Shelves inside shelves — the helper skips whole neighborhoods at once.',
+    cmo: 'Index levels light up: cheap tests first, millions discarded per glance.',
+    pro: 'Hierarchical sweep: coarse similarity first, cost per candidate near zero.',
+  },
+  'j.retr.cap.b': {
+    kid: 'Forty million signs… and now just a few thousand are still standing.',
+    cmo: 'Tens of millions → a few thousand. Your ad has to survive this to spend at all.',
+    pro: '≈4 orders of magnitude pruned before any heavy model runs.',
+  },
+
+  'j.rank.title': {
+    kid: 'The line of finalists.',
+    cmo: 'Ranking: the shortlist.',
+    pro: 'Multi-stage ranking.',
+  },
+  'j.rank.body': {
+    kid: '<p>A few thousand signs are still standing. The helper’s quick assistants walk the line giving each one a fast once-over — keep, keep, skip, keep — until a short line of finalists remains.</p><p>Then the wise old judge steps in. The judge has watched every visitor at every fair for years, and looks slowly and carefully at just those few.</p>',
+    cmo: '<p>The surviving thousands get scored in passes: a light model trims fast and cheap, then a heavier model re-scores the survivors carefully.</p><p>The heavy pass is where Meta’s foundation model earns its keep. <b>GEM</b> doesn’t rank your ad directly — it is the central model that teaches the hundreds of specialist ranking models that do. Every improvement there is delivery efficiency you inherit without lifting a finger.</p>',
+    pro: '<p>Classic cascade: lightweight early-stage rankers prune the retrieval set; heavier final-stage models score the shortlist with full feature richness.</p><p><b>GEM</b> sits above the cascade as the ads foundation model — trained at LLM scale, then distilled into the vertical rankers that actually serve traffic. Meta’s stated program lifts: roughly +5% conversions on Instagram and +3% on Facebook Feed.</p>',
+  },
+  'j.rank.cap.a': {
+    kid: 'Quick once-over: keep, keep, skip, keep…',
+    cmo: 'Light pass: a cheap model trims thousands to hundreds.',
+    pro: 'Early-stage rankers: low-cost scoring, aggressive pruning.',
+  },
+  'j.rank.cap.b': {
+    kid: 'Now the wise judge studies the last few, slowly.',
+    cmo: 'Heavy pass: the expensive model re-scores only the survivors.',
+    pro: 'Final-stage scoring on the shortlist — GEM-distilled models, full features.',
+  },
+
+  'j.value.title': {
+    kid: 'The scorecard.',
+    cmo: 'The value equation.',
+    pro: 'The value equation.',
+  },
+  'j.value.body': {
+    kid: '<p>For each finalist the judge fills in a little scorecard with three parts. How many tickets is the kid offering the fair? How likely is <i>this visitor</i> to actually want the lemonade — judged by what they did in the last hour, not what they wore last summer? And is the sign honest and kind, or tricky and loud?</p><p>Money, want, niceness. All three, every single time.</p>',
+    cmo: '<p>Every finalist gets the same three-part score, assembled fresh for this person. Your <b>bid</b> is the only part you set directly. The <b>estimated action rate</b> is the machine’s live guess that this person will act — built from their recent behavior in sequence, which is why timing and relevance beat demographic theory. And <b>quality</b> adds or subtracts: the penalties for bait and bad landing pages are documented, and they price like a tax.</p><p>Two of the three terms, you earn with the ad itself. That is where the leverage moved.</p>',
+    pro: '<p><b>total value = bid × estimated action rate + quality</b>, computed per person per auction. The eAR comes from the sequence-aware rankers — GEM-lineage models ingest ordered event sequences up to thousands of actions long, so recency is a first-class model input, not a static profile attribute.</p><p>Quality carries documented negative terms — hide and report rates, engagement-bait patterns, poor post-click landing experience — alongside positive ones. Bid is the only term money touches directly.</p>',
+  },
+  'j.value.cap.a': {
+    kid: 'Part one: the tickets — how much the kid offers the fair.',
+    cmo: 'Term one, bid: the only lever you buy directly.',
+    pro: 'Bid: the purchased term.',
+  },
+  'j.value.cap.b': {
+    kid: 'Part two: the want — what this visitor did just now, in order.',
+    cmo: 'Term two, estimated action rate: their recent actions, in sequence — not a profile.',
+    pro: 'eAR: sequence-conditioned prediction; recency enters as ordered events.',
+  },
+  'j.value.cap.c': {
+    kid: 'Part three: the niceness — honest signs get a boost, tricky ones get docked.',
+    cmo: 'Term three, quality: documented boosts and penalties, priced into every auction.',
+    pro: 'Quality: additive term with documented negative signals.',
+  },
+
+  'j.auct.title': {
+    kid: 'The winner — before you can blink.',
+    cmo: 'The auction. (~100ms later)',
+    pro: 'Clearing. (~100ms elapsed)',
+  },
+  'j.auct.body': {
+    kid: '<p>The finalists’ scores rise like thermometers, and the tallest one wins the visitor. Then comes the fair’s kindest rule: the winner doesn’t hand over everything they offered — only just enough to beat second place.</p><p>And the sign is up. All of it — the sweep, the judging, the scorecards, the race — happened faster than your blink.</p>',
+    cmo: '<p>Highest total value takes the impression, and the winner is charged the <b>minimum needed to win</b>, not its bid. Read that as a standing discount for good creative: a stronger action rate and clean quality let a smaller bid clear the same auction.</p><p>Then the ad renders. The entire pipeline — retrieval, ranking, scoring, clearing — fits inside about a tenth of a second, and it reruns from scratch for the next slot.</p>',
+    pro: '<p>Second-price-style clearing on total value: the winner pays the minimum sufficient amount, so effective CPM is set by the runner-up’s value divided by your own action rate. Every point of predicted performance is cash displaced from the clearing price.</p><p>End-to-end latency, retrieval through render: on the order of 100ms. Per impression. Billions of times a day.</p>',
+  },
+  'j.auct.cap.a': {
+    kid: 'The thermometers race up…',
+    cmo: 'Total values compared head-to-head.',
+    pro: 'Candidates clear against each other on total value.',
+  },
+  'j.auct.cap.b': {
+    kid: '…the winner pays only a whisker more than second place.',
+    cmo: 'The winner pays the minimum needed — not its bid.',
+    pro: 'Clearing price ≈ runner-up value backed out through your action rate.',
+  },
+  'j.auct.cap.c': {
+    kid: 'Blink. The sign is already on the visitor’s screen.',
+    cmo: 'Rendered. The whole decision took about a tenth of a second.',
+    pro: '~100ms, request to render. Next slot, same cascade.',
+  },
+
+  'j.map.title': {
+    kid: 'The map — with honest roads.',
+    cmo: 'The map — with honest lines.',
+    pro: 'The pipeline map — solid vs. inferred.',
+  },
+  'j.map.body': {
+    kid: '<p>Here is the whole fair drawn as a map. The <b>solid roads</b> are ones Meta has described themselves. The <b>dotted roads</b> are our best guess at how the buildings connect behind the scenes — grown-ups call that “inferred,” which means: probably, but nobody has shown us the blueprint.</p><p>Tap any building to peek inside it.</p>',
+    cmo: '<p>The full pipeline in one diagram. <b>Solid connectors</b> are stages Meta documents publicly. <b>Dashed connectors</b> are how we believe the pieces wire together in production — inferred from the engineering posts, not confirmed by them. The diagram tells you the truth about what we know and what we assume.</p><p>Tap any component for its detail card at your current depth.</p>',
+    pro: '<p>Component map with evidence-typed edges. Solid: documented (Andromeda as the retrieval engine; GEM distilling into the vertical rankers; auction mechanics). Dashed: production wiring we infer and label as such, deliberately.</p><p>Tap a node for details and sources.</p>',
+  },
+  'j.close.title': {
+    kid: 'Want to be one of the signs?',
+    cmo: 'Want to feel it instead of watch it?',
+    pro: 'Want to feel it instead of watch it?',
+  },
+  'j.close.body': {
+    kid: 'You just watched the fair from way up high. The Auction Floor is where you get to climb down and race for the visitor yourself.',
+    cmo: 'You just watched one impression clear. The Auction Floor room puts your hands on the levers — and the finished auction lesson lets you run it live today.',
+    pro: 'Static walkthrough done. The Auction Floor room will expose the clearing mechanics interactively; the shipped standalone lesson already lets you run second-price experiments now.',
+  },
+
+  /* diagram node detail cards */
+  'n.person.title': { kid: 'The visitor', cmo: 'The request', pro: 'The request' },
+  'n.person.body': {
+    kid: '<p>Every journey starts with one person opening the app. The machine isn’t choosing people for ads here — it’s choosing an ad for this one person, right now.</p>',
+    cmo: '<p>One person, one slot, one request. Everything downstream is conditioned on this specific user at this specific moment — their session, their recent actions, their context.</p>',
+    pro: '<p>The serving request carries user, context, and slot. All downstream stages are user-conditioned; there is no meaningful notion of a “campaign-first” evaluation anywhere in the modern path.</p>',
+  },
+  'n.andromeda.title': { kid: 'The sorting sweep', cmo: 'Andromeda — retrieval', pro: 'Andromeda — retrieval engine' },
+  'n.andromeda.body': {
+    kid: '<p>The shelves-inside-shelves building. It skips almost every sign in the fair in a few glances, and keeps only the few thousand that might fit the visitor.</p>',
+    cmo: '<p>Meta’s retrieval engine. It filters tens of millions of eligible ads down to a few thousand candidates, cheaply and hierarchically, before any expensive scoring happens. If your ad isn’t retrievable here, nothing else in the pipeline matters.</p>',
+    pro: '<p>NN-based hierarchical retrieval. Meta’s published claims: a 10,000× model-capacity increase over prior retrieval models, +6% recall, and +8% ads quality in selected segments. It replaced rules-and-heuristics candidate sourcing with learned indexing.</p>',
+  },
+  'n.gem.title': { kid: 'The teachers’ school', cmo: 'GEM — the central brain', pro: 'GEM — ads foundation model' },
+  'n.gem.body': {
+    kid: '<p>A school where one very wise teacher trains hundreds of helper-judges. The wise teacher never judges your sign directly — but every helper judges the way the teacher taught them.</p>',
+    cmo: '<p>Meta’s ads foundation model. GEM trains at very large scale and then distills what it learns into the hundreds of user-facing ranking models. It reads sequences of user events — up to thousands, in order — which is how recency and momentum enter delivery.</p>',
+    pro: '<p>Trained at LLM scale (Meta’s framing), distilled into vertical rankers across surfaces. Consumes ordered event sequences up to thousands of actions long. Stated program lifts: ~+5% conversions on Instagram, ~+3% on Facebook Feed.</p>',
+  },
+  'n.rank.title': { kid: 'The judges’ row', cmo: 'The ranking stack', pro: 'Multi-stage rankers' },
+  'n.rank.body': {
+    kid: '<p>First the quick assistants trim the line of signs. Then the careful judges study the last few, using everything the wise teacher taught them.</p>',
+    cmo: '<p>Cascaded scoring: light models prune the retrieved thousands, heavy models re-score the shortlist. These are the models that actually produce your estimated action rate for each person.</p>',
+    pro: '<p>Early-stage rankers prune cheaply; final-stage models score with full features. GEM-distilled, sequence-aware, surface-specific. Output: per-user eAR feeding the value equation.</p>',
+  },
+  'n.auction.title': { kid: 'The race', cmo: 'The auction', pro: 'Auction clearing' },
+  'n.auction.body': {
+    kid: '<p>The last few signs race. Tallest score wins — and pays only a whisker more than second place. Being liked makes winning cheaper.</p>',
+    cmo: '<p>Winner = highest total value (bid × estimated action rate + quality); the winner pays the minimum needed to win, not its bid. Quality includes documented penalties — ads people hide or report, clickbait and engagement bait, poor post-click landing experiences.</p>',
+    pro: '<p>Total-value clearing with pay-the-minimum pricing. Quality’s negative terms are documented: hide/report feedback, engagement-bait patterns, landing-page experience. Effective price = f(runner-up value, your eAR) — performance displaces cash.</p>',
+  },
+  'n.screen.title': { kid: 'The visitor’s screen', cmo: 'The impression', pro: 'Render' },
+  'n.screen.body': {
+    kid: '<p>The winning sign appears — about a tenth of a second after the visitor walked in. They never see the race. They just see one sign.</p>',
+    cmo: '<p>The winning ad renders. Total elapsed time: about 100 milliseconds. Every impression you buy went through this entire pipeline individually.</p>',
+    pro: '<p>Render, log, learn: the outcome feeds back into training data for the next pass. ~100ms end to end, per impression, at feed scale.</p>',
+  },
+
+  /* directory + placeholder copy */
+  'machine.dir-title': { kid: 'The other rooms', cmo: 'The other rooms', pro: 'The other rooms' },
+  'machine.dir-body': {
+    kid: 'Most rooms are still being built — the flasks are bubbling. Peek at any door; your link will still work when it opens.',
+    cmo: 'Rooms open one at a time. Doors are live now — links (with your depth setting) survive each room’s opening day.',
+    pro: 'Rooms ship incrementally; routes are stable. Deep-link anything — hash + depth param survive future builds.',
+  },
   'ph.state': {
     kid: 'Still being built! The flasks are bubbling.',
     cmo: 'Under construction in the lab.',
@@ -413,7 +684,7 @@ var CONTENT = {
   },
 };
 
-/* ---------------- rooms / routes ---------------- */
+/* ---------------- rooms / depth ---------------- */
 var ROOMS = [
   { slug: 'machine',    name: 'The Machine',       ico: '⚙️', open: true },
   { slug: 'model-room', name: 'The Model Room',    ico: '🧠', open: false },
@@ -426,12 +697,10 @@ var ROOMS = [
 var DEPTHS = ['kid', 'cmo', 'pro'];
 var DEPTH_KEY = 'gd-machine-depth';
 
-/* ---------------- depth helpers ---------------- */
 function storedDepth() {
   try {
     var d = localStorage.getItem(DEPTH_KEY);
     if (DEPTHS.indexOf(d) >= 0) return d;
-    // carry over a choice made on the earlier two-position lab lessons
     var legacy = localStorage.getItem('gd-auction-mode');
     if (legacy === 'kid' || legacy === 'cmo') return legacy;
   } catch (e) { }
@@ -451,9 +720,8 @@ function setDepth(d, fromUrl) {
   if (!fromUrl) canonicalizeHash();
 }
 
-/* d3(key): a block that holds all three registers stacked in place.
-   The grid stack makes the browser measure every register and reserve
-   the tallest one, so flipping the dial never shifts the layout. */
+/* d3(key): all three registers stacked in one grid cell — the browser
+   reserves the tallest register, so a dial flip never shifts layout. */
 function d3(key) {
   var c = CONTENT[key];
   if (!c) return '<span class="d3"><span>[' + key + ']</span></span>';
@@ -462,6 +730,8 @@ function d3(key) {
     '<span class="cmo">' + c.cmo + '</span>' +
     '<span class="pro">' + c.pro + '</span></span>';
 }
+/* register-aware text for canvas drawing (redrawn every frame) */
+function dtxt(k, c, p) { return depth === 'kid' ? k : depth === 'cmo' ? c : p; }
 
 /* ---------------- confidence meter ---------------- */
 var GRADES = {
@@ -472,10 +742,8 @@ var GRADES = {
   folklore: { sym: '○', label: 'Practitioner folklore',  cls: 'g-folklore',
               note: 'Widely repeated, never independently verified.' },
 };
-var CLAIMS = [];   // popover payloads, indexed by badge
+var CLAIMS = [];
 
-/* claim(text, grade, sourceName, sourceUrl) → HTML string.
-   Reusable everywhere: a factual sentence plus its evidence badge. */
 function claim(text, grade, sourceName, sourceUrl) {
   var g = GRADES[grade] || GRADES.folklore;
   var idx = CLAIMS.length;
@@ -503,16 +771,18 @@ function openPopover(badgeEl) {
   popover.style.maxWidth = pw + 'px';
   var left = Math.max(12, Math.min(r.left, window.innerWidth - pw - 12));
   var top = r.bottom + 8;
-  if (top + 140 > window.innerHeight) top = Math.max(12, r.top - 8 - 120);
+  if (top + 150 > window.innerHeight) top = Math.max(12, r.top - 8 - 130);
   popover.style.left = left + 'px';
   popover.style.top = top + 'px';
 }
 document.addEventListener('pointerdown', function (e) {
   var badge = e.target.closest('.badge');
-  if (badge) { e.preventDefault(); openPopover(badge); return; }
+  if (badge && badge.dataset.claim !== undefined) { e.preventDefault(); openPopover(badge); return; }
   if (!e.target.closest('#popover')) popover.hidden = true;
 });
-document.addEventListener('keydown', function (e) { if (e.key === 'Escape') popover.hidden = true; });
+document.addEventListener('keydown', function (e) {
+  if (e.key === 'Escape') { popover.hidden = true; $('detail').hidden = true; }
+});
 
 /* ---------------- routing ---------------- */
 function parseHash() {
@@ -531,10 +801,6 @@ function canonicalizeHash() {
   var cur = parseHash();
   history.replaceState(null, '', '#/' + cur.slug + '?d=' + depth);
 }
-
-/* in-page links carry only the room; the canonicalizer appends the live
-   depth to the address bar, so what you copy is always #/room?d=depth
-   and a dial flip never gets undone by a stale link */
 function roomLink(slug) { return '#/' + slug; }
 
 function renderTabs(active) {
@@ -547,65 +813,756 @@ function renderTabs(active) {
   if (cur && cur.scrollIntoView) cur.scrollIntoView({ block: 'nearest', inline: 'center' });
 }
 
-/* ---------------- views ---------------- */
-function viewHome() {
-  return '' +
+/* ============================================================
+   THE JOURNEY — #/machine
+   ============================================================ */
+function jstep(id, sceneName, titleKey, bodyKey, claimsHtml, extraStage) {
+  return '<section class="jstep" id="' + id + '" data-scene="' + sceneName + '">' +
+    '<div class="jpin"><div class="jgrid">' +
+      '<div class="jcopy">' +
+        '<h2 class="d3h">' + d3(titleKey) + '</h2>' +
+        '<div class="jbody">' + d3(bodyKey) + '</div>' +
+        (claimsHtml ? '<div class="jclaims">' + claimsHtml + '</div>' : '') +
+      '</div>' +
+      '<div class="jstage">' +
+        '<canvas></canvas>' +
+        (extraStage || '') +
+        '<p class="jcap" aria-live="polite"></p>' +
+        '<button class="jnext" type="button" data-next>continue ↓</button>' +
+      '</div>' +
+    '</div></div></section>';
+}
+
+function viewJourney() {
+  var h = '';
+  h += '<div class="view-pad" style="padding-bottom:6px">' +
     '<p class="room-kicker">The Growth Den Lab · teaching portal</p>' +
     '<h1 class="room-title">The Machine</h1>' +
     '<p class="room-tag">' + d3('machine.tag') + '</p>' +
-
-    '<div class="card"><p>' + d3('machine.welcome') + '</p></div>' +
-
-    '<div class="card"><h2>' + d3('machine.dial-title') + '</h2>' +
-    '<p>' + d3('machine.dial-body') + '</p></div>' +
-
-    '<div class="card"><h2>' + d3('machine.conf-title') + '</h2>' +
-    '<p>' + d3('machine.conf-body') + '</p>' +
     '<div class="legend-row">' +
       '<span class="legend-chip"><span class="badge g-meta"><span class="sym">●</span>Meta-published</span></span>' +
       '<span class="legend-chip"><span class="badge g-measured"><span class="sym">◐</span>Independently measured</span></span>' +
       '<span class="legend-chip"><span class="badge g-folklore"><span class="sym">○</span>Practitioner folklore</span></span>' +
-    '</div>' +
-    '<p style="margin-top:14px">' + d3('machine.demo-intro') + '</p>' +
-    '<p>' + claim('The auction winner is the ad with the highest <b>total value</b>: bid × estimated action rate + ad quality — not the highest bid.',
-        'meta', 'Meta Ads Help Center — “About the ad auction”', 'https://www.facebook.com/business/help') + '</p>' +
-    '<p>' + claim('Creative quality drives roughly half of an ad campaign’s sales impact — more than targeting or reach levers.',
-        'measured', 'Nielsen Catalina Solutions, “Five Keys to Advertising Effectiveness” (no stable public link — ask us for the PDF)', null) + '</p>' +
-    '<p>' + claim('Launching new ads on a Monday performs better than launching on a Friday.',
-        'folklore', 'Repeated in every media-buyer group chat since 2019', null) + '</p></div>' +
+      '<span class="legend-chip" style="opacity:.7">← every claim below carries one; tap them</span>' +
+    '</div></div>';
 
-    '<div class="card"><h2>' + d3('machine.dir-title') + '</h2>' +
+  h += jstep('j1', 'open', 'j.open.title', 'j.open.body', null);
+
+  h += jstep('j2', 'retrieval', 'j.retr.title', 'j.retr.body',
+    '<p>' + claim('Andromeda is Meta’s retrieval engine: it filters tens of millions of candidate ads down to a few thousand.', 'meta', SRC.andromeda.name, SRC.andromeda.url) + '</p>' +
+    '<p>' + claim('Meta’s published Andromeda figures: a 10,000× model-capacity increase, +6% recall, +8% ads quality in selected segments.', 'meta', SRC.andromeda.name, SRC.andromeda.url) + '</p>',
+    '<div class="scrub"><label>🐢 slow-mo</label><input type="range" id="retScrub" min="0" max="1000" value="0" aria-label="Replay the retrieval collapse in slow motion"></div>');
+
+  h += jstep('j3', 'ranking', 'j.rank.title', 'j.rank.body',
+    '<p>' + claim('GEM is Meta’s ads foundation model — a “central brain” trained at scale, distilled into hundreds of user-facing ranking models.', 'meta', SRC.gem.name, SRC.gem.url) + '</p>' +
+    '<p>' + claim('Meta’s stated GEM lifts: roughly +5% conversions on Instagram and +3% on Facebook Feed.', 'meta', SRC.gem2.name, SRC.gem2.url) + '</p>');
+
+  h += jstep('j4', 'value', 'j.value.title', 'j.value.body',
+    '<p>' + claim('The ranking models process sequences of up to thousands of user events, in order — recency enters as recent actions, not a static profile.', 'meta', SRC.gem.name, SRC.gem.url) + '</p>' +
+    '<p>' + claim('Quality includes documented negative signals: ads people hide or report, clickbait and engagement bait, poor post-click landing experiences.', 'meta', SRC.quality.name, SRC.quality.url) + '</p>');
+
+  h += jstep('j5', 'auction', 'j.auct.title', 'j.auct.body',
+    '<p>' + claim('The winner is the ad with the highest total value — bid × estimated action rate + ad quality — and pays the minimum needed to win, not its full bid.', 'meta', SRC.auction.name, SRC.auction.url) + '</p>');
+
+  /* the honest map */
+  h += '<div class="view-pad">' +
+    '<div class="card"><h2>' + d3('j.map.title') + '</h2>' +
+    '<div style="font-size:14.5px;line-height:1.7;color:var(--muted);margin-bottom:12px">' + d3('j.map.body') + '</div>' +
+    '<div class="map-wrap">' + pipeMapSvg() + '</div>' +
+    '<div class="map-legend">' +
+      '<span class="lg"><i></i> documented by Meta</span>' +
+      '<span class="lg"><i class="dash"></i> inferred — our best guess at the wiring</span>' +
+    '</div>' +
+    '<p style="margin-top:14px;font-size:12.5px">' +
+      claim('One independently measured consequence of this pipeline: within a single ad set, different creatives are delivered to systematically different demographic subgroups (“divergent delivery”).', 'measured', SRC.kellogg.name, SRC.kellogg.url) + '</p>' +
+    '</div>';
+
+  /* closing */
+  h += '<div class="card close-panel">' +
+    '<h2>' + d3('j.close.title') + '</h2>' +
+    '<p style="max-width:560px;margin:0 auto">' + d3('j.close.body') + '</p>' +
+    '<div class="close-btns">' +
+      '<a class="big-btn" href="#/auction">🔨 Enter the Auction Floor</a>' +
+      '<a class="big-btn ghost" href="/lab/the-auction/">Play the finished auction lesson ↗</a>' +
+    '</div></div>';
+
+  /* directory */
+  h += '<div class="card"><h2>' + d3('machine.dir-title') + '</h2>' +
     '<p>' + d3('machine.dir-body') + '</p>' +
     '<div class="dir-grid">' + ROOMS.filter(function (r) { return r.slug !== 'machine'; }).map(function (r) {
       return '<a class="dir-card" href="' + roomLink(r.slug) + '">' +
         '<span class="dc-name">' + r.ico + ' ' + r.name + '</span>' +
         '<span class="dc-tag">' + d3(r.slug + '.tag') + '</span>' +
         '<span class="dc-state' + (r.open ? ' open' : '') + '">' + (r.open ? 'open' : 'in the works') + '</span></a>';
-    }).join('') + '</div></div>' +
+    }).join('') + '</div></div></div>';
 
-    '<div class="card"><h2>' + d3('machine.trips-title') + '</h2>' +
-    '<p>' + d3('machine.trips-body') + '</p>' +
-    '<div class="dir-grid">' +
-      '<a class="dir-card" href="/lab/creative-is-the-targeting/"><span class="dc-name">✨ Creative <i>is</i> the targeting</span>' +
-      '<span class="dc-tag">~2,000 dots with hidden traits; build an ad and watch its audience assemble itself.</span>' +
-      '<span class="dc-state open">live</span></a>' +
-      '<a class="dir-card" href="/lab/the-auction/"><span class="dc-name">🔨 The Auction, In Human Terms</span>' +
-      '<span class="dc-tag">Balls, magnets and wind: how total value decides who wins the impression.</span>' +
-      '<span class="dc-state open">live</span></a>' +
-    '</div></div>';
+  return h;
 }
 
+/* ---------------- pipeline diagram (SVG, honest edges) ---------------- */
+function pipeMapSvg() {
+  function node(id, x, y, w, name, sub) {
+    return '<g class="node" data-node="' + id + '" transform="translate(' + x + ',' + y + ')">' +
+      '<rect width="' + w + '" height="52" rx="12"></rect>' +
+      '<text class="n-name" x="' + w / 2 + '" y="22" text-anchor="middle">' + name + '</text>' +
+      '<text class="n-sub" x="' + w / 2 + '" y="38" text-anchor="middle">' + sub + '</text></g>';
+  }
+  return '<svg id="pipemap" viewBox="0 0 760 260" role="img" aria-label="Pipeline map: request, Andromeda retrieval, ranking stack, auction, render — with GEM feeding the rankers. Solid lines are documented; dashed lines are inferred.">' +
+    '<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">' +
+    '<path d="M0,0 L7,3 L0,6 Z" fill="rgba(252,243,214,.55)"></path></marker></defs>' +
+    /* edges */
+    '<line class="edge" x1="106" y1="56" x2="152" y2="56"></line>' +
+    '<line class="edge inferred" x1="298" y1="56" x2="344" y2="56"></line>' +
+    '<text class="e-label inf" x="321" y="46" text-anchor="middle">inferred</text>' +
+    '<line class="edge" x1="500" y1="56" x2="546" y2="56"></line>' +
+    '<line class="edge" x1="656" y1="82" x2="656" y2="128"></line>' +
+    '<line class="edge" x1="422" y1="176" x2="422" y2="88"></line>' +
+    '<text class="e-label" x="432" y="136" text-anchor="start">distills into</text>' +
+    '<line class="edge inferred" x1="330" y1="188" x2="228" y2="86"></line>' +
+    '<text class="e-label inf" x="252" y="148" text-anchor="middle">inferred</text>' +
+    /* nodes */
+    node('person', 10, 30, 96, '🧍 Request', 'one person, one slot') +
+    node('andromeda', 152, 30, 146, '🌌 Andromeda', 'retrieval · ~40M → ~2K') +
+    node('rank', 344, 30, 156, '⚖️ Ranking stack', 'light + heavy · → shortlist') +
+    node('auction', 546, 30, 116, '🔨 Auction', 'total value clears') +
+    node('screen', 598, 128, 116, '📱 Render', '~100ms elapsed') +
+    node('gem', 330, 176, 184, '🧠 GEM', 'foundation model · teaches the rankers') +
+    '</svg>';
+}
+
+var detail = $('detail'), detailCard = $('detailCard');
+function openDetail(nodeId) {
+  detailCard.innerHTML =
+    '<button class="detail-close" type="button" aria-label="Close">✕</button>' +
+    '<h3>' + d3('n.' + nodeId + '.title') + '</h3>' +
+    '<div>' + d3('n.' + nodeId + '.body') + '</div>' +
+    (nodeId === 'andromeda' ? '<p style="margin-top:8px">' + claim('Published: 10,000× capacity, +6% recall, +8% quality in selected segments.', 'meta', SRC.andromeda.name, SRC.andromeda.url) + '</p>' : '') +
+    (nodeId === 'gem' ? '<p style="margin-top:8px">' + claim('Trained at LLM scale; distilled into hundreds of vertical rankers.', 'meta', SRC.gem2.name, SRC.gem2.url) + '</p>' : '') +
+    (nodeId === 'auction' ? '<p style="margin-top:8px">' + claim('Winner pays the minimum needed to win.', 'meta', SRC.auction.name, SRC.auction.url) + '</p>' : '');
+  detail.hidden = false;
+}
+detail.addEventListener('pointerdown', function (e) {
+  if (e.target === detail || e.target.closest('.detail-close')) detail.hidden = true;
+});
+
+/* ============================================================
+   SCENES — canvas engine
+   ============================================================ */
+var J = {
+  active: false, raf: 0, scenes: {}, running: new Set ? new Set() : null,
+  galaxy: null, lastScroll: 0,
+};
+
+function makeGalaxy(w, h) {
+  // a pre-rendered field of thousands of faint dots: the "tens of millions" illusion
+  var c = document.createElement('canvas');
+  c.width = w; c.height = h;
+  var x = c.getContext('2d');
+  for (var i = 0; i < 2600; i++) {
+    var a = Math.random();
+    x.fillStyle = 'rgba(' + (a > .7 ? '190,200,235' : '232,222,240') + ',' + (0.05 + Math.random() * 0.22) + ')';
+    var r = Math.random() * 1.4 + 0.3;
+    x.beginPath();
+    x.arc(Math.random() * w, Math.random() * h, r, 0, 6.29);
+    x.fill();
+  }
+  return c;
+}
+
+function sceneBase(sectionEl) {
+  var stage = sectionEl.querySelector('.jstage');
+  var canvas = stage.querySelector('canvas');
+  var cap = stage.querySelector('.jcap');
+  return {
+    el: sectionEl, stage: stage, canvas: canvas, ctx: canvas.getContext('2d'),
+    cap: cap, capKey: '', w: 0, h: 0, dpr: 1, t: 0, progress: 0, ready: false,
+    setCap: function (key) {
+      if (key === this.capKey) return;
+      this.capKey = key;
+      this.cap.innerHTML = d3(key);
+    },
+    resize: function () {
+      var r = this.stage.getBoundingClientRect();
+      if (r.width < 10) return;
+      this.dpr = Math.min(2, window.devicePixelRatio || 1);
+      this.w = r.width; this.h = r.height;
+      this.canvas.width = Math.round(r.width * this.dpr);
+      this.canvas.height = Math.round(r.height * this.dpr);
+      this.build(this.w, this.h);
+      this.ready = true;
+    },
+    frame: function (dt) {
+      if (!this.ready) { this.resize(); if (!this.ready) return; }
+      this.t += dt;
+      this.ctx.setTransform(this.dpr, 0, 0, this.dpr, 0, 0);
+      this.ctx.clearRect(0, 0, this.w, this.h);
+      this.tick(dt, this.t);
+    },
+    build: function () { }, tick: function () { },
+  };
+}
+
+function dotCount(w, h, base) {
+  return clamp(Math.round(base * (w * h) / (900 * 560)), Math.round(base * .35), base);
+}
+function fmtN(n) { return Math.round(n).toLocaleString('en-US'); }
+function glow(ctx, x, y, r, color, blur) {
+  ctx.save();
+  ctx.shadowColor = color; ctx.shadowBlur = blur || 12;
+  ctx.fillStyle = color;
+  ctx.beginPath(); ctx.arc(x, y, r, 0, 6.29); ctx.fill();
+  ctx.restore();
+}
+
+/* ---- scene 1: someone opens Instagram ---- */
+function openScene(sc) {
+  var dots = [];
+  sc.build = function (w, h) {
+    J.galaxy = makeGalaxy(Math.round(w), Math.round(h));
+    dots = [];
+    var n = dotCount(w, h, 420);
+    for (var i = 0; i < n; i++) {
+      dots.push({
+        x: Math.random(), y: Math.random(),
+        vx: (Math.random() - .5) * .006, vy: (Math.random() - .5) * .006,
+        r: .8 + Math.random() * 1.8, tw: Math.random() * 6.28,
+        you: i === 37,
+      });
+    }
+  };
+  sc.tick = function (dt, t) {
+    var ctx = sc.ctx, w = sc.w, h = sc.h, p = sc.progress;
+    var pa = clamp(p / .3, 0, 1), pb = clamp((p - .3) / .35, 0, 1), pc = clamp((p - .68) / .32, 0, 1);
+
+    // the crowd of candidates fades in
+    if (pb > 0) {
+      ctx.globalAlpha = pb * .8;
+      ctx.drawImage(J.galaxy, 0, 0, w, h);
+      ctx.globalAlpha = 1;
+      dots.forEach(function (d) {
+        d.x += d.vx * dt; d.y += d.vy * dt;
+        if (d.x < 0 || d.x > 1) d.vx *= -1;
+        if (d.y < 0 || d.y > 1) d.vy *= -1;
+        var a = pb * (.35 + .4 * Math.abs(Math.sin(t * 1.3 + d.tw)));
+        if (d.you) {
+          glow(ctx, d.x * w, d.y * h, 3 + Math.sin(t * 2.5) * .8, 'rgba(254,124,43,' + (pb * .95) + ')', 14);
+        } else {
+          ctx.fillStyle = 'rgba(232,222,240,' + a + ')';
+          ctx.beginPath(); ctx.arc(d.x * w, d.y * h, d.r, 0, 6.29); ctx.fill();
+        }
+      });
+    }
+
+    // the person and their phone
+    var px = w * .5, py = h * .52;
+    var phW = 56, phH = 100;
+    ctx.save();
+    ctx.strokeStyle = 'rgba(252,243,214,' + (.6 + pa * .4) + ')';
+    ctx.lineWidth = 2.5;
+    ctx.fillStyle = 'rgba(26,16,37,.9)';
+    ctx.beginPath(); ctx.roundRect(px - phW / 2, py - phH / 2, phW, phH, 12); ctx.fill(); ctx.stroke();
+    // empty slot inside the phone
+    ctx.setLineDash([4, 4]);
+    ctx.strokeStyle = 'rgba(252,243,214,' + (.25 + .35 * Math.abs(Math.sin(t * 2))) + ')';
+    ctx.strokeRect(px - phW / 2 + 8, py - 16, phW - 16, 32);
+    ctx.setLineDash([]);
+    ctx.restore();
+    glow(ctx, px, py - phH / 2 - 22, 7, 'rgba(252,243,214,.9)', 16);
+    ctx.font = '600 11px Poppins, sans-serif';
+    ctx.fillStyle = 'rgba(252,243,214,.6)';
+    ctx.textAlign = 'center';
+    ctx.fillText(dtxt('the visitor', 'one person', 'the request'), px, py + phH / 2 + 20);
+
+    // candidate counter
+    if (pb > 0.05) {
+      var count = lerp(0, 41700000, Math.pow(pb, .6));
+      ctx.font = '700 ' + Math.min(26, w * .04) + 'px Poppins, sans-serif';
+      ctx.fillStyle = 'rgba(252,243,214,' + (.5 + pb * .5) + ')';
+      ctx.fillText(fmtN(count), w / 2, 44);
+      ctx.font = '500 11px Poppins, sans-serif';
+      ctx.fillStyle = 'rgba(252,243,214,.5)';
+      ctx.fillText(dtxt('signs hoping to be seen', 'eligible ads for this one slot', 'eligible candidates, this request'), w / 2, 62);
+    }
+    // the question
+    if (pc > 0.05) {
+      ctx.font = 'italic 600 ' + Math.min(19, w * .032) + 'px Poppins, sans-serif';
+      ctx.fillStyle = 'rgba(255,197,69,' + pc + ')';
+      ctx.fillText(dtxt('“which sign fits this visitor?”', '“which ad fits this person?”', 'user-conditioned selection, stage one'), w / 2, h - 74);
+    }
+    sc.setCap(p < .3 ? 'j.open.cap.a' : p < .68 ? 'j.open.cap.b' : 'j.open.cap.c');
+  };
+}
+
+/* ---- scene 2: retrieval — the Andromeda collapse ---- */
+function retrievalScene(sc) {
+  var dots = [], scrub = null, scrubActive = false, lastStage = -1, shake = 0;
+  var STAGES = [41700000, 1200000, 96000, 8400, 2000];
+  sc.build = function (w, h) {
+    if (!J.galaxy) J.galaxy = makeGalaxy(Math.round(w), Math.round(h));
+    dots = [];
+    var n = dotCount(w, h, 900);
+    for (var i = 0; i < n; i++) {
+      dots.push({
+        x: Math.random(), y: Math.random() * .78 + .05,
+        hx: Math.random(), hy: Math.random(),   // home position
+        rank: Math.random(), r: .8 + Math.random() * 1.6,
+        tw: Math.random() * 6.28, dead: 0, you: i === 42,
+      });
+    }
+    dots[42].rank = 0.001; // your ad survives the sweep — this journey follows it
+    scrub = sc.el.querySelector('#retScrub');
+    if (scrub && !scrub.dataset.wired) {
+      scrub.dataset.wired = '1';
+      scrub.addEventListener('input', function () { scrubActive = true; });
+      window.addEventListener('scroll', function () {
+        if (scrubActive && Math.abs(window.scrollY - J.lastScroll) > 60) scrubActive = false;
+      }, { passive: true });
+    }
+  };
+  sc.tick = function (dt, t) {
+    var ctx = sc.ctx, w = sc.w, h = sc.h;
+    var p = scrubActive && scrub ? parseInt(scrub.value, 10) / 1000 : sc.progress;
+    if (!scrubActive && scrub) scrub.value = Math.round(sc.progress * 1000);
+    var cp = clamp(p / .92, 0, 1) * 4;         // 0..4 across the four index levels
+    var stage = Math.floor(cp);
+    if (stage !== lastStage) { if (stage > lastStage && lastStage >= 0) shake = 1; lastStage = stage; }
+    shake = Math.max(0, shake - dt * 3);
+    var sx = (Math.random() - .5) * shake * 7, sy = (Math.random() - .5) * shake * 7;
+    ctx.save();
+    ctx.translate(sx, sy);
+
+    // galaxy dims as the universe is discarded
+    if (J.galaxy) {
+      ctx.globalAlpha = clamp(.75 - cp * .28, 0, .75);
+      ctx.drawImage(J.galaxy, 0, 0, w, h);
+      ctx.globalAlpha = 1;
+    }
+
+    // index level bands: light up in turn, then dim
+    var bandH = (h * .62) / 4;
+    for (var L = 0; L < 4; L++) {
+      var y0 = h * .16 + L * bandH;
+      var lit = clamp(1 - Math.abs(cp - (L + .5)) * 1.6, 0, 1);
+      ctx.fillStyle = 'rgba(37,100,147,' + (lit * .16) + ')';
+      ctx.fillRect(0, y0, w, bandH - 4);
+      ctx.strokeStyle = 'rgba(127,200,240,' + (.08 + lit * .5) + ')';
+      ctx.lineWidth = 1.2;
+      ctx.strokeRect(6, y0, w - 12, bandH - 4);
+      ctx.font = '600 10px Poppins, sans-serif';
+      ctx.textAlign = 'left';
+      ctx.fillStyle = 'rgba(127,200,240,' + (.3 + lit * .6) + ')';
+      ctx.fillText(dtxt('shelf ' + (L + 1), 'index level ' + (L + 1), 'index level ' + (L + 1)), 14, y0 + 15);
+      if (lit > .1) { // sweep line
+        var swx = ((t * .55 + L * .3) % 1) * w;
+        var grad = ctx.createLinearGradient(swx - 70, 0, swx, 0);
+        grad.addColorStop(0, 'rgba(127,200,240,0)');
+        grad.addColorStop(1, 'rgba(127,200,240,' + lit * .5 + ')');
+        ctx.fillStyle = grad;
+        ctx.fillRect(swx - 70, y0, 70, bandH - 4);
+      }
+    }
+
+    // survivors funnel toward the bottom cluster; the culled fall away
+    var surviveFrac = [1, .5, .26, .12, .055][clamp(stage, 0, 4)] -
+      (cp % 1) * ([1, .5, .26, .12, .055][clamp(stage, 0, 4)] - [.5, .26, .12, .055, .055][clamp(stage, 0, 4)]);
+    dots.forEach(function (d) {
+      var alive = d.rank < surviveFrac;
+      d.dead = lerp(d.dead, alive ? 0 : 1, dt * 2.4);
+      var fx, fy;
+      if (alive && cp > 3.2) {
+        // gather into the survivor cluster
+        var g = clamp((cp - 3.2) / .8, 0, 1);
+        fx = lerp(d.hx, .5 + (d.hx - .5) * .3, g);
+        fy = lerp(d.hy * .78 + .05, .87 + (d.hy - .5) * .06, g);
+      } else {
+        fx = d.hx; fy = d.hy * .78 + .05;
+      }
+      var yy = fy + d.dead * .3;
+      var a = (1 - d.dead) * (.3 + .5 * Math.abs(Math.sin(t * 1.4 + d.tw)));
+      if (d.you) {
+        glow(ctx, fx * w, yy * h, 3.4, 'rgba(254,124,43,.95)', 15);
+      } else if (a > .02) {
+        ctx.fillStyle = 'rgba(232,222,240,' + a + ')';
+        ctx.beginPath(); ctx.arc(fx * w, yy * h, d.r, 0, 6.29); ctx.fill();
+      }
+    });
+
+    // the big number
+    var i0 = clamp(Math.floor(cp), 0, 4), i1 = clamp(i0 + 1, 0, 4);
+    var n = Math.exp(lerp(Math.log(STAGES[i0]), Math.log(STAGES[i1]), cp % 1 || (cp >= 4 ? 1 : 0)));
+    if (cp >= 4) n = STAGES[4];
+    ctx.font = '800 ' + Math.min(40, w * .062) + 'px Poppins, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillStyle = cp > 3.6 ? 'rgba(255,197,69,.95)' : 'rgba(252,243,214,.9)';
+    ctx.fillText(fmtN(n), w / 2, 52);
+    ctx.font = '500 11px Poppins, sans-serif';
+    ctx.fillStyle = 'rgba(252,243,214,.55)';
+    ctx.fillText(dtxt('signs still standing', 'candidates still alive', 'candidates remaining'), w / 2, 70);
+
+    ctx.restore();
+    sc.setCap(cp < 3.4 ? 'j.retr.cap.a' : 'j.retr.cap.b');
+  };
+}
+
+/* ---- scene 3: ranking — light pass, heavy pass ---- */
+function rankingScene(sc) {
+  var dots = [];
+  sc.build = function (w, h) {
+    dots = [];
+    var n = dotCount(w, h, 260);
+    for (var i = 0; i < n; i++) {
+      dots.push({
+        x: .1 + Math.random() * .8, y: .12 + Math.random() * .6,
+        score: Math.random(), tw: Math.random() * 6.28,
+        fx: 0, fy: 0, you: i === 21,
+      });
+    }
+    dots[21].score = .97;
+    // precompute finalist slots
+    var finalists = dots.slice().sort(function (a, b) { return b.score - a.score; }).slice(0, 8);
+    finalists.forEach(function (d, i) { d.finalist = true; d.slot = i; });
+  };
+  sc.tick = function (dt, t) {
+    var ctx = sc.ctx, w = sc.w, h = sc.h, p = sc.progress;
+    var pa = clamp(p / .45, 0, 1);            // light pass
+    var pb = clamp((p - .5) / .5, 0, 1);      // heavy pass + lineup
+    var sweepX = pa * 1.15;                    // light beam position
+
+    // light pass beam
+    if (pa > 0 && pa < 1) {
+      var bx = sweepX * w;
+      var grad = ctx.createLinearGradient(bx - 60, 0, bx, 0);
+      grad.addColorStop(0, 'rgba(127,200,240,0)');
+      grad.addColorStop(1, 'rgba(127,200,240,.35)');
+      ctx.fillStyle = grad;
+      ctx.fillRect(bx - 60, 0, 64, h);
+    }
+    // heavy pass beam dwells across the lineup
+    if (pb > 0 && pb < .85) {
+      var hx2 = (pb / .85) * w;
+      ctx.fillStyle = 'rgba(255,197,69,.14)';
+      ctx.fillRect(hx2 - 26, h * .3, 52, h * .45);
+    }
+
+    var kept = 0;
+    dots.forEach(function (d) {
+      var scored = sweepX > d.x;
+      var keepLight = d.score > .68;                    // light pass keeps ~1/3
+      var dead = scored && !keepLight ? 1 : 0;
+      if (pb > 0 && !d.finalist) dead = 1;              // heavy pass keeps 8
+      d.fx = lerp(d.fx || d.x, d.finalist && pb > .2 ? (.5 + (d.slot - 3.5) * .105) : d.x, dt * 2.2);
+      d.fy = lerp(d.fy || d.y, d.finalist && pb > .2 ? .52 : d.y, dt * 2.2);
+      var a = scored ? (dead ? .06 : .5 + d.score * .4) : .3;
+      if (!dead) kept++;
+      if (d.you) {
+        glow(ctx, d.fx * w, d.fy * h, d.finalist && pb > .2 ? 7 : 3.6, 'rgba(254,124,43,.95)', 16);
+        if (d.finalist && pb > .2) {
+          ctx.font = '700 10px Poppins, sans-serif';
+          ctx.textAlign = 'center';
+          ctx.fillStyle = 'rgba(254,124,43,.9)';
+          ctx.fillText(dtxt('yours', 'your ad', 'your ad'), d.fx * w, d.fy * h - 14);
+        }
+      } else {
+        ctx.fillStyle = scored && !dead ? 'rgba(255,197,69,' + a + ')' : 'rgba(232,222,240,' + a + ')';
+        ctx.beginPath();
+        ctx.arc(d.fx * w, d.fy * h, d.finalist && pb > .2 ? 6 : 1.6 + d.score * 1.6, 0, 6.29);
+        ctx.fill();
+      }
+    });
+
+    // counter
+    var label = pb > .2 ? 8 : Math.max(8, Math.round(lerp(2000, 500, pa)));
+    ctx.font = '800 ' + Math.min(34, w * .05) + 'px Poppins, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillStyle = 'rgba(252,243,214,.9)';
+    ctx.fillText(fmtN(label), w / 2, 48);
+    ctx.font = '500 11px Poppins, sans-serif';
+    ctx.fillStyle = 'rgba(252,243,214,.55)';
+    ctx.fillText(pb > .2 ? dtxt('finalists', 'the shortlist', 'final-stage candidates') : dtxt('after the once-over', 'after the light pass', 'post early-stage'), w / 2, 66);
+
+    sc.setCap(p < .5 ? 'j.rank.cap.a' : 'j.rank.cap.b');
+  };
+}
+
+/* ---- scene 4: the value equation ---- */
+function valueScene(sc) {
+  var finalists = [];
+  var events = [];
+  sc.build = function (w, h) {
+    finalists = [];
+    for (var i = 0; i < 8; i++) {
+      finalists.push({
+        slot: i, you: i === 2,
+        bid: .3 + Math.random() * .6,
+        ear: .25 + Math.random() * .55,
+        q: (Math.random() - .45) * .5,
+      });
+    }
+    finalists[2].ear = .78; finalists[2].q = .22; finalists[2].bid = .52;
+    events = [];
+    var glyphs = ['👟', '🔍', '❤️', '🛒', '📺', '🥤', '📱', '🎧'];
+    for (var j = 0; j < 14; j++) events.push({ g: glyphs[j % glyphs.length], off: j * .55 });
+  };
+  sc.tick = function (dt, t) {
+    var ctx = sc.ctx, w = sc.w, h = sc.h, p = sc.progress;
+    var pa = clamp(p / .3, 0, 1), pb = clamp((p - .33) / .32, 0, 1), pc = clamp((p - .68) / .32, 0, 1);
+
+    // the equation, term by term
+    var eqY = 54;
+    ctx.textAlign = 'center';
+    var fs = Math.min(17, w * .026);
+    ctx.font = '700 ' + fs + 'px Poppins, sans-serif';
+    var terms = [
+      { txt: dtxt('tickets', 'bid', 'bid'), col: '255,197,69', on: pa },
+      { txt: ' × ', col: '252,243,214', on: 1 },
+      { txt: dtxt('will-they-want-it guess', 'est. action rate', 'est. action rate'), col: '127,200,240', on: pb },
+      { txt: ' + ', col: '252,243,214', on: 1 },
+      { txt: dtxt('niceness', 'quality', 'quality'), col: '143,214,148', on: pc },
+    ];
+    var pre = dtxt('score = ', 'total value = ', 'total value = ');
+    var widths = [ctx.measureText(pre).width];
+    terms.forEach(function (tm) { widths.push(ctx.measureText(tm.txt).width); });
+    var total = widths.reduce(function (a, b) { return a + b; }, 0);
+    var x0 = w / 2 - total / 2;
+    ctx.textAlign = 'left';
+    ctx.fillStyle = 'rgba(252,243,214,.85)';
+    ctx.fillText(pre, x0, eqY);
+    x0 += widths[0];
+    terms.forEach(function (tm, i) {
+      var a = .3 + tm.on * .7;
+      ctx.save();
+      if (tm.on > .3 && tm.txt.trim() !== '×' && tm.txt.trim() !== '+') {
+        ctx.shadowColor = 'rgba(' + tm.col + ',.9)'; ctx.shadowBlur = 10 * tm.on;
+      }
+      ctx.fillStyle = 'rgba(' + tm.col + ',' + a + ')';
+      ctx.fillText(tm.txt, x0, eqY);
+      ctx.restore();
+      x0 += widths[i + 1];
+    });
+
+    // behavior sequence streaming into the estimate (term two's scene)
+    if (pb > .05 && pb < 1.05) {
+      ctx.font = (Math.min(15, w * .022)) + 'px sans-serif';
+      events.forEach(function (ev) {
+        var prog = ((t * .35 + ev.off) % 3) / 3;
+        var ex = lerp(-.05, .5, prog) * w;
+        var ey = h * .2 + Math.sin(prog * 6) * 8;
+        ctx.globalAlpha = pb * clamp(Math.sin(prog * Math.PI) * 1.4, 0, 1) * .9;
+        ctx.fillText(ev.g, ex, ey);
+      });
+      ctx.globalAlpha = 1;
+      ctx.font = '500 10px Poppins, sans-serif';
+      ctx.fillStyle = 'rgba(127,200,240,' + pb * .8 + ')';
+      ctx.textAlign = 'center';
+      ctx.fillText(dtxt('what they did just now, in order', 'their recent actions, in sequence', 'ordered event sequence → eAR'), w * .27, h * .2 + 26);
+    }
+
+    // finalists with stacked term bars
+    var barW = Math.min(34, w * .055), gap = (w * .8) / 8;
+    finalists.forEach(function (f) {
+      var fx = w * .1 + gap * (f.slot + .5);
+      var baseY = h * .82;
+      var bidH = f.bid * 60 * pa;
+      var earH = f.ear * 90 * pb;
+      var qH = f.q * 60 * pc;
+      var col = f.you ? '254,124,43' : '125,116,160';
+      // bid
+      ctx.fillStyle = 'rgba(255,197,69,' + (.35 + pa * .4) + ')';
+      ctx.fillRect(fx - barW / 2, baseY - bidH, barW, bidH);
+      // ear
+      ctx.fillStyle = 'rgba(127,200,240,' + (.35 + pb * .4) + ')';
+      ctx.fillRect(fx - barW / 2, baseY - bidH - earH, barW, earH);
+      // quality (can be negative: drawn red, pulling down)
+      if (pc > .02) {
+        if (qH >= 0) {
+          ctx.fillStyle = 'rgba(143,214,148,.7)';
+          ctx.fillRect(fx - barW / 2, baseY - bidH - earH - qH, barW, qH);
+        } else {
+          ctx.fillStyle = 'rgba(229,52,11,.65)';
+          ctx.fillRect(fx - barW / 2, baseY - bidH - earH, barW, -qH);
+          ctx.font = '700 11px Poppins, sans-serif';
+          ctx.textAlign = 'center';
+          ctx.fillStyle = 'rgba(229,52,11,.9)';
+          ctx.fillText('−', fx, baseY - bidH - earH - qH - 6);
+        }
+      }
+      // the ad dot
+      if (f.you) glow(ctx, fx, baseY + 14, 6.5, 'rgba(254,124,43,.95)', 14);
+      else { ctx.fillStyle = 'rgba(' + col + ',.8)'; ctx.beginPath(); ctx.arc(fx, baseY + 14, 5, 0, 6.29); ctx.fill(); }
+    });
+    ctx.font = '500 10px Poppins, sans-serif';
+    ctx.fillStyle = 'rgba(252,243,214,.45)';
+    ctx.textAlign = 'center';
+    ctx.fillText(dtxt('the eight finalists, scorecards filling in', 'the shortlist, term by term', 'shortlist · per-user terms assembling'), w / 2, h * .93);
+
+    sc.setCap(p < .33 ? 'j.value.cap.a' : p < .68 ? 'j.value.cap.b' : 'j.value.cap.c');
+  };
+}
+
+/* ---- scene 5: the auction, the render, the timer ---- */
+function auctionScene(sc) {
+  var finalists = [];
+  sc.build = function (w, h) {
+    finalists = [];
+    var tvs = [.55, .72, .97, .5, .8, .42, .66, .58];  // your ad (idx 2) wins
+    for (var i = 0; i < 8; i++) finalists.push({ slot: i, tv: tvs[i], you: i === 2, cur: 0 });
+  };
+  sc.tick = function (dt, t) {
+    var ctx = sc.ctx, w = sc.w, h = sc.h, p = sc.progress;
+    var pa = clamp(p / .4, 0, 1);              // race
+    var pb = clamp((p - .42) / .28, 0, 1);     // price line
+    var pc = clamp((p - .72) / .28, 0, 1);     // render + timer
+
+    var baseY = h * .8, maxH = h * .5;
+    var gap = (w * (pc > 0 ? .5 : .8)) / 8;
+    var xoff = w * (pc > 0 ? .06 : .1);
+    var runnerUp = .8;
+
+    finalists.forEach(function (f) {
+      f.cur = lerp(f.cur, f.tv * pa, dt * 3);
+      var fx = xoff + gap * (f.slot + .5);
+      var bh = f.cur * maxH;
+      var col = f.you ? '254,124,43' : '125,116,160';
+      ctx.fillStyle = 'rgba(' + col + ',' + (f.you ? .9 : .55) + ')';
+      ctx.beginPath();
+      ctx.roundRect(fx - 13, baseY - bh, 26, bh, 6);
+      ctx.fill();
+      if (f.you && pa > .9) {
+        glow(ctx, fx, baseY - bh - 14, 5, 'rgba(255,197,69,.95)', 14);
+        ctx.font = '700 12px Poppins, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillStyle = 'rgba(255,197,69,.95)';
+        ctx.fillText(dtxt('winner!', 'highest total value', 'clears'), fx, baseY - bh - 26);
+      }
+    });
+
+    // the pay-the-minimum line
+    if (pb > .02) {
+      var ly = baseY - runnerUp * maxH - 4;
+      ctx.setLineDash([7, 6]);
+      ctx.strokeStyle = 'rgba(255,197,69,' + pb * .85 + ')';
+      ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.moveTo(xoff - 6, ly); ctx.lineTo(xoff + gap * 8 + 6, ly); ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.font = '600 11px Poppins, sans-serif';
+      ctx.textAlign = 'left';
+      ctx.fillStyle = 'rgba(255,197,69,' + pb * .9 + ')';
+      ctx.fillText(dtxt('pays just a whisker above this line', 'pays the minimum needed — this line, not the bid', 'clearing price: runner-up value, backed out'), xoff, ly - 8);
+    }
+
+    // the phone renders the winning ad
+    if (pc > .02) {
+      var phX = w * .76, phY = h * .5, phW = Math.min(120, w * .2), phH = phW * 1.9;
+      ctx.globalAlpha = pc;
+      ctx.strokeStyle = 'rgba(252,243,214,.85)';
+      ctx.lineWidth = 3;
+      ctx.fillStyle = 'rgba(26,16,37,.95)';
+      ctx.beginPath(); ctx.roundRect(phX - phW / 2, phY - phH / 2, phW, phH, 16); ctx.fill(); ctx.stroke();
+      // feed lines
+      ctx.fillStyle = 'rgba(252,243,214,.18)';
+      ctx.fillRect(phX - phW / 2 + 10, phY - phH / 2 + 14, phW - 20, 8);
+      ctx.fillRect(phX - phW / 2 + 10, phY - phH / 2 + 28, phW * .5, 8);
+      // the ad slides in
+      var slide = lerp(40, 0, pc);
+      ctx.fillStyle = 'rgba(254,124,43,' + pc * .95 + ')';
+      ctx.beginPath();
+      ctx.roundRect(phX - phW / 2 + 10, phY - 14 + slide, phW - 20, phH * .32, 8);
+      ctx.fill();
+      ctx.font = '700 10px Poppins, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillStyle = 'rgba(254,124,43,.9)';
+      ctx.fillText(dtxt('your sign!', 'your ad', 'your ad'), phX, phY + phH / 2 + 16);
+      ctx.globalAlpha = 1;
+
+      // the timer
+      var ms = Math.round(lerp(0, 103, clamp(pc * 1.3, 0, 1)));
+      ctx.font = '800 ' + Math.min(30, w * .045) + 'px ui-monospace, monospace';
+      ctx.fillStyle = 'rgba(252,243,214,.92)';
+      ctx.fillText('~' + ms + ' ms', phX, phY - phH / 2 - 18);
+      ctx.font = '500 10px Poppins, sans-serif';
+      ctx.fillStyle = 'rgba(252,243,214,.5)';
+      ctx.fillText(dtxt('the whole journey', 'request to render', 'end-to-end latency'), phX, phY - phH / 2 - 4);
+    }
+
+    sc.setCap(p < .42 ? 'j.auct.cap.a' : p < .72 ? 'j.auct.cap.b' : 'j.auct.cap.c');
+  };
+}
+
+var SCENE_FACTORIES = {
+  open: openScene, retrieval: retrievalScene, ranking: rankingScene,
+  value: valueScene, auction: auctionScene,
+};
+
+/* ---------------- journey lifecycle ---------------- */
+function journeyStart() {
+  J.active = true;
+  J.scenes = {};
+  J.running = new Set();
+  document.querySelectorAll('.jstep').forEach(function (sec) {
+    var name = sec.dataset.scene;
+    var sc = sceneBase(sec);
+    SCENE_FACTORIES[name](sc);
+    J.scenes[name] = sc;
+  });
+  J.io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (en) {
+      var name = en.target.dataset.scene;
+      if (en.isIntersecting) J.running.add(name); else J.running.delete(name);
+    });
+  }, { rootMargin: '80px 0px' });
+  document.querySelectorAll('.jstep').forEach(function (s) { J.io.observe(s); });
+
+  // tap-to-advance on touch devices
+  document.querySelectorAll('.jnext').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var step = btn.closest('.jstep');
+      var next = step.nextElementSibling;
+      var target = next && next.classList.contains('jstep')
+        ? next.offsetTop + 10
+        : step.offsetTop + step.offsetHeight;
+      window.scrollTo({ top: target, behavior: 'smooth' });
+    });
+  });
+
+  var last = performance.now();
+  function loop(now) {
+    if (!J.active) return;
+    var dt = Math.min(.05, (now - last) / 1000);
+    last = now;
+    journeyScroll();
+    J.running.forEach(function (name) { J.scenes[name].frame(dt); });
+    J.raf = requestAnimationFrame(loop);
+  }
+  J.raf = requestAnimationFrame(loop);
+}
+function journeyScroll() {
+  var vh = window.innerHeight;
+  J.lastScroll = window.scrollY;
+  document.querySelectorAll('.jstep').forEach(function (sec) {
+    var name = sec.dataset.scene;
+    if (!J.running.has(name)) return;
+    J.scenes[name].progress = clamp((window.scrollY - sec.offsetTop) / (sec.offsetHeight - vh), 0, 1);
+  });
+}
+function journeyStop() {
+  J.active = false;
+  cancelAnimationFrame(J.raf);
+  if (J.io) J.io.disconnect();
+  J.scenes = {};
+}
+
+/* ---------------- other views ---------------- */
 function viewPlaceholder(room) {
-  return '' +
+  return '<div class="view-pad">' +
     '<p class="room-kicker">The Growth Den Lab · The Machine</p>' +
     '<h1 class="room-title">' + room.ico + ' ' + room.name + '</h1>' +
-    '<p class="room-tag">' + d3(room.slug + '.tag') + '</p>' +
+    '<p class="room-tag" style="margin-bottom:26px">' + d3(room.slug + '.tag') + '</p>' +
     '<div class="card bench">' +
       '<span class="flask" aria-hidden="true">⚗️</span>' +
       '<h2>' + d3('ph.state') + '</h2>' +
       '<p class="bench-note">' + d3('ph.note') + '</p>' +
       '<p class="bench-link">permalink: <code>#/' + room.slug + '?d=' + depth + '</code></p>' +
-    '</div>';
+    '</div></div>';
 }
 
 function render() {
@@ -617,12 +1574,21 @@ function render() {
   var room = ROOMS.filter(function (r) { return r.slug === cur.slug; })[0];
   CLAIMS.length = 0;
   popover.hidden = true;
+  detail.hidden = true;
+  journeyStop();
   var view = $('view');
-  view.innerHTML = room.slug === 'machine' ? viewHome() : viewPlaceholder(room);
+  view.innerHTML = room.slug === 'machine' ? viewJourney() : viewPlaceholder(room);
   view.style.animation = 'none';
-  void view.offsetWidth;               // restart the entry animation
+  void view.offsetWidth;
   view.style.animation = '';
   renderTabs(room.slug);
+  if (room.slug === 'machine') {
+    journeyStart();
+    // pipeline nodes open their detail cards
+    document.querySelectorAll('#pipemap .node').forEach(function (n) {
+      n.addEventListener('click', function () { openDetail(n.dataset.node); });
+    });
+  }
   document.title = (room.slug === 'machine' ? 'The Machine' : room.name + ' · The Machine') +
     ' — The Growth Den Lab';
   window.scrollTo(0, 0);
@@ -632,13 +1598,19 @@ function render() {
 document.querySelectorAll('.dial-btn').forEach(function (b) {
   b.addEventListener('click', function () {
     setDepth(b.dataset.depth, false);
-    // permalink codes inside placeholder cards show the depth — refresh them in place
     document.querySelectorAll('.bench-link code').forEach(function (c) {
       c.textContent = '#/' + parseHash().slug + '?d=' + depth;
     });
   });
 });
 window.addEventListener('hashchange', render);
+var rsTm;
+window.addEventListener('resize', function () {
+  clearTimeout(rsTm);
+  rsTm = setTimeout(function () {
+    Object.keys(J.scenes).forEach(function (k) { J.scenes[k].ready = false; });
+  }, 150);
+});
 
 setDepth(depth, true);
 render();
