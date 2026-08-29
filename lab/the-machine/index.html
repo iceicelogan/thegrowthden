@@ -843,6 +843,15 @@ details.drawer .drawer-body {
 details.drawer .drawer-body p { margin-bottom: 10px; }
 details.drawer .drawer-body b, details.drawer .drawer-body i { color: var(--cream); }
 
+/* interludes: optional hands-on breaks in the narrative — boot on expand */
+details.interlude { border-color: rgba(254,124,43,.45); }
+details.interlude > summary::after { color: var(--your-ad); }
+.il-tag {
+  font-size: 9px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--deep); background: var(--your-ad); border-radius: 100px;
+  padding: 2.5px 9px; margin-right: 2px; flex: 0 0 auto;
+}
+
 /* ---------- myths, graded (auction floor) ---------- */
 .myth-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 8px; }
 .myth-card {
@@ -1643,8 +1652,7 @@ var ROOMS = [
   { slug: 'creative', name: 'Your Creative', ico: '🎨', num: 3, open: true },
   { slug: 'market',   name: 'Your Market',   ico: '🌐', num: 4, open: true },
   { slug: 'debrief',  name: 'The Debrief',   ico: '🏁', finale: true, open: true },
-  /* off-spine: auction sim folds into The Machine as an interlude; dispatch stays footer-linked */
-  { slug: 'auction',  name: 'The Auction Floor', ico: '🔨', open: true, hidden: true },
+  /* off-spine, footer-linked only */
   { slug: 'dispatch', name: 'The Dispatch',      ico: '📰', open: true, hidden: true },
 ];
 var STEP_ORDER = ['you', 'machine', 'creative', 'market', 'debrief'];
@@ -1770,7 +1778,7 @@ function parseHash() {
     if (p[0]) params[p[0]] = decodeURIComponent(p[1] || '');
   });
   /* old routes redirect to their nearest new home */
-  if (slug === 'models' || slug === 'model-room' || slug === 'recency') slug = 'machine';
+  if (slug === 'models' || slug === 'model-room' || slug === 'recency' || slug === 'auction') slug = 'machine';
   if (slug === 'scanner') slug = 'you';
   if (!ROOMS.some(function (r) { return r.slug === slug; })) slug = 'you';
   return { slug: slug, params: params };
@@ -1823,6 +1831,13 @@ function drawer(title, sub, inner) {
     '<div style="padding:0 20px 6px;font-size:11.5px;color:var(--muted)">' + sub + '</div>' +
     '<div class="drawer-body">' + inner + '</div></details>';
 }
+/* an interlude: an optional hands-on break — its sim boots only when expanded */
+function interlude(key, title, sub, inner) {
+  return '<details class="drawer interlude" data-interlude="' + key + '">' +
+    '<summary><span class="il-tag">feel it yourself</span>' + title + '</summary>' +
+    '<div style="padding:0 20px 6px;font-size:11.5px;color:var(--muted)">' + sub + '</div>' +
+    '<div class="drawer-body">' + inner + '</div></details>';
+}
 function flipHtml(oldKey, newKey) {
   return '<div class="flip-row">' +
     '<button class="flip-btn on" data-side="old" type="button">the old way</button>' +
@@ -1844,8 +1859,8 @@ function wireFlips() {
 function viewJourney() {
   var h = '';
   h += '<div class="view-pad" style="padding-bottom:6px">' +
-    '<p class="room-kicker">The Growth Den Lab · teaching portal</p>' +
-    '<h1 class="room-title">The Machine</h1>' +
+    '<p class="room-kicker">Step 2 · The Machine</p>' +
+    '<h1 class="room-title">⚙️ How Meta picks an ad</h1>' +
     '<p class="room-tag">' + d3('machine.tag') + '</p>' +
     '<div class="legend-row">' +
       '<span class="legend-chip"><span class="badge g-meta"><span class="sym">●</span>Meta-published</span></span>' +
@@ -1882,9 +1897,11 @@ function viewJourney() {
       '<p style="font-size:12.5px">' + claim('Reads sequences of up to thousands of user events, in order.', 'meta', SRC.gem.name, SRC.gem.url) + '</p>' +
       flipHtml('m.gem.old', 'm.gem.new') +
       '<div class="tuesday"><span class="tue-k">what this means for your Tuesday</span>' + d3('m.gem.tue') + '</div>') +
-    '<div class="card"><h2>Play the ranking model</h2>' +
+    interlude('gemGame', '🧠 Play the ranking model', 'five rounds of being GEM — ends with the microphone myth, handled honestly',
       '<div style="font-size:14.5px;line-height:1.7;color:var(--muted);margin-bottom:14px">' + d3('r.intro') + '</div>' +
-      '<div class="gem-stage" id="gemBox"></div></div>' +
+      '<div class="gem-stage" id="gemBox"></div>') +
+    interlude('creativeField', '📡 Creative is the targeting', 'a living field of ~2,000 people — build an ad and watch it call its own crowd',
+      creativeFieldHtml()) +
     '</div>';
 
   h += jstep('j4', 'value', 'j.value.title', 'j.value.body',
@@ -1893,6 +1910,12 @@ function viewJourney() {
 
   h += jstep('j5', 'auction', 'j.auct.title', 'j.auct.body',
     '<p>' + claim('The winner is the ad with the highest total value — bid × estimated action rate + ad quality — and pays the minimum needed to win, not its full bid.', 'meta', SRC.auction.name, SRC.auction.url) + '</p>');
+
+  /* feel the auction yourself */
+  h += '<div class="view-pad" style="padding-top:0;padding-bottom:0">' +
+    interlude('auctionSim', '🔨 Run the Auction Floor', 'you vs. eight simulated competitors — every number computed from the value equation',
+      auctionSimHtml()) +
+    '</div>';
 
   /* the honest map */
   h += '<div class="view-pad">' +
@@ -1935,14 +1958,9 @@ function viewJourney() {
       '<li><span class="tl-y">2026</span><p class="tl-t">Lattice + Advantage+ end-to-end</p><p class="tl-b">Ranking consolidates; automation reaches a $75B run-rate; the reported (not confirmed) end-state: objective and budget in, finished ads out.</p></li>' +
       '</ol>');
 
-  /* closing */
-  h += '<div class="card close-panel">' +
-    '<h2>' + d3('j.close.title') + '</h2>' +
-    '<p style="max-width:560px;margin:0 auto">' + d3('j.close.body') + '</p>' +
-    '<div class="close-btns">' +
-      '<a class="big-btn" href="#/auction">🔨 Enter the Auction Floor</a>' +
-      '<a class="big-btn ghost" href="/lab/the-auction/">Play the finished auction lesson ↗</a>' +
-    '</div></div>';
+  /* onward */
+  h += '<a class="next-room" href="#/creative"><span class="nr-k">step 3 · Your Creative</span>' +
+    '<span class="nr-t">The machine reads creative above almost everything. Let’s read YOURS →</span></a>';
 
   h += '</div>';
   return h;
@@ -3274,7 +3292,8 @@ var CPERSONA = {
   64: ['people here for a laugh', 'entertainment-first scrollers'],
 };
 
-function viewCreative() {
+/* the Creative Signal field — lives inside The Machine as an interlude */
+function creativeFieldHtml() {
   var brandHooks = BRAND && BRAND.hooks && BRAND.hooks.length >= 3 ? BRAND.hooks : null;
   var chipHtml = CCATS.map(function (cat) {
     var names = { hook: 'HOOK', visual: 'VISUAL', tone: 'TONE', proof: 'PROOF' };
@@ -3300,11 +3319,7 @@ function viewCreative() {
       (cat === 'hook' && brandHooks ? ' <span style="font-weight:400;letter-spacing:.02em;text-transform:none;color:var(--your-ad)">· generated for ' + escHtml(BRAND.name) + '</span>' : '') +
       '</h4>' + rows + '</div>';
   }).join('');
-  return '<div class="view-pad">' +
-    '<p class="room-kicker">The Growth Den Lab · The Machine</p>' +
-    '<h1 class="room-title">📡 Creative Signal</h1>' +
-    '<p class="room-tag" style="margin-bottom:20px">' + d3('creative.tag') + '</p>' +
-    '<div class="card"><div style="font-size:14.5px;line-height:1.7;color:var(--muted)">' + d3('c.intro') + '</div></div>' +
+  return '<div class="card"><div style="font-size:14.5px;line-height:1.7;color:var(--muted)">' + d3('c.intro') + '</div></div>' +
 
     '<div class="cgrid">' +
       '<div class="cfield"><canvas id="cfCanvas"></canvas><p class="sim-cap" id="cfCap"></p></div>' +
@@ -3340,15 +3355,10 @@ function viewCreative() {
         '<button class="run-btn ghost" data-demo="div5" type="button">▶ 5×5 clones</button>' +
       '</div></div>' +
 
-    '<div class="card"><button class="chip-btn" data-demo="builder" type="button">↩ back to the builder</button></div>' +
-
-    '<a class="next-room" href="#/scanner"><span class="nr-k">next room →</span>' +
-      '<span class="nr-t">🔍 Brand Scanner</span>' +
-      '<span style="font-size:13px;color:var(--muted)">' + d3('c.next') + '</span></a>' +
-    '</div>';
+    '<div class="card" style="margin-bottom:0"><button class="chip-btn" data-demo="builder" type="button">↩ back to the builder</button></div>';
 }
 
-INITS.creative = function () {
+var initCreativeField = function () {
   var P = [], N = 0, mode = 'builder', alive = true, raf = 0, t = 0;
   var sel = { hook: -1, visual: -1, tone: -1, proof: -1 };
   var scoreB = null, sig = 0, sA = null, sB = null, conceptOf = null;
@@ -3597,7 +3607,6 @@ INITS.creative = function () {
     document.querySelectorAll('.mode-opt').forEach(function (b) { b.removeEventListener('click', dialHook); });
   };
 };
-VIEWS.creative = viewCreative;
 
 /* ============================================================
    RECENCY & FATIGUE — #/recency
@@ -3686,13 +3695,9 @@ function initGemGame() {
    Everything derives from: total value = bid × eAR + quality;
    winner pays the minimum needed to beat #2.
    ============================================================ */
-function viewAuction() {
-  return '<div class="view-pad">' +
-    '<p class="room-kicker">The Growth Den Lab · The Machine</p>' +
-    '<h1 class="room-title">🔨 The Auction Floor</h1>' +
-    '<p class="room-tag" style="margin-bottom:20px">' + d3('auction.tag') + '</p>' +
-
-    '<div class="card"><div style="font-size:14.5px;line-height:1.7;color:var(--muted)">' + d3('a.intro') + '</div>' +
+/* the Auction Floor sim — lives inside The Machine as an interlude */
+function auctionSimHtml() {
+  return '<div class="card"><div style="font-size:14.5px;line-height:1.7;color:var(--muted)">' + d3('a.intro') + '</div>' +
     '<p style="margin-top:10px;font-size:12.5px">' +
       claim('The mechanics here follow the documented auction: winner = highest total value (bid × estimated action rate + quality), paying the minimum needed to win.', 'meta', SRC.auction.name, SRC.auction.url) + '</p>' +
     '<p style="font-size:12.5px">' +
@@ -3760,12 +3765,7 @@ function viewAuction() {
         '<div class="duo-col d-no"><h4>✓ safe to touch</h4><ul>' +
           '<li>renaming campaigns, ad sets, ads</li><li>minor budget adjustments</li><li>changing the schedule end date</li>' +
           '<li>a brief pause</li><li>duplicating (the copy starts fresh; the original keeps learning)</li></ul></div>' +
-      '</div></div>' +
-
-    '<a class="next-room" href="#/creative"><span class="nr-k">next room →</span>' +
-      '<span class="nr-t">📡 Creative Signal</span>' +
-      '<span style="font-size:13px;color:var(--muted);line-height:1.55">' + d3('a.next') + '</span></a>' +
-    '</div>';
+      '</div></div>';
 }
 function mythCard(quote, claimHtml, bodyKey, folk) {
   return '<div class="myth-card' + (folk ? ' folk-card' : '') + '">' +
@@ -3774,7 +3774,7 @@ function mythCard(quote, claimHtml, bodyKey, folk) {
     '<div class="mb">' + d3(bodyKey) + '</div></div>';
 }
 
-INITS.auction = function () {
+var initAuctionSim = function () {
   var comps = [];
   function rollComps() {
     var tiers = [2, 4, 6, 8, 11, 13, 16, 20];
@@ -4014,7 +4014,6 @@ INITS.auction = function () {
     window.removeEventListener('resize', rs);
   };
 };
-VIEWS.auction = viewAuction;
 
 /* ---------------- other views ---------------- */
 function viewPlaceholder(room) {
@@ -4037,8 +4036,26 @@ INITS.machine = function () {
     n.addEventListener('click', function () { openDetail(n.dataset.node); });
   });
   wireFlips();
-  initGemGame();
-  return journeyStop;
+  /* interludes lazy-boot on first expand; their cleanups run on room teardown */
+  var interludeInits = {
+    gemGame: function () { initGemGame(); return null; },
+    creativeField: initCreativeField,
+    auctionSim: initAuctionSim,
+  };
+  var ilCleanups = [];
+  document.querySelectorAll('details.interlude').forEach(function (d) {
+    d.addEventListener('toggle', function () {
+      if (d.open && !d.dataset.booted) {
+        d.dataset.booted = '1';
+        var fn = interludeInits[d.dataset.interlude];
+        if (fn) { var c = fn(); if (c) ilCleanups.push(c); }
+      }
+    });
+  });
+  return function () {
+    journeyStop();
+    ilCleanups.forEach(function (c) { try { c(); } catch (e) { } });
+  };
 };
 
 function render() {
@@ -4055,12 +4072,11 @@ function render() {
   if (roomCleanup) { try { roomCleanup(); } catch (e) { } roomCleanup = null; }
   var view = $('view');
   var html = VIEWS[room.slug] ? VIEWS[room.slug]() : viewPlaceholder(room);
-  if (['machine', 'auction', 'creative'].indexOf(room.slug) >= 0) {
+  /* the quiet attribution strip lives on the teaching step only */
+  if (room.slug === 'machine') {
     html += '<div class="cta-strip"><a href="/#method">Built by The Growth Den — see how I work with brands →</a></div>';
   }
   view.innerHTML = html;
-  /* the scanner carries no attribution at all — its report speaks for itself */
-  $('foot').style.display = room.slug === 'scanner' ? 'none' : '';
   view.style.animation = 'none';
   void view.offsetWidth;
   view.style.animation = '';
