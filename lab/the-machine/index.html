@@ -790,6 +790,15 @@ h1.room-title {
 .rep-body { padding: 16px 22px 22px; }
 .rep-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 18px; }
 
+/* the reading animation: a scan sweep over the extracted signals */
+#scanReport.scanning { position: relative; }
+#scanReport.scanning::after {
+  content: ''; position: absolute; left: 0; right: 0; height: 70px; top: -70px;
+  background: linear-gradient(180deg, transparent, rgba(127,200,240,.2), transparent);
+  animation: scanline 1.3s linear infinite; pointer-events: none;
+}
+@keyframes scanline { to { top: 100%; } }
+
 /* ---------- placeholder rooms ---------- */
 .bench { text-align: center; padding: 52px 24px 46px; border-style: dashed; border-width: 1.5px; }
 .flask { font-size: 54px; display: inline-block; animation: bubble 2.6s ease-in-out infinite; }
@@ -1572,6 +1581,23 @@ var CONTENT = {
     kid: 'How this stays fresh: a human reads the news every month and writes down only the parts that matter. No robots deciding what’s important.',
     cmo: 'How this stays current: updated monthly, hand-curated. Entries are added when something clears the “would this change a decision” bar — not on a content calendar.',
     pro: 'Maintenance model: monthly hand-curation against primary sources. No auto-ingestion; the grading is the editorial product.',
+  },
+
+  /* ============ step 1: how Meta sees you ============ */
+  'you.tag': {
+    kid: 'Before the fair shows your sign to anyone, it reads you. Watch it happen.',
+    cmo: 'Before Meta delivers a single impression, it reads your public signals. This is that read, live.',
+    pro: 'Delivery is conditioned on what your surfaces expose. Step 1: the live public-signal read.',
+  },
+  'you.intro.brand': {
+    kid: '<p>The machine is reading <b>your</b> website right now — the same way the fair reads every lemonade stand before deciding whose sign to show. When it finishes, you get the report card.</p>',
+    cmo: '<p>The machine is reading your homepage the way delivery reads every advertiser: title, description, offer language — the public signals that decide what it has to work with. The report below is generated live from that read.</p>',
+    pro: '<p>Live parse of your homepage’s public signals (title, meta, offer/category language) → one grounded model read of how those signals feed retrieval and ranking. No tracking detection, no speculation — page copy only.</p>',
+  },
+  'you.intro.generic': {
+    kid: '<p>This is the machine reading a real website — ours! Type your own site below and the whole journey becomes about your brand instead.</p>',
+    cmo: '<p>You’re seeing the demo read — our own site through the machine’s eyes. Enter your site below and this page, and every step after it, re-centers on your brand.</p>',
+    pro: '<p>Demo read: thegrowthden.com parsed and interpreted. Drop your own domain below to seed the full journey — every downstream step consumes the same brand context.</p>',
   },
 
   /* ============ brand scanner + chat ============ */
@@ -2712,8 +2738,8 @@ function refreshForBrand() {
   applyBrandUI();
   if (!BOOTED) return;  // boot renders right after restoring the brand — don't render twice
   var slug = parseHash().slug;
-  if (slug === 'scanner' && SCAN_BUSY) return;  // a scan is mid-flight — don't wipe its report
-  if (slug === 'creative' || slug === 'scanner') render();  // chip labels & prefill live in DOM
+  if (slug === 'you' && SCAN_BUSY) return;  // a read is mid-flight — don't wipe its report
+  if (slug === 'creative' || slug === 'you') render();  // chip labels & prefill live in DOM
   // machine + auction labels read BRAND live from their canvas loops
 }
 /* returns a promise resolving to the (possibly minimal) BRAND */
@@ -2832,27 +2858,36 @@ function setBrandDomain(raw) {
   input.addEventListener('keydown', function (e) { if (e.key === 'Enter') send(); });
 })();
 
-/* ---- Brand Scanner — #/scanner ---- */
-function viewScanner() {
+/* ---- Journey step 1: How Meta sees you — #/you (built on the Brand Scanner) ---- */
+function getScanCache(dom) {
+  try { return JSON.parse(sessionStorage.getItem('gd-scan-' + dom)); } catch (e) { return null; }
+}
+function putScanCache(dom, obj) {
+  try { sessionStorage.setItem('gd-scan-' + dom, JSON.stringify(obj)); } catch (e) { }
+}
+function viewYou() {
+  var hasBrand = !!BRAND;
   return '<div class="view-pad">' +
-    '<p class="room-kicker">The Machine</p>' +
-    '<h1 class="room-title">🔍 Brand Scanner</h1>' +
-    '<p class="room-tag" style="margin-bottom:20px">' + d3('scanner.tag') + '</p>' +
-    '<div class="card"><div style="font-size:14.5px;line-height:1.7;color:var(--muted)">' + d3('s.intro') + '</div>' +
+    '<p class="room-kicker">Step 1 · You</p>' +
+    '<h1 class="room-title">🔍 How Meta sees ' + (hasBrand ? escHtml(BRAND.name) : 'you') + '</h1>' +
+    '<p class="room-tag" style="margin-bottom:20px">' + d3('you.tag') + '</p>' +
+    '<div class="card">' +
+      '<div style="font-size:14.5px;line-height:1.7;color:var(--muted)">' + d3(hasBrand ? 'you.intro.brand' : 'you.intro.generic') + '</div>' +
       '<div class="scan-row" style="margin-top:14px">' +
-        '<input id="scanUrl" type="url" placeholder="https://a-brand-you-admire.com" autocomplete="off">' +
-        '<button class="run-btn" id="scanGo" type="button">🔍 scan</button>' +
-        '<button class="run-btn ghost" id="scanDemo" type="button">▶ scan thegrowthden.com</button>' +
+        '<input id="scanUrl" type="url" placeholder="' + (hasBrand ? escHtml(BRAND.domain) : 'yourbrand.com — make it about your brand') + '" autocomplete="off">' +
+        '<button class="run-btn" id="scanGo" type="button">🔍 ' + (hasBrand ? 're-read a site' : 'read my site') + '</button>' +
       '</div>' +
       '<p class="scan-status" id="scanStatus"></p>' +
     '</div>' +
+    '<div class="card" id="scanReport" style="display:none"></div>' +
     '<div class="honesty-panel">' + d3('s.honesty') +
       ' <a href="https://www.facebook.com/ads/library/" target="_blank" rel="noopener noreferrer">→ the Ad Library</a></div>' +
-    '<div class="card" id="scanReport" style="display:none"></div>' +
+    '<a class="next-room" href="#/machine"><span class="nr-k">step 2 · The Machine</span>' +
+      '<span class="nr-t">That’s what Meta sees. Now watch what it does with it in 100 milliseconds →</span></a>' +
     '</div>';
 }
-INITS.scanner = function () {
-  var busy = false;
+INITS.you = function () {
+  var busy = false, readTicker = 0;
   function status(t) { var el = $('scanStatus'); if (el) el.innerHTML = t; }
   function esc(s) { return escHtml(s); }
   function mdLite(s) {
@@ -2970,18 +3005,84 @@ INITS.scanner = function () {
     });
     return cv.toDataURL('image/png');
   }
-  function scan(url) {
+  function reportShell(name, sig) {
+    var adlib = 'https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=ALL&q=' + encodeURIComponent(name);
+    var report = $('scanReport');
+    report.style.display = 'block';
+    report.innerHTML =
+      '<div class="rep-head"><canvas id="repCv"></canvas><div class="rep-head-txt">' +
+        '<p class="rk">How the Machine sees</p>' +
+        '<h2>' + esc(name) + '</h2>' +
+        '<p class="rd">' + esc(sig.domain) + ' · scanned ' + new Date().toISOString().slice(0, 10) + '</p>' +
+      '</div></div>' +
+      '<div class="rep-body">' +
+        '<div class="sig-grid">' +
+          '<div class="sig"><b>title</b>' + esc(sig.title || '—') + '</div>' +
+          '<div class="sig"><b>description</b>' + esc((sig.description || '—').slice(0, 140)) + '</div>' +
+          '<div class="sig"><b>their live ads</b><a href="' + adlib + '" target="_blank" rel="noopener noreferrer">see them in Meta’s own transparency tool →</a></div>' +
+        '</div>' +
+        '<div class="report" id="scanMd"><p><i>…</i></p></div>' +
+      '</div>';
+    headCanvas();
+    return report;
+  }
+  function finishReport(report, name, dom, md) {
+    $('scanMd').innerHTML = mdLite(md);
+    report.classList.remove('scanning');
+    var body = report.querySelector('.rep-body');
+    var act = document.createElement('div');
+    act.className = 'rep-actions';
+    act.innerHTML = '<button class="run-btn" id="repDl" type="button">⬇ Download report</button>' +
+      '<button class="run-btn ghost" id="repCp" type="button">🔗 Copy link</button>';
+    body.appendChild(act);
+    $('repDl').addEventListener('click', function () {
+      var a = document.createElement('a');
+      a.href = buildReportPng(name, dom, md);
+      a.download = 'how-the-machine-sees-' + dom.replace(/[^a-z0-9.-]/g, '') + '.png';
+      document.body.appendChild(a); a.click(); a.remove();
+    });
+    $('repCp').addEventListener('click', function () {
+      var link = location.origin + location.pathname + '?brand=' + encodeURIComponent(dom) + '#/you';
+      var done = function () { $('repCp').textContent = '✓ copied — the link re-runs this read for whoever opens it'; };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(link).then(done, function () { window.prompt('copy this link:', link); });
+      } else window.prompt('copy this link:', link);
+    });
+    status('✅ ' + (depth === 'kid' ? 'report card done! Now — see what the machine does with all this ↓' : 'read complete. Now watch what delivery does with it ↓'));
+  }
+  var READ_LINES = [
+    'reading the title…', 'reading the offer language…', 'mapping the category…',
+    'checking what retrieval can index…', 'weighing the creative signal…',
+  ];
+  function startReadTicker() {
+    var i = 0;
+    clearInterval(readTicker);
+    status('📡 ' + READ_LINES[0]);
+    readTicker = setInterval(function () {
+      i = (i + 1) % READ_LINES.length;
+      status('📡 ' + READ_LINES[i]);
+    }, 1100);
+  }
+  function scan(url, setBrand) {
     if (busy) return;
+    var dom = normDomain(url);
+    /* cached read: render instantly, no calls */
+    var cached = dom && getScanCache(dom);
+    if (cached && cached.md) {
+      var rep = reportShell(cached.name, { domain: dom, title: cached.title, description: cached.description });
+      finishReport(rep, cached.name, dom, cached.md);
+      if (setBrand && typeof setBrandDomain === 'function') setBrandDomain(dom);
+      return;
+    }
     busy = true;
     SCAN_BUSY = true;
-    var dom = normDomain(url);
-    if (dom) brandAutoScanned = dom;  // this scan IS the auto-run for this domain
+    if (setBrand && dom) brandAutoScanned = dom;  // this scan IS the auto-run for this domain
     var report = $('scanReport');
     report.style.display = 'none';
-    status('📡 ' + (depth === 'kid' ? 'knocking on their front door…' : 'fetching the homepage…'));
+    startReadTicker();
     /* brand context first: its /fetch + parse is cached per domain,
        so the scan reuses that instead of fetching the site twice */
-    var pre = (dom && typeof setBrandDomain === 'function') ? setBrandDomain(dom) : Promise.resolve(null);
+    var pre = (setBrand && dom && typeof setBrandDomain === 'function') ? setBrandDomain(dom) : Promise.resolve(null);
     pre.then(function () {
       if (dom && BRAND && BRAND.domain === dom && BRAND.signals) return BRAND.signals;
       return fetch(PROXY_URL + '/fetch', {
@@ -2997,26 +3098,10 @@ INITS.scanner = function () {
         return parseSiteLite(f.html, dom || (f.finalUrl || url).replace(/^https?:\/\/(www\.)?/, '').split('/')[0]);
       });
     }).then(function (sig) {
-      var name = (BRAND && BRAND.domain === sig.domain && BRAND.name) ||
+      var name = (setBrand && BRAND && BRAND.domain === sig.domain && BRAND.name) ||
         sig.siteName || (sig.title || '').split(/[|–—-]/)[0].trim() || sig.domain;
-      var adlib = 'https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=ALL&q=' + encodeURIComponent(name);
-      status('🧠 ' + (depth === 'kid' ? 'the helper is writing the report card…' : 'generating the read…'));
-      report.style.display = 'block';
-      report.innerHTML =
-        '<div class="rep-head"><canvas id="repCv"></canvas><div class="rep-head-txt">' +
-          '<p class="rk">How the Machine sees</p>' +
-          '<h2>' + esc(name) + '</h2>' +
-          '<p class="rd">' + esc(sig.domain) + ' · scanned ' + new Date().toISOString().slice(0, 10) + '</p>' +
-        '</div></div>' +
-        '<div class="rep-body">' +
-          '<div class="sig-grid">' +
-            '<div class="sig"><b>title</b>' + esc(sig.title || '—') + '</div>' +
-            '<div class="sig"><b>description</b>' + esc((sig.description || '—').slice(0, 140)) + '</div>' +
-            '<div class="sig"><b>their live ads</b><a href="' + adlib + '" target="_blank" rel="noopener noreferrer">see them in Meta’s own transparency tool →</a></div>' +
-          '</div>' +
-          '<div class="report" id="scanMd"><p><i>…</i></p></div>' +
-        '</div>';
-      headCanvas();
+      report = reportShell(name, sig);
+      report.classList.add('scanning');
       var known = (BRAND && BRAND.domain === sig.domain && BRAND.resolved)
         ? { category: BRAND.category, offer: BRAND.offer, oneLiner: BRAND.oneLiner, hooks: BRAND.hooks }
         : null;
@@ -3027,67 +3112,55 @@ INITS.scanner = function () {
         '“## 10 genuinely different angles” (numbered list of ten creative angle opportunities, each a DISTINCT buyer motivation or hook territory — never cosmetic variants of one idea; one concrete line each). ' +
         'Write at this register: ' + REGISTER_DESC[depth] + '. ' +
         'Rules: infer only from the provided signals; never invent spend, reach, or audience numbers — none are public; NEVER mention or speculate about pixels, tags, tracking, or analytics — you cannot see any of that; do not name The Growth Den or this portal inside the report; total under 600 words.';
+      var lastPaint = 0, acc = '';
       return streamClaude({ model: 'claude-sonnet-4-5', max_tokens: 3000, stream: true, system: sys,
         messages: [{ role: 'user', content: 'SIGNALS:\n' + JSON.stringify(sig, null, 1) +
           (known ? '\n\nKNOWN BRAND CONTEXT (from an earlier read of the same public signals):\n' + JSON.stringify(known, null, 1) : '') }] },
-        function () { }).then(function (full) {
-          $('scanMd').innerHTML = mdLite(full);
-          var body = report.querySelector('.rep-body');
-          var act = document.createElement('div');
-          act.className = 'rep-actions';
-          act.innerHTML = '<button class="run-btn" id="repDl" type="button">⬇ Download report</button>' +
-            '<button class="run-btn ghost" id="repCp" type="button">🔗 Copy link</button>';
-          body.appendChild(act);
-          var cta = document.createElement('div');
-          cta.className = 'talk-cta';
-          cta.innerHTML = '<p>Want this level of clarity on your own account?</p>' +
-            '<a href="https://calendar.app.google/dy8683mNDXyWAkPo9" target="_blank" rel="noopener noreferrer">Talk to Logan →</a>';
-          body.appendChild(cta);
-          $('repDl').addEventListener('click', function () {
-            var a = document.createElement('a');
-            a.href = buildReportPng(name, sig.domain, full);
-            a.download = 'how-the-machine-sees-' + sig.domain.replace(/[^a-z0-9.-]/g, '') + '.png';
-            document.body.appendChild(a); a.click(); a.remove();
-          });
-          $('repCp').addEventListener('click', function () {
-            var link = location.origin + location.pathname + '?brand=' + encodeURIComponent(sig.domain) + '#/scanner';
-            var done = function () { $('repCp').textContent = '✓ copied — the link re-runs this scan for whoever opens it'; };
-            if (navigator.clipboard && navigator.clipboard.writeText) {
-              navigator.clipboard.writeText(link).then(done, function () { window.prompt('copy this link:', link); });
-            } else window.prompt('copy this link:', link);
-          });
-          status('✅ ' + (depth === 'kid' ? 'report card done!' : 'scan complete.'));
+        function (delta) {
+          acc += delta;
+          clearInterval(readTicker);
+          status('🧠 ' + (depth === 'kid' ? 'the helper is writing the report card…' : 'writing the read…'));
+          var now = Date.now();
+          if (now - lastPaint > 180) {
+            lastPaint = now;
+            var el = $('scanMd'); if (el) el.innerHTML = mdLite(acc);
+          }
+        }).then(function (full) {
+          finishReport(report, name, sig.domain, full);
+          putScanCache(sig.domain, { name: name, domain: sig.domain, md: full,
+            title: sig.title, description: sig.description, date: new Date().toISOString().slice(0, 10) });
         });
     }).catch(function (err) {
+      clearInterval(readTicker);
+      if (report) report.classList.remove('scanning');
       if (err && err.code === 429) status(depthMsg(MSG_BUSY));
       else if (err && err.code === 503) status(depthMsg(MSG_NAP));
       else if (err && err.code === 'blocked') status('🚪 ' + (depth === 'kid'
-        ? 'That site slammed the door on our scanner — rude! Some sites do that. Try the demo scan instead.'
-        : 'That site bounced us at the door — some homepages refuse anything that isn’t a browser. No judgment; strong bouncer. Try the demo scan: thegrowthden.com always lets us in.'));
-      else status(depthMsg(MSG_LOCAL) + ' · ' + (depth === 'kid' ? 'or try the demo!' : 'demo scan works on the live site.'));
-    }).then(function () { busy = false; SCAN_BUSY = false; });
+        ? 'That site slammed the door on our scanner — rude! Some sites do that. Try another one.'
+        : 'That site bounced us at the door — some homepages refuse anything that isn’t a browser. No judgment; strong bouncer. Try another domain, or continue — the journey works without it.'));
+      else status(depthMsg(MSG_LOCAL));
+    }).then(function () { busy = false; SCAN_BUSY = false; clearInterval(readTicker); });
   }
   $('scanGo').addEventListener('click', function () {
     var u = $('scanUrl').value.trim();
     if (!u) { status(depth === 'kid' ? 'type a website first!' : 'enter a URL first.'); return; }
     if (!/^https?:\/\//.test(u)) u = 'https://' + u;
-    scan(u);
+    scan(u, true);
   });
   $('scanUrl').addEventListener('keydown', function (e) { if (e.key === 'Enter') $('scanGo').click(); });
-  $('scanDemo').addEventListener('click', function () { $('scanUrl').value = 'https://thegrowthden.com'; scan('https://thegrowthden.com'); });
-  // brand context: arrive pre-filled and auto-run once per domain
+  /* arrival: the brand read auto-runs; generic mode shows the demo read */
   if (BRAND) {
     $('scanUrl').value = BRAND.domain;
-    if (brandAutoScanned !== BRAND.domain) {
-      brandAutoScanned = BRAND.domain;
-      scan('https://' + BRAND.domain);
+    if (brandAutoScanned !== BRAND.domain || getScanCache(BRAND.domain)) {
+      scan('https://' + BRAND.domain, true);
     }
+  } else {
+    scan('https://thegrowthden.com', false);
   }
-  return null;
+  return function () { clearInterval(readTicker); };
 };
-/* journey step 1 (#/you) is built on the scanner; the room registers under 'you' */
-VIEWS.you = viewScanner;
-INITS.you = INITS.scanner;
+VIEWS.you = viewYou;
+
 
 /* ============================================================
    THE DISPATCH — #/dispatch · lab logbook
