@@ -800,6 +800,21 @@ details.drawer .drawer-body b, details.drawer .drawer-body i { color: var(--crea
 .myth-card .mb b { color: var(--cream); }
 @media (max-width: 760px) { .myth-grid { grid-template-columns: 1fr; } }
 
+/* quiet per-room attribution strip (machine / auction / creative only) */
+.cta-strip { max-width: 1100px; margin: 4px auto 0; padding: 0 16px 10px; text-align: center; }
+.cta-strip a { font-size: 12.5px; color: var(--muted); text-decoration: none; border-bottom: 1px dotted rgba(252,243,214,.35); transition: color .2s; }
+.cta-strip a:hover { color: var(--cream); }
+
+/* the one hard CTA — end of the scanner report */
+.talk-cta { margin-top: 20px; padding-top: 18px; border-top: 1px solid var(--line); text-align: center; }
+.talk-cta p { font-size: 13.5px; color: var(--muted); margin-bottom: 12px; }
+.talk-cta a {
+  display: inline-block; font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 14.5px;
+  color: var(--deep); background: var(--gold); border-radius: 100px;
+  padding: 13px 24px; min-height: 48px; text-decoration: none;
+}
+.talk-cta a:active { transform: scale(.97); }
+
 /* folklore-graded cards look like folklore at arm's length:
    dashed border, amber tint, "unverified" tag */
 .folk-card {
@@ -2713,7 +2728,7 @@ function setBrandDomain(raw) {
 /* ---- Brand Scanner — #/scanner ---- */
 function viewScanner() {
   return '<div class="view-pad">' +
-    '<p class="room-kicker">The Growth Den Lab · The Machine</p>' +
+    '<p class="room-kicker">The Machine</p>' +
     '<h1 class="room-title">🔍 Brand Scanner</h1>' +
     '<p class="room-tag" style="margin-bottom:20px">' + d3('scanner.tag') + '</p>' +
     '<div class="card"><div style="font-size:14.5px;line-height:1.7;color:var(--muted)">' + d3('s.intro') + '</div>' +
@@ -2800,7 +2815,9 @@ INITS.scanner = function () {
       return streamClaude({ model: 'claude-sonnet-4-5', max_tokens: 3000, stream: true, system: sys,
         messages: [{ role: 'user', content: 'SIGNALS:\n' + JSON.stringify(sig, null, 1) }] },
         function () { }).then(function (full) {
-          $('scanMd').innerHTML = mdLite(full);
+          $('scanMd').innerHTML = mdLite(full) +
+            '<div class="talk-cta"><p>Want this level of clarity on your own account?</p>' +
+            '<a href="https://calendar.app.google/dy8683mNDXyWAkPo9" target="_blank" rel="noopener noreferrer">Talk to Logan →</a></div>';
           status('✅ ' + (depth === 'kid' ? 'report card done!' : 'scan complete.'));
         });
     }).catch(function (err) {
@@ -3723,7 +3740,13 @@ function render() {
   detail.hidden = true;
   if (roomCleanup) { try { roomCleanup(); } catch (e) { } roomCleanup = null; }
   var view = $('view');
-  view.innerHTML = VIEWS[room.slug] ? VIEWS[room.slug]() : viewPlaceholder(room);
+  var html = VIEWS[room.slug] ? VIEWS[room.slug]() : viewPlaceholder(room);
+  if (['machine', 'auction', 'creative'].indexOf(room.slug) >= 0) {
+    html += '<div class="cta-strip"><a href="/#method">Built by The Growth Den — see how I work with brands →</a></div>';
+  }
+  view.innerHTML = html;
+  /* the scanner carries no attribution at all — its report speaks for itself */
+  $('foot').style.display = room.slug === 'scanner' ? 'none' : '';
   view.style.animation = 'none';
   void view.offsetWidth;
   view.style.animation = '';
