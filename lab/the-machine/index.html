@@ -973,6 +973,27 @@ body.v5 { background: #fcf3d6; color: #341f44; font-weight: 300; }
 }
 @keyframes v5pulse { 50% { opacity: .45; } }
 
+/* the audience canvas (screens 2 / 3 / rival) */
+.v5-canvas {
+  position: relative; margin-top: 14px; height: 240px;
+  border: 1px solid #eee2bd; border-radius: 14px;
+  background: radial-gradient(circle at 50% 42%, #fff 0%, #fffdf5 60%);
+  overflow: hidden;
+}
+.v5-canvas canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+.v5-cap {
+  position: absolute; left: 8px; right: 8px; bottom: 10px;
+  text-align: center; font-size: 12.5px; font-weight: 400; color: #341f44;
+  pointer-events: none;
+}
+.v5-cap b { font-weight: 600; }
+.v5-chip.sel { background: #341f44; border-color: #341f44; color: #fcf3d6; }
+.v5-why {
+  font-family: 'Poppins', sans-serif; font-size: 11.5px; font-weight: 600;
+  color: #256493; background: none; border: none; cursor: pointer;
+  text-decoration: underline; text-underline-offset: 2px; padding: 4px 6px;
+}
+
 /* the tap drawer, restyled for the cream system */
 body.v5 #whyPanel {
   background: #fffdf5; border-left: 1px solid #e8dcb8; color: #341f44;
@@ -3893,9 +3914,94 @@ V5_SCREENS[1] = function screenRead() {
   $('v5Next').addEventListener('click', function () { goScreen(2); });
 };
 
-/* ---- screen 2 · placeholder (lands next commit) ---- */
-V5_SCREENS[2] = function () {
-  v5Mount('<h2>Change the message. Watch who Meta finds.</h2><p class="v5-sub">this screen lands in the next commit</p>');
+/* ---- screen 2 · Creative Does the Targeting ---- */
+function boldFrame(caption, frame) {
+  var idx = caption.toLowerCase().indexOf(frame.toLowerCase());
+  if (idx < 0) return escHtml(caption);
+  return escHtml(caption.slice(0, idx)) + '<b>' + escHtml(caption.slice(idx, idx + frame.length)) + '</b>' + escHtml(caption.slice(idx + frame.length));
+}
+V5_SCREENS[2] = function screenFrames() {
+  var d = V5.run.data, frames = d.frames.slice(0, 3), sel = 0;
+  v5Mount(
+    '<h2>Change the message. Watch who Meta finds.</h2>' +
+    '<div class="v5-chips" style="min-height:0">' + frames.map(function (f, i) {
+      return '<button type="button" class="v5-chip in' + (i === 0 ? ' sel' : '') + '" data-frame="' + i + '">' + escHtml(f.chipLabel) + '</button>';
+    }).join('') + '</div>' +
+    '<div class="v5-canvas"><canvas id="v5Field"></canvas><div class="v5-cap" id="v5FieldCap"></div></div>' +
+    '<div class="v5-verdict in">Your targeting settings didn’t change. <b>Your words did.</b> ' +
+      '<button class="v5-why" type="button" id="v5WhyFrames" style="color:#ffc545">why?</button></div>' +
+    '<button class="v5-next" id="v5Next" type="button">next →</button>'
+  );
+  var cv = $('v5Field'), ctx = cv.getContext('2d');
+  var W = 0, H = 0, dpr = Math.min(2, window.devicePixelRatio || 1);
+  function resize() {
+    var r = cv.parentElement.getBoundingClientRect();
+    W = r.width; H = r.height;
+    cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
+  }
+  resize();
+  var CENTERS = [{ x: .28, y: .38 }, { x: .72, y: .34 }, { x: .46, y: .68 }];
+  var dots = [];
+  for (var i = 0; i < 150; i++) {
+    dots.push({
+      pop: i % 3,
+      hx: .06 + Math.random() * .88, hy: .08 + Math.random() * .78,
+      x: 0, y: 0, r: 2, tw: Math.random() * 6.28,
+      offA: Math.random() * 6.28, offR: .35 + Math.random() * .65,
+    });
+  }
+  dots.forEach(function (p) { p.x = p.hx; p.y = p.hy; });
+  function setCap() {
+    $('v5FieldCap').innerHTML = boldFrame(frames[sel].caption, frames[sel].chipLabel);
+  }
+  setCap();
+  var t = 0, last = performance.now();
+  function loop(now) {
+    if (!cv.isConnected) return;
+    var dt = Math.min(.05, (now - last) / 1000); last = now; t += dt;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, W, H);
+    dots.forEach(function (p) {
+      var mine = p.pop === sel;
+      var c = CENTERS[p.pop];
+      var tx, ty, tr;
+      if (mine) {
+        var rr = .13 * p.offR;
+        tx = c.x + Math.cos(p.offA + t * .25) * rr;
+        ty = c.y + Math.sin(p.offA + t * .25) * rr * .8;
+        tr = 3.2;
+      } else {
+        tx = p.hx; ty = p.hy; tr = 2;
+      }
+      var k = Math.min(.14, dt * 3.2);
+      p.x += (tx - p.x) * k; p.y += (ty - p.y) * k;
+      p.r += (tr - p.r) * k;
+      var a = mine ? .9 : .55 + .2 * Math.sin(t * 1.3 + p.tw);
+      ctx.fillStyle = mine ? 'rgba(37,100,147,' + a + ')' : 'rgba(201,191,216,' + a + ')';
+      ctx.beginPath(); ctx.arc(p.x * W, p.y * H, p.r, 0, 6.29); ctx.fill();
+    });
+    requestAnimationFrame(loop);
+  }
+  requestAnimationFrame(loop);
+  document.querySelectorAll('[data-frame]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      sel = parseInt(b.dataset.frame, 10);
+      document.querySelectorAll('[data-frame]').forEach(function (x) { x.classList.toggle('sel', x === b); });
+      setCap();
+    });
+  });
+  $('v5WhyFrames').addEventListener('click', function () {
+    openWhy('The message selects the audience',
+      '<p>Meta’s delivery starts from the person and asks which ad fits them. Your creative is the strongest signal it reads — change the message, and retrieval assembles a different crowd. No targeting setting touched.</p>' +
+      '<p style="font-size:12px;margin-top:10px">' + claim('Andromeda, Meta’s retrieval engine, filters tens of millions of candidate ads down to a few thousand per person — learned from the ad itself, not from interest checkboxes.', 'meta', SRC.andromeda.name, SRC.andromeda.url) + '</p>' +
+      '<p style="font-size:12px">' + claim('Within one ad set, different creatives are delivered to systematically different demographic subgroups — measured across 181,890 Meta A/B tests.', 'measured', SRC.kellogg.name, SRC.kellogg.url) + '</p>');
+  });
+  $('v5Next').addEventListener('click', function () { goScreen(3); });
+};
+
+/* ---- screen 3 · placeholder (lands next commit) ---- */
+V5_SCREENS[3] = function () {
+  v5Mount('<h2>Where your category shouts — and where it’s quiet.</h2><p class="v5-sub">this screen lands in the next commit</p>');
 };
 
 /* ---------------- boot ---------------- *//* ---------------- boot ---------------- */
