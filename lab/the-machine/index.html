@@ -736,6 +736,45 @@ h1.room-title {
   background: rgba(252,243,214,.08); border-radius: 6px; padding: 2px 7px;
 }
 
+/* ---------- under-the-hood drawers ---------- */
+details.drawer {
+  background: var(--glass); border: 1px solid var(--line); border-radius: var(--r);
+  margin-bottom: 16px; overflow: hidden;
+}
+details.drawer > summary {
+  list-style: none; cursor: pointer;
+  display: flex; align-items: center; gap: 10px;
+  padding: 16px 20px; min-height: 54px;
+  font-size: 15px; font-weight: 700; color: var(--cream);
+}
+details.drawer > summary::-webkit-details-marker { display: none; }
+details.drawer > summary::after {
+  content: '＋'; margin-left: auto; font-size: 18px; color: var(--gold);
+  transition: transform .2s;
+}
+details.drawer[open] > summary::after { content: '－'; }
+details.drawer > summary .dr-sub {
+  font-size: 11.5px; font-weight: 400; color: var(--muted); display: block;
+}
+details.drawer .drawer-body {
+  padding: 4px 20px 20px;
+  font-size: 14px; line-height: 1.7; color: var(--muted);
+  border-top: 1px dashed var(--line);
+}
+details.drawer .drawer-body p { margin-bottom: 10px; }
+details.drawer .drawer-body b, details.drawer .drawer-body i { color: var(--cream); }
+
+/* ---------- myths, graded (auction floor) ---------- */
+.myth-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 8px; }
+.myth-card {
+  border: 1px solid var(--line); border-radius: 16px;
+  background: rgba(252,243,214,.04); padding: 16px;
+}
+.myth-card .mq { font-size: 14.5px; font-weight: 600; font-style: italic; color: var(--white); margin-bottom: 8px; }
+.myth-card .mb { font-size: 12.5px; line-height: 1.6; color: var(--muted); margin-top: 8px; }
+.myth-card .mb b { color: var(--cream); }
+@media (max-width: 760px) { .myth-grid { grid-template-columns: 1fr; } }
+
 /* ---------- the entry (first load, no hash) ---------- */
 body.entry-mode #topbar, body.entry-mode #tabbar, body.entry-mode #foot,
 body.entry-mode #askBtn, body.entry-mode #askPanel { display: none !important; }
@@ -857,6 +896,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <footer id="foot">
   <p>Built with AI · <a href="/">The Growth Den</a> · Enter with problems. Exit with systems.</p>
+  <p style="margin-top:6px"><a href="#/dispatch">Lab notes: what’s changed at Meta lately</a></p>
 </footer>
 
 <div id="popover" hidden></div>
@@ -1188,9 +1228,9 @@ var CONTENT = {
     pro: 'Config changed; counters zeroed.',
   },
   'a.next': {
-    kid: 'You know how the race is won. Next: how the machine figures out what each visitor wants — by watching what they just did.',
-    cmo: 'You have the clearing mechanics. Next: how the machine reads the person — sequences, recency, and why fatigue is measurable.',
-    pro: 'Clearing done. Next: sequence modeling, recency weighting, and fatigue diagnostics.',
+    kid: 'You know how the race is won. Next: how your ad calls its own crowd of people.',
+    cmo: 'You have the clearing mechanics. Next: how creative broadcasts the signal that assembles your audience.',
+    pro: 'Clearing done. Next: creative-side signal and cohort assembly.',
   },
 
   /* ============ the model room ============ */
@@ -1364,9 +1404,9 @@ var CONTENT = {
     pro: '<p><b>Coverage comparison.</b> 25 distinct concepts ≈ broad trait-space coverage; 5×5 clones ≈ one neighborhood, oversampled. The oft-cited internal Meta test backing this exact comparison reached us secondhand — hence the folklore-grade badge on the specific numbers, while the mechanism itself follows from everything above.</p>',
   },
   'c.next': {
-    kid: 'Your ad calls the crowd. Next: meet the actual machines that make it all run.',
-    cmo: 'Creative is the signal. Next: the named systems that read it — Andromeda, GEM, Lattice.',
-    pro: 'Signal side complete. Next: the model estate.',
+    kid: 'Your ad calls the crowd. Last stop: point the scanner at any brand and see what the machine sees.',
+    cmo: 'Creative is the signal. Last stop: scan a real brand — yours — and read what its site feeds delivery.',
+    pro: 'Signal side complete. Last stop: the scanner — live signal read on any domain.',
   },
 
   /* ============ the dispatch ============ */
@@ -1419,13 +1459,12 @@ var CONTENT = {
 
 /* ---------------- rooms / depth ---------------- */
 var ROOMS = [
-  { slug: 'machine',    name: 'The Machine',       ico: '⚙️', open: true },
-  { slug: 'models',     name: 'The Model Room',    ico: '🧠', open: true },
-  { slug: 'auction',    name: 'The Auction Floor', ico: '🔨', open: true },
-  { slug: 'recency',    name: 'Recency & Fatigue', ico: '🔁', open: true },
-  { slug: 'creative',   name: 'Creative Signal',   ico: '📡', open: true },
-  { slug: 'scanner',    name: 'Brand Scanner',     ico: '🔍', open: true },
-  { slug: 'dispatch',   name: 'The Dispatch',      ico: '📰', open: true },
+  { slug: 'machine',  name: 'The Machine',       ico: '⚙️', open: true },
+  { slug: 'auction',  name: 'The Auction Floor', ico: '🔨', open: true },
+  { slug: 'creative', name: 'Creative Signal',   ico: '📡', open: true },
+  { slug: 'scanner',  name: 'Brand Scanner',     ico: '🔍', open: true },
+  /* off-nav, footer-linked only */
+  { slug: 'dispatch', name: 'The Dispatch',      ico: '📰', open: true, hidden: true },
 ];
 var DEPTHS = ['kid', 'cmo', 'pro'];
 var DEPTH_KEY = 'gd-machine-depth';
@@ -1530,7 +1569,8 @@ function parseHash() {
     var p = kv.split('=');
     if (p[0]) params[p[0]] = decodeURIComponent(p[1] || '');
   });
-  if (slug === 'model-room') slug = 'models';   // legacy alias
+  /* consolidated-tab redirects: their content now lives inside The Machine */
+  if (slug === 'models' || slug === 'model-room' || slug === 'recency') slug = 'machine';
   if (!ROOMS.some(function (r) { return r.slug === slug; })) slug = 'machine';
   return { slug: slug, params: params };
 }
@@ -1541,7 +1581,7 @@ function canonicalizeHash() {
 function roomLink(slug) { return '#/' + slug; }
 
 function renderTabs(active) {
-  $('tabRail').innerHTML = ROOMS.map(function (r) {
+  $('tabRail').innerHTML = ROOMS.filter(function (r) { return !r.hidden; }).map(function (r) {
     return '<a class="tab-pill" href="' + roomLink(r.slug) + '"' +
       (r.slug === active ? ' aria-current="page"' : '') + '>' +
       '<span class="ico">' + r.ico + '</span>' + r.name + '</a>';
@@ -1570,6 +1610,30 @@ function jstep(id, sceneName, titleKey, bodyKey, claimsHtml, extraStage) {
     '</div></div></section>';
 }
 
+function drawer(title, sub, inner) {
+  return '<details class="drawer"><summary>' + title +
+    '<span class="dr-sub" style="display:none"></span></summary>' +
+    '<div style="padding:0 20px 6px;font-size:11.5px;color:var(--muted)">' + sub + '</div>' +
+    '<div class="drawer-body">' + inner + '</div></details>';
+}
+function flipHtml(oldKey, newKey) {
+  return '<div class="flip-row">' +
+    '<button class="flip-btn on" data-side="old" type="button">the old way</button>' +
+    '<button class="flip-btn" data-side="new" type="button">the new way</button></div>' +
+    '<div class="flip-panel" data-old="' + oldKey + '" data-new="' + newKey + '">' + d3(oldKey) + '</div>';
+}
+function wireFlips() {
+  document.querySelectorAll('.flip-row').forEach(function (row) {
+    var panel = row.nextElementSibling;
+    row.querySelectorAll('.flip-btn').forEach(function (b) {
+      b.addEventListener('click', function () {
+        row.querySelectorAll('.flip-btn').forEach(function (x) { x.classList.toggle('on', x === b); });
+        panel.innerHTML = d3(panel.dataset[b.dataset.side]);
+      });
+    });
+  });
+}
+
 function viewJourney() {
   var h = '';
   h += '<div class="view-pad" style="padding-bottom:6px">' +
@@ -1590,9 +1654,31 @@ function viewJourney() {
     '<p>' + claim('Meta’s published Andromeda figures: a 10,000× model-capacity increase, +6% recall, +8% ads quality in selected segments.', 'meta', SRC.andromeda.name, SRC.andromeda.url) + '</p>',
     '<div class="scrub"><label>🐢 slow-mo</label><input type="range" id="retScrub" min="0" max="1000" value="0" aria-label="Replay the retrieval collapse in slow motion"></div>');
 
+  /* under the hood: Andromeda (the Model Room, folded into its stage) */
+  h += '<div class="view-pad" style="padding-top:0;padding-bottom:0">' +
+    drawer('🌌 Under the hood: Andromeda', 'the retrieval engine · what it replaced, and why',
+      d3('m.and.body') +
+      '<p style="font-size:12.5px">' + claim('Meta’s published figures: 10,000× model capacity, +6% recall, +8% ads quality in selected segments.', 'meta', SRC.andromeda.name, SRC.andromeda.url) + '</p>' +
+      flipHtml('m.and.old', 'm.and.new') +
+      '<div class="tuesday"><span class="tue-k">what this means for your Tuesday</span>' + d3('m.and.tue') + '</div>') +
+    '</div>';
+
   h += jstep('j3', 'ranking', 'j.rank.title', 'j.rank.body',
     '<p>' + claim('GEM is Meta’s ads foundation model — a “central brain” trained at scale, distilled into hundreds of user-facing ranking models.', 'meta', SRC.gem.name, SRC.gem.url) + '</p>' +
     '<p>' + claim('Meta’s stated GEM lifts: roughly +5% conversions on Instagram and +3% on Facebook Feed.', 'meta', SRC.gem2.name, SRC.gem2.url) + '</p>');
+
+  /* under the hood: GEM + play-as-the-algorithm (folded in at ranking) */
+  h += '<div class="view-pad" style="padding-top:0;padding-bottom:0">' +
+    drawer('🧠 Under the hood: GEM', 'the central brain · sequences, distillation, recency',
+      d3('m.gem.body') +
+      '<p style="font-size:12.5px">' + claim('Stated lifts: roughly +5% conversions on Instagram, +3% on Facebook Feed.', 'meta', SRC.gem2.name, SRC.gem2.url) + '</p>' +
+      '<p style="font-size:12.5px">' + claim('Reads sequences of up to thousands of user events, in order.', 'meta', SRC.gem.name, SRC.gem.url) + '</p>' +
+      flipHtml('m.gem.old', 'm.gem.new') +
+      '<div class="tuesday"><span class="tue-k">what this means for your Tuesday</span>' + d3('m.gem.tue') + '</div>') +
+    '<div class="card"><h2>Play the ranking model</h2>' +
+      '<div style="font-size:14.5px;line-height:1.7;color:var(--muted);margin-bottom:14px">' + d3('r.intro') + '</div>' +
+      '<div class="gem-stage" id="gemBox"></div></div>' +
+    '</div>';
 
   h += jstep('j4', 'value', 'j.value.title', 'j.value.body',
     '<p>' + claim('The ranking models process sequences of up to thousands of user events, in order — recency enters as recent actions, not a static profile.', 'meta', SRC.gem.name, SRC.gem.url) + '</p>' +
@@ -1612,7 +1698,35 @@ function viewJourney() {
     '</div>' +
     '<p style="margin-top:14px;font-size:12.5px">' +
       claim('One independently measured consequence of this pipeline: within a single ad set, different creatives are delivered to systematically different demographic subgroups (“divergent delivery”).', 'measured', SRC.kellogg.name, SRC.kellogg.url) + '</p>' +
-    '</div>';
+    '</div>' +
+
+    /* under the hood: the whole stack — Lattice, the museum, the timeline */
+    drawer('🕸️ Under the hood: the whole stack', 'Lattice, the retired machines, and where this is going',
+      '<h3 style="font-size:15px;color:var(--white);margin-bottom:8px">Lattice — ranking, consolidated</h3>' +
+      d3('m.lat.body') +
+      '<p style="font-size:12.5px">' + claim('Hundreds of ranking models consolidated into one trillion-parameter architecture; ~8% ads-quality lift in an Instagram test.', 'meta', SRC.lattice.name, SRC.lattice.url) + '</p>' +
+      flipHtml('m.lat.old', 'm.lat.new') +
+      '<div class="tuesday"><span class="tue-k">what this means for your Tuesday</span>' + d3('m.lat.tue') + '</div>' +
+      '<h3 style="font-size:15px;color:var(--white);margin:18px 0 8px">👻 The retired machines</h3>' +
+      d3('m.gho.body') +
+      '<div class="plaque"><p class="pl-t">MTML multi-task models</p><p class="pl-d">c. 2020–2023</p>' +
+        '<p class="pl-b">Ranked many objectives at once with shared layers. Served faithfully through the interest-targeting era. Superseded by the foundation-model line.</p></div>' +
+      '<div class="plaque"><p class="pl-t">Interest-gated candidate sourcing</p><p class="pl-d">c. 2012–2024</p>' +
+        '<p class="pl-b">Ads entered the room by checkbox: declared interests, lookalikes, hand-drawn stacks. Retired when retrieval learned to find fit directly.</p></div>' +
+      '<div class="plaque"><p class="pl-t">The 25-ad-set account structure</p><p class="pl-d">folk architecture, undated</p>' +
+        '<p class="pl-b">Not a Meta system — a practitioner ritual built to steer the machines above. Persists in the wild long after its habitat vanished.</p></div>' +
+      '<div class="tuesday"><span class="tue-k">what this means for your Tuesday</span>' + d3('m.gho.tue') + '</div>' +
+      '<h3 style="font-size:15px;color:var(--white);margin:18px 0 8px">🧭 The timeline — 2020 → the stated end-state</h3>' +
+      d3('m.tl.intro') +
+      '<p style="font-size:12.5px">' + claim('Meta reports Advantage+ end-to-end at a $75B annual revenue run-rate, the Muse image model, and 9M small businesses using at least one AI creative tool.', 'meta', SRC.earnings.name, SRC.earnings.url) + '</p>' +
+      '<p style="font-size:12.5px">' + claim('A target of fully automated ad creation — “objective + budget in, ads out” — by end of 2026 has been reported by trade press, but is not Meta on-record.', 'measured', SRC.theinfo.name, SRC.theinfo.url) + '</p>' +
+      '<ol class="tl">' +
+      '<li><span class="tl-y">2020</span><p class="tl-t">The MTML era</p><p class="tl-b">Per-surface multi-task rankers; interest targeting at its peak; the playbooks most teams still run were written here.</p></li>' +
+      '<li><span class="tl-y">2022</span><p class="tl-t">The fatigue research year</p><p class="tl-b">Meta publishes creative-fatigue findings; frequency becomes a measured phenomenon rather than a hunch.</p></li>' +
+      '<li><span class="tl-y">DEC 2024</span><p class="tl-t">Andromeda</p><p class="tl-b">Retrieval rebuilt for the generative-creative flood. The interest checkbox stops being a gate.</p></li>' +
+      '<li><span class="tl-y">NOV 2025</span><p class="tl-t">GEM</p><p class="tl-b">The central brain: one foundation model teaching hundreds of rankers; sequences become the first-class input.</p></li>' +
+      '<li><span class="tl-y">2026</span><p class="tl-t">Lattice + Advantage+ end-to-end</p><p class="tl-b">Ranking consolidates; automation reaches a $75B run-rate; the reported (not confirmed) end-state: objective and budget in, finished ads out.</p></li>' +
+      '</ol>');
 
   /* closing */
   h += '<div class="card close-panel">' +
@@ -1626,7 +1740,7 @@ function viewJourney() {
   /* directory */
   h += '<div class="card"><h2>' + d3('machine.dir-title') + '</h2>' +
     '<p>' + d3('machine.dir-body') + '</p>' +
-    '<div class="dir-grid">' + ROOMS.filter(function (r) { return r.slug !== 'machine'; }).map(function (r) {
+    '<div class="dir-grid">' + ROOMS.filter(function (r) { return r.slug !== 'machine' && !r.hidden; }).map(function (r) {
       return '<a class="dir-card" href="' + roomLink(r.slug) + '">' +
         '<span class="dc-name">' + r.ico + ' ' + r.name + '</span>' +
         '<span class="dc-tag">' + d3(r.slug + '.tag') + '</span>' +
@@ -2845,8 +2959,8 @@ function viewCreative() {
 
     '<div class="card"><button class="chip-btn" data-demo="builder" type="button">↩ back to the builder</button></div>' +
 
-    '<a class="next-room" href="#/models"><span class="nr-k">next room →</span>' +
-      '<span class="nr-t">🧠 The Model Room</span>' +
+    '<a class="next-room" href="#/scanner"><span class="nr-k">next room →</span>' +
+      '<span class="nr-t">🔍 Brand Scanner</span>' +
       '<span style="font-size:13px;color:var(--muted)">' + d3('c.next') + '</span></a>' +
     '</div>';
 }
@@ -3120,68 +3234,12 @@ var GEM_ROUNDS = [
     hidden: [['🧑‍🤝‍🧑', 'a friend searched desks on your home wifi', '2 days ago'], ['👥', 'people with your viewing pattern bought desks', 'this week'], ['🎬', 'you half-watched an office-setup Reel', '9 days ago'], ['🪑', 'you price-checked desk chairs', '6 days ago']] },
 ];
 
-function viewRecency() {
-  return '<div class="view-pad">' +
-    '<p class="room-kicker">The Growth Den Lab · The Machine</p>' +
-    '<h1 class="room-title">🔁 Recency & Fatigue</h1>' +
-    '<p class="room-tag" style="margin-bottom:20px">' + d3('recency.tag') + '</p>' +
-
-    '<div class="card"><h2>Part one · Play as GEM</h2>' +
-    '<div style="font-size:14.5px;line-height:1.7;color:var(--muted);margin-bottom:14px">' + d3('r.intro') + '</div>' +
-    '<div class="gem-stage" id="gemBox"></div></div>' +
-
-    '<div class="card"><h2>Part two · The Fatigue Courtroom</h2>' +
-    '<div style="font-size:14.5px;line-height:1.7;color:var(--muted)">' + d3('r.court') + '</div></div>' +
-
-    '<div class="card case"><span class="verdict v-folk">verdict: folklore</span>' +
-    '<p class="case-quote">“High frequency kills ads.”</p>' +
-    '<p style="font-size:12.5px">' + claim('The fatigue trigger Meta actually surfaces is cost-based — your cost per result versus your own baseline — not any specific frequency number.', 'folklore', 'The “magic frequency number” itself: widely repeated, never verified', 'https://www.facebook.com/business/help') + '</p>' +
-    '<div style="font-size:13.5px;line-height:1.65;color:var(--muted)">' + d3('r.c1') + '</div>' +
-    '<div class="curve-box"><canvas id="crv1"></canvas></div></div>' +
-
-    '<div class="card case"><span class="verdict v-meas">verdict: measured</span>' +
-    '<p class="case-quote">“Creative Fatigue = cost ≥2× your baseline; Creative Limited = elevated but under 2×.”</p>' +
-    '<p style="font-size:12.5px">' + claim('These thresholds are practitioner documentation of observed flag behavior — consistent, useful, and not a Meta spec sheet.', 'measured', SRC.loomer.name, SRC.loomer.url) + '</p>' +
-    '<div style="font-size:13.5px;line-height:1.65;color:var(--muted)">' + d3('r.c2') + '</div>' +
-    '<div class="band-wrap"><div class="ctl"><span class="ctl-name"><span>your cost per result vs. your own history</span><b id="bandV">1.0×</b></span>' +
-    '<input type="range" id="bandSlide" min="80" max="300" value="100"></div>' +
-    '<div class="band-bar"><i class="b-ok">healthy</i><i class="b-lim">creative limited</i><i class="b-fat">creative fatigue</i></div>' +
-    '<p class="band-stamp" id="bandStamp"></p></div></div>' +
-
-    '<div class="card case"><span class="verdict v-meas">verdict: measured</span>' +
-    '<p class="case-quote">“Performance drops 45% after four exposures.”</p>' +
-    '<p style="font-size:12.5px">' + claim('Meta’s own 2022 research reported the ~45% decline — shown here with the caveats the research itself acknowledges.', 'measured', SRC.fatigue22.name, SRC.fatigue22.url) + '</p>' +
-    '<div style="font-size:13.5px;line-height:1.65;color:var(--muted)">' + d3('r.c3') + '</div>' +
-    '<div class="curve-box"><canvas id="crv3"></canvas></div>' +
-    '<div class="caveat-row">' +
-      '<button class="caveat" data-c="no time-window control" type="button">⚠ no time-window control</button>' +
-      '<button class="caveat" data-c="no placement control" type="button">⚠ no placement control</button>' +
-      '<button class="caveat" data-c="engagement-level confound" type="button">⚠ engagement confound</button>' +
-    '</div></div>' +
-
-    '<div class="card case"><span class="verdict v-doc">verdict: documented</span>' +
-    '<p class="case-quote">“Editing an ad resets learning.”</p>' +
-    '<p style="font-size:12.5px">' + claim('Significant edits reset the learning phase — documented directly by Meta, with a specific list of what counts.', 'meta', 'Meta Business Help Center — about the learning phase', 'https://www.facebook.com/business/help') + '</p>' +
-    '<div style="font-size:13.5px;line-height:1.65;color:var(--muted)">' + d3('r.c4') + '</div>' +
-    '<div class="duo">' +
-      '<div class="duo-col d-yes"><h4>↺ resets learning</h4><ul>' +
-        '<li>any creative change (image, video, text, link)</li><li>targeting changes</li><li>changing the optimization event</li>' +
-        '<li>bid-strategy changes</li><li>large budget changes</li><li>adding new ads to the ad set</li><li>resuming after a 7-day pause</li></ul></div>' +
-      '<div class="duo-col d-no"><h4>✓ safe to touch</h4><ul>' +
-        '<li>renaming campaigns, ad sets, ads</li><li>minor budget adjustments</li><li>changing the schedule end date</li>' +
-        '<li>a brief pause</li><li>duplicating (the copy starts fresh; the original keeps learning)</li></ul></div>' +
-    '</div></div>' +
-
-    '<a class="next-room" href="#/creative"><span class="nr-k">next room →</span>' +
-      '<span class="nr-t">📡 Creative Signal</span>' +
-      '<span style="font-size:13px;color:var(--muted);line-height:1.55">' + d3('r.next') + '</span></a>' +
-    '</div>';
-}
-
-INITS.recency = function () {
-  /* ---- part one: the game ---- */
+/* Play-as-GEM game — lives inside The Machine at the ranking stage.
+   (Preserved intact from the former Recency tab; myths moved to the Auction Floor.) */
+function initGemGame() {
   var round = 0, score = 0;
   var box = $('gemBox');
+  if (!box) return;
   function evtHtml(e, i, ghost) {
     return '<div class="evt' + (ghost ? ' ghosted' : '') + '" style="animation-delay:' + (i * .22) + 's">' +
       '<span class="e-ico">' + e[0] + '</span><span class="e-lab">' + e[1] + '</span><span class="e-when">' + e[2] + '</span></div>';
@@ -3204,8 +3262,7 @@ INITS.recency = function () {
   }
   function answer(i) {
     var r = GEM_ROUNDS[round];
-    var right = i === r.correct;
-    if (right) score++;
+    if (i === r.correct) score++;
     box.querySelectorAll('.opt').forEach(function (b, bi) {
       b.disabled = true;
       if (bi === r.correct) b.classList.add('correct');
@@ -3215,13 +3272,13 @@ INITS.recency = function () {
     if (r.hidden) {
       extra = '<div class="evt-stream" style="margin-top:12px">' +
         '<p style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sky)">' +
-        dtxt('the part of the story you couldn’t see', 'the sequence you couldn’t see', 'the latent sequence') + '</p>' +
+        dtxt('the part of the story you couldn\u2019t see', 'the sequence you couldn\u2019t see', 'the latent sequence') + '</p>' +
         r.hidden.map(function (e, j) { return evtHtml(e, j, true); }).join('') + '</div>';
     }
     $('gemReveal').innerHTML = extra +
       '<div class="gem-reveal">' + d3(r.reveal) + '</div>' +
       '<button class="run-btn gem-next" id="gemNext" type="button">' +
-      (round < GEM_ROUNDS.length - 1 ? dtxt('next visitor →', 'next round →', 'next sequence →') : dtxt('finish →', 'the verdict →', 'wrap →')) + '</button>';
+      (round < GEM_ROUNDS.length - 1 ? dtxt('next visitor \u2192', 'next round \u2192', 'next sequence \u2192') : dtxt('finish \u2192', 'the verdict \u2192', 'wrap \u2192')) + '</button>';
     box.querySelector('.gem-score').textContent = 'score ' + score;
     $('gemNext').addEventListener('click', function () {
       round++;
@@ -3233,227 +3290,13 @@ INITS.recency = function () {
       dtxt('You played the machine!', 'Game over', 'Sequence set complete') +
       '</span><span class="gem-score">score ' + score + ' / ' + GEM_ROUNDS.length + '</span></div>' +
       '<div style="font-size:14px;line-height:1.7;color:var(--muted)">' + d3('r.myth') + '</div>' +
-      '<button class="chip-btn" id="gemAgain" type="button" style="margin-top:12px">↺ ' + dtxt('play again', 'replay', 'replay') + '</button>';
+      '<button class="chip-btn" id="gemAgain" type="button" style="margin-top:12px">\u21ba ' + dtxt('play again', 'replay', 'replay') + '</button>';
     $('gemAgain').addEventListener('click', function () { round = 0; score = 0; renderRound(); });
   }
   renderRound();
-
-  /* ---- part two: exhibits ---- */
-  function fitCanvas(cv) {
-    var r = cv.parentElement.getBoundingClientRect();
-    var dpr = Math.min(2, window.devicePixelRatio || 1);
-    cv.width = Math.round(r.width * dpr); cv.height = Math.round(r.height * dpr);
-    var ctx = cv.getContext('2d');
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    return { ctx: ctx, w: r.width, h: r.height };
-  }
-  /* exhibit 1: cost vs frequency — no cliff, a cost-based trigger line */
-  var c1mark = 3.2;
-  function costOf(f) { return 1 + Math.pow((f - 1) / 5.4, 2.05) * 2.4; }
-  function drawC1() {
-    var cv = $('crv1'); if (!cv) return;
-    var s = fitCanvas(cv), ctx = s.ctx, w = s.w, h = s.h;
-    var X = function (f) { return 44 + (f - 1) / 9 * (w - 64); };
-    var Y = function (c) { return h - 30 - (c - 1) / 2.6 * (h - 62); };
-    ctx.clearRect(0, 0, w, h);
-    ctx.strokeStyle = 'rgba(252,243,214,.3)'; ctx.lineWidth = 1.2;
-    ctx.beginPath(); ctx.moveTo(44, 14); ctx.lineTo(44, h - 30); ctx.lineTo(w - 16, h - 30); ctx.stroke();
-    ctx.setLineDash([6, 5]); ctx.strokeStyle = 'rgba(229,52,11,.75)'; ctx.lineWidth = 1.8;
-    ctx.beginPath(); ctx.moveTo(44, Y(2)); ctx.lineTo(w - 16, Y(2)); ctx.stroke(); ctx.setLineDash([]);
-    ctx.font = '600 10px Poppins, sans-serif'; ctx.fillStyle = 'rgba(229,52,11,.9)'; ctx.textAlign = 'left';
-    ctx.fillText(dtxt('the fair’s real alarm: costs doubled', 'Meta’s actual trigger: cost ≥ 2× baseline', 'flag condition: CPR ≥ 2× trailing baseline'), 50, Y(2) - 6);
-    ctx.strokeStyle = 'rgba(127,200,240,.9)'; ctx.lineWidth = 2.5; ctx.beginPath();
-    for (var f = 1; f <= 10; f += .2) { var x = X(f), y = Y(costOf(f)); f === 1 ? ctx.moveTo(x, y) : ctx.lineTo(x, y); }
-    ctx.stroke();
-    var mx = X(c1mark), my = Y(costOf(c1mark));
-    ctx.fillStyle = '#ffc545'; ctx.beginPath(); ctx.arc(mx, my, 7, 0, 6.29); ctx.fill();
-    ctx.fillStyle = 'rgba(252,243,214,.9)'; ctx.textAlign = 'center'; ctx.font = '700 12px Poppins, sans-serif';
-    var flag = costOf(c1mark) >= 2;
-    ctx.fillText('freq ' + c1mark.toFixed(1) + '× · cost ×' + costOf(c1mark).toFixed(2) + (flag ? ' · 🚩' : ' · no flag'), w / 2, 24);
-    ctx.font = '500 10px Poppins, sans-serif'; ctx.fillStyle = 'rgba(252,243,214,.5)'; ctx.textAlign = 'center';
-    ctx.fillText(dtxt('how many times each person saw it →', 'frequency →', 'frequency →'), w / 2, h - 10);
-    ctx.save(); ctx.translate(16, h / 2); ctx.rotate(-Math.PI / 2);
-    ctx.fillText(dtxt('cost per sale →', 'cost per result →', 'CPR vs baseline →'), 0, 0); ctx.restore();
-  }
-  function c1drag(e) {
-    var cv = $('crv1'), r = cv.getBoundingClientRect();
-    c1mark = clamp(1 + (e.clientX - r.left - 44) / (r.width - 64) * 9, 1, 10);
-    drawC1();
-  }
-  $('crv1').addEventListener('pointerdown', function (e) { c1drag(e); $('crv1').setPointerCapture(e.pointerId); });
-  $('crv1').addEventListener('pointermove', function (e) { if (e.buttons) c1drag(e); });
-
-  /* exhibit 2: the threshold bands */
-  function band() {
-    var v = parseInt($('bandSlide').value, 10) / 100;
-    $('bandV').textContent = v.toFixed(1) + '×';
-    var st = $('bandStamp');
-    if (v < 1.5) { st.textContent = dtxt('✅ healthy — the fair is happy', '✅ healthy', '✅ within band'); st.style.color = 'var(--green)'; }
-    else if (v < 2) { st.textContent = dtxt('🟡 “creative limited” — the yellow note', '🟡 Creative Limited (elevated, under 2×)', '🟡 Creative Limited band'); st.style.color = 'var(--gold)'; }
-    else { st.textContent = dtxt('🚩 “creative fatigue” — the red note', '🚩 Creative Fatigue (≥ 2× baseline)', '🚩 Fatigue flag threshold crossed'); st.style.color = '#ff8a70'; }
-  }
-  $('bandSlide').addEventListener('input', band); band();
-
-  /* exhibit 3: the 45% study, with caveats */
-  var c3mark = 4, caveatsOn = 0;
-  var PERF = [100, 88, 74, 62, 55, 51, 48, 46];
-  function drawC3() {
-    var cv = $('crv3'); if (!cv) return;
-    var s = fitCanvas(cv), ctx = s.ctx, w = s.w, h = s.h;
-    ctx.clearRect(0, 0, w, h);
-    var bw = (w - 70) / 8;
-    PERF.forEach(function (p, i) {
-      var x = 50 + i * bw, bh = p / 100 * (h - 66);
-      var hot = (i + 1) === Math.round(c3mark);
-      ctx.fillStyle = hot ? 'rgba(255,197,69,.9)' : (i >= 3 ? 'rgba(229,52,11,.45)' : 'rgba(127,200,240,.55)');
-      ctx.beginPath(); ctx.roundRect(x, h - 30 - bh, bw - 8, bh, 4); ctx.fill();
-      ctx.font = '600 9.5px Poppins, sans-serif'; ctx.fillStyle = 'rgba(252,243,214,.6)'; ctx.textAlign = 'center';
-      ctx.fillText(String(i + 1), x + (bw - 8) / 2, h - 14);
-      if (hot) { ctx.fillStyle = 'rgba(252,243,214,.95)'; ctx.font = '700 12px Poppins, sans-serif'; ctx.fillText(p + '%', x + (bw - 8) / 2, h - 40 - bh); }
-    });
-    ctx.font = '600 11px Poppins, sans-serif'; ctx.textAlign = 'left'; ctx.fillStyle = 'rgba(252,243,214,.75)';
-    ctx.fillText(dtxt('strength of the ad after N views', 'relative performance by exposure count', 'performance index vs exposure (2022 study)'), 50, 20);
-    if (caveatsOn > 0) {
-      ctx.fillStyle = 'rgba(127,200,240,.13)'; ctx.fillRect(0, 0, w, h);
-      ctx.font = 'italic 600 12px Poppins, sans-serif'; ctx.textAlign = 'center'; ctx.fillStyle = 'rgba(127,200,240,.95)';
-      ctx.fillText(dtxt('…but the study didn’t check everything (' + caveatsOn + ' caveat' + (caveatsOn > 1 ? 's' : '') + ' on)', 'correlation with ' + caveatsOn + ' acknowledged confound' + (caveatsOn > 1 ? 's' : '') + ' — not clean causation', caveatsOn + ' confound(s) active: exposure ∝ time ∝ everything else'), w / 2, h / 2);
-    }
-  }
-  function c3drag(e) {
-    var cv = $('crv3'), r = cv.getBoundingClientRect();
-    c3mark = clamp(1 + (e.clientX - r.left - 50) / (r.width - 70) * 8, 1, 8);
-    drawC3();
-  }
-  $('crv3').addEventListener('pointerdown', function (e) { c3drag(e); });
-  $('crv3').addEventListener('pointermove', function (e) { if (e.buttons) c3drag(e); });
-  document.querySelectorAll('.caveat').forEach(function (b) {
-    b.addEventListener('click', function () {
-      b.classList.toggle('on');
-      caveatsOn = document.querySelectorAll('.caveat.on').length;
-      drawC3();
-    });
-  });
-
-  function redrawAll() { drawC1(); drawC3(); }
-  redrawAll();
-  var dialRedraw = function () { setTimeout(redrawAll, 30); };
-  document.querySelectorAll('.dial-btn').forEach(function (b) { b.addEventListener('click', dialRedraw); });
-  window.addEventListener('resize', dialRedraw);
-  return function () {
-    document.querySelectorAll('.dial-btn').forEach(function (b) { b.removeEventListener('click', dialRedraw); });
-    window.removeEventListener('resize', dialRedraw);
-  };
-};
-VIEWS.recency = viewRecency;
-
-/* ============================================================
-   THE MODEL ROOM — #/models · the hall of named machines
-   ============================================================ */
-function hallCard(ico, name, sub, bodyKey, claimsHtml, flipId, oldKey, newKey, tueKey, extraHtml) {
-  var flip = '';
-  if (flipId) {
-    flip = '<div class="flip-row" data-flip="' + flipId + '">' +
-      '<button class="flip-btn on" data-side="old" type="button">the old way</button>' +
-      '<button class="flip-btn" data-side="new" type="button">the new way</button></div>' +
-      '<div class="flip-panel" data-old="' + oldKey + '" data-new="' + newKey + '">' + d3(oldKey) + '</div>';
-  }
-  return '<article class="roomcard">' +
-    '<h2>' + ico + ' ' + name + '</h2><p class="rc-sub">' + sub + '</p>' +
-    '<div class="rc-body">' + d3(bodyKey) + '</div>' +
-    (claimsHtml ? '<div style="font-size:12.5px;line-height:1.6;margin-top:6px">' + claimsHtml + '</div>' : '') +
-    flip + (extraHtml || '') +
-    (tueKey ? '<div class="tuesday"><span class="tue-k">what this means for your Tuesday</span>' + d3(tueKey) + '</div>' : '') +
-    '</article>';
 }
-function viewModels() {
-  var link = function (label, solid) {
-    return '<div class="hall-link' + (solid ? ' solid' : '') + '"><span>' + label + '</span></div>';
-  };
-  return '<div class="view-pad">' +
-    '<p class="room-kicker">The Growth Den Lab · The Machine</p>' +
-    '<h1 class="room-title">🧠 The Model Room</h1>' +
-    '<p class="room-tag" style="margin-bottom:14px">' + d3('models.tag') + '</p>' +
-    '<div class="card" style="margin-bottom:14px"><div style="font-size:14.5px;line-height:1.7;color:var(--muted)">' + d3('m.intro') + '</div></div>' +
 
-    '<div class="hall-wrap"><div class="hall" id="hall">' +
-    hallCard('🌌', 'Andromeda', 'the retrieval engine · Dec 2024', 'm.and.body',
-      '<p>' + claim('Meta’s published figures: 10,000× model capacity, +6% recall, +8% ads quality in selected segments.', 'meta', SRC.andromeda.name, SRC.andromeda.url) + '</p>',
-      'and', 'm.and.old', 'm.and.new', 'm.and.tue') +
-    link('connection inferred') +
-    hallCard('🧠', 'GEM', 'the central brain · Nov 2025', 'm.gem.body',
-      '<p>' + claim('Stated lifts: roughly +5% conversions on Instagram, +3% on Facebook Feed.', 'meta', SRC.gem2.name, SRC.gem2.url) + '</p>' +
-      '<p>' + claim('Reads sequences of up to thousands of user events, in order.', 'meta', SRC.gem.name, SRC.gem.url) + '</p>',
-      'gem', 'm.gem.old', 'm.gem.new', 'm.gem.tue') +
-    link('connection inferred') +
-    hallCard('🕸️', 'Lattice', 'ranking, consolidated · 2026', 'm.lat.body',
-      '<p>' + claim('Hundreds of ranking models consolidated into one trillion-parameter architecture; ~8% ads-quality lift in an Instagram test.', 'meta', SRC.lattice.name, SRC.lattice.url) + '</p>',
-      'lat', 'm.lat.old', 'm.lat.new', 'm.lat.tue') +
-    link('the past', true) +
-    hallCard('👻', 'The Ghosts', 'museum wing · pre-2024', 'm.gho.body', '',
-      null, null, null, 'm.gho.tue',
-      '<div class="plaque"><p class="pl-t">MTML multi-task models</p><p class="pl-d">c. 2020–2023</p>' +
-        '<p class="pl-b">Ranked many objectives at once with shared layers. Served faithfully through the interest-targeting era. Superseded by the foundation-model line.</p></div>' +
-      '<div class="plaque"><p class="pl-t">Interest-gated candidate sourcing</p><p class="pl-d">c. 2012–2024</p>' +
-        '<p class="pl-b">Ads entered the room by checkbox: declared interests, lookalikes, hand-drawn stacks. Retired when retrieval learned to find fit directly.</p></div>' +
-      '<div class="plaque"><p class="pl-t">The 25-ad-set account structure</p><p class="pl-d">folk architecture, undated</p>' +
-        '<p class="pl-b">Not a Meta system — a practitioner ritual built to steer the machines above. Persists in the wild long after its habitat vanished.</p></div>') +
-    link('the future', true) +
-    hallCard('🧭', 'The Timeline Wall', '2020 → the stated end-state', 'm.tl.intro',
-      '<p>' + claim('Meta reports Advantage+ end-to-end at a $75B annual revenue run-rate, the Muse image model, and 9M small businesses using at least one AI creative tool.', 'meta', SRC.earnings.name, SRC.earnings.url) + '</p>' +
-      '<p>' + claim('A target of fully automated ad creation — “objective + budget in, ads out” — by end of 2026 has been reported by trade press, but is not Meta on-record.', 'measured', SRC.theinfo.name, SRC.theinfo.url) + '</p>',
-      null, null, null, null,
-      '<ol class="tl">' +
-      '<li><span class="tl-y">2020</span><p class="tl-t">The MTML era</p><p class="tl-b">Per-surface multi-task rankers; interest targeting at its peak; the playbooks most teams still run were written here.</p></li>' +
-      '<li><span class="tl-y">2022</span><p class="tl-t">The fatigue research year</p><p class="tl-b">Meta publishes creative-fatigue findings; frequency becomes a measured phenomenon rather than a hunch.</p></li>' +
-      '<li><span class="tl-y">DEC 2024</span><p class="tl-t">Andromeda</p><p class="tl-b">Retrieval rebuilt for the generative-creative flood. The interest checkbox stops being a gate.</p></li>' +
-      '<li><span class="tl-y">NOV 2025</span><p class="tl-t">GEM</p><p class="tl-b">The central brain: one foundation model teaching hundreds of rankers; sequences become the first-class input.</p></li>' +
-      '<li><span class="tl-y">2026</span><p class="tl-t">Lattice + Advantage+ end-to-end</p><p class="tl-b">Ranking consolidates; automation reaches a $75B run-rate; the reported (not confirmed) end-state: objective and budget in, finished ads out.</p></li>' +
-      '</ol>') +
-    '</div>' +
-    '<div class="hall-nav">' +
-      '<button class="hn-btn" id="hallPrev" type="button" aria-label="Previous room">‹</button>' +
-      '<div class="hn-dots" id="hallDots"></div>' +
-      '<button class="hn-btn" id="hallNext" type="button" aria-label="Next room">›</button>' +
-    '</div></div>' +
-
-    '<a class="next-room" href="#/dispatch" style="margin-top:16px"><span class="nr-k">next room →</span>' +
-      '<span class="nr-t">📰 The Dispatch</span>' +
-      '<span style="font-size:13px;color:var(--muted)">The machines keep changing. The logbook keeps up.</span></a>' +
-    '</div>';
-}
-INITS.models = function () {
-  document.querySelectorAll('.flip-row').forEach(function (row) {
-    var panel = row.nextElementSibling;
-    row.querySelectorAll('.flip-btn').forEach(function (b) {
-      b.addEventListener('click', function () {
-        row.querySelectorAll('.flip-btn').forEach(function (x) { x.classList.toggle('on', x === b); });
-        panel.innerHTML = d3(panel.dataset[b.dataset.side]);
-      });
-    });
-  });
-  var hall = $('hall'), dots = $('hallDots');
-  var cards = hall.querySelectorAll('.roomcard');
-  dots.innerHTML = Array.from(cards).map(function () { return '<i></i>'; }).join('');
-  function upDots() {
-    var idx = 0, best = 1e9, mid = hall.scrollLeft + hall.clientWidth / 2;
-    cards.forEach(function (c, i) {
-      var cm = c.offsetLeft + c.offsetWidth / 2;
-      if (Math.abs(cm - mid) < best) { best = Math.abs(cm - mid); idx = i; }
-    });
-    dots.querySelectorAll('i').forEach(function (d, i) { d.classList.toggle('on', i === idx); });
-    return idx;
-  }
-  function go(dir) {
-    var idx = clamp(upDots() + dir, 0, cards.length - 1);
-    hall.scrollTo({ left: cards[idx].offsetLeft - (hall.clientWidth - cards[idx].offsetWidth) / 2, behavior: 'smooth' });
-  }
-  $('hallPrev').addEventListener('click', function () { go(-1); });
-  $('hallNext').addEventListener('click', function () { go(1); });
-  hall.addEventListener('scroll', function () { upDots(); }, { passive: true });
-  upDots();
-  return null;
-};
-VIEWS.models = viewModels;
+/* (Model Room content folded into The Machine drawers; hall removed.) */
 
 /* ============================================================
    THE AUCTION FLOOR — #/auction
@@ -3511,10 +3354,41 @@ function viewAuction() {
       '<div id="scenTable"></div>' +
     '</div>' +
 
-    '<a class="next-room" href="#/recency"><span class="nr-k">next room →</span>' +
-      '<span class="nr-t">🔁 How the machine reads YOU</span>' +
+    '<div class="card"><h2>Myths, graded</h2>' +
+      '<p style="font-size:13px;color:var(--muted)">The fatigue claims your team has repeated in meetings — each with its grade and source. Folklore looks like folklore on purpose.</p>' +
+      '<div class="myth-grid">' +
+        mythCard('“High frequency kills ads.”',
+          claim('The fatigue trigger Meta surfaces is cost-based — your cost per result vs. your own baseline — not any frequency number.', 'folklore', 'The “magic frequency number”: widely repeated, never verified', 'https://www.facebook.com/business/help'),
+          'r.c1', true) +
+        mythCard('“Creative Fatigue = cost ≥2× baseline; Creative Limited = elevated but under 2×.”',
+          claim('Practitioner documentation of observed flag behavior — consistent and useful, not a Meta spec sheet.', 'measured', SRC.loomer.name, SRC.loomer.url),
+          'r.c2', false) +
+        mythCard('“Performance drops 45% after four exposures.”',
+          claim('Meta’s own 2022 research — with its own caveats: no time-window, placement, or engagement controls.', 'measured', SRC.fatigue22.name, SRC.fatigue22.url),
+          'r.c3', false) +
+        mythCard('“Editing an ad resets learning.”',
+          claim('Documented directly by Meta, with a specific list of what counts as a significant edit.', 'meta', 'Meta Business Help Center — about the learning phase', 'https://www.facebook.com/business/help'),
+          'r.c4', false) +
+      '</div>' +
+      '<div class="duo">' +
+        '<div class="duo-col d-yes"><h4>↺ resets learning</h4><ul>' +
+          '<li>any creative change (image, video, text, link)</li><li>targeting changes</li><li>changing the optimization event</li>' +
+          '<li>bid-strategy changes</li><li>large budget changes</li><li>adding new ads to the ad set</li><li>resuming after a 7-day pause</li></ul></div>' +
+        '<div class="duo-col d-no"><h4>✓ safe to touch</h4><ul>' +
+          '<li>renaming campaigns, ad sets, ads</li><li>minor budget adjustments</li><li>changing the schedule end date</li>' +
+          '<li>a brief pause</li><li>duplicating (the copy starts fresh; the original keeps learning)</li></ul></div>' +
+      '</div></div>' +
+
+    '<a class="next-room" href="#/creative"><span class="nr-k">next room →</span>' +
+      '<span class="nr-t">📡 Creative Signal</span>' +
       '<span style="font-size:13px;color:var(--muted);line-height:1.55">' + d3('a.next') + '</span></a>' +
     '</div>';
+}
+function mythCard(quote, claimHtml, bodyKey, folk) {
+  return '<div class="myth-card' + (folk ? ' folk-card' : '') + '">' +
+    '<p class="mq">' + quote + '</p>' +
+    '<p style="font-size:11.5px">' + claimHtml + '</p>' +
+    '<div class="mb">' + d3(bodyKey) + '</div></div>';
 }
 
 INITS.auction = function () {
@@ -3779,6 +3653,8 @@ INITS.machine = function () {
   document.querySelectorAll('#pipemap .node').forEach(function (n) {
     n.addEventListener('click', function () { openDetail(n.dataset.node); });
   });
+  wireFlips();
+  initGemGame();
   return journeyStop;
 };
 
