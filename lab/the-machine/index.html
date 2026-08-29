@@ -1004,6 +1004,26 @@ details.ang[open] > summary::after { content: '－'; }
 .prod-foot .egg { font-size: 10.5px; color: rgba(252,243,214,.35); }
 .prod-foot .egg.on { color: var(--gold); }
 
+/* ---------- memory: delta + side-by-side strips ---------- */
+.sc-delta {
+  border: 1px dashed rgba(127,200,240,.5); border-radius: 12px;
+  background: rgba(127,200,240,.06); padding: 10px 14px;
+  font-size: 12.5px; line-height: 1.6; color: var(--muted); margin-bottom: 16px;
+}
+.sc-delta b { color: var(--sky); }
+.sc-adcmp {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+  border: 1px solid var(--line); border-radius: 14px;
+  background: rgba(252,243,214,.04); padding: 12px; margin-bottom: 16px;
+}
+.sc-adcmp .ac-col { min-width: 0; }
+.sc-adcmp .ac-k { font-size: 9.5px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: var(--sky); margin-bottom: 6px; }
+.sc-adcmp img { width: 100%; max-height: 110px; object-fit: cover; border-radius: 8px; margin-bottom: 6px; }
+.sc-adcmp .ac-h { font-size: 11.5px; line-height: 1.5; color: var(--cream); }
+.sc-adcmp .ac-cap { grid-column: 1 / -1; font-size: 10.5px; color: var(--muted); }
+.prod-return { margin-top: 14px; font-size: 13px; }
+.prod-return a { color: var(--gold); padding: 5px; }
+
 /* ---------- the loader: the collapse as the wait ---------- */
 .loader { position: relative; min-height: 100dvh; overflow: hidden; cursor: pointer; }
 .loader canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
@@ -3656,8 +3676,16 @@ function viewInput() {
     '<p class="prod-drop-sub" id="prodDropSub">have an ad? drop it in — you’ll get a sharper verdict</p>' +
     '<button class="run-btn prod-go" id="prodGo" type="button">Read my brand</button>' +
     '<p class="scan-status" id="prodStatus" style="text-align:center"></p>' +
+    returnOfferHtml() +
     '<a class="prod-demo" href="#" id="prodDemo">no site handy? see a demo read</a>' +
   '</div></div>';
+}
+function returnOfferHtml() {
+  var prev = lastSaved();
+  if (!prev || !prev.dom) return '';
+  return '<p class="prod-return">welcome back — ' +
+    '<a href="#" id="prodRerun" data-dom="' + escHtml(prev.dom) + '">re-run ' + escHtml(prev.dom) + ' →</a>' +
+    ' · <a href="#" id="prodDelta" data-dom="' + escHtml(prev.dom) + '">what changed since last time?</a></p>';
 }
 
 function loadAdImage(dataUrl, cb) {
@@ -3712,6 +3740,11 @@ function wireInput() {
   $('prodGo').addEventListener('click', function () { runRead($('prodUrl').value, {}); });
   $('prodUrl').addEventListener('keydown', function (e) { if (e.key === 'Enter') $('prodGo').click(); });
   $('prodDemo').addEventListener('click', function (e) { e.preventDefault(); runRead('thegrowthden.com', { demo: true }); });
+  var rr = $('prodRerun'), rd2 = $('prodDelta');
+  if (rr) rr.addEventListener('click', function (e) { e.preventDefault(); runRead(rr.dataset.dom, {}); });
+  if (rd2) rd2.addEventListener('click', function (e) { e.preventDefault(); runRead(rd2.dataset.dom, {}); });
+  var prev = lastSaved();
+  if (prev && prev.dom && !$('prodUrl').value) $('prodUrl').value = prev.dom;
 }
 
 /* ============================================================
@@ -3927,17 +3960,48 @@ function readFail(err) {
   else s.textContent = depthMsg(MSG_LOCAL);
 }
 
+/* ---- memory: last run in localStorage; this session's ad runs per brand ---- */
+function lastSaved() {
+  try { return JSON.parse(localStorage.getItem('gd-read-last')); } catch (e) { return null; }
+}
+function saveRun(res) {
+  try {
+    localStorage.setItem('gd-read-last', JSON.stringify({
+      dom: res.dom, date: res.date, headline: (res.data.verdict || {}).headline || '', hadAd: res.hadAd,
+    }));
+  } catch (e) { }
+}
+function sessionAdRuns(dom) {
+  try { return JSON.parse(sessionStorage.getItem('gd-adruns-' + dom)) || []; } catch (e) { return []; }
+}
+function pushAdRun(res) {
+  if (!res.hadAd) return;
+  try {
+    var runs = sessionAdRuns(res.dom);
+    runs.push({ headline: (res.data.verdict || {}).headline || '', thumb: res.adThumb || null });
+    sessionStorage.setItem('gd-adruns-' + res.dom, JSON.stringify(runs.slice(-2)));
+  } catch (e) { }
+}
+
 function runRead(rawUrl, opts) {
   opts = opts || {};
   var dom = normDomain(rawUrl);
   if (!dom) { $('prodStatus').textContent = 'that doesn’t look like a domain — try yourbrand.com'; return; }
   var adData = opts.demo ? null : AD.data;
+  var prev = lastSaved();
+  var priorAds = sessionAdRuns(dom);
   runWithLoader(analyze(dom, adData), function (res) {
     LAST_RUN = res;
     /* the lab reads the brand context live from its canvases */
     var name = res.sig.siteName || (res.sig.title || '').split(/[|–—-]/)[0].trim() || prettyDomain(dom);
     BRAND = { domain: dom, name: name, category: res.data.category || '', resolved: true };
-    showScorecard(res);
+    var cmp = {
+      prev: (prev && prev.dom === dom && prev.headline) ? prev : null,
+      adPair: (res.hadAd && priorAds.length) ? [priorAds[priorAds.length - 1], { headline: (res.data.verdict || {}).headline || '', thumb: res.adThumb || null }] : null,
+    };
+    saveRun(res);
+    pushAdRun(res);
+    showScorecard(res, cmp);
   }, readFail);
 }
 
@@ -4046,7 +4110,8 @@ function briefText(a) {
     '\nVISUAL: ' + (b.visual || '') + '\nOPENING COPY: ' + (b.copy || '') +
     (a.complianceNote ? '\nCOMPLIANCE: ' + a.complianceNote : '');
 }
-function showScorecard(res) {
+function showScorecard(res, cmp) {
+  cmp = cmp || {};
   document.body.classList.add('entry-mode');
   var d = res.data, v = d.verdict || {};
   var name = BRAND ? BRAND.name : res.dom;
@@ -4054,6 +4119,16 @@ function showScorecard(res) {
     /* 1 · the verdict — first, above the fold */
     '<div class="sc-kicker"><span>The machine read ' + escHtml(name) + '</span>' +
       '<span class="sc-date">' + escHtml(res.dom) + ' · ' + res.date + (res.hadAd ? ' · with your ad' : '') + '</span></div>' +
+    (cmp.prev ? '<div class="sc-delta"><b>vs your last run (' + escHtml(cmp.prev.date) + '):</b> “' +
+      escHtml(cmp.prev.headline) + '” — compare it against today’s verdict below. Your own runs only; we don’t monitor anything.</div>' : '') +
+    (cmp.adPair ? '<div class="sc-adcmp">' +
+      '<div class="ac-col"><p class="ac-k">Ad 1 · earlier this session</p>' +
+        (cmp.adPair[0].thumb ? '<img src="' + cmp.adPair[0].thumb + '" alt="">' : '') +
+        '<p class="ac-h">' + escHtml(cmp.adPair[0].headline) + '</p></div>' +
+      '<div class="ac-col"><p class="ac-k">Ad 2 · this run</p>' +
+        (cmp.adPair[1].thumb ? '<img src="' + cmp.adPair[1].thumb + '" alt="">' : '') +
+        '<p class="ac-h">' + escHtml(cmp.adPair[1].headline) + '</p></div>' +
+      '<p class="ac-cap">side-by-side of your own two reads this session — built for creative reviews</p></div>' : '') +
     '<div class="sc-verdict"><h1>' + escHtml(v.headline || '') + '</h1>' +
     '<p class="sc-impact">' + escHtml(v.impact || '') +
       ' <button class="why-link" type="button" data-why="verdict">why?</button></p></div>' +
