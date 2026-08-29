@@ -736,6 +736,72 @@ h1.room-title {
   background: rgba(252,243,214,.08); border-radius: 6px; padding: 2px 7px;
 }
 
+/* ---------- the entry (first load, no hash) ---------- */
+body.entry-mode #topbar, body.entry-mode #tabbar, body.entry-mode #foot,
+body.entry-mode #askBtn, body.entry-mode #askPanel { display: none !important; }
+.entry { position: relative; min-height: 100dvh; overflow: hidden; }
+.entry canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+.entry-overlay {
+  position: relative; z-index: 3;
+  min-height: 100dvh; display: flex; flex-direction: column;
+  align-items: center; justify-content: flex-end;
+  padding: 24px 18px calc(24px + env(safe-area-inset-bottom, 0px));
+  pointer-events: none;
+}
+.entry-overlay > * { pointer-events: auto; }
+.entry-title {
+  text-align: center; margin-bottom: 10px;
+  animation: entry-in .6s ease both;
+}
+.entry-title .ek {
+  font-size: 11px; font-weight: 700; letter-spacing: .22em; text-transform: uppercase;
+  color: var(--your-ad);
+}
+.entry-title h1 {
+  font-size: clamp(34px, 8vw, 58px); font-weight: 800; letter-spacing: -.01em;
+  color: var(--white); line-height: 1.05;
+}
+.entry-title .es { font-size: 14px; color: var(--muted); margin-top: 6px; }
+.entry-card {
+  width: min(560px, 100%);
+  background: rgba(26,16,37,.9); backdrop-filter: blur(10px);
+  border: 1px solid rgba(252,243,214,.25); border-radius: var(--r);
+  padding: 18px; box-shadow: 0 24px 60px rgba(0,0,0,.5);
+  animation: entry-in .6s ease .25s both;
+}
+@keyframes entry-in { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+.entry-card label { display: block; font-size: 13.5px; font-weight: 600; color: var(--cream); margin-bottom: 10px; line-height: 1.5; }
+.entry-row { display: flex; gap: 8px; flex-wrap: wrap; }
+.entry-row input {
+  flex: 1; min-width: 200px; font-family: 'Poppins', sans-serif; font-size: 15px;
+  color: var(--cream); background: rgba(252,243,214,.07);
+  border: 1.5px solid rgba(252,243,214,.35); border-radius: 100px;
+  padding: 12px 18px; min-height: 50px; outline: none;
+}
+.entry-row input:focus { border-color: var(--gold); }
+.entry-links {
+  display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;
+  margin-top: 14px; font-size: 13.5px;
+}
+.entry-links a { color: var(--muted); text-decoration: underline; padding: 6px 2px; min-height: 34px; }
+.entry-links a:hover { color: var(--cream); }
+.entry-skip {
+  position: absolute; top: 14px; right: 16px; z-index: 4;
+  font-size: 11px; color: rgba(252,243,214,.45); pointer-events: none;
+}
+
+/* header extras: brand chip + menu (steps 2 & 4) */
+#brandSlot { display: flex; align-items: center; min-width: 0; flex: 1; justify-content: flex-end; }
+.brand-chip {
+  display: inline-flex; align-items: center; gap: 7px;
+  font-size: 12px; font-weight: 600; color: var(--deep);
+  background: var(--your-ad); border-radius: 100px; padding: 6px 12px;
+  max-width: 230px; white-space: nowrap; overflow: hidden;
+}
+.brand-chip b { overflow: hidden; text-overflow: ellipsis; }
+.brand-chip button { background: none; border: none; color: var(--deep); font-weight: 800; cursor: pointer; font-size: 13px; padding: 2px 4px; }
+.brand-link { font-size: 12px; color: var(--muted); text-decoration: underline; white-space: nowrap; }
+
 /* ---------- footer ---------- */
 #foot {
   border-top: 1px solid var(--line);
@@ -3576,6 +3642,162 @@ function render() {
   window.scrollTo(0, 0);
 }
 
+/* ============================================================
+   THE ENTRY — first load with no hash: only the collapse,
+   full-bleed, choices reachable immediately. Deep links skip it.
+   ============================================================ */
+var ENTRY = { active: false, raf: 0, p: 0, fast: false, dots: [], W: 0, H: 0, dpr: 1, t: 0 };
+var STAGES_E = [41700000, 1200000, 96000, 8400, 2000];
+
+function viewEntry() {
+  return '<div class="entry" id="entryRoot">' +
+    '<canvas id="entryCanvas"></canvas>' +
+    '<p class="entry-skip">tap anywhere to fast-forward</p>' +
+    '<div class="entry-overlay">' +
+      '<div class="entry-title">' +
+        '<p class="ek">The Growth Den Lab</p>' +
+        '<h1>The Machine</h1>' +
+        '<p class="es">40,000,000 ads want this slot. Watch Meta pick one — then make it about your brand.</p>' +
+      '</div>' +
+      '<div class="entry-card">' +
+        '<label for="entryUrl">Enter your site — the whole machine becomes about your brand</label>' +
+        '<div class="entry-row">' +
+          '<input id="entryUrl" type="text" inputmode="url" placeholder="yourbrand.com" autocomplete="off">' +
+          '<button class="run-btn" id="entryGo" type="button">Make it mine</button>' +
+        '</div>' +
+        '<div class="entry-links">' +
+          '<a href="#/machine" id="entryExplore">Just explore</a>' +
+          '<a href="#/scanner">Skip to the Brand Scanner</a>' +
+        '</div>' +
+      '</div>' +
+    '</div></div>';
+}
+
+function initEntryScene() {
+  var cv = $('entryCanvas'), ctx = cv.getContext('2d');
+  function resize() {
+    ENTRY.dpr = Math.min(2, window.devicePixelRatio || 1);
+    ENTRY.W = window.innerWidth; ENTRY.H = window.innerHeight;
+    cv.width = Math.round(ENTRY.W * ENTRY.dpr);
+    cv.height = Math.round(ENTRY.H * ENTRY.dpr);
+    if (!J.galaxy) J.galaxy = makeGalaxy(ENTRY.W, ENTRY.H);
+    ENTRY.dots = [];
+    var n = clamp(Math.round(ENTRY.W * ENTRY.H / 900), 350, 900);
+    for (var i = 0; i < n; i++) {
+      ENTRY.dots.push({ hx: Math.random(), hy: Math.random() * .72 + .04, rank: Math.random(),
+        r: .8 + Math.random() * 1.6, tw: Math.random() * 6.28, dead: 0, you: i === 42 });
+    }
+    ENTRY.dots[42].rank = .001;
+  }
+  resize();
+  ENTRY.rs = resize;
+  window.addEventListener('resize', ENTRY.rs);
+  var last = performance.now();
+  function loop(now) {
+    if (!ENTRY.active) return;
+    var dt = Math.min(.05, (now - last) / 1000); last = now;
+    ENTRY.t += dt;
+    ENTRY.p = clamp(ENTRY.p + dt * (ENTRY.fast ? 1.4 : .11), 0, 1);
+    drawEntry(ctx, dt);
+    ENTRY.raf = requestAnimationFrame(loop);
+  }
+  ENTRY.raf = requestAnimationFrame(loop);
+  // scroll or tap accelerates; never gates the choices (they're already on screen)
+  var fwd = function () { ENTRY.fast = true; };
+  cv.addEventListener('pointerdown', fwd);
+  window.addEventListener('wheel', fwd, { passive: true });
+  window.addEventListener('touchmove', fwd, { passive: true });
+  ENTRY.unfwd = function () {
+    cv.removeEventListener('pointerdown', fwd);
+    window.removeEventListener('wheel', fwd);
+    window.removeEventListener('touchmove', fwd);
+  };
+}
+
+function drawEntry(ctx, dt) {
+  var w = ENTRY.W, h = ENTRY.H, t = ENTRY.t, cp = ENTRY.p * 4;
+  ctx.setTransform(ENTRY.dpr, 0, 0, ENTRY.dpr, 0, 0);
+  ctx.clearRect(0, 0, w, h);
+  if (J.galaxy) {
+    ctx.globalAlpha = clamp(.7 - cp * .26, 0, .7);
+    ctx.drawImage(J.galaxy, 0, 0, w, h);
+    ctx.globalAlpha = 1;
+  }
+  var stage = Math.floor(cp);
+  var F = [1, .5, .26, .12, .055], F2 = [.5, .26, .12, .055, .055];
+  var surviveFrac = F[clamp(stage, 0, 4)] - (cp % 1) * (F[clamp(stage, 0, 4)] - F2[clamp(stage, 0, 4)]);
+  // index bands
+  var bandH = (h * .5) / 4;
+  for (var L = 0; L < 4; L++) {
+    var y0 = h * .12 + L * bandH;
+    var lit = clamp(1 - Math.abs(cp - (L + .5)) * 1.6, 0, 1);
+    if (lit <= 0) continue;
+    ctx.fillStyle = 'rgba(37,100,147,' + lit * .13 + ')';
+    ctx.fillRect(0, y0, w, bandH - 4);
+    var swx = ((t * .5 + L * .3) % 1) * w;
+    var grad = ctx.createLinearGradient(swx - 80, 0, swx, 0);
+    grad.addColorStop(0, 'rgba(127,200,240,0)');
+    grad.addColorStop(1, 'rgba(127,200,240,' + lit * .4 + ')');
+    ctx.fillStyle = grad;
+    ctx.fillRect(swx - 80, y0, 80, bandH - 4);
+  }
+  ENTRY.dots.forEach(function (d) {
+    var alive = d.rank < surviveFrac;
+    d.dead = lerp(d.dead, alive ? 0 : 1, dt * 2.4);
+    var fx = d.hx, fy = d.hy;
+    if (alive && cp > 3.2) {
+      var g = clamp((cp - 3.2) / .8, 0, 1);
+      fx = lerp(d.hx, .5 + (d.hx - .5) * .25, g);
+      fy = lerp(d.hy, .42 + (d.hy - .5) * .07, g);
+    }
+    var yy = fy + d.dead * .3;
+    var a = (1 - d.dead) * (.3 + .5 * Math.abs(Math.sin(t * 1.4 + d.tw)));
+    if (d.you) {
+      ctx.save();
+      ctx.shadowColor = 'rgba(254,124,43,.95)'; ctx.shadowBlur = 15;
+      ctx.fillStyle = 'rgba(254,124,43,.95)';
+      ctx.beginPath(); ctx.arc(fx * w, yy * h, 3.6 + (cp > 3.6 ? 2.4 : 0), 0, 6.29); ctx.fill();
+      ctx.restore();
+    } else if (a > .02) {
+      ctx.fillStyle = 'rgba(232,222,240,' + a + ')';
+      ctx.beginPath(); ctx.arc(fx * w, yy * h, d.r, 0, 6.29); ctx.fill();
+    }
+  });
+  // the big number
+  var i0 = clamp(stage, 0, 4), i1 = clamp(i0 + 1, 0, 4);
+  var n = cp >= 4 ? STAGES_E[4] : Math.exp(lerp(Math.log(STAGES_E[i0]), Math.log(STAGES_E[i1]), cp % 1));
+  ctx.font = '800 ' + Math.min(46, w * .09) + 'px Poppins, sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillStyle = cp > 3.6 ? 'rgba(255,197,69,.95)' : 'rgba(252,243,214,.9)';
+  ctx.fillText(Math.round(n).toLocaleString('en-US'), w / 2, h * .085);
+  ctx.font = '500 12px Poppins, sans-serif';
+  ctx.fillStyle = 'rgba(252,243,214,.55)';
+  ctx.fillText(cp >= 4 ? 'candidates left — and the orange one could be yours' : 'ads competing for one slot, right now', w / 2, h * .085 + 20);
+}
+
+function showEntry() {
+  ENTRY.active = true;
+  document.body.classList.add('entry-mode');
+  $('view').innerHTML = viewEntry();
+  initEntryScene();
+  $('entryGo').addEventListener('click', entrySubmit);
+  $('entryUrl').addEventListener('keydown', function (e) { if (e.key === 'Enter') entrySubmit(); });
+  document.title = 'The Machine — how Meta decides which ad you see · The Growth Den Lab';
+}
+function entrySubmit() {
+  var v = $('entryUrl').value.trim();
+  if (v && typeof setBrandDomain === 'function') setBrandDomain(v);
+  location.hash = '#/machine?d=' + depth;
+}
+function exitEntry() {
+  if (!ENTRY.active) return;
+  ENTRY.active = false;
+  cancelAnimationFrame(ENTRY.raf);
+  if (ENTRY.unfwd) ENTRY.unfwd();
+  if (ENTRY.rs) window.removeEventListener('resize', ENTRY.rs);
+  document.body.classList.remove('entry-mode');
+}
+
 /* ---------------- wire up ---------------- */
 document.querySelectorAll('.dial-btn').forEach(function (b) {
   b.addEventListener('click', function () {
@@ -3585,7 +3807,10 @@ document.querySelectorAll('.dial-btn').forEach(function (b) {
     });
   });
 });
-window.addEventListener('hashchange', render);
+window.addEventListener('hashchange', function () {
+  exitEntry();
+  render();
+});
 var rsTm;
 window.addEventListener('resize', function () {
   clearTimeout(rsTm);
@@ -3595,7 +3820,11 @@ window.addEventListener('resize', function () {
 });
 
 setDepth(depth, true);
-render();
+if (!location.hash || location.hash === '#' || location.hash === '#/') {
+  showEntry();
+} else {
+  render();
+}
 })();
 </script>
 </body>
