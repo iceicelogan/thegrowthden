@@ -897,6 +897,80 @@ body.entry-mode #askBtn, body.entry-mode #askPanel { display: none !important; }
   .prod-drop { flex: 1 1 100%; min-height: 60px; }
 }
 
+/* ---------- the scorecard ---------- */
+.score { min-height: 100dvh; padding: 34px 18px calc(30px + env(safe-area-inset-bottom, 0px)); }
+.sc-wrap { max-width: 760px; margin: 0 auto; }
+.sc-kicker {
+  display: flex; justify-content: space-between; align-items: baseline; gap: 10px; flex-wrap: wrap;
+  font-size: 11px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase;
+  color: var(--your-ad); margin-bottom: 12px;
+}
+.sc-kicker .sc-date { color: var(--muted); letter-spacing: .08em; font-weight: 500; }
+.sc-verdict h1 {
+  font-size: clamp(24px, 4.6vw, 38px); font-weight: 800; letter-spacing: -.01em;
+  color: var(--white); line-height: 1.22; margin-bottom: 14px;
+}
+.sc-impact {
+  font-size: 16px; font-weight: 600; color: var(--gold); line-height: 1.55;
+  border-left: 3px solid var(--gold); padding-left: 14px; margin-bottom: 8px;
+}
+.sc-h2 { font-size: 13px; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; color: var(--cream); margin: 30px 0 12px; }
+.sc-h2 .sc-sub { display: block; font-size: 11px; font-weight: 400; letter-spacing: .02em; text-transform: none; color: var(--muted); margin-top: 3px; }
+details.ang {
+  background: var(--glass); border: 1px solid var(--line); border-radius: var(--r);
+  margin-bottom: 10px; overflow: hidden;
+}
+details.ang > summary {
+  list-style: none; cursor: pointer; padding: 16px 18px; min-height: 54px;
+  display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap;
+}
+details.ang > summary::-webkit-details-marker { display: none; }
+details.ang > summary::after { content: '＋'; margin-left: auto; font-size: 17px; color: var(--your-ad); }
+details.ang[open] > summary::after { content: '－'; }
+.ang-name { font-size: 15.5px; font-weight: 700; color: var(--white); }
+.ang-why { flex-basis: 100%; font-size: 12.5px; color: var(--muted); line-height: 1.55; }
+.ang-flag {
+  font-size: 9.5px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--deep); background: var(--gold); border-radius: 100px; padding: 2px 8px;
+}
+.ang-body { padding: 2px 18px 18px; border-top: 1px dashed var(--line); }
+.brief {
+  background: rgba(15,9,24,.6); border: 1px solid rgba(255,197,69,.35); border-radius: 14px;
+  padding: 14px 16px; margin: 14px 0 12px; position: relative;
+}
+.brief .b-k { font-size: 9.5px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: var(--sky); margin-top: 9px; }
+.brief .b-k:first-child { margin-top: 0; }
+.brief .b-v { font-size: 13.5px; color: var(--cream); line-height: 1.55; }
+.brief .b-copy {
+  position: absolute; top: 10px; right: 10px;
+  font-family: 'Poppins', sans-serif; font-size: 11px; font-weight: 700;
+  color: var(--cream); background: rgba(252,243,214,.1);
+  border: 1px solid rgba(252,243,214,.35); border-radius: 100px;
+  padding: 5px 11px; cursor: pointer;
+}
+.ang-ev { font-size: 12.5px; color: var(--muted); line-height: 1.6; border-left: 2px solid rgba(127,200,240,.4); padding-left: 12px; margin: 10px 0; }
+.ang-ev b { color: var(--cream); }
+.ang-links { font-size: 12px; margin-top: 10px; }
+.per-card {
+  background: var(--glass); border: 1px solid var(--line); border-radius: var(--r);
+  padding: 16px 18px; margin-bottom: 10px;
+}
+.per-top { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
+.per-desc { font-size: 14px; font-weight: 700; color: var(--white); }
+.per-mark { font-size: 11px; font-weight: 800; letter-spacing: .06em; white-space: nowrap; border-radius: 100px; padding: 3px 10px; border: 1.5px solid; }
+.per-mark.m-yes { color: var(--green); border-color: rgba(143,214,148,.6); }
+.per-mark.m-no { color: #ff8a70; border-color: rgba(229,52,11,.55); }
+.per-mark.m-partial { color: var(--gold); border-color: rgba(255,197,69,.55); }
+.per-quote { font-size: 14px; font-style: italic; color: var(--cream); line-height: 1.65; margin: 10px 0 8px; }
+.per-ground { font-size: 11.5px; color: var(--sky); line-height: 1.5; }
+.sc-evidence {
+  border: 1.5px dashed rgba(255,197,69,.5); border-radius: 14px;
+  background: rgba(255,197,69,.05); padding: 14px 16px;
+  font-size: 13px; line-height: 1.65; color: var(--muted); margin-top: 26px;
+}
+.sc-share { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 22px; }
+.sc-again { text-align: center; margin-top: 22px; font-size: 13px; }
+
 /* ---------- the loader: the collapse as the wait ---------- */
 .loader { position: relative; min-height: 100dvh; overflow: hidden; cursor: pointer; }
 .loader canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
@@ -3823,16 +3897,196 @@ function runRead(rawUrl, opts) {
   }, readFail);
 }
 
-/* scorecard skeleton — completed in the next step */
+/* ============================================================
+   THE SCORECARD — verdict, angles, personas, evidence, share, CTA.
+   ============================================================ */
+function markCls(r) { return r === 'yes' ? 'm-yes' : r === 'no' ? 'm-no' : 'm-partial'; }
+function markTxt(r) { return r === 'yes' ? '✓ resonates' : r === 'no' ? '✕ doesn’t land' : '◐ partial'; }
+function plus30(dateStr) {
+  var d = new Date(dateStr || Date.now());
+  d.setDate(d.getDate() + 30);
+  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+}
+function angleCard(a, i, personas) {
+  var ev = (personas || []).filter(function (p) { return p.resonates !== 'no'; }).slice(0, 2);
+  var b = a.brief || {};
+  return '<details class="ang" data-ai="' + i + '"><summary>' +
+      '<span class="ang-name">' + escHtml(a.name || '') + '</span>' +
+      (a.complianceNote ? '<span class="ang-flag" title="' + escHtml(a.complianceNote) + '">⚖ compliance</span>' : '') +
+      '<span class="ang-why">' + escHtml(a.why || '') + '</span>' +
+    '</summary><div class="ang-body">' +
+      '<div class="brief">' +
+        '<button class="b-copy" type="button" data-copy="' + i + '">⧉ copy</button>' +
+        '<p class="b-k">hook</p><p class="b-v">' + escHtml(b.hook || '') + '</p>' +
+        '<p class="b-k">visual</p><p class="b-v">' + escHtml(b.visual || '') + '</p>' +
+        '<p class="b-k">opening copy</p><p class="b-v">' + escHtml(b.copy || '') + '</p>' +
+        '<p class="b-k">frame</p><p class="b-v">' + escHtml(a.frame || '') + '</p>' +
+      '</div>' +
+      (a.complianceNote ? '<p style="font-size:12px;color:var(--gold);margin-bottom:10px">⚖ ' + escHtml(a.complianceNote) + '</p>' : '') +
+      (ev.length ? '<div class="ang-ev"><b>what your buyers would say:</b> ' + ev.map(function (p) {
+        var first = (p.quote || '').split('. ')[0];
+        return '“' + escHtml(first + (first === (p.quote || '') ? '' : '.')) + '” <span style="color:var(--sky)">— ' + escHtml(p.descriptor || '') + '</span>';
+      }).join(' · ') + '</div>' : '') +
+      '<p class="ang-links"><a href="' + adLibHref(LAST_RUN && LAST_RUN.data.adLibraryQuery) + '" target="_blank" rel="noopener noreferrer">see what the category runs, in Meta’s Ad Library →</a></p>' +
+    '</div></details>';
+}
+function adLibHref(q) {
+  return 'https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=ALL&q=' + encodeURIComponent(q || (BRAND ? BRAND.name : ''));
+}
+function briefText(a) {
+  var b = a.brief || {};
+  return 'ANGLE: ' + (a.name || '') + '\nFRAME: ' + (a.frame || '') + '\nHOOK: ' + (b.hook || '') +
+    '\nVISUAL: ' + (b.visual || '') + '\nOPENING COPY: ' + (b.copy || '') +
+    (a.complianceNote ? '\nCOMPLIANCE: ' + a.complianceNote : '');
+}
 function showScorecard(res) {
   document.body.classList.add('entry-mode');
-  var v = res.data.verdict || {};
-  $('view').innerHTML = '<div class="view-pad" style="max-width:760px">' +
-    '<div class="card"><h2 style="font-size:24px;line-height:1.3">' + escHtml(v.headline || '') + '</h2>' +
-    '<p style="font-size:15px">' + escHtml(v.impact || '') + '</p></div>' +
-    '<p style="text-align:center"><a href="#" onclick="location.reload();return false" style="font-size:13px">run another read</a></p>' +
-    '</div>';
+  var d = res.data, v = d.verdict || {};
+  var name = BRAND ? BRAND.name : res.dom;
+  var h = '<div class="score"><div class="sc-wrap">' +
+    /* 1 · the verdict — first, above the fold */
+    '<div class="sc-kicker"><span>The machine read ' + escHtml(name) + '</span>' +
+      '<span class="sc-date">' + escHtml(res.dom) + ' · ' + res.date + (res.hadAd ? ' · with your ad' : '') + '</span></div>' +
+    '<div class="sc-verdict"><h1>' + escHtml(v.headline || '') + '</h1>' +
+    '<p class="sc-impact">' + escHtml(v.impact || '') + '</p></div>' +
+    /* 2 · angles */
+    '<h2 class="sc-h2">What to run instead<span class="sc-sub">three angles — open one for the paste-ready brief</span></h2>' +
+    (d.angles || []).slice(0, 3).map(function (a, i) { return angleCard(a, i, d.personas); }).join('') +
+    /* 3 · personas */
+    '<h2 class="sc-h2">Your buyers, reacting<span class="sc-sub">' +
+      (res.hadAd ? 'three people the machine grounded in your signals, reacting to your ad' : 'three people the machine grounded in your signals, reacting to your homepage’s current messaging') +
+    '</span></h2>' +
+    (d.personas || []).slice(0, 3).map(function (p) {
+      return '<div class="per-card"><div class="per-top">' +
+        '<span class="per-desc">' + escHtml(p.descriptor || '') + '</span>' +
+        '<span class="per-mark ' + markCls(p.resonates) + '">' + markTxt(p.resonates) + '</span></div>' +
+        '<p class="per-quote">“' + escHtml(p.quote || '') + '”</p>' +
+        '<p class="per-ground">' + escHtml(p.grounding || '') + '</p></div>';
+    }).join('') +
+    /* 4 · evidence row */
+    '<div class="sc-evidence"><b style="color:var(--gold)">The evidence:</b> ' +
+      '<a href="' + adLibHref(d.adLibraryQuery) + '" target="_blank" rel="noopener noreferrer">see what you’re actually running — in Meta’s own transparency tool →</a><br>' +
+      'And the honest part: no public spend or reach data exists for commercial advertisers. Anyone selling you competitor “spend” numbers is estimating.</div>' +
+    /* 5 · share */
+    '<div class="sc-share">' +
+      '<button class="run-btn" id="scDl" type="button">⬇ Download the card</button>' +
+      '<button class="run-btn ghost" id="scCp" type="button">🔗 Copy link</button>' +
+    '</div>' +
+    /* 6 · the one CTA */
+    '<div class="talk-cta"><p>Want this level of clarity on your account every week?</p>' +
+      '<a href="https://calendar.app.google/dy8683mNDXyWAkPo9" target="_blank" rel="noopener noreferrer">Talk to Logan →</a></div>' +
+    '<p class="sc-again"><a href="#" id="scAgain">← run another read</a></p>' +
+    '</div></div>';
+  $('view').innerHTML = h;
+  document.querySelectorAll('.b-copy').forEach(function (btn) {
+    btn.addEventListener('click', function (e) {
+      e.preventDefault();
+      var a = (res.data.angles || [])[parseInt(btn.dataset.copy, 10)];
+      if (!a) return;
+      var done = function () { btn.textContent = '✓ copied'; };
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(briefText(a)).then(done, function () { window.prompt('copy the brief:', briefText(a)); });
+      else window.prompt('copy the brief:', briefText(a));
+    });
+  });
+  $('scDl').addEventListener('click', function () {
+    var a = document.createElement('a');
+    a.href = buildCardPng(res);
+    a.download = 'the-machine-read-' + res.dom.replace(/[^a-z0-9.-]/g, '') + '.png';
+    document.body.appendChild(a); a.click(); a.remove();
+  });
+  $('scCp').addEventListener('click', function () {
+    var link = location.origin + location.pathname + '?brand=' + encodeURIComponent(res.dom);
+    var done = function () { $('scCp').textContent = '✓ copied — the link re-runs this read'; };
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(link).then(done, function () { window.prompt('copy this link:', link); });
+    else window.prompt('copy this link:', link);
+  });
+  $('scAgain').addEventListener('click', function (e) { e.preventDefault(); showProduct(); });
+  document.title = 'The machine read ' + name + ' · The Machine — The Growth Den Lab';
   window.scrollTo(0, 0);
+}
+
+/* the downloadable card — designed, clean enough to pitch with */
+function buildCardPng(res) {
+  var d = res.data, v = d.verdict || {};
+  var W = 1080, pad = 64, maxW = W - pad * 2;
+  var meas = document.createElement('canvas').getContext('2d');
+  function wrap(t, font) {
+    meas.font = font;
+    var words = String(t).split(/\s+/), lines = [], line = '';
+    words.forEach(function (w2) {
+      var probe = line ? line + ' ' + w2 : w2;
+      if (meas.measureText(probe).width > maxW && line) { lines.push(line); line = w2; }
+      else line = probe;
+    });
+    if (line) lines.push(line);
+    return lines;
+  }
+  var headFont = '800 34px Poppins, Arial, sans-serif', headLh = 44;
+  var impFont = '600 20px Poppins, Arial, sans-serif', impLh = 30;
+  var bodyFont = '400 17px Poppins, Arial, sans-serif', bodyLh = 27;
+  var hLines = wrap(v.headline || '', headFont);
+  var iLines = wrap(v.impact || '', impFont);
+  var angles = (d.angles || []).slice(0, 3);
+  var angleBlocks = angles.map(function (a) {
+    return { name: a.name || '', hook: wrap('“' + ((a.brief || {}).hook || '') + '”', bodyFont) };
+  });
+  var personas = (d.personas || []).slice(0, 3);
+  var HEAD = 150;
+  var y = HEAD + 64 + hLines.length * headLh + 14 + iLines.length * impLh + 30;
+  var yAngles = y;
+  angleBlocks.forEach(function (b) { y += 34 + b.hook.length * bodyLh + 16; });
+  y += 26;
+  var yPer = y;
+  y += 34 + personas.length * 32 + 26;
+  var H = y + 56;
+  var cv = document.createElement('canvas'); cv.width = W; cv.height = H;
+  var c = cv.getContext('2d');
+  c.fillStyle = '#1a1025'; c.fillRect(0, 0, W, H);
+  var g1 = c.createRadialGradient(W * .8, 0, 0, W * .8, 0, W * .7);
+  g1.addColorStop(0, 'rgba(37,100,147,.4)'); g1.addColorStop(1, 'rgba(37,100,147,0)');
+  c.fillStyle = g1; c.fillRect(0, 0, W, H);
+  c.fillStyle = 'rgba(0,0,0,.18)'; c.fillRect(0, 0, W, HEAD);
+  drawCollapse(c, W, HEAD, 1);
+  c.fillStyle = '#7fb4d8'; c.font = '700 13px Poppins, Arial, sans-serif';
+  c.fillText('T H E   M A C H I N E   R E A D', pad, 66);
+  c.fillStyle = '#ffffff'; c.font = '800 30px Poppins, Arial, sans-serif';
+  c.fillText((BRAND ? BRAND.name : res.dom).slice(0, 40), pad, 104);
+  c.fillStyle = 'rgba(252,243,214,.62)'; c.font = '400 14px Poppins, Arial, sans-serif';
+  c.fillText(res.dom + ' · ' + res.date + (res.hadAd ? ' · with ad' : ''), pad, 130);
+  c.strokeStyle = 'rgba(252,243,214,.16)';
+  c.beginPath(); c.moveTo(0, HEAD + .5); c.lineTo(W, HEAD + .5); c.stroke();
+  var yy = HEAD + 64;
+  c.fillStyle = '#ffffff'; c.font = headFont;
+  hLines.forEach(function (l) { c.fillText(l, pad, yy); yy += headLh; });
+  yy += 14;
+  c.fillStyle = '#ffc545'; c.font = impFont;
+  iLines.forEach(function (l) { c.fillText(l, pad, yy); yy += impLh; });
+  yy += 30;
+  angleBlocks.forEach(function (b, i) {
+    c.fillStyle = '#fe7c2b'; c.font = '700 18px Poppins, Arial, sans-serif';
+    c.fillText((i + 1) + ' · ' + b.name, pad, yy); yy += 30;
+    c.fillStyle = 'rgba(252,243,214,.82)'; c.font = bodyFont;
+    b.hook.forEach(function (l) { c.fillText(l, pad, yy); yy += bodyLh; });
+    yy += 16;
+  });
+  yy += 4;
+  c.fillStyle = '#7fb4d8'; c.font = '700 14px Poppins, Arial, sans-serif';
+  c.fillText('YOUR BUYERS, REACTING', pad, yy); yy += 28;
+  personas.forEach(function (p) {
+    var mark = p.resonates === 'yes' ? '✓' : p.resonates === 'no' ? '✕' : '◐';
+    c.fillStyle = p.resonates === 'yes' ? '#8fd694' : p.resonates === 'no' ? '#ff8a70' : '#ffc545';
+    c.font = '700 16px Poppins, Arial, sans-serif';
+    c.fillText(mark, pad, yy);
+    c.fillStyle = 'rgba(252,243,214,.82)'; c.font = '400 15.5px Poppins, Arial, sans-serif';
+    c.fillText(String(p.descriptor || '').slice(0, 78), pad + 30, yy);
+    yy += 32;
+  });
+  yy += 18;
+  c.strokeStyle = 'rgba(252,243,214,.16)';
+  c.setLineDash([4, 5]); c.beginPath(); c.moveTo(pad, yy); c.lineTo(W - pad, yy); c.stroke(); c.setLineDash([]);
+  c.fillStyle = 'rgba(252,243,214,.55)'; c.font = '400 14px Poppins, Arial, sans-serif';
+  c.fillText('Re-run this on ' + plus30(res.date) + ' and compare.', pad, yy + 30);
+  return cv.toDataURL('image/png');
 }
 
 /* ---------------- boot ---------------- */
