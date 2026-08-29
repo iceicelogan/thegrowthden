@@ -4304,6 +4304,7 @@ route();
 if (qBrand && !parseHash().slug) {
   var pf = $('prodUrl');
   if (pf) pf.value = qBrand;
+  runRead(qBrand, {});   // a shared ?brand= link re-runs the read for the recipient
 }
 })();
 </script>
