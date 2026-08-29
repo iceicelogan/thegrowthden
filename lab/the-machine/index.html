@@ -659,16 +659,18 @@ h1.room-title {
   color: var(--deep); background: var(--gold); border-radius: 4px; padding: 1px 6px; margin-right: 6px;
 }
 
-/* ---------- ask the machine (chat) ---------- */
+/* ---------- ask the machine (chat) — quiet corner icon, no label ---------- */
 #askBtn {
   position: fixed; right: 16px; bottom: 16px; z-index: 65;
-  display: inline-flex; align-items: center; gap: 8px;
-  font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 13px;
-  color: var(--deep); background: var(--gold);
-  border: none; border-radius: 100px; padding: 12px 18px; min-height: 48px;
-  cursor: pointer; box-shadow: 0 10px 30px rgba(0,0,0,.45);
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 46px; height: 46px; padding: 0; font-size: 20px; line-height: 1;
+  color: var(--cream); background: rgba(26,16,37,.85); backdrop-filter: blur(8px);
+  border: 1.5px solid rgba(252,243,214,.35); border-radius: 50%;
+  cursor: pointer; box-shadow: 0 8px 24px rgba(0,0,0,.4);
+  transition: border-color .2s, transform .15s;
 }
-#askBtn:active { transform: scale(.96); }
+#askBtn:hover { border-color: var(--gold); }
+#askBtn:active { transform: scale(.94); }
 #askPanel {
   position: fixed; right: 12px; bottom: 12px; z-index: 70;
   width: min(420px, calc(100vw - 24px)); height: min(560px, 78svh);
@@ -917,7 +919,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <div id="popover" hidden></div>
 <div id="detail" hidden><div class="detail-card" id="detailCard"></div></div>
 
-<button id="askBtn" type="button">🤖 Ask the Machine</button>
+<button id="askBtn" type="button" aria-label="Ask the Machine" title="Ask the Machine">🤖</button>
 <div id="askPanel" aria-label="Ask the Machine chat">
   <div class="ask-head">
     <span><b>🤖 Ask the Machine</b><span class="ask-sub">answers only from this portal · at your teaching mode</span></span>
