@@ -2575,7 +2575,7 @@ function streamClaude(payload, onDelta) {
    Set from the entry, the Scanner, or ?brand=<domain>. Cached in
    sessionStorage per domain. Failures degrade to {name: domain}.
    ============================================================ */
-var BRAND = null, brandAutoScanned = null, SCAN_BUSY = false;
+var BRAND = null, brandAutoScanned = null, SCAN_BUSY = false, BOOTED = false;
 function escHtml(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
 function normDomain(raw) {
   var d = String(raw || '').trim().toLowerCase()
@@ -2623,6 +2623,7 @@ function clearBrand() {
 }
 function refreshForBrand() {
   applyBrandUI();
+  if (!BOOTED) return;  // boot renders right after restoring the brand — don't render twice
   var slug = parseHash().slug;
   if (slug === 'scanner' && SCAN_BUSY) return;  // a scan is mid-flight — don't wipe its report
   if (slug === 'creative' || slug === 'scanner') render();  // chip labels & prefill live in DOM
@@ -4109,6 +4110,7 @@ try {
   else if (actBrand) setBrandDomain(actBrand);
   else applyBrandUI();
 } catch (e) { applyBrandUI(); }
+BOOTED = true;
 if (!location.hash || location.hash === '#' || location.hash === '#/') {
   showEntry();
 } else {
