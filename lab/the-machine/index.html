@@ -823,6 +823,30 @@ h1.room-title {
 .angle-card.counter { border-color: rgba(229,52,11,.5); }
 .angle-card.counter .ap { color: #ff8a70; }
 
+/* ---------- your market ---------- */
+.comp-row {
+  display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap;
+  border-bottom: 1px dashed var(--line); padding: 10px 2px;
+}
+.comp-row:last-child { border-bottom: none; }
+.comp-row .cn { font-size: 14px; font-weight: 600; color: var(--cream); }
+.comp-row .cn .cy {
+  font-size: 9px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--deep); background: var(--sky); border-radius: 100px; padding: 2px 7px; margin-left: 7px; vertical-align: 2px;
+}
+.comp-row .cw { flex-basis: 100%; font-size: 11.5px; color: var(--muted); margin-top: -4px; }
+.comp-row a { font-size: 12px; }
+.terr-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; margin-top: 12px; }
+.terr-card { border: 1px solid var(--line); border-radius: 14px; padding: 12px 13px; background: rgba(252,243,214,.05); }
+.terr-card .tn { font-size: 13px; font-weight: 700; color: var(--cream); margin-bottom: 4px; }
+.terr-card .td { font-size: 12px; color: var(--muted); line-height: 1.55; }
+.terr-card.ws { position: relative; border: 1.5px solid rgba(143,214,148,.55); background: rgba(143,214,148,.06); }
+.terr-card.ws::before {
+  content: 'whitespace'; position: absolute; top: -9px; right: 10px;
+  font-size: 8.5px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--deep); background: var(--green); border-radius: 100px; padding: 2px 8px;
+}
+
 /* the reading animation: a scan sweep over the extracted signals */
 #scanReport.scanning { position: relative; }
 #scanReport.scanning::after {
@@ -1178,6 +1202,11 @@ var CONTENT = {
     kid: 'Peek at what everyone else at the fair is running.',
     cmo: 'Your category’s live creative landscape — linked, labeled, honestly inferred.',
     pro: 'Competitor set + angle territory, inference-labeled; Ad Library as ground truth.',
+  },
+  'mk.intro': {
+    kid: '<p>Time to peek at the other stands! The machine guesses who your neighbors are and what kinds of signs the whole street is making — and which signs <b>nobody</b> is making yet. Every guess links to Meta’s own public window, where you can see their real ads with your own eyes.</p>',
+    cmo: '<p>The machine infers your likely competitor set and the angle territory your category fights over — clearly labeled as inference — and links every name straight into Meta’s Ad Library, where their live creative is public. Then bring back a rival’s ad you’ve seen, and read it with the same eyes you just used on your own.</p>',
+    pro: '<p>Category inference: competitor set plus dominant and underused angle territories, ○-labeled throughout, with Ad Library deep links as the ground truth. Panel three reuses the vision reader against competitor creative and returns counter-angles. Nothing here pretends spend or reach data exists.</p>',
   },
   'debrief.tag': {
     kid: 'Everything you learned, on one card you can keep.',
@@ -3828,6 +3857,130 @@ INITS.creative = function () {
   wireAdAnalyzer('yc', { storeKey: 'gd-ad-analysis' });
   return null;
 };
+
+/* ============================================================
+   YOUR MARKET — #/market · built honest.
+   (a) likely competitors — AI inference, editable, Ad Library links
+   (b) angle territory — dominant + whitespace, ○-labeled
+   (c) read a rival — the step-3 analyzer in rival mode
+   ============================================================ */
+function adLibLink(name) {
+  return 'https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=ALL&q=' + encodeURIComponent(name);
+}
+function viewMarket() {
+  var ctxName = BRAND ? BRAND.name : 'The Growth Den';
+  return '<div class="view-pad">' +
+    '<p class="room-kicker">Step 4 · Your Market</p>' +
+    '<h1 class="room-title">🌐 ' + escHtml(ctxName) + '’s market, mapped honestly</h1>' +
+    '<p class="room-tag" style="margin-bottom:20px">' + d3('market.tag') + '</p>' +
+    '<div class="card"><div style="font-size:14.5px;line-height:1.7;color:var(--muted)">' + d3('mk.intro') + '</div>' +
+      (BRAND ? '' : '<p style="font-size:12.5px;margin-top:8px;color:var(--muted)">You’re seeing the demo market (ours). <a href="#/you">Make it about your brand →</a></p>') +
+      '<p class="scan-status" id="mkStatus"></p></div>' +
+
+    '<div class="card"><h2>🥊 Likely competitors</h2>' +
+      '<p style="font-size:12.5px">' + claim('Competitor identification is AI inference from the category — edit the list freely; the links are the ground truth.', 'folklore', 'Model inference; verify in Meta’s Ad Library', null) + '</p>' +
+      '<div id="mkComp"><p style="font-size:13px;color:var(--muted)">thinking about the neighborhood…</p></div>' +
+      '<div class="scan-row" style="margin-top:12px">' +
+        '<input id="mkAddName" type="text" placeholder="add your own competitor by name" autocomplete="off">' +
+        '<button class="run-btn ghost" id="mkAdd" type="button">+ add</button>' +
+      '</div></div>' +
+
+    '<div class="card folk-card"><h2>🗺️ Angle territory</h2>' +
+      '<p style="font-size:13px;color:var(--muted)">The angle patterns this category leans on, and the territories sitting empty — inferred, not measured, which is why this whole panel wears the dashed border.</p>' +
+      '<div id="mkTerr"><p style="font-size:13px;color:var(--muted)">mapping the territory…</p></div></div>' +
+
+    '<div class="card" style="background:transparent;border:none;box-shadow:none;padding:0;margin-bottom:0"><h2 style="padding:0 4px">🕵️ Read a rival</h2>' +
+      '<p style="font-size:13px;color:var(--muted);padding:0 4px 10px">Seen a competitor’s ad that worries you? Drop it here — same reader as your own ad, plus the counter-angles.</p></div>' +
+    adAnalyzerHtml('rv', true) +
+
+    '<div class="honesty-panel">' + d3('s.honesty') +
+      ' <a href="https://www.facebook.com/ads/library/" target="_blank" rel="noopener noreferrer">→ the Ad Library</a></div>' +
+
+    '<a class="next-room" href="#/debrief"><span class="nr-k">the finale · The Debrief</span>' +
+      '<span class="nr-t">Let’s put it all together →</span></a>' +
+    '</div>';
+}
+INITS.market = function () {
+  function status(t) { var el = $('mkStatus'); if (el) el.innerHTML = t; }
+  function compRow(name, why, yours) {
+    return '<div class="comp-row"><span class="cn">' + escHtml(name) +
+      (yours ? '<span class="cy">yours</span>' : '') + '</span>' +
+      '<a href="' + adLibLink(name) + '" target="_blank" rel="noopener noreferrer">see what they’re actually running, in Meta’s own transparency tool →</a>' +
+      (why ? '<span class="cw">' + escHtml(why) + '</span>' : '') + '</div>';
+  }
+  function renderMarket(data) {
+    var comp = $('mkComp'), terr = $('mkTerr');
+    if (comp) comp.innerHTML = (data.competitors || []).slice(0, 6).map(function (c) {
+      return compRow(c.name, c.why, false);
+    }).join('') || '<p style="font-size:13px;color:var(--muted)">no inference available — add names below.</p>';
+    if (terr) terr.innerHTML = '<div class="terr-grid">' +
+      (data.dominantAngles || []).slice(0, 8).map(function (a) {
+        return '<div class="terr-card"><p class="tn">' + escHtml(a.name) + '</p><p class="td">' + escHtml(a.desc || '') + '</p></div>';
+      }).join('') +
+      (data.whitespace || []).slice(0, 3).map(function (a) {
+        return '<div class="terr-card ws"><p class="tn">' + escHtml(a.name) + '</p><p class="td">' + escHtml(a.desc || '') + '</p></div>';
+      }).join('') + '</div>';
+  }
+  function loadMarket() {
+    var dom = BRAND ? BRAND.domain : 'thegrowthden.com';
+    var cached = null;
+    try { cached = JSON.parse(sessionStorage.getItem('gd-market-' + dom)); } catch (e) { }
+    if (cached) { renderMarket(cached); status(''); return; }
+    status('🧠 ' + (depth === 'kid' ? 'the machine is sizing up the neighborhood…' : 'inferring the competitive set…'));
+    var ctx = BRAND && BRAND.resolved
+      ? { name: BRAND.name, domain: BRAND.domain, category: BRAND.category, offer: BRAND.offer, oneLiner: BRAND.oneLiner }
+      : BRAND
+        ? { name: BRAND.name, domain: BRAND.domain }
+        : { name: 'The Growth Den', domain: 'thegrowthden.com', category: 'growth marketing agency', offer: 'paid-social growth systems for DTC brands' };
+    var sys = 'You are the market mapper inside “The Machine”, a teaching portal about Meta’s ad delivery system. ' +
+      'Given a brand’s public context, infer its competitive landscape. Reply with STRICT JSON only — no prose, no code fences: ' +
+      '{"competitors": [4-6 objects {"name": a real, likely direct competitor brand (well-known where possible), "why": one short clause on why they compete}], ' +
+      '"dominantAngles": [6-8 objects {"name": 2-5 word angle territory, "desc": one line on how the category runs it}], ' +
+      '"whitespace": [2-3 objects {"name": 2-5 word underused angle territory, "desc": one line on why it is open}]}. ' +
+      'Write at this register: ' + REGISTER_DESC[depth] + '. ' +
+      'Rules: competitor identification is best-effort inference — prefer genuinely plausible direct competitors; never invent spend, reach, or audience numbers; never mention pixels, tags, tracking, or analytics.';
+    streamClaude({
+      model: 'claude-sonnet-4-5', max_tokens: 2000, stream: false, system: sys,
+      messages: [{ role: 'user', content: 'BRAND CONTEXT:\n' + JSON.stringify(ctx, null, 1) }],
+    }, function () { }).then(function (full) {
+      var data = JSON.parse(full.slice(full.indexOf('{'), full.lastIndexOf('}') + 1));
+      renderMarket(data);
+      try { sessionStorage.setItem('gd-market-' + dom, JSON.stringify(data)); } catch (e) { }
+      try {
+        sessionStorage.setItem('gd-market', JSON.stringify({
+          domain: dom,
+          competitors: (data.competitors || []).map(function (c) { return c.name; }),
+          whitespace: data.whitespace || [],
+        }));
+      } catch (e) { }
+      status('✅ mapped. Every name links to their live ads — that part isn’t inference.');
+    }).catch(function (err) {
+      if (err && err.code === 429) status(depthMsg(MSG_BUSY));
+      else if (err && err.code === 503) status(depthMsg(MSG_NAP));
+      else if (err instanceof SyntaxError) status('🤖 the map came back garbled — reload to retry.');
+      else status(depthMsg(MSG_LOCAL));
+      var comp = $('mkComp');
+      if (comp) comp.innerHTML = '<p style="font-size:13px;color:var(--muted)">no inference available right now — add competitor names below and the Ad Library links still work.</p>';
+      var terr = $('mkTerr');
+      if (terr) terr.innerHTML = '<p style="font-size:13px;color:var(--muted)">territory map unavailable in this preview.</p>';
+    });
+  }
+  $('mkAdd').addEventListener('click', function () {
+    var n = $('mkAddName').value.trim();
+    if (!n) return;
+    $('mkAddName').value = '';
+    var comp = $('mkComp');
+    var first = comp.firstElementChild;
+    var d = document.createElement('div');
+    d.innerHTML = compRow(n, '', true);
+    comp.insertBefore(d.firstElementChild, first);
+  });
+  $('mkAddName').addEventListener('keydown', function (e) { if (e.key === 'Enter') $('mkAdd').click(); });
+  wireAdAnalyzer('rv', { rival: true, storeKey: 'gd-rival-analysis' });
+  loadMarket();
+  return null;
+};
+VIEWS.market = viewMarket;
 
 /* ============================================================
    RECENCY & FATIGUE — #/recency
