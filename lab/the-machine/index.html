@@ -166,6 +166,33 @@ body.d-kid .d3 > .kid, body.d-cmo .d3 > .cmo, body.d-pro .d3 > .pro { display: b
 }
 .tab-pill .ico { font-size: 15px; }
 
+/* ---------- the journey spine: 1 YOU · 2 THE MACHINE · 3 YOUR CREATIVE · 4 YOUR MARKET · finale ---------- */
+.spine-step {
+  display: inline-flex; align-items: center; gap: 7px;
+  font-size: 12.5px; font-weight: 600; color: var(--muted);
+  text-decoration: none; white-space: nowrap;
+  border: 1.5px solid transparent; border-radius: 100px;
+  padding: 6px 13px 6px 7px; min-height: 38px;
+  transition: color .2s, border-color .2s, background .2s;
+}
+.spine-step .sp-num {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 23px; height: 23px; border-radius: 50%; flex: 0 0 auto;
+  font-size: 11px; font-weight: 800;
+  color: var(--cream); border: 1.5px solid rgba(252,243,214,.45);
+}
+a.spine-step:hover { color: var(--cream); border-color: rgba(252,243,214,.3); }
+.spine-step[aria-current="page"] { color: var(--deep); font-weight: 700; background: var(--gold); border-color: var(--gold); }
+.spine-step[aria-current="page"] .sp-num { color: var(--gold); background: var(--deep); border-color: var(--deep); }
+a.spine-step.seen:not([aria-current]) .sp-num { color: var(--gold); border-color: rgba(255,197,69,.6); }
+.spine-step.locked { opacity: .38; cursor: default; }
+.sp-arrow { color: rgba(252,243,214,.28); font-size: 11px; flex: 0 0 auto; }
+@media (max-width: 700px) {
+  .spine-step { padding: 6px 9px 6px 6px; font-size: 11.5px; gap: 5px; }
+  .spine-step:not([aria-current]) .sp-name { display: none; }
+  .spine-step:not([aria-current]) { padding-right: 7px; }
+}
+
 /* ---------- view ---------- */
 #view { flex: 1; width: 100%; animation: view-in .3s ease; }
 .view-pad { max-width: 1100px; margin: 0 auto; padding: 34px 20px 30px; }
@@ -901,6 +928,39 @@ body.entry-mode #askBtn, body.entry-mode #askPanel { display: none !important; }
   font-size: 11px; color: rgba(252,243,214,.45); pointer-events: none;
 }
 
+/* onboarding: one screen, under ten seconds */
+.ob-q { font-size: 16px; font-weight: 700; color: var(--white); margin-bottom: 10px; }
+.ob-levels { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+.ob-lvl {
+  flex: 1; min-width: 118px; text-align: center;
+  font-family: 'Poppins', sans-serif; font-weight: 600; font-size: 12.5px;
+  color: var(--cream); background: rgba(252,243,214,.06);
+  border: 1.5px solid rgba(252,243,214,.35); border-radius: 14px;
+  padding: 11px 10px; min-height: 46px; cursor: pointer;
+  transition: background .2s, border-color .2s, color .2s;
+}
+.ob-lvl:hover { border-color: var(--cream); }
+.ob-lvl.on { background: var(--cream); color: var(--deep); border-color: var(--cream); font-weight: 700; }
+.ob-lvl .ob-sub { display: block; font-size: 10px; font-weight: 400; margin-top: 2px; opacity: .75; }
+.ob-start { width: 100%; margin-top: 12px; }
+
+/* return visit: continue-where-you-left-off bar */
+#contBar {
+  position: fixed; left: 50%; transform: translateX(-50%);
+  bottom: calc(16px + env(safe-area-inset-bottom, 0px)); z-index: 64;
+  display: flex; align-items: center; gap: 12px;
+  font-size: 12.5px; color: var(--cream);
+  background: rgba(26,16,37,.95); backdrop-filter: blur(8px);
+  border: 1px solid rgba(252,243,214,.3); border-radius: 100px;
+  padding: 9px 16px; box-shadow: 0 10px 30px rgba(0,0,0,.45);
+  max-width: calc(100vw - 90px);
+}
+#contBar a, #contBar button {
+  font-family: 'Poppins', sans-serif; font-size: 12px; font-weight: 600;
+  color: var(--gold); background: none; border: none; cursor: pointer;
+  text-decoration: underline; padding: 4px 2px; white-space: nowrap;
+}
+
 /* header extras: brand chip + menu (steps 2 & 4) */
 #brandSlot { display: flex; align-items: center; min-width: 0; flex: 1; justify-content: flex-end; }
 .brand-chip {
@@ -956,16 +1016,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </a>
   <div id="brandSlot"></div>
   <div id="modeWrap">
-    <button id="modeBtn" type="button" aria-haspopup="menu" aria-expanded="false"><span class="full">Teaching mode</span><span class="short">Mode</span> ▾</button>
-    <div id="modeList" role="menu" aria-label="Teaching mode" hidden>
-      <button class="mode-opt" data-depth="cmo" type="button" role="menuitemradio">Operator</button>
-      <button class="mode-opt" data-depth="kid" type="button" role="menuitemradio">Explain it like I’m 8<span class="mo-sub">the same machine, taught to anyone — try it</span></button>
-      <button class="mode-opt" data-depth="pro" type="button" role="menuitemradio">Full pro detail</button>
+    <button id="modeBtn" type="button" aria-haspopup="menu" aria-expanded="false"><span class="full">Level</span><span class="short">Lvl</span> ▾</button>
+    <div id="modeList" role="menu" aria-label="Level" hidden>
+      <button class="mode-opt" data-depth="kid" type="button" role="menuitemradio">Explain like I’m 8<span class="mo-sub">the same machine, taught to anyone — try it</span></button>
+      <button class="mode-opt" data-depth="cmo" type="button" role="menuitemradio">Professional</button>
+      <button class="mode-opt" data-depth="pro" type="button" role="menuitemradio">Expert</button>
     </div>
   </div>
 </header>
 
-<nav id="tabbar" aria-label="Rooms"><div class="rail" id="tabRail"></div></nav>
+<nav id="tabbar" aria-label="The journey"><div class="rail" id="tabRail"></div></nav>
 
 <main id="view">
   <!-- static fallback: replaced by the app the moment JS boots -->
@@ -1057,6 +1117,16 @@ var CONTENT = {
     kid: 'Feed any brand’s website to the scanner and see what the machine sees.',
     cmo: 'How the Machine sees any brand: public homepage signals in, a delivery-eye report out.',
     pro: 'Public-signal parse → grounded model read → ten distinct angle territories. Downloadable, shareable.',
+  },
+  'market.tag': {
+    kid: 'Peek at what everyone else at the fair is running.',
+    cmo: 'Your category’s live creative landscape — linked, labeled, honestly inferred.',
+    pro: 'Competitor set + angle territory, inference-labeled; Ad Library as ground truth.',
+  },
+  'debrief.tag': {
+    kid: 'Everything you learned, on one card you can keep.',
+    cmo: 'Your whole journey compiled onto one card — download it, share it.',
+    pro: 'Session compilation: brand read, mechanics, angles, whitespace. Exportable.',
   },
   'dispatch.tag': {
     kid: 'Lab news! What we built, what broke, what we learned.',
@@ -1540,15 +1610,34 @@ var CONTENT = {
   },
 };
 
-/* ---------------- rooms / depth ---------------- */
+/* ---------------- the journey / depth ---------------- */
 var ROOMS = [
-  { slug: 'machine',  name: 'The Machine',       ico: '⚙️', open: true },
-  { slug: 'auction',  name: 'The Auction Floor', ico: '🔨', open: true },
-  { slug: 'creative', name: 'Creative Signal',   ico: '📡', open: true },
-  { slug: 'scanner',  name: 'Brand Scanner',     ico: '🔍', open: true },
-  /* off-nav, footer-linked only */
+  { slug: 'you',      name: 'You',           ico: '🔍', num: 1, open: true },
+  { slug: 'machine',  name: 'The Machine',   ico: '⚙️', num: 2, open: true },
+  { slug: 'creative', name: 'Your Creative', ico: '🎨', num: 3, open: true },
+  { slug: 'market',   name: 'Your Market',   ico: '🌐', num: 4, open: true },
+  { slug: 'debrief',  name: 'The Debrief',   ico: '🏁', finale: true, open: true },
+  /* off-spine: auction sim folds into The Machine as an interlude; dispatch stays footer-linked */
+  { slug: 'auction',  name: 'The Auction Floor', ico: '🔨', open: true, hidden: true },
   { slug: 'dispatch', name: 'The Dispatch',      ico: '📰', open: true, hidden: true },
 ];
+var STEP_ORDER = ['you', 'machine', 'creative', 'market', 'debrief'];
+function nextStepSlug(slug) {
+  var i = STEP_ORDER.indexOf(slug);
+  return i >= 0 && i < STEP_ORDER.length - 1 ? STEP_ORDER[i + 1] : null;
+}
+/* visited steps: the spine unlocks what the journey has reached */
+function getVisited() {
+  try { return JSON.parse(sessionStorage.getItem('gd-journey-visited')) || []; } catch (e) { return []; }
+}
+function markVisited(slug) {
+  if (STEP_ORDER.indexOf(slug) < 0) return;
+  try {
+    var v = getVisited();
+    if (v.indexOf(slug) < 0) { v.push(slug); sessionStorage.setItem('gd-journey-visited', JSON.stringify(v)); }
+    sessionStorage.setItem('gd-last-step', slug);
+  } catch (e) { }
+}
 var DEPTHS = ['kid', 'cmo', 'pro'];
 var DEPTH_KEY = 'gd-machine-depth';
 /* room registries: each room may register a view builder and an init
@@ -1648,15 +1737,16 @@ document.addEventListener('keydown', function (e) {
 function parseHash() {
   var h = location.hash.replace(/^#\/?/, '');
   var q = h.split('?');
-  var slug = q[0].replace(/\/+$/, '') || 'machine';
+  var slug = q[0].replace(/\/+$/, '') || 'you';
   var params = {};
   (q[1] || '').split('&').forEach(function (kv) {
     var p = kv.split('=');
     if (p[0]) params[p[0]] = decodeURIComponent(p[1] || '');
   });
-  /* consolidated-tab redirects: their content now lives inside The Machine */
+  /* old routes redirect to their nearest new home */
   if (slug === 'models' || slug === 'model-room' || slug === 'recency') slug = 'machine';
-  if (!ROOMS.some(function (r) { return r.slug === slug; })) slug = 'machine';
+  if (slug === 'scanner') slug = 'you';
+  if (!ROOMS.some(function (r) { return r.slug === slug; })) slug = 'you';
   return { slug: slug, params: params };
 }
 function canonicalizeHash() {
@@ -1666,10 +1756,16 @@ function canonicalizeHash() {
 function roomLink(slug) { return '#/' + slug; }
 
 function renderTabs(active) {
-  $('tabRail').innerHTML = ROOMS.filter(function (r) { return !r.hidden; }).map(function (r) {
-    return '<a class="tab-pill" href="' + roomLink(r.slug) + '"' +
-      (r.slug === active ? ' aria-current="page"' : '') + '>' +
-      '<span class="ico">' + r.ico + '</span>' + r.name + '</a>';
+  var visited = getVisited();
+  $('tabRail').innerHTML = ROOMS.filter(function (r) { return !r.hidden; }).map(function (r, i) {
+    var seen = visited.indexOf(r.slug) >= 0 || r.slug === active;
+    var num = '<span class="sp-num">' + (r.finale ? '🏁' : r.num) + '</span>';
+    var name = '<span class="sp-name">' + r.name.toUpperCase() + '</span>';
+    var pill = seen
+      ? '<a class="spine-step seen" href="' + roomLink(r.slug) + '"' +
+        (r.slug === active ? ' aria-current="page"' : '') + '>' + num + name + '</a>'
+      : '<span class="spine-step locked" title="the journey reaches this step">' + num + name + '</span>';
+    return (i ? '<span class="sp-arrow">→</span>' : '') + pill;
   }).join('');
   var cur = $('tabRail').querySelector('[aria-current]');
   if (cur && cur.scrollIntoView) cur.scrollIntoView({ block: 'nearest', inline: 'center' });
@@ -1822,16 +1918,7 @@ function viewJourney() {
       '<a class="big-btn ghost" href="/lab/the-auction/">Play the finished auction lesson ↗</a>' +
     '</div></div>';
 
-  /* directory */
-  h += '<div class="card"><h2>' + d3('machine.dir-title') + '</h2>' +
-    '<p>' + d3('machine.dir-body') + '</p>' +
-    '<div class="dir-grid">' + ROOMS.filter(function (r) { return r.slug !== 'machine' && !r.hidden; }).map(function (r) {
-      return '<a class="dir-card" href="' + roomLink(r.slug) + '">' +
-        '<span class="dc-name">' + r.ico + ' ' + r.name + '</span>' +
-        '<span class="dc-tag">' + d3(r.slug + '.tag') + '</span>' +
-        '<span class="dc-state' + (r.open ? ' open' : '') + '">' + (r.open ? 'open' : 'in the works') + '</span></a>';
-    }).join('') + '</div></div></div>';
-
+  h += '</div>';
   return h;
 }
 
@@ -2611,7 +2698,7 @@ function applyBrandUI() {
     var bc = $('brandClear');
     if (bc) bc.addEventListener('click', clearBrand);
   } else {
-    slot.innerHTML = '<a class="brand-link" href="#/scanner">make this about your brand</a>';
+    slot.innerHTML = '<a class="brand-link" href="#/you">make this about your brand</a>';
   }
 }
 function clearBrand() {
@@ -2998,7 +3085,9 @@ INITS.scanner = function () {
   }
   return null;
 };
-VIEWS.scanner = viewScanner;
+/* journey step 1 (#/you) is built on the scanner; the room registers under 'you' */
+VIEWS.you = viewScanner;
+INITS.you = INITS.scanner;
 
 /* ============================================================
    THE DISPATCH — #/dispatch · lab logbook
@@ -3902,6 +3991,7 @@ function render() {
   view.style.animation = 'none';
   void view.offsetWidth;
   view.style.animation = '';
+  markVisited(room.slug);
   renderTabs(room.slug);
   if (INITS[room.slug]) roomCleanup = INITS[room.slug]() || null;
   document.title = (room.slug === 'machine' ? 'The Machine' : room.name + ' · The Machine') +
@@ -3910,36 +4000,41 @@ function render() {
 }
 
 /* ============================================================
-   THE ENTRY — first load with no hash: only the collapse,
-   full-bleed, choices reachable immediately. Deep links skip it.
+   ONBOARDING — one screen, under ten seconds. Root loads with no
+   hash show it; ?brand= / ?d= params and deep links skip it.
    ============================================================ */
-var ENTRY = { active: false, raf: 0, p: 0, fast: false, dots: [], W: 0, H: 0, dpr: 1, t: 0 };
-var STAGES_E = [41700000, 1200000, 96000, 8400, 2000];
+var ENTRY = { active: false, raf: 0, dots: [], W: 0, H: 0, dpr: 1, t: 0 };
+var obDepth = depth;   // level picked on the card (defaults to the stored level)
 
 function viewEntry() {
   return '<div class="entry" id="entryRoot">' +
     '<canvas id="entryCanvas"></canvas>' +
-    '<p class="entry-skip">tap anywhere to fast-forward</p>' +
     '<div class="entry-overlay">' +
       '<div class="entry-title">' +
         '<p class="ek">The Growth Den Lab</p>' +
         '<h1>The Machine</h1>' +
-        '<p class="es">40,000,000 ads want this slot. Watch Meta pick one — then make it about your brand.</p>' +
+        '<p class="es">See how Meta sees your brand — a guided walk through the machine that spends your budget.</p>' +
       '</div>' +
       '<div class="entry-card">' +
-        '<label for="entryUrl">Enter your site — the whole machine becomes about your brand</label>' +
+        '<p class="ob-q">How deep should we go?</p>' +
+        '<div class="ob-levels">' +
+          '<button class="ob-lvl" data-depth="kid" type="button">Explain like I’m 8<span class="ob-sub">the same machine, taught to anyone</span></button>' +
+          '<button class="ob-lvl" data-depth="cmo" type="button">Professional</button>' +
+          '<button class="ob-lvl" data-depth="pro" type="button">Expert</button>' +
+        '</div>' +
+        '<label for="entryUrl">Your site — the whole journey becomes about your brand</label>' +
         '<div class="entry-row">' +
           '<input id="entryUrl" type="text" inputmode="url" placeholder="yourbrand.com" autocomplete="off">' +
-          '<button class="run-btn" id="entryGo" type="button">Make it mine</button>' +
         '</div>' +
+        '<button class="run-btn ob-start" id="entryGo" type="button">Start the journey →</button>' +
         '<div class="entry-links">' +
-          '<a href="#/machine" id="entryExplore">Just explore</a>' +
-          '<a href="#/scanner">Skip to the Brand Scanner</a>' +
+          '<a href="#" id="entrySkip">just show me around</a>' +
         '</div>' +
       '</div>' +
     '</div></div>';
 }
 
+/* a subtle ambient dot-field behind the card — no collapse, no countdown */
 function initEntryScene() {
   var cv = $('entryCanvas'), ctx = cv.getContext('2d');
   function resize() {
@@ -3949,12 +4044,14 @@ function initEntryScene() {
     cv.height = Math.round(ENTRY.H * ENTRY.dpr);
     if (!J.galaxy) J.galaxy = makeGalaxy(ENTRY.W, ENTRY.H);
     ENTRY.dots = [];
-    var n = clamp(Math.round(ENTRY.W * ENTRY.H / 900), 350, 900);
+    var n = clamp(Math.round(ENTRY.W * ENTRY.H / 3200), 120, 320);
     for (var i = 0; i < n; i++) {
-      ENTRY.dots.push({ hx: Math.random(), hy: Math.random() * .72 + .04, rank: Math.random(),
-        r: .8 + Math.random() * 1.6, tw: Math.random() * 6.28, dead: 0, you: i === 42 });
+      ENTRY.dots.push({
+        x: Math.random(), y: Math.random(),
+        vx: (Math.random() - .5) * .0045, vy: (Math.random() - .5) * .0045,
+        r: .8 + Math.random() * 1.6, tw: Math.random() * 6.28, you: i === 42,
+      });
     }
-    ENTRY.dots[42].rank = .001;
   }
   resize();
   ENTRY.rs = resize;
@@ -3964,82 +4061,37 @@ function initEntryScene() {
     if (!ENTRY.active) return;
     var dt = Math.min(.05, (now - last) / 1000); last = now;
     ENTRY.t += dt;
-    ENTRY.p = clamp(ENTRY.p + dt * (ENTRY.fast ? 1.4 : .11), 0, 1);
     drawEntry(ctx, dt);
     ENTRY.raf = requestAnimationFrame(loop);
   }
   ENTRY.raf = requestAnimationFrame(loop);
-  // scroll or tap accelerates; never gates the choices (they're already on screen)
-  var fwd = function () { ENTRY.fast = true; };
-  cv.addEventListener('pointerdown', fwd);
-  window.addEventListener('wheel', fwd, { passive: true });
-  window.addEventListener('touchmove', fwd, { passive: true });
-  ENTRY.unfwd = function () {
-    cv.removeEventListener('pointerdown', fwd);
-    window.removeEventListener('wheel', fwd);
-    window.removeEventListener('touchmove', fwd);
-  };
 }
 
 function drawEntry(ctx, dt) {
-  var w = ENTRY.W, h = ENTRY.H, t = ENTRY.t, cp = ENTRY.p * 4;
+  var w = ENTRY.W, h = ENTRY.H, t = ENTRY.t;
   ctx.setTransform(ENTRY.dpr, 0, 0, ENTRY.dpr, 0, 0);
   ctx.clearRect(0, 0, w, h);
   if (J.galaxy) {
-    ctx.globalAlpha = clamp(.7 - cp * .26, 0, .7);
+    ctx.globalAlpha = .4;
     ctx.drawImage(J.galaxy, 0, 0, w, h);
     ctx.globalAlpha = 1;
   }
-  var stage = Math.floor(cp);
-  var F = [1, .5, .26, .12, .055], F2 = [.5, .26, .12, .055, .055];
-  var surviveFrac = F[clamp(stage, 0, 4)] - (cp % 1) * (F[clamp(stage, 0, 4)] - F2[clamp(stage, 0, 4)]);
-  // index bands
-  var bandH = (h * .5) / 4;
-  for (var L = 0; L < 4; L++) {
-    var y0 = h * .12 + L * bandH;
-    var lit = clamp(1 - Math.abs(cp - (L + .5)) * 1.6, 0, 1);
-    if (lit <= 0) continue;
-    ctx.fillStyle = 'rgba(37,100,147,' + lit * .13 + ')';
-    ctx.fillRect(0, y0, w, bandH - 4);
-    var swx = ((t * .5 + L * .3) % 1) * w;
-    var grad = ctx.createLinearGradient(swx - 80, 0, swx, 0);
-    grad.addColorStop(0, 'rgba(127,200,240,0)');
-    grad.addColorStop(1, 'rgba(127,200,240,' + lit * .4 + ')');
-    ctx.fillStyle = grad;
-    ctx.fillRect(swx - 80, y0, 80, bandH - 4);
-  }
   ENTRY.dots.forEach(function (d) {
-    var alive = d.rank < surviveFrac;
-    d.dead = lerp(d.dead, alive ? 0 : 1, dt * 2.4);
-    var fx = d.hx, fy = d.hy;
-    if (alive && cp > 3.2) {
-      var g = clamp((cp - 3.2) / .8, 0, 1);
-      fx = lerp(d.hx, .5 + (d.hx - .5) * .25, g);
-      fy = lerp(d.hy, .42 + (d.hy - .5) * .07, g);
-    }
-    var yy = fy + d.dead * .3;
-    var a = (1 - d.dead) * (.3 + .5 * Math.abs(Math.sin(t * 1.4 + d.tw)));
+    d.x += d.vx * dt; d.y += d.vy * dt;
+    if (d.x < 0 || d.x > 1) d.vx *= -1;
+    if (d.y < 0 || d.y > 1) d.vy *= -1;
     if (d.you) {
       ctx.save();
-      ctx.shadowColor = 'rgba(254,124,43,.95)'; ctx.shadowBlur = 15;
-      ctx.fillStyle = 'rgba(254,124,43,.95)';
-      ctx.beginPath(); ctx.arc(fx * w, yy * h, 3.6 + (cp > 3.6 ? 2.4 : 0), 0, 6.29); ctx.fill();
+      ctx.shadowColor = 'rgba(254,124,43,.9)'; ctx.shadowBlur = 14;
+      ctx.fillStyle = 'rgba(254,124,43,' + (.65 + Math.sin(t * 1.8) * .3) + ')';
+      ctx.beginPath(); ctx.arc(d.x * w, d.y * h, 3.4, 0, 6.29); ctx.fill();
       ctx.restore();
-    } else if (a > .02) {
+    } else {
+      var a = .18 + .3 * Math.abs(Math.sin(t * 1.1 + d.tw));
       ctx.fillStyle = 'rgba(232,222,240,' + a + ')';
-      ctx.beginPath(); ctx.arc(fx * w, yy * h, d.r, 0, 6.29); ctx.fill();
+      ctx.beginPath(); ctx.arc(d.x * w, d.y * h, d.r, 0, 6.29); ctx.fill();
     }
   });
-  // the big number
-  var i0 = clamp(stage, 0, 4), i1 = clamp(i0 + 1, 0, 4);
-  var n = cp >= 4 ? STAGES_E[4] : Math.exp(lerp(Math.log(STAGES_E[i0]), Math.log(STAGES_E[i1]), cp % 1));
-  ctx.font = '800 ' + Math.min(46, w * .09) + 'px Poppins, sans-serif';
-  ctx.textAlign = 'center';
-  ctx.fillStyle = cp > 3.6 ? 'rgba(255,197,69,.95)' : 'rgba(252,243,214,.9)';
-  ctx.fillText(Math.round(n).toLocaleString('en-US'), w / 2, h * .085);
-  ctx.font = '500 12px Poppins, sans-serif';
-  ctx.fillStyle = 'rgba(252,243,214,.55)';
-  ctx.fillText(cp >= 4 ? 'candidates left — and the orange one could be yours' : 'ads competing for one slot, right now', w / 2, h * .085 + 20);
 }
 
 function showEntry() {
@@ -4047,22 +4099,60 @@ function showEntry() {
   document.body.classList.add('entry-mode');
   $('view').innerHTML = viewEntry();
   initEntryScene();
-  $('entryGo').addEventListener('click', entrySubmit);
-  $('entryUrl').addEventListener('keydown', function (e) { if (e.key === 'Enter') entrySubmit(); });
-  document.title = 'The Machine — how Meta decides which ad you see · The Growth Den Lab';
+  obDepth = depth;
+  var syncLvls = function () {
+    document.querySelectorAll('.ob-lvl').forEach(function (b) {
+      b.classList.toggle('on', b.dataset.depth === obDepth);
+    });
+  };
+  syncLvls();
+  document.querySelectorAll('.ob-lvl').forEach(function (b) {
+    b.addEventListener('click', function () { obDepth = b.dataset.depth; syncLvls(); });
+  });
+  $('entryGo').addEventListener('click', function () { onboardDone($('entryUrl').value.trim()); });
+  $('entryUrl').addEventListener('keydown', function (e) { if (e.key === 'Enter') onboardDone($('entryUrl').value.trim()); });
+  $('entrySkip').addEventListener('click', function (e) { e.preventDefault(); obDepth = 'cmo'; onboardDone(''); });
+  document.title = 'The Machine — see how Meta sees your brand · The Growth Den Lab';
 }
-function entrySubmit() {
-  var v = $('entryUrl').value.trim();
-  if (v && typeof setBrandDomain === 'function') setBrandDomain(v);
-  location.hash = '#/machine?d=' + depth;
+function onboardDone(url) {
+  setDepth(obDepth, true);
+  try { localStorage.setItem('gd-onboarded', '1'); } catch (e) { }
+  if (url && typeof setBrandDomain === 'function') setBrandDomain(url);
+  location.hash = '#/you?d=' + depth;
 }
 function exitEntry() {
   if (!ENTRY.active) return;
   ENTRY.active = false;
   cancelAnimationFrame(ENTRY.raf);
-  if (ENTRY.unfwd) ENTRY.unfwd();
   if (ENTRY.rs) window.removeEventListener('resize', ENTRY.rs);
   document.body.classList.remove('entry-mode');
+}
+
+/* return visits: pick up at the last visited step, with a way back out */
+function showContinueBar() {
+  if ($('contBar')) return;
+  var bar = document.createElement('div');
+  bar.id = 'contBar';
+  bar.innerHTML = '<span>Continuing where you left off</span>' +
+    '<button type="button" id="contReset">start over</button>' +
+    '<button type="button" id="contHide" aria-label="Dismiss" style="text-decoration:none;color:var(--muted)">✕</button>';
+  document.body.appendChild(bar);
+  $('contHide').addEventListener('click', function () { bar.remove(); });
+  $('contReset').addEventListener('click', resetJourney);
+}
+function resetJourney() {
+  try {
+    localStorage.removeItem('gd-onboarded');
+    sessionStorage.removeItem('gd-journey-visited');
+    sessionStorage.removeItem('gd-last-step');
+    sessionStorage.removeItem('gd-brand-active');
+  } catch (e) { }
+  BRAND = null; brandAutoScanned = null;
+  applyBrandUI();
+  var bar = $('contBar'); if (bar) bar.remove();
+  if (roomCleanup) { try { roomCleanup(); } catch (e) { } roomCleanup = null; }
+  history.replaceState(null, '', location.pathname);
+  showEntry();
 }
 
 /* ---------------- wire up ---------------- */
@@ -4101,20 +4191,36 @@ window.addEventListener('resize', function () {
 });
 
 setDepth(depth, true);
-/* restore brand context: ?brand= in the query string, or this session's active brand */
+/* restore brand + level; ?brand= and ?d= URL params work and skip onboarding */
+var qBrand = null, qD = null;
 try {
   var qs = new URLSearchParams(location.search);
-  var qBrand = qs.get('brand');
+  qBrand = qs.get('brand'); qD = qs.get('d');
+  if (qD && DEPTHS.indexOf(qD) >= 0) setDepth(qD, true);
   var actBrand = sessionStorage.getItem('gd-brand-active');
   if (qBrand) setBrandDomain(qBrand);
   else if (actBrand) setBrandDomain(actBrand);
   else applyBrandUI();
 } catch (e) { applyBrandUI(); }
 BOOTED = true;
-if (!location.hash || location.hash === '#' || location.hash === '#/') {
-  showEntry();
-} else {
+var hasHash = !(!location.hash || location.hash === '#' || location.hash === '#/');
+var onboarded = false, lastStep = null;
+try {
+  onboarded = !!localStorage.getItem('gd-onboarded');
+  lastStep = sessionStorage.getItem('gd-last-step');
+} catch (e) { }
+if (hasHash || qBrand || qD) {
+  /* deep links and share params bypass onboarding */
+  try { localStorage.setItem('gd-onboarded', '1'); } catch (e) { }
+  if (!hasHash) history.replaceState(null, '', '#/you?d=' + depth);
   render();
+} else if (onboarded) {
+  var resume = STEP_ORDER.indexOf(lastStep) >= 0 ? lastStep : 'you';
+  history.replaceState(null, '', '#/' + resume + '?d=' + depth);
+  render();
+  if (resume !== 'you') showContinueBar();
+} else {
+  showEntry();
 }
 })();
 </script>
