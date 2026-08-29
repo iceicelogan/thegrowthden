@@ -971,6 +971,39 @@ details.ang[open] > summary::after { content: '－'; }
 .sc-share { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 22px; }
 .sc-again { text-align: center; margin-top: 22px; font-size: 13px; }
 
+/* ---------- the "why?" layer: slide-in explanation drawer ---------- */
+.why-link {
+  font-family: 'Poppins', sans-serif; font-size: 11.5px; font-weight: 600;
+  color: var(--sky); background: none; border: none; cursor: pointer;
+  text-decoration: underline; text-underline-offset: 2px; padding: 4px 6px;
+}
+#whyPanel {
+  position: fixed; top: 0; right: 0; bottom: 0; z-index: 75;
+  width: min(440px, 100vw);
+  display: flex; flex-direction: column;
+  background: rgba(26,16,37,.98); backdrop-filter: blur(12px);
+  border-left: 1px solid rgba(252,243,214,.3);
+  box-shadow: -30px 0 80px rgba(0,0,0,.55);
+  transform: translateX(105%); transition: transform .28s ease;
+}
+#whyPanel.open { transform: none; }
+.why-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 16px 18px 12px; border-bottom: 1px solid var(--line); }
+.why-head b { font-size: 15px; color: var(--white); }
+.why-body { flex: 1; overflow-y: auto; padding: 16px 18px; font-size: 13.5px; line-height: 1.7; color: var(--muted); }
+.why-body p { margin-bottom: 10px; }
+.why-body b, .why-body i { color: var(--cream); }
+.why-foot { padding: 12px 18px; border-top: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.why-foot .why-deeper { font-size: 12px; }
+#whyScrim { position: fixed; inset: 0; z-index: 74; background: rgba(15,9,24,.5); }
+#whyScrim[hidden] { display: none; }
+
+/* the product footer: the only doors out */
+.prod-foot { margin-top: 34px; padding-top: 16px; border-top: 1px solid var(--line); text-align: center; }
+.prod-foot p { font-size: 12px; color: rgba(252,243,214,.55); margin-bottom: 6px; }
+.prod-foot a { color: rgba(252,243,214,.8); }
+.prod-foot .egg { font-size: 10.5px; color: rgba(252,243,214,.35); }
+.prod-foot .egg.on { color: var(--gold); }
+
 /* ---------- the loader: the collapse as the wait ---------- */
 .loader { position: relative; min-height: 100dvh; overflow: hidden; cursor: pointer; }
 .loader canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
@@ -1045,6 +1078,17 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <div id="popover" hidden></div>
 <div id="detail" hidden><div class="detail-card" id="detailCard"></div></div>
+
+<div id="whyScrim" hidden></div>
+<div id="whyPanel" aria-label="Why? — the sourced explanation">
+  <div class="why-head"><b id="whyTitle"></b>
+    <button class="ask-close" id="whyClose" type="button" aria-label="Close">✕</button></div>
+  <div class="why-body" id="whyBody"></div>
+  <div class="why-foot">
+    <span style="font-size:10.5px;color:var(--muted)">●&thinsp;Meta-published · ◐&thinsp;measured · ○&thinsp;folklore — tap any badge</span>
+    <a href="#" class="why-deeper" id="whyDeeper">go deeper →</a>
+  </div>
+</div>
 
 <button id="askBtn" type="button" aria-label="Ask the Machine" title="Ask the Machine">🤖</button>
 <div id="askPanel" aria-label="Ask the Machine chat">
@@ -1798,7 +1842,7 @@ function wireFlips() {
 function viewJourney() {
   var h = '';
   h += '<div class="view-pad" style="padding-bottom:6px">' +
-    '<p class="room-kicker">Step 2 · The Machine</p>' +
+    '<p class="room-kicker">The Growth Den Lab · the full walk-through</p>' +
     '<h1 class="room-title">⚙️ How Meta picks an ad</h1>' +
     '<p class="room-tag">' + d3('machine.tag') + '</p>' +
     '<div class="legend-row">' +
@@ -3898,6 +3942,68 @@ function runRead(rawUrl, opts) {
 }
 
 /* ============================================================
+   THE "WHY?" LAYER — small links open a slide-in drawer with the
+   sourced explanation drawn from the portal's content registers.
+   Plain voice by default; "go deeper" shows the pro register; the
+   footer easter egg re-renders drawers in the kid register.
+   ============================================================ */
+var EGG = false;   // "explain it like I'm 8"
+function whyContent(key) {
+  if (key === 'verdict') {
+    return { title: 'How the machine reads a brand', html:
+      d3('j.open.body') +
+      '<p style="font-size:12px">' + claim('Andromeda, Meta’s retrieval engine, filters tens of millions of candidate ads down to a few thousand per person — your brand’s signals decide whether you’re even in the room.', 'meta', SRC.andromeda.name, SRC.andromeda.url) + '</p>' +
+      '<p style="font-size:12px">' + claim('The auction winner is the ad with the highest total value — bid × estimated action rate + quality — and pays the minimum needed to win.', 'meta', SRC.auction.name, SRC.auction.url) + '</p>' +
+      '<div class="folk-card" style="border-radius:14px;padding:12px 14px;margin-top:12px;font-size:12.5px">' + d3('s.honesty') + '</div>' };
+  }
+  if (key === 'angles') {
+    return { title: 'Why delivery cares about your angle', html:
+      d3('c.d2') +
+      '<p style="font-size:12px">' + claim('A per-ad “similarity score” is a practitioner reconstruction — not a confirmed Meta metric. The collapse behavior is what practitioners observe.', 'folklore', 'Practitioner reconstruction; no confirmed Meta metric exists', null) + '</p>' +
+      d3('r.c1') +
+      '<p style="font-size:12px">' + claim('The fatigue trigger Meta surfaces is cost-based — your cost per result vs. your own baseline — not any frequency number.', 'folklore', 'The “magic frequency number”: widely repeated, never verified', 'https://www.facebook.com/business/help') + '</p>' +
+      '<p style="font-size:12px">' + claim('Quality includes documented negative signals: ads people hide or report, clickbait and engagement bait, poor post-click landing experiences.', 'meta', SRC.quality.name, SRC.quality.url) + '</p>' };
+  }
+  /* personas */
+  return { title: 'Where these people come from', html:
+    d3('r.intro') +
+    '<p style="font-size:12px">' + claim('Within one ad set, different creatives are delivered to systematically different demographic subgroups — measured across 181,890 Meta A/B tests.', 'measured', SRC.kellogg.name, SRC.kellogg.url) + '</p>' +
+    d3('m.gem.tue') +
+    '<div class="folk-card" style="border-radius:14px;padding:12px 14px;margin-top:12px;font-size:12.5px"><b style="color:var(--gold)">The honest part:</b> these three people are AI inference, grounded only in your site’s public signals and category buying patterns — they are not real users, and no platform audience data feeds them. That’s why every card shows its “based on” line.</div>' };
+}
+function openWhy(key) {
+  var c = whyContent(key);
+  setDepth(EGG ? 'kid' : 'cmo');
+  $('whyTitle').textContent = c.title;
+  $('whyBody').innerHTML = c.html;
+  $('whyDeeper').textContent = 'go deeper →';
+  $('whyScrim').hidden = false;
+  $('whyPanel').classList.add('open');
+}
+function closeWhy() {
+  $('whyPanel').classList.remove('open');
+  $('whyScrim').hidden = true;
+  setDepth(EGG ? 'kid' : 'cmo');
+}
+(function wireWhy() {
+  $('whyClose').addEventListener('click', closeWhy);
+  $('whyScrim').addEventListener('click', closeWhy);
+  $('whyDeeper').addEventListener('click', function (e) {
+    e.preventDefault();
+    var deeper = depth !== 'pro';
+    setDepth(deeper ? 'pro' : (EGG ? 'kid' : 'cmo'));
+    $('whyDeeper').textContent = deeper ? '← back to plain' : 'go deeper →';
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && $('whyPanel').classList.contains('open')) closeWhy();
+  });
+  document.addEventListener('click', function (e) {
+    var w = e.target.closest('[data-why]');
+    if (w) { e.preventDefault(); openWhy(w.dataset.why); }
+  });
+})();
+
+/* ============================================================
    THE SCORECARD — verdict, angles, personas, evidence, share, CTA.
    ============================================================ */
 function markCls(r) { return r === 'yes' ? 'm-yes' : r === 'no' ? 'm-no' : 'm-partial'; }
@@ -3927,7 +4033,8 @@ function angleCard(a, i, personas) {
         var first = (p.quote || '').split('. ')[0];
         return '“' + escHtml(first + (first === (p.quote || '') ? '' : '.')) + '” <span style="color:var(--sky)">— ' + escHtml(p.descriptor || '') + '</span>';
       }).join(' · ') + '</div>' : '') +
-      '<p class="ang-links"><a href="' + adLibHref(LAST_RUN && LAST_RUN.data.adLibraryQuery) + '" target="_blank" rel="noopener noreferrer">see what the category runs, in Meta’s Ad Library →</a></p>' +
+      '<p class="ang-links"><a href="' + adLibHref(LAST_RUN && LAST_RUN.data.adLibraryQuery) + '" target="_blank" rel="noopener noreferrer">see what the category runs, in Meta’s Ad Library →</a>' +
+        ' · <button class="why-link" type="button" data-why="angles">why does delivery care?</button></p>' +
     '</div></details>';
 }
 function adLibHref(q) {
@@ -3948,13 +4055,15 @@ function showScorecard(res) {
     '<div class="sc-kicker"><span>The machine read ' + escHtml(name) + '</span>' +
       '<span class="sc-date">' + escHtml(res.dom) + ' · ' + res.date + (res.hadAd ? ' · with your ad' : '') + '</span></div>' +
     '<div class="sc-verdict"><h1>' + escHtml(v.headline || '') + '</h1>' +
-    '<p class="sc-impact">' + escHtml(v.impact || '') + '</p></div>' +
+    '<p class="sc-impact">' + escHtml(v.impact || '') +
+      ' <button class="why-link" type="button" data-why="verdict">why?</button></p></div>' +
     /* 2 · angles */
     '<h2 class="sc-h2">What to run instead<span class="sc-sub">three angles — open one for the paste-ready brief</span></h2>' +
     (d.angles || []).slice(0, 3).map(function (a, i) { return angleCard(a, i, d.personas); }).join('') +
     /* 3 · personas */
     '<h2 class="sc-h2">Your buyers, reacting<span class="sc-sub">' +
       (res.hadAd ? 'three people the machine grounded in your signals, reacting to your ad' : 'three people the machine grounded in your signals, reacting to your homepage’s current messaging') +
+      ' <button class="why-link" type="button" data-why="personas">why should I trust these?</button>' +
     '</span></h2>' +
     (d.personas || []).slice(0, 3).map(function (p) {
       return '<div class="per-card"><div class="per-top">' +
@@ -3976,6 +4085,11 @@ function showScorecard(res) {
     '<div class="talk-cta"><p>Want this level of clarity on your account every week?</p>' +
       '<a href="https://calendar.app.google/dy8683mNDXyWAkPo9" target="_blank" rel="noopener noreferrer">Talk to Logan →</a></div>' +
     '<p class="sc-again"><a href="#" id="scAgain">← run another read</a></p>' +
+    /* the only doors out */
+    '<div class="prod-foot">' +
+      '<p>Curious how the machine actually works? <a href="#/machine">Walk through the full lab →</a></p>' +
+      '<p><a href="#" class="egg' + (EGG ? ' on' : '') + '" id="eggLink">explain it like I’m 8</a></p>' +
+    '</div>' +
     '</div></div>';
   $('view').innerHTML = h;
   document.querySelectorAll('.b-copy').forEach(function (btn) {
@@ -4001,6 +4115,13 @@ function showScorecard(res) {
     else window.prompt('copy this link:', link);
   });
   $('scAgain').addEventListener('click', function (e) { e.preventDefault(); showProduct(); });
+  $('eggLink').addEventListener('click', function (e) {
+    e.preventDefault();
+    EGG = !EGG;
+    e.target.classList.toggle('on', EGG);
+    e.target.textContent = EGG ? '✓ the drawers now explain it like you’re 8' : 'explain it like I’m 8';
+    setDepth(EGG ? 'kid' : 'cmo');
+  });
   document.title = 'The machine read ' + name + ' · The Machine — The Growth Den Lab';
   window.scrollTo(0, 0);
 }
