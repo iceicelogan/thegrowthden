@@ -214,7 +214,7 @@ h1.room-title {
 .badge .sym { font-size: 10px; }
 .badge.g-meta { color: var(--gold); border-color: rgba(255,197,69,.55); }
 .badge.g-measured { color: var(--sky); border-color: rgba(127,200,240,.55); }
-.badge.g-folklore { color: var(--muted); border-color: rgba(252,243,214,.35); }
+.badge.g-folklore { color: rgba(255,197,69,.85); border-color: rgba(255,197,69,.45); border-style: dashed; }
 .badge:hover { filter: brightness(1.2); }
 
 #popover {
@@ -788,6 +788,20 @@ details.drawer .drawer-body b, details.drawer .drawer-body i { color: var(--crea
 .myth-card .mb { font-size: 12.5px; line-height: 1.6; color: var(--muted); margin-top: 8px; }
 .myth-card .mb b { color: var(--cream); }
 @media (max-width: 760px) { .myth-grid { grid-template-columns: 1fr; } }
+
+/* folklore-graded cards look like folklore at arm's length:
+   dashed border, amber tint, "unverified" tag */
+.folk-card {
+  position: relative;
+  border: 1.5px dashed rgba(255,197,69,.5) !important;
+  background: rgba(255,197,69,.055) !important;
+}
+.folk-card::after {
+  content: 'unverified';
+  position: absolute; top: 9px; right: 12px;
+  font-size: 9px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
+  color: rgba(255,197,69,.75); pointer-events: none;
+}
 
 /* ---------- the entry (first load, no hash) ---------- */
 body.entry-mode #topbar, body.entry-mode #tabbar, body.entry-mode #foot,
@@ -2831,7 +2845,7 @@ INITS.dispatch = function () {
       var g = GRADES[e.grade] || GRADES.folklore;
       var idx = CLAIMS.length;
       CLAIMS.push({ grade: e.grade, sourceName: e.sourceName, sourceUrl: e.sourceUrl });
-      return '<div class="log-entry">' +
+      return '<div class="log-entry' + (e.grade === 'folklore' ? ' folk-card' : '') + '">' +
         '<p class="log-date">' + e.date + '</p>' +
         '<p class="log-title">' + (sample ? '<span class="sample-flag">sample</span>' : '') + e.title.replace(/^SAMPLE\s*·\s*/i, '') + '</p>' +
         '<div class="log-meta">' +
@@ -2963,12 +2977,12 @@ function viewCreative() {
       '<p style="font-size:12.5px">' + claim('Within one ad set, different creatives are delivered to systematically different demographic subgroups.', 'measured', SRC.kellogg.name, SRC.kellogg.url) + '</p>' +
       '<button class="run-btn" data-demo="divergent" type="button">▶ run the split</button></div>' +
 
-    '<div class="card" id="d2card"><h2>Demo 2 · Similarity collapse</h2>' +
+    '<div class="card folk-card" id="d2card"><h2>Demo 2 · Similarity collapse</h2>' +
       '<div style="font-size:14px;line-height:1.7;color:var(--muted)">' + d3('c.d2') + '</div>' +
       '<p style="font-size:12.5px">' + claim('A per-ad “similarity score” is a practitioner reconstruction — not a confirmed Meta metric. The collapse behavior is what practitioners observe.', 'folklore', 'Practitioner reconstruction; no confirmed Meta metric exists', null) + '</p>' +
       '<button class="run-btn" data-demo="similar" type="button">▶ merge the twins</button></div>' +
 
-    '<div class="card" id="d3card"><h2>Demo 3 · The diversity sandbox</h2>' +
+    '<div class="card folk-card" id="d3card"><h2>Demo 3 · The diversity sandbox</h2>' +
       '<div style="font-size:14px;line-height:1.7;color:var(--muted)">' + d3('c.d3') + '</div>' +
       '<p style="font-size:12.5px">' + claim('The specific “25 diverse creatives beat 5×5 clones” internal Meta test is cited widely but reached the public secondhand — the mechanism stands on its own; the numbers wear this badge.', 'folklore', 'Meta internal test, relayed secondhand in trade press', null) + '</p>' +
       '<div style="display:flex;gap:8px;flex-wrap:wrap">' +
