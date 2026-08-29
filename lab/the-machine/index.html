@@ -69,13 +69,10 @@ img { display: block; max-width: 100%; }
 a { color: var(--gold); }
 b { font-weight: 600; }
 
-/* ---------- depth registers: stacked in place so the layout engine
-     reserves the tallest register per block — no shift on switch ---------- */
-.d3 { display: grid; }
-.d3 > span { grid-area: 1 / 1; transition: opacity .32s ease; }
-body.d-kid .d3 > .cmo, body.d-kid .d3 > .pro,
-body.d-cmo .d3 > .kid, body.d-cmo .d3 > .pro,
-body.d-pro .d3 > .kid, body.d-pro .d3 > .cmo { opacity: 0; pointer-events: none; user-select: none; }
+/* ---------- depth registers: only the active teaching mode renders ---------- */
+.d3 { display: block; }
+.d3 > span { display: none; }
+body.d-kid .d3 > .kid, body.d-cmo .d3 > .cmo, body.d-pro .d3 > .pro { display: block; }
 
 /* ---------- top bar ---------- */
 #topbar {
@@ -95,23 +92,38 @@ body.d-pro .d3 > .kid, body.d-pro .d3 > .cmo { opacity: 0; pointer-events: none;
   white-space: nowrap;
 }
 
-/* the Depth Dial */
-#dial {
-  display: flex; border: 1.5px solid rgba(252,243,214,.45); border-radius: 100px;
-  overflow: hidden; background: rgba(26,16,37,.7); flex: 0 0 auto;
-}
-.dial-btn {
+/* Teaching mode — compact header menu (Operator is the default) */
+#modeWrap { position: relative; flex: 0 0 auto; }
+#modeBtn {
   font-family: 'Poppins', sans-serif; font-weight: 600; font-size: 12px;
-  border: none; background: transparent; color: var(--muted);
-  padding: 9px 13px; cursor: pointer; white-space: nowrap; min-height: 40px;
-  transition: background .25s, color .25s;
+  color: var(--muted); background: rgba(26,16,37,.7);
+  border: 1.5px solid rgba(252,243,214,.3); border-radius: 100px;
+  padding: 8px 13px; cursor: pointer; white-space: nowrap; min-height: 38px;
+  transition: color .2s, border-color .2s;
 }
-.dial-btn.active { background: var(--cream); color: var(--deep); font-weight: 700; }
-.dial-btn .short { display: none; }
+#modeBtn:hover, #modeBtn[aria-expanded="true"] { color: var(--cream); border-color: rgba(252,243,214,.55); }
+#modeBtn .short { display: none; }
+#modeList {
+  position: absolute; right: 0; top: calc(100% + 8px); z-index: 60;
+  min-width: 250px; padding: 6px;
+  background: rgba(26,16,37,.97); border: 1px solid var(--line); border-radius: 14px;
+  box-shadow: 0 14px 40px rgba(0,0,0,.5);
+}
+.mode-opt {
+  display: block; width: 100%; text-align: left;
+  font-family: 'Poppins', sans-serif; font-size: 12.5px; font-weight: 600;
+  color: var(--muted); background: transparent; border: none; border-radius: 10px;
+  padding: 9px 11px; cursor: pointer; min-height: 40px;
+  transition: background .2s, color .2s;
+}
+.mode-opt:hover { background: rgba(252,243,214,.08); color: var(--cream); }
+.mode-opt.active { color: var(--cream); }
+.mode-opt.active::before { content: '✓ '; color: var(--gold); }
+.mode-opt .mo-sub { display: block; font-size: 10.5px; font-weight: 400; color: var(--muted); margin-top: 2px; }
 @media (max-width: 640px) {
-  .dial-btn { padding: 9px 10px; font-size: 11.5px; }
-  .dial-btn .full { display: none; }
-  .dial-btn .short { display: inline; }
+  #modeBtn { padding: 8px 11px; font-size: 11.5px; }
+  #modeBtn .full { display: none; }
+  #modeBtn .short { display: inline; }
 }
 
 /* ---------- tab pill bar ---------- */
@@ -883,10 +895,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <span class="lab-tag">Lab · The Machine</span>
   </a>
   <div id="brandSlot"></div>
-  <div id="dial" role="group" aria-label="Depth dial — choose how deep the explanations go">
-    <button class="dial-btn" data-depth="kid" type="button"><span class="full">I'm 8</span><span class="short">8</span></button>
-    <button class="dial-btn" data-depth="cmo" type="button"><span class="full">I'm a CMO</span><span class="short">CMO</span></button>
-    <button class="dial-btn" data-depth="pro" type="button"><span class="full">I work in ads</span><span class="short">Pro</span></button>
+  <div id="modeWrap">
+    <button id="modeBtn" type="button" aria-haspopup="menu" aria-expanded="false"><span class="full">Teaching mode</span><span class="short">Mode</span> ▾</button>
+    <div id="modeList" role="menu" aria-label="Teaching mode" hidden>
+      <button class="mode-opt" data-depth="cmo" type="button" role="menuitemradio">Operator</button>
+      <button class="mode-opt" data-depth="kid" type="button" role="menuitemradio">Explain it like I’m 8<span class="mo-sub">the same machine, taught to anyone — try it</span></button>
+      <button class="mode-opt" data-depth="pro" type="button" role="menuitemradio">Full pro detail</button>
+    </div>
   </div>
 </header>
 
@@ -905,7 +920,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <button id="askBtn" type="button">🤖 Ask the Machine</button>
 <div id="askPanel" aria-label="Ask the Machine chat">
   <div class="ask-head">
-    <span><b>🤖 Ask the Machine</b><span class="ask-sub">answers only from this portal · at your dial setting</span></span>
+    <span><b>🤖 Ask the Machine</b><span class="ask-sub">answers only from this portal · at your teaching mode</span></span>
     <button class="ask-close" id="askClose" type="button" aria-label="Close">✕</button>
   </div>
   <div class="ask-msgs" id="askMsgs"></div>
@@ -1434,14 +1449,14 @@ var CONTENT = {
   },
   'ask.hello': {
     kid: 'Hi! I only know what’s inside this lab — the auction, the magnet-machines, the fatigue stuff. Ask me anything about those and I’ll explain it your way!',
-    cmo: 'I answer from this portal’s content only — auction mechanics, the model stack, fatigue, creative signal. Ask away; I’ll match your dial setting.',
+    cmo: 'I answer from this portal’s content only — auction mechanics, the model stack, fatigue, creative signal. Ask away; I’ll match your teaching mode.',
     pro: 'Grounded on the portal corpus (pro registers + graded claims). Outside-corpus queries get an honest “not covered.” Fire away.',
   },
 
   /* directory + placeholder copy */
   'machine.dir-title': { kid: 'The other rooms', cmo: 'The other rooms', pro: 'The other rooms' },
   'machine.dir-body': {
-    kid: 'Every room is open now! Wander wherever looks fun — your dial setting follows you through every door.',
+    kid: 'Every room is open now! Wander wherever looks fun — your teaching mode follows you through every door.',
     cmo: 'All rooms are open. Every link carries your depth setting, so share any door at any altitude.',
     pro: 'Full estate live. All routes stable and deep-linkable; hash + depth param are the permalink.',
   },
@@ -1451,7 +1466,7 @@ var CONTENT = {
     pro: 'Route reserved; build pending.',
   },
   'ph.note': {
-    kid: 'This room isn’t ready yet — but your link already works, and it even remembers your dial setting. Come back soon!',
+    kid: 'This room isn’t ready yet — but your link already works, and it even remembers your teaching mode. Come back soon!',
     cmo: 'This room is on the bench. The URL you’re on — including your depth setting — is stable and will open straight into the finished room.',
     pro: 'Route and state handling are live; content lands in a later session. This exact URL (room + depth param) is the permalink.',
   },
@@ -1488,15 +1503,17 @@ function setDepth(d, fromUrl) {
   depth = d;
   document.body.classList.remove('d-kid', 'd-cmo', 'd-pro');
   document.body.classList.add('d-' + d);
-  document.querySelectorAll('.dial-btn').forEach(function (b) {
-    b.classList.toggle('active', b.dataset.depth === d);
+  document.querySelectorAll('.mode-opt').forEach(function (b) {
+    var on = b.dataset.depth === d;
+    b.classList.toggle('active', on);
+    b.setAttribute('aria-checked', String(on));
   });
   try { localStorage.setItem(DEPTH_KEY, d); } catch (e) { }
   if (!fromUrl) canonicalizeHash();
 }
 
-/* d3(key): all three registers stacked in one grid cell — the browser
-   reserves the tallest register, so a dial flip never shifts layout. */
+/* d3(key): all three registers in the markup; CSS shows only the
+   active teaching mode's span. */
 function d3(key) {
   var c = CONTENT[key];
   if (!c) return '<span class="d3"><span>[' + key + ']</span></span>';
@@ -3203,7 +3220,7 @@ INITS.creative = function () {
     });
   });
   var dialHook = function () { setTimeout(updateReadout, 30); };
-  document.querySelectorAll('.dial-btn').forEach(function (b) { b.addEventListener('click', dialHook); });
+  document.querySelectorAll('.mode-opt').forEach(function (b) { b.addEventListener('click', dialHook); });
   var rs = function () { resize(); };
   window.addEventListener('resize', rs);
   resize(); preset(C_SPECIFIC);
@@ -3211,7 +3228,7 @@ INITS.creative = function () {
   return function () {
     alive = false; cancelAnimationFrame(raf);
     window.removeEventListener('resize', rs);
-    document.querySelectorAll('.dial-btn').forEach(function (b) { b.removeEventListener('click', dialHook); });
+    document.querySelectorAll('.mode-opt').forEach(function (b) { b.removeEventListener('click', dialHook); });
   };
 };
 VIEWS.creative = viewCreative;
@@ -3839,9 +3856,23 @@ function exitEntry() {
 }
 
 /* ---------------- wire up ---------------- */
-document.querySelectorAll('.dial-btn').forEach(function (b) {
+var modeBtn = $('modeBtn'), modeList = $('modeList');
+function toggleModeMenu(open) {
+  var o = (open === undefined) ? modeList.hidden : open;
+  modeList.hidden = !o;
+  modeBtn.setAttribute('aria-expanded', String(o));
+}
+modeBtn.addEventListener('click', function (e) { e.stopPropagation(); toggleModeMenu(); });
+document.addEventListener('click', function (e) {
+  if (!modeList.hidden && !modeList.contains(e.target) && e.target !== modeBtn) toggleModeMenu(false);
+});
+document.addEventListener('keydown', function (e) {
+  if (e.key === 'Escape' && !modeList.hidden) toggleModeMenu(false);
+});
+document.querySelectorAll('.mode-opt').forEach(function (b) {
   b.addEventListener('click', function () {
     setDepth(b.dataset.depth, false);
+    toggleModeMenu(false);
     document.querySelectorAll('.bench-link code').forEach(function (c) {
       c.textContent = '#/' + parseHash().slug + '?d=' + depth;
     });
