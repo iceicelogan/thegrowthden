@@ -843,6 +843,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <img src="../../uploads/Growth_Den__Logo_Horizontal_White.svg" alt="The Growth Den">
     <span class="lab-tag">Lab · The Machine</span>
   </a>
+  <div id="brandSlot"></div>
   <div id="dial" role="group" aria-label="Depth dial — choose how deep the explanations go">
     <button class="dial-btn" data-depth="kid" type="button"><span class="full">I'm 8</span><span class="short">8</span></button>
     <button class="dial-btn" data-depth="cmo" type="button"><span class="full">I'm a CMO</span><span class="short">CMO</span></button>
@@ -1816,8 +1817,10 @@ function openScene(sc) {
       ctx.fillStyle = 'rgba(252,243,214,' + (.5 + pb * .5) + ')';
       ctx.fillText(fmtN(count), w / 2, 44);
       ctx.font = '500 11px Poppins, sans-serif';
-      ctx.fillStyle = 'rgba(252,243,214,.5)';
-      ctx.fillText(dtxt('signs hoping to be seen', 'eligible ads for this one slot', 'eligible candidates, this request'), w / 2, 62);
+      ctx.fillStyle = BRAND ? 'rgba(254,124,43,.85)' : 'rgba(252,243,214,.5)';
+      ctx.fillText(BRAND
+        ? 'somewhere in those millions is ' + BRAND.name + '’s ad'
+        : dtxt('signs hoping to be seen', 'eligible ads for this one slot', 'eligible candidates, this request'), w / 2, 62);
     }
     // the question
     if (pc > 0.05) {
@@ -2207,7 +2210,7 @@ function auctionScene(sc) {
       ctx.font = '700 10px Poppins, sans-serif';
       ctx.textAlign = 'center';
       ctx.fillStyle = 'rgba(254,124,43,.9)';
-      ctx.fillText(dtxt('your sign!', 'your ad', 'your ad'), phX, phY + phH / 2 + 16);
+      ctx.fillText(BRAND ? BRAND.name + '’s ad' : dtxt('your sign!', 'your ad', 'your ad'), phX, phY + phH / 2 + 16);
       ctx.globalAlpha = 1;
 
       // the timer
@@ -2365,6 +2368,127 @@ function streamClaude(payload, onDelta) {
       });
     }
     return pump();
+  });
+}
+
+/* ============================================================
+   BRAND CONTEXT — one object threaded through the whole portal.
+   Set from the entry, the Scanner, or ?brand=<domain>. Cached in
+   sessionStorage per domain. Failures degrade to {name: domain}.
+   ============================================================ */
+var BRAND = null, brandAutoScanned = null;
+function escHtml(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+function normDomain(raw) {
+  var d = String(raw || '').trim().toLowerCase()
+    .replace(/^https?:\/\//, '').replace(/^www\./, '').split(/[\/?#]/)[0];
+  return /^[a-z0-9.-]+\.[a-z]{2,}$/.test(d) ? d : null;
+}
+function prettyDomain(dom) {
+  var base = dom.split('.')[0].replace(/[-_]+/g, ' ');
+  return base.replace(/\b\w/g, function (c) { return c.toUpperCase(); });
+}
+function youLabel() { return BRAND ? BRAND.name + '’s ad' : 'your ad'; }
+function parseSiteLite(html, dom) {
+  try {
+    var doc = new DOMParser().parseFromString(html, 'text/html');
+    var pick = function (sel, attr) { var el = doc.querySelector(sel); return el ? (attr ? el.getAttribute(attr) : el.textContent).trim() : ''; };
+    return {
+      domain: dom,
+      title: pick('title'),
+      siteName: pick('meta[property="og:site_name"]', 'content'),
+      description: pick('meta[name="description"]', 'content') || pick('meta[property="og:description"]', 'content'),
+      headlines: Array.from(doc.querySelectorAll('h1, h2')).slice(0, 4)
+        .map(function (h) { return h.textContent.replace(/\s+/g, ' ').trim(); }).filter(Boolean),
+      ogType: pick('meta[property="og:type"]', 'content'),
+    };
+  } catch (e) { return { domain: dom, title: '', siteName: '', description: '', headlines: [], ogType: '' }; }
+}
+function applyBrandUI() {
+  var slot = $('brandSlot');
+  if (!slot) return;
+  if (BRAND) {
+    slot.innerHTML = '<span class="brand-chip">viewing as: <b>' + escHtml(BRAND.name) + '</b>' +
+      '<button id="brandClear" type="button" aria-label="Clear brand context">✕</button></span>';
+    var bc = $('brandClear');
+    if (bc) bc.addEventListener('click', clearBrand);
+  } else {
+    slot.innerHTML = '<a class="brand-link" href="#/scanner">make this about your brand</a>';
+  }
+}
+function clearBrand() {
+  BRAND = null;
+  brandAutoScanned = null;
+  try { sessionStorage.removeItem('gd-brand-active'); } catch (e) { }
+  applyBrandUI();
+  render();
+}
+function refreshForBrand() {
+  applyBrandUI();
+  var slug = parseHash().slug;
+  if (slug === 'creative' || slug === 'scanner') render();  // chip labels & prefill live in DOM
+  // machine + auction labels read BRAND live from their canvas loops
+}
+/* returns a promise resolving to the (possibly minimal) BRAND */
+function setBrandDomain(raw) {
+  var dom = normDomain(raw);
+  if (!dom) return Promise.resolve(null);
+  if (BRAND && BRAND.domain === dom && BRAND.resolved) { applyBrandUI(); return Promise.resolve(BRAND); }
+  BRAND = { domain: dom, name: prettyDomain(dom), resolved: false };
+  try { sessionStorage.setItem('gd-brand-active', dom); } catch (e) { }
+  applyBrandUI();
+  try {
+    var cached = sessionStorage.getItem('gd-brand-' + dom);
+    if (cached) {
+      BRAND = JSON.parse(cached);
+      refreshForBrand();
+      return Promise.resolve(BRAND);
+    }
+  } catch (e) { }
+  return fetch(PROXY_URL + '/fetch', {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ url: 'https://' + dom }),
+  }).then(function (r) {
+    if (!r.ok) throw 0;
+    return r.json();
+  }).then(function (f) {
+    if (!f.html) throw 0;
+    var sig = parseSiteLite(f.html, dom);
+    if (BRAND && BRAND.domain === dom) {
+      BRAND.signals = sig;
+      if (sig.siteName) { BRAND.name = sig.siteName; applyBrandUI(); }
+    }
+    return fetch(PROXY_URL + '/claude', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-haiku-4-5', max_tokens: 400, stream: false,
+        system: 'You will receive parsed public signals from a brand homepage. Reply with STRICT JSON only — no prose, no code fences: {"name": short brand name, "category": 2-4 word category, "offer": one line describing what they sell, "oneLiner": one sharp sentence describing the brand, "hooks": [4 plausible and genuinely different Meta ad hooks for this brand, each under 10 words]}',
+        messages: [{ role: 'user', content: JSON.stringify(sig) }],
+      }),
+    }).then(function (r2) {
+      if (!r2.ok) throw 0;
+      return r2.json();
+    }).then(function (j) {
+      var txt = (j.content || []).map(function (b) { return b.text || ''; }).join('');
+      var m = txt.match(/\{[\s\S]*\}/);
+      var data = JSON.parse(m[0]);
+      if (BRAND && BRAND.domain === dom) {
+        BRAND = {
+          domain: dom, resolved: true,
+          name: data.name || BRAND.name,
+          category: data.category || '',
+          offer: data.offer || '',
+          oneLiner: data.oneLiner || '',
+          hooks: Array.isArray(data.hooks) ? data.hooks.slice(0, 4) : [],
+          signals: sig,
+        };
+        try { sessionStorage.setItem('gd-brand-' + dom, JSON.stringify(BRAND)); } catch (e) { }
+        refreshForBrand();
+      }
+      return BRAND;
+    });
+  }).catch(function () {
+    // 429/503/blocked/anything: keep {domain, name} and never block the portal
+    return BRAND;
   });
 }
 
@@ -2529,6 +2653,14 @@ INITS.scanner = function () {
   });
   $('scanUrl').addEventListener('keydown', function (e) { if (e.key === 'Enter') $('scanGo').click(); });
   $('scanDemo').addEventListener('click', function () { $('scanUrl').value = 'https://thegrowthden.com'; scan('https://thegrowthden.com'); });
+  // brand context: arrive pre-filled and auto-run once per domain
+  if (BRAND) {
+    $('scanUrl').value = BRAND.domain;
+    if (brandAutoScanned !== BRAND.domain) {
+      brandAutoScanned = BRAND.domain;
+      scan('https://' + BRAND.domain);
+    }
+  }
   return null;
 };
 VIEWS.scanner = viewScanner;
@@ -2629,7 +2761,10 @@ var CCHIPS = [
   { cat: 'proof', label: 'live plaque-reveal demo', spec: .85, ages: [.6, .7, .5], ints: { 4: .9, 2: .6 } },
   { cat: 'proof', label: '4,132 five-star reviews', spec: .6, ages: [.6, .7, .6], ints: { 16: .85, 32: .6 } },
   { cat: 'proof', label: '“trust us”', spec: .05, flat: true },
+  /* index 14: reserved vector for a brand's 4th generated hook (label set at render) */
+  { cat: 'hook', label: '', spec: .8, ages: [.6, .7, .5], ints: { 4: .7, 16: .5 }, brandExtra: true },
 ];
+var BRAND_HOOK_SLOTS = [1, 0, 2, 14];   // brand hooks ride the existing affinity vectors
 var CCATS = ['hook', 'visual', 'tone', 'proof'];
 var C_SPECIFIC = [1, 4, 8, 11], C_GENERIC = [3, 7, 10, 13];
 var CPERSONA = {
@@ -2643,13 +2778,30 @@ var CPERSONA = {
 };
 
 function viewCreative() {
+  var brandHooks = BRAND && BRAND.hooks && BRAND.hooks.length >= 3 ? BRAND.hooks : null;
   var chipHtml = CCATS.map(function (cat) {
     var names = { hook: 'HOOK', visual: 'VISUAL', tone: 'TONE', proof: 'PROOF' };
-    return '<div class="cchip-group"><h4>' + names[cat] + '</h4><div class="cchip-row">' +
-      CCHIPS.map(function (c, i) {
-        if (c.cat !== cat) return '';
+    var rows;
+    if (cat === 'hook' && brandHooks) {
+      // the brand's generated hooks ride the existing affinity vectors;
+      // the generic example chips stay available as a second row
+      rows = '<div class="cchip-row">' + brandHooks.map(function (hk, i) {
+        var ci = BRAND_HOOK_SLOTS[i];
+        return ci === undefined ? '' : '<button class="cchip" data-ci="' + ci + '" type="button">“' + escHtml(hk) + '”</button>';
+      }).join('') + '</div>' +
+      '<div class="cchip-row" style="margin-top:6px">' + CCHIPS.map(function (c, i) {
+        if (c.cat !== 'hook' || !c.flat) return '';
+        return '<button class="cchip generic" data-ci="' + i + '" type="button">' + c.label + '</button>';
+      }).join('') + '</div>';
+    } else {
+      rows = '<div class="cchip-row">' + CCHIPS.map(function (c, i) {
+        if (c.cat !== cat || c.brandExtra) return '';
         return '<button class="cchip' + (c.flat ? ' generic' : '') + '" data-ci="' + i + '" type="button">' + c.label + '</button>';
-      }).join('') + '</div></div>';
+      }).join('') + '</div>';
+    }
+    return '<div class="cchip-group"><h4>' + names[cat] +
+      (cat === 'hook' && brandHooks ? ' <span style="font-weight:400;letter-spacing:.02em;text-transform:none;color:var(--your-ad)">· generated for ' + escHtml(BRAND.name) + '</span>' : '') +
+      '</h4>' + rows + '</div>';
   }).join('');
   return '<div class="view-pad">' +
     '<p class="room-kicker">The Growth Den Lab · The Machine</p>' +
@@ -3426,8 +3578,19 @@ INITS.auction = function () {
     if (note) setCapEl('a.cap.reset');
     syncUI();
   }
-  function setCapEl(key) { var el = $('auCap'); if (el) el.innerHTML = d3(key); }
+  function setCapEl(key) {
+    var el = $('auCap'); if (!el) return;
+    el.innerHTML = d3(key) + (BRAND && BRAND.category
+      ? '<span style="display:block;font-size:10.5px;color:var(--your-ad);margin-top:3px">for a ' + escHtml(BRAND.category) + ' brand like ' + escHtml(BRAND.name) + ' — same mechanics, your numbers</span>'
+      : '');
+  }
   function fm(v) { return '$' + v.toFixed(2); }
+  function setScen(key) {
+    var el = $('scenCap'); if (!el) return;
+    el.innerHTML = d3(key) + (BRAND && BRAND.category
+      ? '<span style="display:block;font-size:11.5px;color:var(--your-ad);margin-top:4px">seeded for ' + escHtml(BRAND.name) + ' (' + escHtml(BRAND.category) + ') — same mechanics, your numbers</span>'
+      : '');
+  }
   function syncUI() {
     if (!$('stDay')) return;
     $('auBidV').textContent = fm(AU.bid);
@@ -3503,7 +3666,7 @@ INITS.auction = function () {
     cx.restore();
     cx.font = '700 11px Poppins, sans-serif'; cx.textAlign = 'center';
     cx.fillStyle = 'rgba(254,124,43,.9)';
-    cx.fillText(dtxt('you', 'your ad', 'your ad'), yx, yy + 28);
+    cx.fillText(BRAND ? BRAND.name + '’s ad' : dtxt('you', 'your ad', 'your ad'), yx, yy + 28);
     cx.font = '600 11px Poppins, sans-serif';
     cx.fillStyle = 'rgba(252,243,214,.5)';
     cx.fillText(dtxt('the other stands drift and change each day', 'competitors drift daily — size = bid, glow = creative', 'competitor set · size=bid, glow=cs, alpha=freshness'), W / 2, 24);
@@ -3550,7 +3713,7 @@ INITS.auction = function () {
     var base = measure(AU.bid, AU.cs, 600);
     var b2 = measure(AU.bid * 2, AU.cs, 600);
     var c2 = measure(AU.bid, Math.min(10, AU.cs * 2), 600);
-    $('scenCap').innerHTML = d3('a.cap.sc1');
+    setScen('a.cap.sc1');
     $('scenTable').innerHTML = '<table class="cmp-table"><tr><th>setup</th><th>win rate</th><th>effective CPM</th></tr>' +
       '<tr><td>baseline (bid ' + fm(AU.bid) + ', creative ' + AU.cs + ')</td><td>' + Math.round(base.wr * 100) + '%</td><td>' + (base.cpm ? fm(base.cpm) : '—') + '</td></tr>' +
       '<tr><td>2× bid</td><td>' + Math.round(b2.wr * 100) + '%</td><td>' + (b2.cpm ? fm(b2.cpm) : '—') + '</td></tr>' +
@@ -3559,27 +3722,27 @@ INITS.auction = function () {
   scen('sc2', function () {
     AU.q4 = !AU.q4;
     $('sc2').classList.toggle('pressed', AU.q4);
-    $('scenCap').innerHTML = d3(AU.q4 ? 'a.cap.sc2on' : 'a.cap.sc2off');
+    setScen(AU.q4 ? 'a.cap.sc2on' : 'a.cap.sc2off');
     $('scenTable').innerHTML = '';
     resetT(false);
   });
   scen('sc3', function () {
     AU.bait = !AU.bait;
     $('sc3').classList.toggle('pressed', AU.bait);
-    $('scenCap').innerHTML = d3(AU.bait ? 'a.cap.sc3on' : 'a.cap.sc3off');
+    setScen(AU.bait ? 'a.cap.sc3on' : 'a.cap.sc3off');
     $('scenTable').innerHTML = '';
     resetT(false);
   });
   scen('sc4', function () {
     AU.cap = !AU.cap;
     $('sc4').classList.toggle('pressed', AU.cap);
-    $('scenCap').innerHTML = d3(AU.cap ? 'a.cap.sc4on' : 'a.cap.sc4off');
+    setScen(AU.cap ? 'a.cap.sc4on' : 'a.cap.sc4off');
     $('scenTable').innerHTML = '';
     resetT(false);
   });
   scen('sc5', function () {
     for (var i = 0; i < 5; i++) runDay(true);
-    $('scenCap').innerHTML = d3('a.cap.sc5');
+    setScen('a.cap.sc5');
     $('scenTable').innerHTML = '';
     syncUI();
   });
@@ -3624,6 +3787,7 @@ function render() {
   if (cur.params.d && DEPTHS.indexOf(cur.params.d) >= 0 && cur.params.d !== depth) {
     setDepth(cur.params.d, true);
   }
+  if (cur.params.brand && typeof setBrandDomain === 'function') setBrandDomain(cur.params.brand);
   canonicalizeHash();
   var room = ROOMS.filter(function (r) { return r.slug === cur.slug; })[0];
   CLAIMS.length = 0;
@@ -3820,6 +3984,15 @@ window.addEventListener('resize', function () {
 });
 
 setDepth(depth, true);
+/* restore brand context: ?brand= in the query string, or this session's active brand */
+try {
+  var qs = new URLSearchParams(location.search);
+  var qBrand = qs.get('brand');
+  var actBrand = sessionStorage.getItem('gd-brand-active');
+  if (qBrand) setBrandDomain(qBrand);
+  else if (actBrand) setBrandDomain(actBrand);
+  else applyBrandUI();
+} catch (e) { applyBrandUI(); }
 if (!location.hash || location.hash === '#' || location.hash === '#/') {
   showEntry();
 } else {
