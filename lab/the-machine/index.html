@@ -13,6 +13,17 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <title>The Machine — how Meta's ad delivery system works · The Growth Den Lab</title>
 <meta name="description" content="Follow one impression through Meta's ad delivery pipeline — retrieval, ranking, the value equation, the auction — in the ~100ms before an ad appears.">
 <meta name="robots" content="noindex">
+<meta property="og:type" content="website">
+<meta property="og:title" content="The Machine — how Meta decides which ad you see">
+<meta property="og:description" content="Millions of ads collapse to the one on your screen in about 100 milliseconds — walk through exactly how the machine chooses, step by step.">
+<meta property="og:url" content="https://thegrowthden.com/lab/the-machine/">
+<meta property="og:image" content="https://thegrowthden.com/lab/the-machine/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The Machine — how Meta decides which ad you see">
+<meta name="twitter:description" content="Millions of ads collapse to the one on your screen in about 100 milliseconds — walk through exactly how the machine chooses, step by step.">
+<meta name="twitter:image" content="https://thegrowthden.com/lab/the-machine/og.png">
 <link rel="icon" href="../../favicon-32x32.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -69,13 +80,10 @@ img { display: block; max-width: 100%; }
 a { color: var(--gold); }
 b { font-weight: 600; }
 
-/* ---------- depth registers: stacked in place so the layout engine
-     reserves the tallest register per block — no shift on switch ---------- */
-.d3 { display: grid; }
-.d3 > span { grid-area: 1 / 1; transition: opacity .32s ease; }
-body.d-kid .d3 > .cmo, body.d-kid .d3 > .pro,
-body.d-cmo .d3 > .kid, body.d-cmo .d3 > .pro,
-body.d-pro .d3 > .kid, body.d-pro .d3 > .cmo { opacity: 0; pointer-events: none; user-select: none; }
+/* ---------- depth registers: only the active teaching mode renders ---------- */
+.d3 { display: block; }
+.d3 > span { display: none; }
+body.d-kid .d3 > .kid, body.d-cmo .d3 > .cmo, body.d-pro .d3 > .pro { display: block; }
 
 /* ---------- top bar ---------- */
 #topbar {
@@ -95,23 +103,38 @@ body.d-pro .d3 > .kid, body.d-pro .d3 > .cmo { opacity: 0; pointer-events: none;
   white-space: nowrap;
 }
 
-/* the Depth Dial */
-#dial {
-  display: flex; border: 1.5px solid rgba(252,243,214,.45); border-radius: 100px;
-  overflow: hidden; background: rgba(26,16,37,.7); flex: 0 0 auto;
-}
-.dial-btn {
+/* Teaching mode — compact header menu (Operator is the default) */
+#modeWrap { position: relative; flex: 0 0 auto; }
+#modeBtn {
   font-family: 'Poppins', sans-serif; font-weight: 600; font-size: 12px;
-  border: none; background: transparent; color: var(--muted);
-  padding: 9px 13px; cursor: pointer; white-space: nowrap; min-height: 40px;
-  transition: background .25s, color .25s;
+  color: var(--muted); background: rgba(26,16,37,.7);
+  border: 1.5px solid rgba(252,243,214,.3); border-radius: 100px;
+  padding: 8px 13px; cursor: pointer; white-space: nowrap; min-height: 38px;
+  transition: color .2s, border-color .2s;
 }
-.dial-btn.active { background: var(--cream); color: var(--deep); font-weight: 700; }
-.dial-btn .short { display: none; }
+#modeBtn:hover, #modeBtn[aria-expanded="true"] { color: var(--cream); border-color: rgba(252,243,214,.55); }
+#modeBtn .short { display: none; }
+#modeList {
+  position: absolute; right: 0; top: calc(100% + 8px); z-index: 60;
+  min-width: 250px; padding: 6px;
+  background: rgba(26,16,37,.97); border: 1px solid var(--line); border-radius: 14px;
+  box-shadow: 0 14px 40px rgba(0,0,0,.5);
+}
+.mode-opt {
+  display: block; width: 100%; text-align: left;
+  font-family: 'Poppins', sans-serif; font-size: 12.5px; font-weight: 600;
+  color: var(--muted); background: transparent; border: none; border-radius: 10px;
+  padding: 9px 11px; cursor: pointer; min-height: 40px;
+  transition: background .2s, color .2s;
+}
+.mode-opt:hover { background: rgba(252,243,214,.08); color: var(--cream); }
+.mode-opt.active { color: var(--cream); }
+.mode-opt.active::before { content: '✓ '; color: var(--gold); }
+.mode-opt .mo-sub { display: block; font-size: 10.5px; font-weight: 400; color: var(--muted); margin-top: 2px; }
 @media (max-width: 640px) {
-  .dial-btn { padding: 9px 10px; font-size: 11.5px; }
-  .dial-btn .full { display: none; }
-  .dial-btn .short { display: inline; }
+  #modeBtn { padding: 8px 11px; font-size: 11.5px; }
+  #modeBtn .full { display: none; }
+  #modeBtn .short { display: inline; }
 }
 
 /* ---------- tab pill bar ---------- */
@@ -202,7 +225,7 @@ h1.room-title {
 .badge .sym { font-size: 10px; }
 .badge.g-meta { color: var(--gold); border-color: rgba(255,197,69,.55); }
 .badge.g-measured { color: var(--sky); border-color: rgba(127,200,240,.55); }
-.badge.g-folklore { color: var(--muted); border-color: rgba(252,243,214,.35); }
+.badge.g-folklore { color: rgba(255,197,69,.85); border-color: rgba(255,197,69,.45); border-style: dashed; }
 .badge:hover { filter: brightness(1.2); }
 
 #popover {
@@ -647,16 +670,18 @@ h1.room-title {
   color: var(--deep); background: var(--gold); border-radius: 4px; padding: 1px 6px; margin-right: 6px;
 }
 
-/* ---------- ask the machine (chat) ---------- */
+/* ---------- ask the machine (chat) — quiet corner icon, no label ---------- */
 #askBtn {
   position: fixed; right: 16px; bottom: 16px; z-index: 65;
-  display: inline-flex; align-items: center; gap: 8px;
-  font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 13px;
-  color: var(--deep); background: var(--gold);
-  border: none; border-radius: 100px; padding: 12px 18px; min-height: 48px;
-  cursor: pointer; box-shadow: 0 10px 30px rgba(0,0,0,.45);
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 46px; height: 46px; padding: 0; font-size: 20px; line-height: 1;
+  color: var(--cream); background: rgba(26,16,37,.85); backdrop-filter: blur(8px);
+  border: 1.5px solid rgba(252,243,214,.35); border-radius: 50%;
+  cursor: pointer; box-shadow: 0 8px 24px rgba(0,0,0,.4);
+  transition: border-color .2s, transform .15s;
 }
-#askBtn:active { transform: scale(.96); }
+#askBtn:hover { border-color: var(--gold); }
+#askBtn:active { transform: scale(.94); }
 #askPanel {
   position: fixed; right: 12px; bottom: 12px; z-index: 70;
   width: min(420px, calc(100vw - 24px)); height: min(560px, 78svh);
@@ -720,6 +745,24 @@ h1.room-title {
 }
 .sig b { display: block; font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: var(--sky); }
 
+/* the report card — self-contained, og.png aesthetic */
+#scanReport { padding: 0; overflow: hidden; }
+.rep-head {
+  position: relative; min-height: 150px;
+  background:
+    radial-gradient(ellipse 90% 70% at 80% 0%, rgba(37,100,147,.4) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 45% at 4% 100%, rgba(229,52,11,.15) 0%, transparent 55%),
+    #140b1e;
+  border-bottom: 1px solid var(--line);
+}
+.rep-head canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+.rep-head-txt { position: relative; padding: 28px 22px 24px; }
+.rep-head-txt .rk { font-size: 10px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: var(--sky); margin-bottom: 4px; }
+.rep-head-txt h2 { font-size: 26px; line-height: 1.2; color: var(--white); margin: 0 0 5px; border: none; padding: 0; }
+.rep-head-txt .rd { font-size: 12px; color: var(--muted); }
+.rep-body { padding: 16px 22px 22px; }
+.rep-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 18px; }
+
 /* ---------- placeholder rooms ---------- */
 .bench { text-align: center; padding: 52px 24px 46px; border-style: dashed; border-width: 1.5px; }
 .flask { font-size: 54px; display: inline-block; animation: bubble 2.6s ease-in-out infinite; }
@@ -735,6 +778,140 @@ h1.room-title {
   font-family: ui-monospace, monospace; font-size: 11px;
   background: rgba(252,243,214,.08); border-radius: 6px; padding: 2px 7px;
 }
+
+/* ---------- under-the-hood drawers ---------- */
+details.drawer {
+  background: var(--glass); border: 1px solid var(--line); border-radius: var(--r);
+  margin-bottom: 16px; overflow: hidden;
+}
+details.drawer > summary {
+  list-style: none; cursor: pointer;
+  display: flex; align-items: center; gap: 10px;
+  padding: 16px 20px; min-height: 54px;
+  font-size: 15px; font-weight: 700; color: var(--cream);
+}
+details.drawer > summary::-webkit-details-marker { display: none; }
+details.drawer > summary::after {
+  content: '＋'; margin-left: auto; font-size: 18px; color: var(--gold);
+  transition: transform .2s;
+}
+details.drawer[open] > summary::after { content: '－'; }
+details.drawer > summary .dr-sub {
+  font-size: 11.5px; font-weight: 400; color: var(--muted); display: block;
+}
+details.drawer .drawer-body {
+  padding: 4px 20px 20px;
+  font-size: 14px; line-height: 1.7; color: var(--muted);
+  border-top: 1px dashed var(--line);
+}
+details.drawer .drawer-body p { margin-bottom: 10px; }
+details.drawer .drawer-body b, details.drawer .drawer-body i { color: var(--cream); }
+
+/* ---------- myths, graded (auction floor) ---------- */
+.myth-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 8px; }
+.myth-card {
+  border: 1px solid var(--line); border-radius: 16px;
+  background: rgba(252,243,214,.04); padding: 16px;
+}
+.myth-card .mq { font-size: 14.5px; font-weight: 600; font-style: italic; color: var(--white); margin-bottom: 8px; }
+.myth-card .mb { font-size: 12.5px; line-height: 1.6; color: var(--muted); margin-top: 8px; }
+.myth-card .mb b { color: var(--cream); }
+@media (max-width: 760px) { .myth-grid { grid-template-columns: 1fr; } }
+
+/* quiet per-room attribution strip (machine / auction / creative only) */
+.cta-strip { max-width: 1100px; margin: 4px auto 0; padding: 0 16px 10px; text-align: center; }
+.cta-strip a { font-size: 12.5px; color: var(--muted); text-decoration: none; border-bottom: 1px dotted rgba(252,243,214,.35); transition: color .2s; }
+.cta-strip a:hover { color: var(--cream); }
+
+/* the one hard CTA — end of the scanner report */
+.talk-cta { margin-top: 20px; padding-top: 18px; border-top: 1px solid var(--line); text-align: center; }
+.talk-cta p { font-size: 13.5px; color: var(--muted); margin-bottom: 12px; }
+.talk-cta a {
+  display: inline-block; font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 14.5px;
+  color: var(--deep); background: var(--gold); border-radius: 100px;
+  padding: 13px 24px; min-height: 48px; text-decoration: none;
+}
+.talk-cta a:active { transform: scale(.97); }
+
+/* folklore-graded cards look like folklore at arm's length:
+   dashed border, amber tint, "unverified" tag */
+.folk-card {
+  position: relative;
+  border: 1.5px dashed rgba(255,197,69,.5) !important;
+  background: rgba(255,197,69,.055) !important;
+}
+.folk-card::after {
+  content: 'unverified';
+  position: absolute; top: 9px; right: 12px;
+  font-size: 9px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
+  color: rgba(255,197,69,.75); pointer-events: none;
+}
+
+/* ---------- the entry (first load, no hash) ---------- */
+body.entry-mode #topbar, body.entry-mode #tabbar, body.entry-mode #foot,
+body.entry-mode #askBtn, body.entry-mode #askPanel { display: none !important; }
+.entry { position: relative; min-height: 100dvh; overflow: hidden; }
+.entry canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+.entry-overlay {
+  position: relative; z-index: 3;
+  min-height: 100dvh; display: flex; flex-direction: column;
+  align-items: center; justify-content: flex-end;
+  padding: 24px 18px calc(24px + env(safe-area-inset-bottom, 0px));
+  pointer-events: none;
+}
+.entry-overlay > * { pointer-events: auto; }
+.entry-title {
+  text-align: center; margin-bottom: 10px;
+  animation: entry-in .6s ease both;
+}
+.entry-title .ek {
+  font-size: 11px; font-weight: 700; letter-spacing: .22em; text-transform: uppercase;
+  color: var(--your-ad);
+}
+.entry-title h1 {
+  font-size: clamp(34px, 8vw, 58px); font-weight: 800; letter-spacing: -.01em;
+  color: var(--white); line-height: 1.05;
+}
+.entry-title .es { font-size: 14px; color: var(--muted); margin-top: 6px; }
+.entry-card {
+  width: min(560px, 100%);
+  background: rgba(26,16,37,.9); backdrop-filter: blur(10px);
+  border: 1px solid rgba(252,243,214,.25); border-radius: var(--r);
+  padding: 18px; box-shadow: 0 24px 60px rgba(0,0,0,.5);
+  animation: entry-in .6s ease .25s both;
+}
+@keyframes entry-in { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+.entry-card label { display: block; font-size: 13.5px; font-weight: 600; color: var(--cream); margin-bottom: 10px; line-height: 1.5; }
+.entry-row { display: flex; gap: 8px; flex-wrap: wrap; }
+.entry-row input {
+  flex: 1; min-width: 200px; font-family: 'Poppins', sans-serif; font-size: 15px;
+  color: var(--cream); background: rgba(252,243,214,.07);
+  border: 1.5px solid rgba(252,243,214,.35); border-radius: 100px;
+  padding: 12px 18px; min-height: 50px; outline: none;
+}
+.entry-row input:focus { border-color: var(--gold); }
+.entry-links {
+  display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;
+  margin-top: 14px; font-size: 13.5px;
+}
+.entry-links a { color: var(--muted); text-decoration: underline; padding: 6px 2px; min-height: 34px; }
+.entry-links a:hover { color: var(--cream); }
+.entry-skip {
+  position: absolute; top: 14px; right: 16px; z-index: 4;
+  font-size: 11px; color: rgba(252,243,214,.45); pointer-events: none;
+}
+
+/* header extras: brand chip + menu (steps 2 & 4) */
+#brandSlot { display: flex; align-items: center; min-width: 0; flex: 1; justify-content: flex-end; }
+.brand-chip {
+  display: inline-flex; align-items: center; gap: 7px;
+  font-size: 12px; font-weight: 600; color: var(--deep);
+  background: var(--your-ad); border-radius: 100px; padding: 6px 12px;
+  max-width: 230px; white-space: nowrap; overflow: hidden;
+}
+.brand-chip b { overflow: hidden; text-overflow: ellipsis; }
+.brand-chip button { background: none; border: none; color: var(--deep); font-weight: 800; cursor: pointer; font-size: 13px; padding: 2px 4px; }
+.brand-link { font-size: 12px; color: var(--muted); text-decoration: underline; white-space: nowrap; }
 
 /* ---------- footer ---------- */
 #foot {
@@ -777,28 +954,41 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <img src="../../uploads/Growth_Den__Logo_Horizontal_White.svg" alt="The Growth Den">
     <span class="lab-tag">Lab · The Machine</span>
   </a>
-  <div id="dial" role="group" aria-label="Depth dial — choose how deep the explanations go">
-    <button class="dial-btn" data-depth="kid" type="button"><span class="full">I'm 8</span><span class="short">8</span></button>
-    <button class="dial-btn" data-depth="cmo" type="button"><span class="full">I'm a CMO</span><span class="short">CMO</span></button>
-    <button class="dial-btn" data-depth="pro" type="button"><span class="full">I work in ads</span><span class="short">Pro</span></button>
+  <div id="brandSlot"></div>
+  <div id="modeWrap">
+    <button id="modeBtn" type="button" aria-haspopup="menu" aria-expanded="false"><span class="full">Teaching mode</span><span class="short">Mode</span> ▾</button>
+    <div id="modeList" role="menu" aria-label="Teaching mode" hidden>
+      <button class="mode-opt" data-depth="cmo" type="button" role="menuitemradio">Operator</button>
+      <button class="mode-opt" data-depth="kid" type="button" role="menuitemradio">Explain it like I’m 8<span class="mo-sub">the same machine, taught to anyone — try it</span></button>
+      <button class="mode-opt" data-depth="pro" type="button" role="menuitemradio">Full pro detail</button>
+    </div>
   </div>
 </header>
 
 <nav id="tabbar" aria-label="Rooms"><div class="rail" id="tabRail"></div></nav>
 
-<main id="view"></main>
+<main id="view">
+  <!-- static fallback: replaced by the app the moment JS boots -->
+  <div class="view-pad" style="max-width:720px;margin:0 auto;padding:48px 20px;font-size:15px;line-height:1.75;color:rgba(252,243,214,.85)">
+    <h1 style="font-size:26px;color:#fff;margin-bottom:14px">The Machine — how Meta decides which ad you see</h1>
+    <p style="margin-bottom:12px">Every time you open Instagram or Facebook, millions of ads are technically eligible to fill the slot in front of you. In roughly 100 milliseconds, Meta's delivery system collapses those millions down to one: retrieval models pull a few thousand plausible candidates, ranking models score what you're actually likely to do with each, a value equation blends bid, predicted action rate and ad quality, and an auction clears — with the winner paying the minimum needed to win.</p>
+    <p style="margin-bottom:12px">The Machine is an interactive walkthrough of that pipeline: watch the collapse happen, run the auction yourself against simulated competitors, see why creative has become the targeting, and scan any brand's public signals the way the delivery system might read them. Every claim is graded — Meta-published, independently measured, or practitioner folklore — so you always know which parts are documented and which are industry legend.</p>
+    <p style="color:rgba(252,243,214,.55);font-size:13px">This page needs JavaScript — the whole thing is a live simulation. From <a href="/" style="color:#ffc545">The Growth Den</a>.</p>
+  </div>
+</main>
 
 <footer id="foot">
   <p>Built with AI · <a href="/">The Growth Den</a> · Enter with problems. Exit with systems.</p>
+  <p style="margin-top:6px"><a href="#/dispatch">Lab notes: what’s changed at Meta lately</a></p>
 </footer>
 
 <div id="popover" hidden></div>
 <div id="detail" hidden><div class="detail-card" id="detailCard"></div></div>
 
-<button id="askBtn" type="button">🤖 Ask the Machine</button>
+<button id="askBtn" type="button" aria-label="Ask the Machine" title="Ask the Machine">🤖</button>
 <div id="askPanel" aria-label="Ask the Machine chat">
   <div class="ask-head">
-    <span><b>🤖 Ask the Machine</b><span class="ask-sub">answers only from this portal · at your dial setting</span></span>
+    <span><b>🤖 Ask the Machine</b><span class="ask-sub">answers only from this portal · at your teaching mode</span></span>
     <button class="ask-close" id="askClose" type="button" aria-label="Close">✕</button>
   </div>
   <div class="ask-msgs" id="askMsgs"></div>
@@ -864,9 +1054,9 @@ var CONTENT = {
     pro: 'Creative-side signal: hook taxonomy, diversity vs. account structure, the real cost of exploration.',
   },
   'scanner.tag': {
-    kid: 'Feed your ad to the scanner and see what the machine sees.',
-    cmo: 'Pre-flight your creative: quality flags, policy tripwires, a signal readout before you spend.',
-    pro: 'Static pre-flight heuristics: low-quality attributes, policy surface area, expected signal profile.',
+    kid: 'Feed any brand’s website to the scanner and see what the machine sees.',
+    cmo: 'How the Machine sees any brand: public homepage signals in, a delivery-eye report out.',
+    pro: 'Public-signal parse → grounded model read → ten distinct angle territories. Downloadable, shareable.',
   },
   'dispatch.tag': {
     kid: 'Lab news! What we built, what broke, what we learned.',
@@ -1121,9 +1311,9 @@ var CONTENT = {
     pro: 'Config changed; counters zeroed.',
   },
   'a.next': {
-    kid: 'You know how the race is won. Next: how the machine figures out what each visitor wants — by watching what they just did.',
-    cmo: 'You have the clearing mechanics. Next: how the machine reads the person — sequences, recency, and why fatigue is measurable.',
-    pro: 'Clearing done. Next: sequence modeling, recency weighting, and fatigue diagnostics.',
+    kid: 'You know how the race is won. Next: how your ad calls its own crowd of people.',
+    cmo: 'You have the clearing mechanics. Next: how creative broadcasts the signal that assembles your audience.',
+    pro: 'Clearing done. Next: creative-side signal and cohort assembly.',
   },
 
   /* ============ the model room ============ */
@@ -1297,9 +1487,9 @@ var CONTENT = {
     pro: '<p><b>Coverage comparison.</b> 25 distinct concepts ≈ broad trait-space coverage; 5×5 clones ≈ one neighborhood, oversampled. The oft-cited internal Meta test backing this exact comparison reached us secondhand — hence the folklore-grade badge on the specific numbers, while the mechanism itself follows from everything above.</p>',
   },
   'c.next': {
-    kid: 'Your ad calls the crowd. Next: meet the actual machines that make it all run.',
-    cmo: 'Creative is the signal. Next: the named systems that read it — Andromeda, GEM, Lattice.',
-    pro: 'Signal side complete. Next: the model estate.',
+    kid: 'Your ad calls the crowd. Last stop: point the scanner at any brand and see what the machine sees.',
+    cmo: 'Creative is the signal. Last stop: scan a real brand — yours — and read what its site feeds delivery.',
+    pro: 'Signal side complete. Last stop: the scanner — live signal read on any domain.',
   },
 
   /* ============ the dispatch ============ */
@@ -1316,9 +1506,9 @@ var CONTENT = {
 
   /* ============ brand scanner + chat ============ */
   's.intro': {
-    kid: '<p>Type in any brand’s website, and the scanner reads it the way the fair’s machines would: what the site is about, whether it wears the fair’s little tracking pin, and what kinds of signs it could make. Then our helper writes a report card. Try the demo button — it scans our own site!</p>',
-    cmo: '<p>Point the scanner at a brand’s homepage. It reads the public signals a site feeds delivery — title, description, detectable Meta pixel, offer language — links you to their live ads in Meta’s own transparency tool, and then writes “How the Machine Sees This Brand” at your current depth, ending with ten genuinely different angle opportunities.</p>',
-    pro: '<p>Client-side parse of the fetched homepage (title, meta, fbq detection, offer/category signals) → deep link into the Ad Library (we link, never scrape) → one model call producing the delivery-signal read and ten distinct angle territories. Inference from public signals, labeled as such.</p>',
+    kid: '<p>Type in any brand’s website and the scanner reads it the way the fair’s machines would: what the site says it is, what it sells, and what kinds of signs it could make. Then our helper writes a report card you can save and share. Try the demo button — it scans our own site!</p>',
+    cmo: '<p>Point the scanner at a brand’s homepage. It reads the public signals a site feeds delivery — title, description, offer language — links you to their live ads in Meta’s own transparency tool, and writes “How the Machine Sees This Brand” at your current teaching mode, ending with ten genuinely different angle opportunities. Download the report card, or copy a link that re-runs the scan for whoever opens it.</p>',
+    pro: '<p>Client-side parse of the fetched homepage (title, meta, offer/category signals) → deep link into the Ad Library (we link, never scrape) → one model call producing the delivery-signal read and ten distinct angle territories. Inference from public page copy only — nothing here detects or speculates about tracking or analytics.</p>',
   },
   's.honesty': {
     kid: '<b>The honest part:</b> nobody outside a company can see how much they spend on ads or how many people saw them. Anyone who shows you those numbers is guessing. What you CAN see: every ad they’re running right now, in Meta’s own public library.',
@@ -1327,14 +1517,14 @@ var CONTENT = {
   },
   'ask.hello': {
     kid: 'Hi! I only know what’s inside this lab — the auction, the magnet-machines, the fatigue stuff. Ask me anything about those and I’ll explain it your way!',
-    cmo: 'I answer from this portal’s content only — auction mechanics, the model stack, fatigue, creative signal. Ask away; I’ll match your dial setting.',
+    cmo: 'I answer from this portal’s content only — auction mechanics, the model stack, fatigue, creative signal. Ask away; I’ll match your teaching mode.',
     pro: 'Grounded on the portal corpus (pro registers + graded claims). Outside-corpus queries get an honest “not covered.” Fire away.',
   },
 
   /* directory + placeholder copy */
   'machine.dir-title': { kid: 'The other rooms', cmo: 'The other rooms', pro: 'The other rooms' },
   'machine.dir-body': {
-    kid: 'Every room is open now! Wander wherever looks fun — your dial setting follows you through every door.',
+    kid: 'Every room is open now! Wander wherever looks fun — your teaching mode follows you through every door.',
     cmo: 'All rooms are open. Every link carries your depth setting, so share any door at any altitude.',
     pro: 'Full estate live. All routes stable and deep-linkable; hash + depth param are the permalink.',
   },
@@ -1344,7 +1534,7 @@ var CONTENT = {
     pro: 'Route reserved; build pending.',
   },
   'ph.note': {
-    kid: 'This room isn’t ready yet — but your link already works, and it even remembers your dial setting. Come back soon!',
+    kid: 'This room isn’t ready yet — but your link already works, and it even remembers your teaching mode. Come back soon!',
     cmo: 'This room is on the bench. The URL you’re on — including your depth setting — is stable and will open straight into the finished room.',
     pro: 'Route and state handling are live; content lands in a later session. This exact URL (room + depth param) is the permalink.',
   },
@@ -1352,13 +1542,12 @@ var CONTENT = {
 
 /* ---------------- rooms / depth ---------------- */
 var ROOMS = [
-  { slug: 'machine',    name: 'The Machine',       ico: '⚙️', open: true },
-  { slug: 'models',     name: 'The Model Room',    ico: '🧠', open: true },
-  { slug: 'auction',    name: 'The Auction Floor', ico: '🔨', open: true },
-  { slug: 'recency',    name: 'Recency & Fatigue', ico: '🔁', open: true },
-  { slug: 'creative',   name: 'Creative Signal',   ico: '📡', open: true },
-  { slug: 'scanner',    name: 'Brand Scanner',     ico: '🔍', open: true },
-  { slug: 'dispatch',   name: 'The Dispatch',      ico: '📰', open: true },
+  { slug: 'machine',  name: 'The Machine',       ico: '⚙️', open: true },
+  { slug: 'auction',  name: 'The Auction Floor', ico: '🔨', open: true },
+  { slug: 'creative', name: 'Creative Signal',   ico: '📡', open: true },
+  { slug: 'scanner',  name: 'Brand Scanner',     ico: '🔍', open: true },
+  /* off-nav, footer-linked only */
+  { slug: 'dispatch', name: 'The Dispatch',      ico: '📰', open: true, hidden: true },
 ];
 var DEPTHS = ['kid', 'cmo', 'pro'];
 var DEPTH_KEY = 'gd-machine-depth';
@@ -1382,15 +1571,17 @@ function setDepth(d, fromUrl) {
   depth = d;
   document.body.classList.remove('d-kid', 'd-cmo', 'd-pro');
   document.body.classList.add('d-' + d);
-  document.querySelectorAll('.dial-btn').forEach(function (b) {
-    b.classList.toggle('active', b.dataset.depth === d);
+  document.querySelectorAll('.mode-opt').forEach(function (b) {
+    var on = b.dataset.depth === d;
+    b.classList.toggle('active', on);
+    b.setAttribute('aria-checked', String(on));
   });
   try { localStorage.setItem(DEPTH_KEY, d); } catch (e) { }
   if (!fromUrl) canonicalizeHash();
 }
 
-/* d3(key): all three registers stacked in one grid cell — the browser
-   reserves the tallest register, so a dial flip never shifts layout. */
+/* d3(key): all three registers in the markup; CSS shows only the
+   active teaching mode's span. */
 function d3(key) {
   var c = CONTENT[key];
   if (!c) return '<span class="d3"><span>[' + key + ']</span></span>';
@@ -1463,7 +1654,8 @@ function parseHash() {
     var p = kv.split('=');
     if (p[0]) params[p[0]] = decodeURIComponent(p[1] || '');
   });
-  if (slug === 'model-room') slug = 'models';   // legacy alias
+  /* consolidated-tab redirects: their content now lives inside The Machine */
+  if (slug === 'models' || slug === 'model-room' || slug === 'recency') slug = 'machine';
   if (!ROOMS.some(function (r) { return r.slug === slug; })) slug = 'machine';
   return { slug: slug, params: params };
 }
@@ -1474,7 +1666,7 @@ function canonicalizeHash() {
 function roomLink(slug) { return '#/' + slug; }
 
 function renderTabs(active) {
-  $('tabRail').innerHTML = ROOMS.map(function (r) {
+  $('tabRail').innerHTML = ROOMS.filter(function (r) { return !r.hidden; }).map(function (r) {
     return '<a class="tab-pill" href="' + roomLink(r.slug) + '"' +
       (r.slug === active ? ' aria-current="page"' : '') + '>' +
       '<span class="ico">' + r.ico + '</span>' + r.name + '</a>';
@@ -1503,6 +1695,30 @@ function jstep(id, sceneName, titleKey, bodyKey, claimsHtml, extraStage) {
     '</div></div></section>';
 }
 
+function drawer(title, sub, inner) {
+  return '<details class="drawer"><summary>' + title +
+    '<span class="dr-sub" style="display:none"></span></summary>' +
+    '<div style="padding:0 20px 6px;font-size:11.5px;color:var(--muted)">' + sub + '</div>' +
+    '<div class="drawer-body">' + inner + '</div></details>';
+}
+function flipHtml(oldKey, newKey) {
+  return '<div class="flip-row">' +
+    '<button class="flip-btn on" data-side="old" type="button">the old way</button>' +
+    '<button class="flip-btn" data-side="new" type="button">the new way</button></div>' +
+    '<div class="flip-panel" data-old="' + oldKey + '" data-new="' + newKey + '">' + d3(oldKey) + '</div>';
+}
+function wireFlips() {
+  document.querySelectorAll('.flip-row').forEach(function (row) {
+    var panel = row.nextElementSibling;
+    row.querySelectorAll('.flip-btn').forEach(function (b) {
+      b.addEventListener('click', function () {
+        row.querySelectorAll('.flip-btn').forEach(function (x) { x.classList.toggle('on', x === b); });
+        panel.innerHTML = d3(panel.dataset[b.dataset.side]);
+      });
+    });
+  });
+}
+
 function viewJourney() {
   var h = '';
   h += '<div class="view-pad" style="padding-bottom:6px">' +
@@ -1523,9 +1739,31 @@ function viewJourney() {
     '<p>' + claim('Meta’s published Andromeda figures: a 10,000× model-capacity increase, +6% recall, +8% ads quality in selected segments.', 'meta', SRC.andromeda.name, SRC.andromeda.url) + '</p>',
     '<div class="scrub"><label>🐢 slow-mo</label><input type="range" id="retScrub" min="0" max="1000" value="0" aria-label="Replay the retrieval collapse in slow motion"></div>');
 
+  /* under the hood: Andromeda (the Model Room, folded into its stage) */
+  h += '<div class="view-pad" style="padding-top:0;padding-bottom:0">' +
+    drawer('🌌 Under the hood: Andromeda', 'the retrieval engine · what it replaced, and why',
+      d3('m.and.body') +
+      '<p style="font-size:12.5px">' + claim('Meta’s published figures: 10,000× model capacity, +6% recall, +8% ads quality in selected segments.', 'meta', SRC.andromeda.name, SRC.andromeda.url) + '</p>' +
+      flipHtml('m.and.old', 'm.and.new') +
+      '<div class="tuesday"><span class="tue-k">what this means for your Tuesday</span>' + d3('m.and.tue') + '</div>') +
+    '</div>';
+
   h += jstep('j3', 'ranking', 'j.rank.title', 'j.rank.body',
     '<p>' + claim('GEM is Meta’s ads foundation model — a “central brain” trained at scale, distilled into hundreds of user-facing ranking models.', 'meta', SRC.gem.name, SRC.gem.url) + '</p>' +
     '<p>' + claim('Meta’s stated GEM lifts: roughly +5% conversions on Instagram and +3% on Facebook Feed.', 'meta', SRC.gem2.name, SRC.gem2.url) + '</p>');
+
+  /* under the hood: GEM + play-as-the-algorithm (folded in at ranking) */
+  h += '<div class="view-pad" style="padding-top:0;padding-bottom:0">' +
+    drawer('🧠 Under the hood: GEM', 'the central brain · sequences, distillation, recency',
+      d3('m.gem.body') +
+      '<p style="font-size:12.5px">' + claim('Stated lifts: roughly +5% conversions on Instagram, +3% on Facebook Feed.', 'meta', SRC.gem2.name, SRC.gem2.url) + '</p>' +
+      '<p style="font-size:12.5px">' + claim('Reads sequences of up to thousands of user events, in order.', 'meta', SRC.gem.name, SRC.gem.url) + '</p>' +
+      flipHtml('m.gem.old', 'm.gem.new') +
+      '<div class="tuesday"><span class="tue-k">what this means for your Tuesday</span>' + d3('m.gem.tue') + '</div>') +
+    '<div class="card"><h2>Play the ranking model</h2>' +
+      '<div style="font-size:14.5px;line-height:1.7;color:var(--muted);margin-bottom:14px">' + d3('r.intro') + '</div>' +
+      '<div class="gem-stage" id="gemBox"></div></div>' +
+    '</div>';
 
   h += jstep('j4', 'value', 'j.value.title', 'j.value.body',
     '<p>' + claim('The ranking models process sequences of up to thousands of user events, in order — recency enters as recent actions, not a static profile.', 'meta', SRC.gem.name, SRC.gem.url) + '</p>' +
@@ -1545,7 +1783,35 @@ function viewJourney() {
     '</div>' +
     '<p style="margin-top:14px;font-size:12.5px">' +
       claim('One independently measured consequence of this pipeline: within a single ad set, different creatives are delivered to systematically different demographic subgroups (“divergent delivery”).', 'measured', SRC.kellogg.name, SRC.kellogg.url) + '</p>' +
-    '</div>';
+    '</div>' +
+
+    /* under the hood: the whole stack — Lattice, the museum, the timeline */
+    drawer('🕸️ Under the hood: the whole stack', 'Lattice, the retired machines, and where this is going',
+      '<h3 style="font-size:15px;color:var(--white);margin-bottom:8px">Lattice — ranking, consolidated</h3>' +
+      d3('m.lat.body') +
+      '<p style="font-size:12.5px">' + claim('Hundreds of ranking models consolidated into one trillion-parameter architecture; ~8% ads-quality lift in an Instagram test.', 'meta', SRC.lattice.name, SRC.lattice.url) + '</p>' +
+      flipHtml('m.lat.old', 'm.lat.new') +
+      '<div class="tuesday"><span class="tue-k">what this means for your Tuesday</span>' + d3('m.lat.tue') + '</div>' +
+      '<h3 style="font-size:15px;color:var(--white);margin:18px 0 8px">👻 The retired machines</h3>' +
+      d3('m.gho.body') +
+      '<div class="plaque"><p class="pl-t">MTML multi-task models</p><p class="pl-d">c. 2020–2023</p>' +
+        '<p class="pl-b">Ranked many objectives at once with shared layers. Served faithfully through the interest-targeting era. Superseded by the foundation-model line.</p></div>' +
+      '<div class="plaque"><p class="pl-t">Interest-gated candidate sourcing</p><p class="pl-d">c. 2012–2024</p>' +
+        '<p class="pl-b">Ads entered the room by checkbox: declared interests, lookalikes, hand-drawn stacks. Retired when retrieval learned to find fit directly.</p></div>' +
+      '<div class="plaque"><p class="pl-t">The 25-ad-set account structure</p><p class="pl-d">folk architecture, undated</p>' +
+        '<p class="pl-b">Not a Meta system — a practitioner ritual built to steer the machines above. Persists in the wild long after its habitat vanished.</p></div>' +
+      '<div class="tuesday"><span class="tue-k">what this means for your Tuesday</span>' + d3('m.gho.tue') + '</div>' +
+      '<h3 style="font-size:15px;color:var(--white);margin:18px 0 8px">🧭 The timeline — 2020 → the stated end-state</h3>' +
+      d3('m.tl.intro') +
+      '<p style="font-size:12.5px">' + claim('Meta reports Advantage+ end-to-end at a $75B annual revenue run-rate, the Muse image model, and 9M small businesses using at least one AI creative tool.', 'meta', SRC.earnings.name, SRC.earnings.url) + '</p>' +
+      '<p style="font-size:12.5px">' + claim('A target of fully automated ad creation — “objective + budget in, ads out” — by end of 2026 has been reported by trade press, but is not Meta on-record.', 'measured', SRC.theinfo.name, SRC.theinfo.url) + '</p>' +
+      '<ol class="tl">' +
+      '<li><span class="tl-y">2020</span><p class="tl-t">The MTML era</p><p class="tl-b">Per-surface multi-task rankers; interest targeting at its peak; the playbooks most teams still run were written here.</p></li>' +
+      '<li><span class="tl-y">2022</span><p class="tl-t">The fatigue research year</p><p class="tl-b">Meta publishes creative-fatigue findings; frequency becomes a measured phenomenon rather than a hunch.</p></li>' +
+      '<li><span class="tl-y">DEC 2024</span><p class="tl-t">Andromeda</p><p class="tl-b">Retrieval rebuilt for the generative-creative flood. The interest checkbox stops being a gate.</p></li>' +
+      '<li><span class="tl-y">NOV 2025</span><p class="tl-t">GEM</p><p class="tl-b">The central brain: one foundation model teaching hundreds of rankers; sequences become the first-class input.</p></li>' +
+      '<li><span class="tl-y">2026</span><p class="tl-t">Lattice + Advantage+ end-to-end</p><p class="tl-b">Ranking consolidates; automation reaches a $75B run-rate; the reported (not confirmed) end-state: objective and budget in, finished ads out.</p></li>' +
+      '</ol>');
 
   /* closing */
   h += '<div class="card close-panel">' +
@@ -1559,7 +1825,7 @@ function viewJourney() {
   /* directory */
   h += '<div class="card"><h2>' + d3('machine.dir-title') + '</h2>' +
     '<p>' + d3('machine.dir-body') + '</p>' +
-    '<div class="dir-grid">' + ROOMS.filter(function (r) { return r.slug !== 'machine'; }).map(function (r) {
+    '<div class="dir-grid">' + ROOMS.filter(function (r) { return r.slug !== 'machine' && !r.hidden; }).map(function (r) {
       return '<a class="dir-card" href="' + roomLink(r.slug) + '">' +
         '<span class="dc-name">' + r.ico + ' ' + r.name + '</span>' +
         '<span class="dc-tag">' + d3(r.slug + '.tag') + '</span>' +
@@ -1750,8 +2016,10 @@ function openScene(sc) {
       ctx.fillStyle = 'rgba(252,243,214,' + (.5 + pb * .5) + ')';
       ctx.fillText(fmtN(count), w / 2, 44);
       ctx.font = '500 11px Poppins, sans-serif';
-      ctx.fillStyle = 'rgba(252,243,214,.5)';
-      ctx.fillText(dtxt('signs hoping to be seen', 'eligible ads for this one slot', 'eligible candidates, this request'), w / 2, 62);
+      ctx.fillStyle = BRAND ? 'rgba(254,124,43,.85)' : 'rgba(252,243,214,.5)';
+      ctx.fillText(BRAND
+        ? 'somewhere in those millions is ' + BRAND.name + '’s ad'
+        : dtxt('signs hoping to be seen', 'eligible ads for this one slot', 'eligible candidates, this request'), w / 2, 62);
     }
     // the question
     if (pc > 0.05) {
@@ -2141,7 +2409,7 @@ function auctionScene(sc) {
       ctx.font = '700 10px Poppins, sans-serif';
       ctx.textAlign = 'center';
       ctx.fillStyle = 'rgba(254,124,43,.9)';
-      ctx.fillText(dtxt('your sign!', 'your ad', 'your ad'), phX, phY + phH / 2 + 16);
+      ctx.fillText(BRAND ? BRAND.name + '’s ad' : dtxt('your sign!', 'your ad', 'your ad'), phX, phY + phH / 2 + 16);
       ctx.globalAlpha = 1;
 
       // the timer
@@ -2302,6 +2570,129 @@ function streamClaude(payload, onDelta) {
   });
 }
 
+/* ============================================================
+   BRAND CONTEXT — one object threaded through the whole portal.
+   Set from the entry, the Scanner, or ?brand=<domain>. Cached in
+   sessionStorage per domain. Failures degrade to {name: domain}.
+   ============================================================ */
+var BRAND = null, brandAutoScanned = null, SCAN_BUSY = false, BOOTED = false;
+function escHtml(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+function normDomain(raw) {
+  var d = String(raw || '').trim().toLowerCase()
+    .replace(/^https?:\/\//, '').replace(/^www\./, '').split(/[\/?#]/)[0];
+  return /^[a-z0-9.-]+\.[a-z]{2,}$/.test(d) ? d : null;
+}
+function prettyDomain(dom) {
+  var base = dom.split('.')[0].replace(/[-_]+/g, ' ');
+  return base.replace(/\b\w/g, function (c) { return c.toUpperCase(); });
+}
+function youLabel() { return BRAND ? BRAND.name + '’s ad' : 'your ad'; }
+function parseSiteLite(html, dom) {
+  try {
+    var doc = new DOMParser().parseFromString(html, 'text/html');
+    var pick = function (sel, attr) { var el = doc.querySelector(sel); return el ? (attr ? el.getAttribute(attr) : el.textContent).trim() : ''; };
+    return {
+      domain: dom,
+      title: pick('title'),
+      siteName: pick('meta[property="og:site_name"]', 'content'),
+      description: pick('meta[name="description"]', 'content') || pick('meta[property="og:description"]', 'content'),
+      headlines: Array.from(doc.querySelectorAll('h1, h2')).slice(0, 4)
+        .map(function (h) { return h.textContent.replace(/\s+/g, ' ').trim(); }).filter(Boolean),
+      ogType: pick('meta[property="og:type"]', 'content'),
+    };
+  } catch (e) { return { domain: dom, title: '', siteName: '', description: '', headlines: [], ogType: '' }; }
+}
+function applyBrandUI() {
+  var slot = $('brandSlot');
+  if (!slot) return;
+  if (BRAND) {
+    slot.innerHTML = '<span class="brand-chip">viewing as: <b>' + escHtml(BRAND.name) + '</b>' +
+      '<button id="brandClear" type="button" aria-label="Clear brand context">✕</button></span>';
+    var bc = $('brandClear');
+    if (bc) bc.addEventListener('click', clearBrand);
+  } else {
+    slot.innerHTML = '<a class="brand-link" href="#/scanner">make this about your brand</a>';
+  }
+}
+function clearBrand() {
+  BRAND = null;
+  brandAutoScanned = null;
+  try { sessionStorage.removeItem('gd-brand-active'); } catch (e) { }
+  applyBrandUI();
+  render();
+}
+function refreshForBrand() {
+  applyBrandUI();
+  if (!BOOTED) return;  // boot renders right after restoring the brand — don't render twice
+  var slug = parseHash().slug;
+  if (slug === 'scanner' && SCAN_BUSY) return;  // a scan is mid-flight — don't wipe its report
+  if (slug === 'creative' || slug === 'scanner') render();  // chip labels & prefill live in DOM
+  // machine + auction labels read BRAND live from their canvas loops
+}
+/* returns a promise resolving to the (possibly minimal) BRAND */
+function setBrandDomain(raw) {
+  var dom = normDomain(raw);
+  if (!dom) return Promise.resolve(null);
+  if (BRAND && BRAND.domain === dom && BRAND.resolved) { applyBrandUI(); return Promise.resolve(BRAND); }
+  BRAND = { domain: dom, name: prettyDomain(dom), resolved: false };
+  try { sessionStorage.setItem('gd-brand-active', dom); } catch (e) { }
+  applyBrandUI();
+  try {
+    var cached = sessionStorage.getItem('gd-brand-' + dom);
+    if (cached) {
+      BRAND = JSON.parse(cached);
+      refreshForBrand();
+      return Promise.resolve(BRAND);
+    }
+  } catch (e) { }
+  return fetch(PROXY_URL + '/fetch', {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ url: 'https://' + dom }),
+  }).then(function (r) {
+    if (!r.ok) throw 0;
+    return r.json();
+  }).then(function (f) {
+    if (!f.html) throw 0;
+    var sig = parseSiteLite(f.html, dom);
+    if (BRAND && BRAND.domain === dom) {
+      BRAND.signals = sig;
+      if (sig.siteName) { BRAND.name = sig.siteName; applyBrandUI(); }
+    }
+    return fetch(PROXY_URL + '/claude', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-haiku-4-5', max_tokens: 400, stream: false,
+        system: 'You will receive parsed public signals from a brand homepage. Reply with STRICT JSON only — no prose, no code fences: {"name": short brand name, "category": 2-4 word category, "offer": one line describing what they sell, "oneLiner": one sharp sentence describing the brand, "hooks": [4 plausible and genuinely different Meta ad hooks for this brand, each under 10 words]}',
+        messages: [{ role: 'user', content: JSON.stringify(sig) }],
+      }),
+    }).then(function (r2) {
+      if (!r2.ok) throw 0;
+      return r2.json();
+    }).then(function (j) {
+      var txt = (j.content || []).map(function (b) { return b.text || ''; }).join('');
+      var m = txt.match(/\{[\s\S]*\}/);
+      var data = JSON.parse(m[0]);
+      if (BRAND && BRAND.domain === dom) {
+        BRAND = {
+          domain: dom, resolved: true,
+          name: data.name || BRAND.name,
+          category: data.category || '',
+          offer: data.offer || '',
+          oneLiner: data.oneLiner || '',
+          hooks: Array.isArray(data.hooks) ? data.hooks.slice(0, 4) : [],
+          signals: sig,
+        };
+        try { sessionStorage.setItem('gd-brand-' + dom, JSON.stringify(BRAND)); } catch (e) { }
+        refreshForBrand();
+      }
+      return BRAND;
+    });
+  }).catch(function () {
+    // 429/503/blocked/anything: keep {domain, name} and never block the portal
+    return BRAND;
+  });
+}
+
 /* ---- Ask the Machine (global, every tab) ---- */
 (function wireAsk() {
   var panel = $('askPanel'), msgs = $('askMsgs'), input = $('askInput');
@@ -2357,7 +2748,7 @@ function streamClaude(payload, onDelta) {
 /* ---- Brand Scanner — #/scanner ---- */
 function viewScanner() {
   return '<div class="view-pad">' +
-    '<p class="room-kicker">The Growth Den Lab · The Machine</p>' +
+    '<p class="room-kicker">The Machine</p>' +
     '<h1 class="room-title">🔍 Brand Scanner</h1>' +
     '<p class="room-tag" style="margin-bottom:20px">' + d3('scanner.tag') + '</p>' +
     '<div class="card"><div style="font-size:14.5px;line-height:1.7;color:var(--muted)">' + d3('s.intro') + '</div>' +
@@ -2376,7 +2767,7 @@ function viewScanner() {
 INITS.scanner = function () {
   var busy = false;
   function status(t) { var el = $('scanStatus'); if (el) el.innerHTML = t; }
-  function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+  function esc(s) { return escHtml(s); }
   function mdLite(s) {
     var lines = esc(s).split('\n'), out = [], inList = false;
     lines.forEach(function (ln) {
@@ -2390,70 +2781,204 @@ INITS.scanner = function () {
     if (inList) out.push('</ol>');
     return out.join('').replace(/\*\*([^*]+)\*\*/g, '<b>$1</b>');
   }
-  function parseSite(html, url) {
-    var doc = new DOMParser().parseFromString(html, 'text/html');
-    var pick = function (sel, attr) { var el = doc.querySelector(sel); return el ? (attr ? el.getAttribute(attr) : el.textContent).trim() : ''; };
-    var pixel = /fbq\s*\(\s*['"]init['"]\s*,\s*['"](\d+)['"]/.exec(html);
-    var h1s = Array.from(doc.querySelectorAll('h1, h2')).slice(0, 4).map(function (h) { return h.textContent.replace(/\s+/g, ' ').trim(); }).filter(Boolean);
-    var siteName = pick('meta[property="og:site_name"]', 'content') || '';
-    var title = pick('title') || '';
-    var brand = siteName || title.split(/[|–—-]/)[0].trim() || url.replace(/^https?:\/\/(www\.)?/, '').split('/')[0];
-    return {
-      url: url, brand: brand, title: title,
-      description: pick('meta[name="description"]', 'content') || pick('meta[property="og:description"]', 'content'),
-      metaPixel: pixel ? { present: true, id: pixel[1] } : { present: false },
-      headlines: h1s,
-      ogType: pick('meta[property="og:type"]', 'content'),
-    };
+  function parseSections(md) {
+    var secs = [], cur = null;
+    md.split('\n').forEach(function (ln) {
+      ln = ln.trim();
+      if (/^#{1,3}\s+/.test(ln)) { cur = { h: ln.replace(/^#{1,3}\s+/, ''), lines: [] }; secs.push(cur); }
+      else if (ln) {
+        if (!cur) { cur = { h: '', lines: [] }; secs.push(cur); }
+        cur.lines.push(ln.replace(/\*\*/g, ''));
+      }
+    });
+    return secs;
+  }
+  /* the collapse motif — shared by the on-page header and the PNG export */
+  function drawCollapse(c, W, H, alpha) {
+    var seed = 7;
+    function rnd() { seed = (seed * 1664525 + 1013904223) % 4294967296; return seed / 4294967296; }
+    var FX = W * 0.84, FY = H * 0.42;
+    for (var i = 0; i < Math.floor(W * H / 2000); i++) {
+      var x = rnd() * W, y = rnd() * H;
+      var d = Math.hypot(x - FX, y - FY);
+      if (d < 34) continue;
+      var a = (0.05 + rnd() * 0.25) * (0.3 + 0.7 * Math.min(1, (W - x) / (W * 0.8))) * (alpha || 1);
+      c.fillStyle = 'rgba(252,243,214,' + a.toFixed(3) + ')';
+      c.beginPath(); c.arc(x, y, 0.8 + rnd() * 1.5, 0, 7); c.fill();
+    }
+    c.save();
+    c.shadowColor = 'rgba(254,124,43,.9)'; c.shadowBlur = 26;
+    c.fillStyle = '#fe7c2b';
+    c.beginPath(); c.arc(FX, FY, 6, 0, 7); c.fill();
+    c.restore();
+    c.strokeStyle = 'rgba(254,124,43,.45)'; c.lineWidth = 1.4;
+    c.beginPath(); c.arc(FX, FY, 13, 0, 7); c.stroke();
+  }
+  function headCanvas() {
+    var cv = $('repCv'); if (!cv) return;
+    var w = cv.offsetWidth || 600, h = cv.offsetHeight || 150;
+    cv.width = w; cv.height = h;
+    drawCollapse(cv.getContext('2d'), w, h, 0.55);
+  }
+  /* the whole report as one self-contained PNG, in the og.png aesthetic */
+  function buildReportPng(name, dom2, md) {
+    var W = 1080, pad = 64, maxW = W - pad * 2, lh = 27;
+    var bodyFont = '400 16.5px Poppins, Arial, sans-serif';
+    var headFont = '700 22px Poppins, Arial, sans-serif';
+    var meas = document.createElement('canvas').getContext('2d');
+    function wrap(t, font) {
+      meas.font = font;
+      var words = t.split(/\s+/), lines = [], line = '';
+      words.forEach(function (w) {
+        var probe = line ? line + ' ' + w : w;
+        if (meas.measureText(probe).width > maxW && line) { lines.push(line); line = w; }
+        else line = probe;
+      });
+      if (line) lines.push(line);
+      return lines;
+    }
+    var blocks = parseSections(md).map(function (s) {
+      var lines = [];
+      s.lines.forEach(function (ln) {
+        wrap(ln, bodyFont).forEach(function (l) { lines.push(l); });
+        lines.push('');
+      });
+      return { h: s.h, lines: lines };
+    });
+    var HEAD = 240, yEnd = HEAD + 52;
+    blocks.forEach(function (b) {
+      if (b.h) yEnd += 12 + 32;
+      b.lines.forEach(function (l) { yEnd += l ? lh : 12; });
+      yEnd += 8;
+    });
+    var H = yEnd + 12;
+    var cv = document.createElement('canvas'); cv.width = W; cv.height = H;
+    var c = cv.getContext('2d');
+    c.fillStyle = '#1a1025'; c.fillRect(0, 0, W, H);
+    var g1 = c.createRadialGradient(W * 0.8, 0, 0, W * 0.8, 0, W * 0.7);
+    g1.addColorStop(0, 'rgba(37,100,147,.4)'); g1.addColorStop(1, 'rgba(37,100,147,0)');
+    c.fillStyle = g1; c.fillRect(0, 0, W, H);
+    c.fillStyle = 'rgba(0,0,0,.18)'; c.fillRect(0, 0, W, HEAD);
+    drawCollapse(c, W, HEAD, 1);
+    c.fillStyle = '#7fb4d8'; c.font = '700 13px Poppins, Arial, sans-serif';
+    c.fillText('H O W   T H E   M A C H I N E   S E E S', pad, 92);
+    c.fillStyle = '#ffffff'; c.font = '800 44px Poppins, Arial, sans-serif';
+    c.fillText(String(name).slice(0, 42), pad, 142);
+    c.fillStyle = 'rgba(252,243,214,.62)'; c.font = '400 15px Poppins, Arial, sans-serif';
+    c.fillText(dom2 + ' · scanned ' + new Date().toISOString().slice(0, 10), pad, 172);
+    c.strokeStyle = 'rgba(252,243,214,.16)';
+    c.beginPath(); c.moveTo(0, HEAD + .5); c.lineTo(W, HEAD + .5); c.stroke();
+    var y = HEAD + 52;
+    blocks.forEach(function (b) {
+      if (b.h) {
+        c.fillStyle = '#ffc545'; c.font = headFont;
+        c.fillText(b.h, pad, y); y += 12;
+        c.strokeStyle = 'rgba(252,243,214,.16)';
+        c.setLineDash([4, 5]); c.beginPath(); c.moveTo(pad, y); c.lineTo(W - pad, y); c.stroke(); c.setLineDash([]);
+        y += 32;
+      }
+      c.fillStyle = 'rgba(252,243,214,.8)'; c.font = bodyFont;
+      b.lines.forEach(function (l) { if (l) { c.fillText(l, pad, y); y += lh; } else y += 12; });
+      y += 8;
+    });
+    return cv.toDataURL('image/png');
   }
   function scan(url) {
     if (busy) return;
     busy = true;
+    SCAN_BUSY = true;
+    var dom = normDomain(url);
+    if (dom) brandAutoScanned = dom;  // this scan IS the auto-run for this domain
     var report = $('scanReport');
     report.style.display = 'none';
     status('📡 ' + (depth === 'kid' ? 'knocking on their front door…' : 'fetching the homepage…'));
-    fetch(PROXY_URL + '/fetch', {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ url: url }),
-    }).then(function (r) {
-      if (r.status === 429) throw { code: 429 };
-      if (r.status === 503) throw { code: 503 };
-      if (!r.ok) throw { code: r.status };
-      return r.json();
-    }).then(function (f) {
-      if (!f.html || (f.status && f.status >= 400)) throw { code: 'blocked' };
-      var sig = parseSite(f.html, f.finalUrl || url);
-      var adlib = 'https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=ALL&q=' + encodeURIComponent(sig.brand);
+    /* brand context first: its /fetch + parse is cached per domain,
+       so the scan reuses that instead of fetching the site twice */
+    var pre = (dom && typeof setBrandDomain === 'function') ? setBrandDomain(dom) : Promise.resolve(null);
+    pre.then(function () {
+      if (dom && BRAND && BRAND.domain === dom && BRAND.signals) return BRAND.signals;
+      return fetch(PROXY_URL + '/fetch', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ url: url }),
+      }).then(function (r) {
+        if (r.status === 429) throw { code: 429 };
+        if (r.status === 503) throw { code: 503 };
+        if (!r.ok) throw { code: r.status };
+        return r.json();
+      }).then(function (f) {
+        if (!f.html || (f.status && f.status >= 400)) throw { code: 'blocked' };
+        return parseSiteLite(f.html, dom || (f.finalUrl || url).replace(/^https?:\/\/(www\.)?/, '').split('/')[0]);
+      });
+    }).then(function (sig) {
+      var name = (BRAND && BRAND.domain === sig.domain && BRAND.name) ||
+        sig.siteName || (sig.title || '').split(/[|–—-]/)[0].trim() || sig.domain;
+      var adlib = 'https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=ALL&q=' + encodeURIComponent(name);
       status('🧠 ' + (depth === 'kid' ? 'the helper is writing the report card…' : 'generating the read…'));
       report.style.display = 'block';
-      report.innerHTML = '<h2>How the Machine Sees ' + esc(sig.brand) + '</h2>' +
-        '<div class="sig-grid">' +
-          '<div class="sig"><b>title</b>' + esc(sig.title || '—') + '</div>' +
-          '<div class="sig"><b>description</b>' + esc((sig.description || '—').slice(0, 140)) + '</div>' +
-          '<div class="sig"><b>meta pixel</b>' + (sig.metaPixel.present ? '✅ detected (id ' + sig.metaPixel.id + ')' : '❌ not detected') + '</div>' +
-          '<div class="sig"><b>their live ads</b><a href="' + adlib + '" target="_blank" rel="noopener noreferrer">see them in Meta’s own transparency tool →</a></div>' +
-        '</div><div class="report" id="scanMd"><p><i>…</i></p></div>';
-      var sys = 'You are the Brand Scanner inside The Growth Den’s teaching portal “The Machine”, which explains Meta’s ad delivery system (retrieval/Andromeda, ranking/GEM, the total-value auction, quality penalties, creative-as-targeting, fatigue). ' +
+      report.innerHTML =
+        '<div class="rep-head"><canvas id="repCv"></canvas><div class="rep-head-txt">' +
+          '<p class="rk">How the Machine sees</p>' +
+          '<h2>' + esc(name) + '</h2>' +
+          '<p class="rd">' + esc(sig.domain) + ' · scanned ' + new Date().toISOString().slice(0, 10) + '</p>' +
+        '</div></div>' +
+        '<div class="rep-body">' +
+          '<div class="sig-grid">' +
+            '<div class="sig"><b>title</b>' + esc(sig.title || '—') + '</div>' +
+            '<div class="sig"><b>description</b>' + esc((sig.description || '—').slice(0, 140)) + '</div>' +
+            '<div class="sig"><b>their live ads</b><a href="' + adlib + '" target="_blank" rel="noopener noreferrer">see them in Meta’s own transparency tool →</a></div>' +
+          '</div>' +
+          '<div class="report" id="scanMd"><p><i>…</i></p></div>' +
+        '</div>';
+      headCanvas();
+      var known = (BRAND && BRAND.domain === sig.domain && BRAND.resolved)
+        ? { category: BRAND.category, offer: BRAND.offer, oneLiner: BRAND.oneLiner, hooks: BRAND.hooks }
+        : null;
+      var sys = 'You are the Brand Scanner inside “The Machine”, a teaching portal that explains Meta’s ad delivery system (retrieval/Andromeda, ranking/GEM, the total-value auction, quality penalties, creative-as-targeting, fatigue). ' +
         'You receive parsed PUBLIC signals from a brand’s homepage. Produce “How the Machine Sees This Brand” in markdown with EXACTLY these sections: ' +
-        '“## What the site feeds delivery” (read the actual signals: pixel present or absent and what that means, clarity of offer/category, 4-6 sentences); ' +
+        '“## What the site feeds delivery” (read the actual signals: clarity of offer and category, how the page copy works as delivery input, 4-6 sentences); ' +
         '“## Mechanisms they’re using well — or fighting” (tie specifically to retrieval indexability, creative signal strength, quality surface, learning consolidation); ' +
         '“## 10 genuinely different angles” (numbered list of ten creative angle opportunities, each a DISTINCT buyer motivation or hook territory — never cosmetic variants of one idea; one concrete line each). ' +
         'Write at this register: ' + REGISTER_DESC[depth] + '. ' +
-        'Rules: infer only from the provided signals; never invent spend, reach, or audience numbers — none are public; total under 600 words.';
-      var el = null, started = false;
+        'Rules: infer only from the provided signals; never invent spend, reach, or audience numbers — none are public; NEVER mention or speculate about pixels, tags, tracking, or analytics — you cannot see any of that; do not name The Growth Den or this portal inside the report; total under 600 words.';
       return streamClaude({ model: 'claude-sonnet-4-5', max_tokens: 3000, stream: true, system: sys,
-        messages: [{ role: 'user', content: 'SIGNALS:\n' + JSON.stringify(sig, null, 1) }] },
+        messages: [{ role: 'user', content: 'SIGNALS:\n' + JSON.stringify(sig, null, 1) +
+          (known ? '\n\nKNOWN BRAND CONTEXT (from an earlier read of the same public signals):\n' + JSON.stringify(known, null, 1) : '') }] },
         function () { }).then(function (full) {
           $('scanMd').innerHTML = mdLite(full);
+          var body = report.querySelector('.rep-body');
+          var act = document.createElement('div');
+          act.className = 'rep-actions';
+          act.innerHTML = '<button class="run-btn" id="repDl" type="button">⬇ Download report</button>' +
+            '<button class="run-btn ghost" id="repCp" type="button">🔗 Copy link</button>';
+          body.appendChild(act);
+          var cta = document.createElement('div');
+          cta.className = 'talk-cta';
+          cta.innerHTML = '<p>Want this level of clarity on your own account?</p>' +
+            '<a href="https://calendar.app.google/dy8683mNDXyWAkPo9" target="_blank" rel="noopener noreferrer">Talk to Logan →</a>';
+          body.appendChild(cta);
+          $('repDl').addEventListener('click', function () {
+            var a = document.createElement('a');
+            a.href = buildReportPng(name, sig.domain, full);
+            a.download = 'how-the-machine-sees-' + sig.domain.replace(/[^a-z0-9.-]/g, '') + '.png';
+            document.body.appendChild(a); a.click(); a.remove();
+          });
+          $('repCp').addEventListener('click', function () {
+            var link = location.origin + location.pathname + '?brand=' + encodeURIComponent(sig.domain) + '#/scanner';
+            var done = function () { $('repCp').textContent = '✓ copied — the link re-runs this scan for whoever opens it'; };
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+              navigator.clipboard.writeText(link).then(done, function () { window.prompt('copy this link:', link); });
+            } else window.prompt('copy this link:', link);
+          });
           status('✅ ' + (depth === 'kid' ? 'report card done!' : 'scan complete.'));
         });
     }).catch(function (err) {
       if (err && err.code === 429) status(depthMsg(MSG_BUSY));
       else if (err && err.code === 503) status(depthMsg(MSG_NAP));
-      else if (err && err.code === 'blocked') status('🚪 ' + (depth === 'kid' ? 'That site slammed the door on our scanner — some do! Try the demo scan instead.' : 'That site blocked the fetch (some do). Try the demo scan — thegrowthden.com always answers.'));
+      else if (err && err.code === 'blocked') status('🚪 ' + (depth === 'kid'
+        ? 'That site slammed the door on our scanner — rude! Some sites do that. Try the demo scan instead.'
+        : 'That site bounced us at the door — some homepages refuse anything that isn’t a browser. No judgment; strong bouncer. Try the demo scan: thegrowthden.com always lets us in.'));
       else status(depthMsg(MSG_LOCAL) + ' · ' + (depth === 'kid' ? 'or try the demo!' : 'demo scan works on the live site.'));
-      busy = false;
-    }).then(function () { busy = false; });
+    }).then(function () { busy = false; SCAN_BUSY = false; });
   }
   $('scanGo').addEventListener('click', function () {
     var u = $('scanUrl').value.trim();
@@ -2463,6 +2988,14 @@ INITS.scanner = function () {
   });
   $('scanUrl').addEventListener('keydown', function (e) { if (e.key === 'Enter') $('scanGo').click(); });
   $('scanDemo').addEventListener('click', function () { $('scanUrl').value = 'https://thegrowthden.com'; scan('https://thegrowthden.com'); });
+  // brand context: arrive pre-filled and auto-run once per domain
+  if (BRAND) {
+    $('scanUrl').value = BRAND.domain;
+    if (brandAutoScanned !== BRAND.domain) {
+      brandAutoScanned = BRAND.domain;
+      scan('https://' + BRAND.domain);
+    }
+  }
   return null;
 };
 VIEWS.scanner = viewScanner;
@@ -2500,7 +3033,7 @@ INITS.dispatch = function () {
       var g = GRADES[e.grade] || GRADES.folklore;
       var idx = CLAIMS.length;
       CLAIMS.push({ grade: e.grade, sourceName: e.sourceName, sourceUrl: e.sourceUrl });
-      return '<div class="log-entry">' +
+      return '<div class="log-entry' + (e.grade === 'folklore' ? ' folk-card' : '') + '">' +
         '<p class="log-date">' + e.date + '</p>' +
         '<p class="log-title">' + (sample ? '<span class="sample-flag">sample</span>' : '') + e.title.replace(/^SAMPLE\s*·\s*/i, '') + '</p>' +
         '<div class="log-meta">' +
@@ -2563,7 +3096,10 @@ var CCHIPS = [
   { cat: 'proof', label: 'live plaque-reveal demo', spec: .85, ages: [.6, .7, .5], ints: { 4: .9, 2: .6 } },
   { cat: 'proof', label: '4,132 five-star reviews', spec: .6, ages: [.6, .7, .6], ints: { 16: .85, 32: .6 } },
   { cat: 'proof', label: '“trust us”', spec: .05, flat: true },
+  /* index 14: reserved vector for a brand's 4th generated hook (label set at render) */
+  { cat: 'hook', label: '', spec: .8, ages: [.6, .7, .5], ints: { 4: .7, 16: .5 }, brandExtra: true },
 ];
+var BRAND_HOOK_SLOTS = [1, 0, 2, 14];   // brand hooks ride the existing affinity vectors
 var CCATS = ['hook', 'visual', 'tone', 'proof'];
 var C_SPECIFIC = [1, 4, 8, 11], C_GENERIC = [3, 7, 10, 13];
 var CPERSONA = {
@@ -2577,13 +3113,30 @@ var CPERSONA = {
 };
 
 function viewCreative() {
+  var brandHooks = BRAND && BRAND.hooks && BRAND.hooks.length >= 3 ? BRAND.hooks : null;
   var chipHtml = CCATS.map(function (cat) {
     var names = { hook: 'HOOK', visual: 'VISUAL', tone: 'TONE', proof: 'PROOF' };
-    return '<div class="cchip-group"><h4>' + names[cat] + '</h4><div class="cchip-row">' +
-      CCHIPS.map(function (c, i) {
-        if (c.cat !== cat) return '';
+    var rows;
+    if (cat === 'hook' && brandHooks) {
+      // the brand's generated hooks ride the existing affinity vectors;
+      // the generic example chips stay available as a second row
+      rows = '<div class="cchip-row">' + brandHooks.map(function (hk, i) {
+        var ci = BRAND_HOOK_SLOTS[i];
+        return ci === undefined ? '' : '<button class="cchip" data-ci="' + ci + '" type="button">“' + escHtml(hk) + '”</button>';
+      }).join('') + '</div>' +
+      '<div class="cchip-row" style="margin-top:6px">' + CCHIPS.map(function (c, i) {
+        if (c.cat !== 'hook' || !c.flat) return '';
+        return '<button class="cchip generic" data-ci="' + i + '" type="button">' + c.label + '</button>';
+      }).join('') + '</div>';
+    } else {
+      rows = '<div class="cchip-row">' + CCHIPS.map(function (c, i) {
+        if (c.cat !== cat || c.brandExtra) return '';
         return '<button class="cchip' + (c.flat ? ' generic' : '') + '" data-ci="' + i + '" type="button">' + c.label + '</button>';
-      }).join('') + '</div></div>';
+      }).join('') + '</div>';
+    }
+    return '<div class="cchip-group"><h4>' + names[cat] +
+      (cat === 'hook' && brandHooks ? ' <span style="font-weight:400;letter-spacing:.02em;text-transform:none;color:var(--your-ad)">· generated for ' + escHtml(BRAND.name) + '</span>' : '') +
+      '</h4>' + rows + '</div>';
   }).join('');
   return '<div class="view-pad">' +
     '<p class="room-kicker">The Growth Den Lab · The Machine</p>' +
@@ -2612,12 +3165,12 @@ function viewCreative() {
       '<p style="font-size:12.5px">' + claim('Within one ad set, different creatives are delivered to systematically different demographic subgroups.', 'measured', SRC.kellogg.name, SRC.kellogg.url) + '</p>' +
       '<button class="run-btn" data-demo="divergent" type="button">▶ run the split</button></div>' +
 
-    '<div class="card" id="d2card"><h2>Demo 2 · Similarity collapse</h2>' +
+    '<div class="card folk-card" id="d2card"><h2>Demo 2 · Similarity collapse</h2>' +
       '<div style="font-size:14px;line-height:1.7;color:var(--muted)">' + d3('c.d2') + '</div>' +
       '<p style="font-size:12.5px">' + claim('A per-ad “similarity score” is a practitioner reconstruction — not a confirmed Meta metric. The collapse behavior is what practitioners observe.', 'folklore', 'Practitioner reconstruction; no confirmed Meta metric exists', null) + '</p>' +
       '<button class="run-btn" data-demo="similar" type="button">▶ merge the twins</button></div>' +
 
-    '<div class="card" id="d3card"><h2>Demo 3 · The diversity sandbox</h2>' +
+    '<div class="card folk-card" id="d3card"><h2>Demo 3 · The diversity sandbox</h2>' +
       '<div style="font-size:14px;line-height:1.7;color:var(--muted)">' + d3('c.d3') + '</div>' +
       '<p style="font-size:12.5px">' + claim('The specific “25 diverse creatives beat 5×5 clones” internal Meta test is cited widely but reached the public secondhand — the mechanism stands on its own; the numbers wear this badge.', 'folklore', 'Meta internal test, relayed secondhand in trade press', null) + '</p>' +
       '<div style="display:flex;gap:8px;flex-wrap:wrap">' +
@@ -2627,8 +3180,8 @@ function viewCreative() {
 
     '<div class="card"><button class="chip-btn" data-demo="builder" type="button">↩ back to the builder</button></div>' +
 
-    '<a class="next-room" href="#/models"><span class="nr-k">next room →</span>' +
-      '<span class="nr-t">🧠 The Model Room</span>' +
+    '<a class="next-room" href="#/scanner"><span class="nr-k">next room →</span>' +
+      '<span class="nr-t">🔍 Brand Scanner</span>' +
       '<span style="font-size:13px;color:var(--muted)">' + d3('c.next') + '</span></a>' +
     '</div>';
 }
@@ -2871,7 +3424,7 @@ INITS.creative = function () {
     });
   });
   var dialHook = function () { setTimeout(updateReadout, 30); };
-  document.querySelectorAll('.dial-btn').forEach(function (b) { b.addEventListener('click', dialHook); });
+  document.querySelectorAll('.mode-opt').forEach(function (b) { b.addEventListener('click', dialHook); });
   var rs = function () { resize(); };
   window.addEventListener('resize', rs);
   resize(); preset(C_SPECIFIC);
@@ -2879,7 +3432,7 @@ INITS.creative = function () {
   return function () {
     alive = false; cancelAnimationFrame(raf);
     window.removeEventListener('resize', rs);
-    document.querySelectorAll('.dial-btn').forEach(function (b) { b.removeEventListener('click', dialHook); });
+    document.querySelectorAll('.mode-opt').forEach(function (b) { b.removeEventListener('click', dialHook); });
   };
 };
 VIEWS.creative = viewCreative;
@@ -2902,68 +3455,12 @@ var GEM_ROUNDS = [
     hidden: [['🧑‍🤝‍🧑', 'a friend searched desks on your home wifi', '2 days ago'], ['👥', 'people with your viewing pattern bought desks', 'this week'], ['🎬', 'you half-watched an office-setup Reel', '9 days ago'], ['🪑', 'you price-checked desk chairs', '6 days ago']] },
 ];
 
-function viewRecency() {
-  return '<div class="view-pad">' +
-    '<p class="room-kicker">The Growth Den Lab · The Machine</p>' +
-    '<h1 class="room-title">🔁 Recency & Fatigue</h1>' +
-    '<p class="room-tag" style="margin-bottom:20px">' + d3('recency.tag') + '</p>' +
-
-    '<div class="card"><h2>Part one · Play as GEM</h2>' +
-    '<div style="font-size:14.5px;line-height:1.7;color:var(--muted);margin-bottom:14px">' + d3('r.intro') + '</div>' +
-    '<div class="gem-stage" id="gemBox"></div></div>' +
-
-    '<div class="card"><h2>Part two · The Fatigue Courtroom</h2>' +
-    '<div style="font-size:14.5px;line-height:1.7;color:var(--muted)">' + d3('r.court') + '</div></div>' +
-
-    '<div class="card case"><span class="verdict v-folk">verdict: folklore</span>' +
-    '<p class="case-quote">“High frequency kills ads.”</p>' +
-    '<p style="font-size:12.5px">' + claim('The fatigue trigger Meta actually surfaces is cost-based — your cost per result versus your own baseline — not any specific frequency number.', 'folklore', 'The “magic frequency number” itself: widely repeated, never verified', 'https://www.facebook.com/business/help') + '</p>' +
-    '<div style="font-size:13.5px;line-height:1.65;color:var(--muted)">' + d3('r.c1') + '</div>' +
-    '<div class="curve-box"><canvas id="crv1"></canvas></div></div>' +
-
-    '<div class="card case"><span class="verdict v-meas">verdict: measured</span>' +
-    '<p class="case-quote">“Creative Fatigue = cost ≥2× your baseline; Creative Limited = elevated but under 2×.”</p>' +
-    '<p style="font-size:12.5px">' + claim('These thresholds are practitioner documentation of observed flag behavior — consistent, useful, and not a Meta spec sheet.', 'measured', SRC.loomer.name, SRC.loomer.url) + '</p>' +
-    '<div style="font-size:13.5px;line-height:1.65;color:var(--muted)">' + d3('r.c2') + '</div>' +
-    '<div class="band-wrap"><div class="ctl"><span class="ctl-name"><span>your cost per result vs. your own history</span><b id="bandV">1.0×</b></span>' +
-    '<input type="range" id="bandSlide" min="80" max="300" value="100"></div>' +
-    '<div class="band-bar"><i class="b-ok">healthy</i><i class="b-lim">creative limited</i><i class="b-fat">creative fatigue</i></div>' +
-    '<p class="band-stamp" id="bandStamp"></p></div></div>' +
-
-    '<div class="card case"><span class="verdict v-meas">verdict: measured</span>' +
-    '<p class="case-quote">“Performance drops 45% after four exposures.”</p>' +
-    '<p style="font-size:12.5px">' + claim('Meta’s own 2022 research reported the ~45% decline — shown here with the caveats the research itself acknowledges.', 'measured', SRC.fatigue22.name, SRC.fatigue22.url) + '</p>' +
-    '<div style="font-size:13.5px;line-height:1.65;color:var(--muted)">' + d3('r.c3') + '</div>' +
-    '<div class="curve-box"><canvas id="crv3"></canvas></div>' +
-    '<div class="caveat-row">' +
-      '<button class="caveat" data-c="no time-window control" type="button">⚠ no time-window control</button>' +
-      '<button class="caveat" data-c="no placement control" type="button">⚠ no placement control</button>' +
-      '<button class="caveat" data-c="engagement-level confound" type="button">⚠ engagement confound</button>' +
-    '</div></div>' +
-
-    '<div class="card case"><span class="verdict v-doc">verdict: documented</span>' +
-    '<p class="case-quote">“Editing an ad resets learning.”</p>' +
-    '<p style="font-size:12.5px">' + claim('Significant edits reset the learning phase — documented directly by Meta, with a specific list of what counts.', 'meta', 'Meta Business Help Center — about the learning phase', 'https://www.facebook.com/business/help') + '</p>' +
-    '<div style="font-size:13.5px;line-height:1.65;color:var(--muted)">' + d3('r.c4') + '</div>' +
-    '<div class="duo">' +
-      '<div class="duo-col d-yes"><h4>↺ resets learning</h4><ul>' +
-        '<li>any creative change (image, video, text, link)</li><li>targeting changes</li><li>changing the optimization event</li>' +
-        '<li>bid-strategy changes</li><li>large budget changes</li><li>adding new ads to the ad set</li><li>resuming after a 7-day pause</li></ul></div>' +
-      '<div class="duo-col d-no"><h4>✓ safe to touch</h4><ul>' +
-        '<li>renaming campaigns, ad sets, ads</li><li>minor budget adjustments</li><li>changing the schedule end date</li>' +
-        '<li>a brief pause</li><li>duplicating (the copy starts fresh; the original keeps learning)</li></ul></div>' +
-    '</div></div>' +
-
-    '<a class="next-room" href="#/creative"><span class="nr-k">next room →</span>' +
-      '<span class="nr-t">📡 Creative Signal</span>' +
-      '<span style="font-size:13px;color:var(--muted);line-height:1.55">' + d3('r.next') + '</span></a>' +
-    '</div>';
-}
-
-INITS.recency = function () {
-  /* ---- part one: the game ---- */
+/* Play-as-GEM game — lives inside The Machine at the ranking stage.
+   (Preserved intact from the former Recency tab; myths moved to the Auction Floor.) */
+function initGemGame() {
   var round = 0, score = 0;
   var box = $('gemBox');
+  if (!box) return;
   function evtHtml(e, i, ghost) {
     return '<div class="evt' + (ghost ? ' ghosted' : '') + '" style="animation-delay:' + (i * .22) + 's">' +
       '<span class="e-ico">' + e[0] + '</span><span class="e-lab">' + e[1] + '</span><span class="e-when">' + e[2] + '</span></div>';
@@ -2986,8 +3483,7 @@ INITS.recency = function () {
   }
   function answer(i) {
     var r = GEM_ROUNDS[round];
-    var right = i === r.correct;
-    if (right) score++;
+    if (i === r.correct) score++;
     box.querySelectorAll('.opt').forEach(function (b, bi) {
       b.disabled = true;
       if (bi === r.correct) b.classList.add('correct');
@@ -2997,13 +3493,13 @@ INITS.recency = function () {
     if (r.hidden) {
       extra = '<div class="evt-stream" style="margin-top:12px">' +
         '<p style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sky)">' +
-        dtxt('the part of the story you couldn’t see', 'the sequence you couldn’t see', 'the latent sequence') + '</p>' +
+        dtxt('the part of the story you couldn\u2019t see', 'the sequence you couldn\u2019t see', 'the latent sequence') + '</p>' +
         r.hidden.map(function (e, j) { return evtHtml(e, j, true); }).join('') + '</div>';
     }
     $('gemReveal').innerHTML = extra +
       '<div class="gem-reveal">' + d3(r.reveal) + '</div>' +
       '<button class="run-btn gem-next" id="gemNext" type="button">' +
-      (round < GEM_ROUNDS.length - 1 ? dtxt('next visitor →', 'next round →', 'next sequence →') : dtxt('finish →', 'the verdict →', 'wrap →')) + '</button>';
+      (round < GEM_ROUNDS.length - 1 ? dtxt('next visitor \u2192', 'next round \u2192', 'next sequence \u2192') : dtxt('finish \u2192', 'the verdict \u2192', 'wrap \u2192')) + '</button>';
     box.querySelector('.gem-score').textContent = 'score ' + score;
     $('gemNext').addEventListener('click', function () {
       round++;
@@ -3015,227 +3511,13 @@ INITS.recency = function () {
       dtxt('You played the machine!', 'Game over', 'Sequence set complete') +
       '</span><span class="gem-score">score ' + score + ' / ' + GEM_ROUNDS.length + '</span></div>' +
       '<div style="font-size:14px;line-height:1.7;color:var(--muted)">' + d3('r.myth') + '</div>' +
-      '<button class="chip-btn" id="gemAgain" type="button" style="margin-top:12px">↺ ' + dtxt('play again', 'replay', 'replay') + '</button>';
+      '<button class="chip-btn" id="gemAgain" type="button" style="margin-top:12px">\u21ba ' + dtxt('play again', 'replay', 'replay') + '</button>';
     $('gemAgain').addEventListener('click', function () { round = 0; score = 0; renderRound(); });
   }
   renderRound();
-
-  /* ---- part two: exhibits ---- */
-  function fitCanvas(cv) {
-    var r = cv.parentElement.getBoundingClientRect();
-    var dpr = Math.min(2, window.devicePixelRatio || 1);
-    cv.width = Math.round(r.width * dpr); cv.height = Math.round(r.height * dpr);
-    var ctx = cv.getContext('2d');
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    return { ctx: ctx, w: r.width, h: r.height };
-  }
-  /* exhibit 1: cost vs frequency — no cliff, a cost-based trigger line */
-  var c1mark = 3.2;
-  function costOf(f) { return 1 + Math.pow((f - 1) / 5.4, 2.05) * 2.4; }
-  function drawC1() {
-    var cv = $('crv1'); if (!cv) return;
-    var s = fitCanvas(cv), ctx = s.ctx, w = s.w, h = s.h;
-    var X = function (f) { return 44 + (f - 1) / 9 * (w - 64); };
-    var Y = function (c) { return h - 30 - (c - 1) / 2.6 * (h - 62); };
-    ctx.clearRect(0, 0, w, h);
-    ctx.strokeStyle = 'rgba(252,243,214,.3)'; ctx.lineWidth = 1.2;
-    ctx.beginPath(); ctx.moveTo(44, 14); ctx.lineTo(44, h - 30); ctx.lineTo(w - 16, h - 30); ctx.stroke();
-    ctx.setLineDash([6, 5]); ctx.strokeStyle = 'rgba(229,52,11,.75)'; ctx.lineWidth = 1.8;
-    ctx.beginPath(); ctx.moveTo(44, Y(2)); ctx.lineTo(w - 16, Y(2)); ctx.stroke(); ctx.setLineDash([]);
-    ctx.font = '600 10px Poppins, sans-serif'; ctx.fillStyle = 'rgba(229,52,11,.9)'; ctx.textAlign = 'left';
-    ctx.fillText(dtxt('the fair’s real alarm: costs doubled', 'Meta’s actual trigger: cost ≥ 2× baseline', 'flag condition: CPR ≥ 2× trailing baseline'), 50, Y(2) - 6);
-    ctx.strokeStyle = 'rgba(127,200,240,.9)'; ctx.lineWidth = 2.5; ctx.beginPath();
-    for (var f = 1; f <= 10; f += .2) { var x = X(f), y = Y(costOf(f)); f === 1 ? ctx.moveTo(x, y) : ctx.lineTo(x, y); }
-    ctx.stroke();
-    var mx = X(c1mark), my = Y(costOf(c1mark));
-    ctx.fillStyle = '#ffc545'; ctx.beginPath(); ctx.arc(mx, my, 7, 0, 6.29); ctx.fill();
-    ctx.fillStyle = 'rgba(252,243,214,.9)'; ctx.textAlign = 'center'; ctx.font = '700 12px Poppins, sans-serif';
-    var flag = costOf(c1mark) >= 2;
-    ctx.fillText('freq ' + c1mark.toFixed(1) + '× · cost ×' + costOf(c1mark).toFixed(2) + (flag ? ' · 🚩' : ' · no flag'), w / 2, 24);
-    ctx.font = '500 10px Poppins, sans-serif'; ctx.fillStyle = 'rgba(252,243,214,.5)'; ctx.textAlign = 'center';
-    ctx.fillText(dtxt('how many times each person saw it →', 'frequency →', 'frequency →'), w / 2, h - 10);
-    ctx.save(); ctx.translate(16, h / 2); ctx.rotate(-Math.PI / 2);
-    ctx.fillText(dtxt('cost per sale →', 'cost per result →', 'CPR vs baseline →'), 0, 0); ctx.restore();
-  }
-  function c1drag(e) {
-    var cv = $('crv1'), r = cv.getBoundingClientRect();
-    c1mark = clamp(1 + (e.clientX - r.left - 44) / (r.width - 64) * 9, 1, 10);
-    drawC1();
-  }
-  $('crv1').addEventListener('pointerdown', function (e) { c1drag(e); $('crv1').setPointerCapture(e.pointerId); });
-  $('crv1').addEventListener('pointermove', function (e) { if (e.buttons) c1drag(e); });
-
-  /* exhibit 2: the threshold bands */
-  function band() {
-    var v = parseInt($('bandSlide').value, 10) / 100;
-    $('bandV').textContent = v.toFixed(1) + '×';
-    var st = $('bandStamp');
-    if (v < 1.5) { st.textContent = dtxt('✅ healthy — the fair is happy', '✅ healthy', '✅ within band'); st.style.color = 'var(--green)'; }
-    else if (v < 2) { st.textContent = dtxt('🟡 “creative limited” — the yellow note', '🟡 Creative Limited (elevated, under 2×)', '🟡 Creative Limited band'); st.style.color = 'var(--gold)'; }
-    else { st.textContent = dtxt('🚩 “creative fatigue” — the red note', '🚩 Creative Fatigue (≥ 2× baseline)', '🚩 Fatigue flag threshold crossed'); st.style.color = '#ff8a70'; }
-  }
-  $('bandSlide').addEventListener('input', band); band();
-
-  /* exhibit 3: the 45% study, with caveats */
-  var c3mark = 4, caveatsOn = 0;
-  var PERF = [100, 88, 74, 62, 55, 51, 48, 46];
-  function drawC3() {
-    var cv = $('crv3'); if (!cv) return;
-    var s = fitCanvas(cv), ctx = s.ctx, w = s.w, h = s.h;
-    ctx.clearRect(0, 0, w, h);
-    var bw = (w - 70) / 8;
-    PERF.forEach(function (p, i) {
-      var x = 50 + i * bw, bh = p / 100 * (h - 66);
-      var hot = (i + 1) === Math.round(c3mark);
-      ctx.fillStyle = hot ? 'rgba(255,197,69,.9)' : (i >= 3 ? 'rgba(229,52,11,.45)' : 'rgba(127,200,240,.55)');
-      ctx.beginPath(); ctx.roundRect(x, h - 30 - bh, bw - 8, bh, 4); ctx.fill();
-      ctx.font = '600 9.5px Poppins, sans-serif'; ctx.fillStyle = 'rgba(252,243,214,.6)'; ctx.textAlign = 'center';
-      ctx.fillText(String(i + 1), x + (bw - 8) / 2, h - 14);
-      if (hot) { ctx.fillStyle = 'rgba(252,243,214,.95)'; ctx.font = '700 12px Poppins, sans-serif'; ctx.fillText(p + '%', x + (bw - 8) / 2, h - 40 - bh); }
-    });
-    ctx.font = '600 11px Poppins, sans-serif'; ctx.textAlign = 'left'; ctx.fillStyle = 'rgba(252,243,214,.75)';
-    ctx.fillText(dtxt('strength of the ad after N views', 'relative performance by exposure count', 'performance index vs exposure (2022 study)'), 50, 20);
-    if (caveatsOn > 0) {
-      ctx.fillStyle = 'rgba(127,200,240,.13)'; ctx.fillRect(0, 0, w, h);
-      ctx.font = 'italic 600 12px Poppins, sans-serif'; ctx.textAlign = 'center'; ctx.fillStyle = 'rgba(127,200,240,.95)';
-      ctx.fillText(dtxt('…but the study didn’t check everything (' + caveatsOn + ' caveat' + (caveatsOn > 1 ? 's' : '') + ' on)', 'correlation with ' + caveatsOn + ' acknowledged confound' + (caveatsOn > 1 ? 's' : '') + ' — not clean causation', caveatsOn + ' confound(s) active: exposure ∝ time ∝ everything else'), w / 2, h / 2);
-    }
-  }
-  function c3drag(e) {
-    var cv = $('crv3'), r = cv.getBoundingClientRect();
-    c3mark = clamp(1 + (e.clientX - r.left - 50) / (r.width - 70) * 8, 1, 8);
-    drawC3();
-  }
-  $('crv3').addEventListener('pointerdown', function (e) { c3drag(e); });
-  $('crv3').addEventListener('pointermove', function (e) { if (e.buttons) c3drag(e); });
-  document.querySelectorAll('.caveat').forEach(function (b) {
-    b.addEventListener('click', function () {
-      b.classList.toggle('on');
-      caveatsOn = document.querySelectorAll('.caveat.on').length;
-      drawC3();
-    });
-  });
-
-  function redrawAll() { drawC1(); drawC3(); }
-  redrawAll();
-  var dialRedraw = function () { setTimeout(redrawAll, 30); };
-  document.querySelectorAll('.dial-btn').forEach(function (b) { b.addEventListener('click', dialRedraw); });
-  window.addEventListener('resize', dialRedraw);
-  return function () {
-    document.querySelectorAll('.dial-btn').forEach(function (b) { b.removeEventListener('click', dialRedraw); });
-    window.removeEventListener('resize', dialRedraw);
-  };
-};
-VIEWS.recency = viewRecency;
-
-/* ============================================================
-   THE MODEL ROOM — #/models · the hall of named machines
-   ============================================================ */
-function hallCard(ico, name, sub, bodyKey, claimsHtml, flipId, oldKey, newKey, tueKey, extraHtml) {
-  var flip = '';
-  if (flipId) {
-    flip = '<div class="flip-row" data-flip="' + flipId + '">' +
-      '<button class="flip-btn on" data-side="old" type="button">the old way</button>' +
-      '<button class="flip-btn" data-side="new" type="button">the new way</button></div>' +
-      '<div class="flip-panel" data-old="' + oldKey + '" data-new="' + newKey + '">' + d3(oldKey) + '</div>';
-  }
-  return '<article class="roomcard">' +
-    '<h2>' + ico + ' ' + name + '</h2><p class="rc-sub">' + sub + '</p>' +
-    '<div class="rc-body">' + d3(bodyKey) + '</div>' +
-    (claimsHtml ? '<div style="font-size:12.5px;line-height:1.6;margin-top:6px">' + claimsHtml + '</div>' : '') +
-    flip + (extraHtml || '') +
-    (tueKey ? '<div class="tuesday"><span class="tue-k">what this means for your Tuesday</span>' + d3(tueKey) + '</div>' : '') +
-    '</article>';
 }
-function viewModels() {
-  var link = function (label, solid) {
-    return '<div class="hall-link' + (solid ? ' solid' : '') + '"><span>' + label + '</span></div>';
-  };
-  return '<div class="view-pad">' +
-    '<p class="room-kicker">The Growth Den Lab · The Machine</p>' +
-    '<h1 class="room-title">🧠 The Model Room</h1>' +
-    '<p class="room-tag" style="margin-bottom:14px">' + d3('models.tag') + '</p>' +
-    '<div class="card" style="margin-bottom:14px"><div style="font-size:14.5px;line-height:1.7;color:var(--muted)">' + d3('m.intro') + '</div></div>' +
 
-    '<div class="hall-wrap"><div class="hall" id="hall">' +
-    hallCard('🌌', 'Andromeda', 'the retrieval engine · Dec 2024', 'm.and.body',
-      '<p>' + claim('Meta’s published figures: 10,000× model capacity, +6% recall, +8% ads quality in selected segments.', 'meta', SRC.andromeda.name, SRC.andromeda.url) + '</p>',
-      'and', 'm.and.old', 'm.and.new', 'm.and.tue') +
-    link('connection inferred') +
-    hallCard('🧠', 'GEM', 'the central brain · Nov 2025', 'm.gem.body',
-      '<p>' + claim('Stated lifts: roughly +5% conversions on Instagram, +3% on Facebook Feed.', 'meta', SRC.gem2.name, SRC.gem2.url) + '</p>' +
-      '<p>' + claim('Reads sequences of up to thousands of user events, in order.', 'meta', SRC.gem.name, SRC.gem.url) + '</p>',
-      'gem', 'm.gem.old', 'm.gem.new', 'm.gem.tue') +
-    link('connection inferred') +
-    hallCard('🕸️', 'Lattice', 'ranking, consolidated · 2026', 'm.lat.body',
-      '<p>' + claim('Hundreds of ranking models consolidated into one trillion-parameter architecture; ~8% ads-quality lift in an Instagram test.', 'meta', SRC.lattice.name, SRC.lattice.url) + '</p>',
-      'lat', 'm.lat.old', 'm.lat.new', 'm.lat.tue') +
-    link('the past', true) +
-    hallCard('👻', 'The Ghosts', 'museum wing · pre-2024', 'm.gho.body', '',
-      null, null, null, 'm.gho.tue',
-      '<div class="plaque"><p class="pl-t">MTML multi-task models</p><p class="pl-d">c. 2020–2023</p>' +
-        '<p class="pl-b">Ranked many objectives at once with shared layers. Served faithfully through the interest-targeting era. Superseded by the foundation-model line.</p></div>' +
-      '<div class="plaque"><p class="pl-t">Interest-gated candidate sourcing</p><p class="pl-d">c. 2012–2024</p>' +
-        '<p class="pl-b">Ads entered the room by checkbox: declared interests, lookalikes, hand-drawn stacks. Retired when retrieval learned to find fit directly.</p></div>' +
-      '<div class="plaque"><p class="pl-t">The 25-ad-set account structure</p><p class="pl-d">folk architecture, undated</p>' +
-        '<p class="pl-b">Not a Meta system — a practitioner ritual built to steer the machines above. Persists in the wild long after its habitat vanished.</p></div>') +
-    link('the future', true) +
-    hallCard('🧭', 'The Timeline Wall', '2020 → the stated end-state', 'm.tl.intro',
-      '<p>' + claim('Meta reports Advantage+ end-to-end at a $75B annual revenue run-rate, the Muse image model, and 9M small businesses using at least one AI creative tool.', 'meta', SRC.earnings.name, SRC.earnings.url) + '</p>' +
-      '<p>' + claim('A target of fully automated ad creation — “objective + budget in, ads out” — by end of 2026 has been reported by trade press, but is not Meta on-record.', 'measured', SRC.theinfo.name, SRC.theinfo.url) + '</p>',
-      null, null, null, null,
-      '<ol class="tl">' +
-      '<li><span class="tl-y">2020</span><p class="tl-t">The MTML era</p><p class="tl-b">Per-surface multi-task rankers; interest targeting at its peak; the playbooks most teams still run were written here.</p></li>' +
-      '<li><span class="tl-y">2022</span><p class="tl-t">The fatigue research year</p><p class="tl-b">Meta publishes creative-fatigue findings; frequency becomes a measured phenomenon rather than a hunch.</p></li>' +
-      '<li><span class="tl-y">DEC 2024</span><p class="tl-t">Andromeda</p><p class="tl-b">Retrieval rebuilt for the generative-creative flood. The interest checkbox stops being a gate.</p></li>' +
-      '<li><span class="tl-y">NOV 2025</span><p class="tl-t">GEM</p><p class="tl-b">The central brain: one foundation model teaching hundreds of rankers; sequences become the first-class input.</p></li>' +
-      '<li><span class="tl-y">2026</span><p class="tl-t">Lattice + Advantage+ end-to-end</p><p class="tl-b">Ranking consolidates; automation reaches a $75B run-rate; the reported (not confirmed) end-state: objective and budget in, finished ads out.</p></li>' +
-      '</ol>') +
-    '</div>' +
-    '<div class="hall-nav">' +
-      '<button class="hn-btn" id="hallPrev" type="button" aria-label="Previous room">‹</button>' +
-      '<div class="hn-dots" id="hallDots"></div>' +
-      '<button class="hn-btn" id="hallNext" type="button" aria-label="Next room">›</button>' +
-    '</div></div>' +
-
-    '<a class="next-room" href="#/dispatch" style="margin-top:16px"><span class="nr-k">next room →</span>' +
-      '<span class="nr-t">📰 The Dispatch</span>' +
-      '<span style="font-size:13px;color:var(--muted)">The machines keep changing. The logbook keeps up.</span></a>' +
-    '</div>';
-}
-INITS.models = function () {
-  document.querySelectorAll('.flip-row').forEach(function (row) {
-    var panel = row.nextElementSibling;
-    row.querySelectorAll('.flip-btn').forEach(function (b) {
-      b.addEventListener('click', function () {
-        row.querySelectorAll('.flip-btn').forEach(function (x) { x.classList.toggle('on', x === b); });
-        panel.innerHTML = d3(panel.dataset[b.dataset.side]);
-      });
-    });
-  });
-  var hall = $('hall'), dots = $('hallDots');
-  var cards = hall.querySelectorAll('.roomcard');
-  dots.innerHTML = Array.from(cards).map(function () { return '<i></i>'; }).join('');
-  function upDots() {
-    var idx = 0, best = 1e9, mid = hall.scrollLeft + hall.clientWidth / 2;
-    cards.forEach(function (c, i) {
-      var cm = c.offsetLeft + c.offsetWidth / 2;
-      if (Math.abs(cm - mid) < best) { best = Math.abs(cm - mid); idx = i; }
-    });
-    dots.querySelectorAll('i').forEach(function (d, i) { d.classList.toggle('on', i === idx); });
-    return idx;
-  }
-  function go(dir) {
-    var idx = clamp(upDots() + dir, 0, cards.length - 1);
-    hall.scrollTo({ left: cards[idx].offsetLeft - (hall.clientWidth - cards[idx].offsetWidth) / 2, behavior: 'smooth' });
-  }
-  $('hallPrev').addEventListener('click', function () { go(-1); });
-  $('hallNext').addEventListener('click', function () { go(1); });
-  hall.addEventListener('scroll', function () { upDots(); }, { passive: true });
-  upDots();
-  return null;
-};
-VIEWS.models = viewModels;
+/* (Model Room content folded into The Machine drawers; hall removed.) */
 
 /* ============================================================
    THE AUCTION FLOOR — #/auction
@@ -3293,10 +3575,41 @@ function viewAuction() {
       '<div id="scenTable"></div>' +
     '</div>' +
 
-    '<a class="next-room" href="#/recency"><span class="nr-k">next room →</span>' +
-      '<span class="nr-t">🔁 How the machine reads YOU</span>' +
+    '<div class="card"><h2>Myths, graded</h2>' +
+      '<p style="font-size:13px;color:var(--muted)">The fatigue claims your team has repeated in meetings — each with its grade and source. Folklore looks like folklore on purpose.</p>' +
+      '<div class="myth-grid">' +
+        mythCard('“High frequency kills ads.”',
+          claim('The fatigue trigger Meta surfaces is cost-based — your cost per result vs. your own baseline — not any frequency number.', 'folklore', 'The “magic frequency number”: widely repeated, never verified', 'https://www.facebook.com/business/help'),
+          'r.c1', true) +
+        mythCard('“Creative Fatigue = cost ≥2× baseline; Creative Limited = elevated but under 2×.”',
+          claim('Practitioner documentation of observed flag behavior — consistent and useful, not a Meta spec sheet.', 'measured', SRC.loomer.name, SRC.loomer.url),
+          'r.c2', false) +
+        mythCard('“Performance drops 45% after four exposures.”',
+          claim('Meta’s own 2022 research — with its own caveats: no time-window, placement, or engagement controls.', 'measured', SRC.fatigue22.name, SRC.fatigue22.url),
+          'r.c3', false) +
+        mythCard('“Editing an ad resets learning.”',
+          claim('Documented directly by Meta, with a specific list of what counts as a significant edit.', 'meta', 'Meta Business Help Center — about the learning phase', 'https://www.facebook.com/business/help'),
+          'r.c4', false) +
+      '</div>' +
+      '<div class="duo">' +
+        '<div class="duo-col d-yes"><h4>↺ resets learning</h4><ul>' +
+          '<li>any creative change (image, video, text, link)</li><li>targeting changes</li><li>changing the optimization event</li>' +
+          '<li>bid-strategy changes</li><li>large budget changes</li><li>adding new ads to the ad set</li><li>resuming after a 7-day pause</li></ul></div>' +
+        '<div class="duo-col d-no"><h4>✓ safe to touch</h4><ul>' +
+          '<li>renaming campaigns, ad sets, ads</li><li>minor budget adjustments</li><li>changing the schedule end date</li>' +
+          '<li>a brief pause</li><li>duplicating (the copy starts fresh; the original keeps learning)</li></ul></div>' +
+      '</div></div>' +
+
+    '<a class="next-room" href="#/creative"><span class="nr-k">next room →</span>' +
+      '<span class="nr-t">📡 Creative Signal</span>' +
       '<span style="font-size:13px;color:var(--muted);line-height:1.55">' + d3('a.next') + '</span></a>' +
     '</div>';
+}
+function mythCard(quote, claimHtml, bodyKey, folk) {
+  return '<div class="myth-card' + (folk ? ' folk-card' : '') + '">' +
+    '<p class="mq">' + quote + '</p>' +
+    '<p style="font-size:11.5px">' + claimHtml + '</p>' +
+    '<div class="mb">' + d3(bodyKey) + '</div></div>';
 }
 
 INITS.auction = function () {
@@ -3360,8 +3673,19 @@ INITS.auction = function () {
     if (note) setCapEl('a.cap.reset');
     syncUI();
   }
-  function setCapEl(key) { var el = $('auCap'); if (el) el.innerHTML = d3(key); }
+  function setCapEl(key) {
+    var el = $('auCap'); if (!el) return;
+    el.innerHTML = d3(key) + (BRAND && BRAND.category
+      ? '<span style="display:block;font-size:10.5px;color:var(--your-ad);margin-top:3px">for a ' + escHtml(BRAND.category) + ' brand like ' + escHtml(BRAND.name) + ' — same mechanics, your numbers</span>'
+      : '');
+  }
   function fm(v) { return '$' + v.toFixed(2); }
+  function setScen(key) {
+    var el = $('scenCap'); if (!el) return;
+    el.innerHTML = d3(key) + (BRAND && BRAND.category
+      ? '<span style="display:block;font-size:11.5px;color:var(--your-ad);margin-top:4px">seeded for ' + escHtml(BRAND.name) + ' (' + escHtml(BRAND.category) + ') — same mechanics, your numbers</span>'
+      : '');
+  }
   function syncUI() {
     if (!$('stDay')) return;
     $('auBidV').textContent = fm(AU.bid);
@@ -3437,7 +3761,7 @@ INITS.auction = function () {
     cx.restore();
     cx.font = '700 11px Poppins, sans-serif'; cx.textAlign = 'center';
     cx.fillStyle = 'rgba(254,124,43,.9)';
-    cx.fillText(dtxt('you', 'your ad', 'your ad'), yx, yy + 28);
+    cx.fillText(BRAND ? BRAND.name + '’s ad' : dtxt('you', 'your ad', 'your ad'), yx, yy + 28);
     cx.font = '600 11px Poppins, sans-serif';
     cx.fillStyle = 'rgba(252,243,214,.5)';
     cx.fillText(dtxt('the other stands drift and change each day', 'competitors drift daily — size = bid, glow = creative', 'competitor set · size=bid, glow=cs, alpha=freshness'), W / 2, 24);
@@ -3484,7 +3808,7 @@ INITS.auction = function () {
     var base = measure(AU.bid, AU.cs, 600);
     var b2 = measure(AU.bid * 2, AU.cs, 600);
     var c2 = measure(AU.bid, Math.min(10, AU.cs * 2), 600);
-    $('scenCap').innerHTML = d3('a.cap.sc1');
+    setScen('a.cap.sc1');
     $('scenTable').innerHTML = '<table class="cmp-table"><tr><th>setup</th><th>win rate</th><th>effective CPM</th></tr>' +
       '<tr><td>baseline (bid ' + fm(AU.bid) + ', creative ' + AU.cs + ')</td><td>' + Math.round(base.wr * 100) + '%</td><td>' + (base.cpm ? fm(base.cpm) : '—') + '</td></tr>' +
       '<tr><td>2× bid</td><td>' + Math.round(b2.wr * 100) + '%</td><td>' + (b2.cpm ? fm(b2.cpm) : '—') + '</td></tr>' +
@@ -3493,27 +3817,27 @@ INITS.auction = function () {
   scen('sc2', function () {
     AU.q4 = !AU.q4;
     $('sc2').classList.toggle('pressed', AU.q4);
-    $('scenCap').innerHTML = d3(AU.q4 ? 'a.cap.sc2on' : 'a.cap.sc2off');
+    setScen(AU.q4 ? 'a.cap.sc2on' : 'a.cap.sc2off');
     $('scenTable').innerHTML = '';
     resetT(false);
   });
   scen('sc3', function () {
     AU.bait = !AU.bait;
     $('sc3').classList.toggle('pressed', AU.bait);
-    $('scenCap').innerHTML = d3(AU.bait ? 'a.cap.sc3on' : 'a.cap.sc3off');
+    setScen(AU.bait ? 'a.cap.sc3on' : 'a.cap.sc3off');
     $('scenTable').innerHTML = '';
     resetT(false);
   });
   scen('sc4', function () {
     AU.cap = !AU.cap;
     $('sc4').classList.toggle('pressed', AU.cap);
-    $('scenCap').innerHTML = d3(AU.cap ? 'a.cap.sc4on' : 'a.cap.sc4off');
+    setScen(AU.cap ? 'a.cap.sc4on' : 'a.cap.sc4off');
     $('scenTable').innerHTML = '';
     resetT(false);
   });
   scen('sc5', function () {
     for (var i = 0; i < 5; i++) runDay(true);
-    $('scenCap').innerHTML = d3('a.cap.sc5');
+    setScen('a.cap.sc5');
     $('scenTable').innerHTML = '';
     syncUI();
   });
@@ -3550,6 +3874,8 @@ INITS.machine = function () {
   document.querySelectorAll('#pipemap .node').forEach(function (n) {
     n.addEventListener('click', function () { openDetail(n.dataset.node); });
   });
+  wireFlips();
+  initGemGame();
   return journeyStop;
 };
 
@@ -3558,6 +3884,7 @@ function render() {
   if (cur.params.d && DEPTHS.indexOf(cur.params.d) >= 0 && cur.params.d !== depth) {
     setDepth(cur.params.d, true);
   }
+  if (cur.params.brand && typeof setBrandDomain === 'function') setBrandDomain(cur.params.brand);
   canonicalizeHash();
   var room = ROOMS.filter(function (r) { return r.slug === cur.slug; })[0];
   CLAIMS.length = 0;
@@ -3565,7 +3892,13 @@ function render() {
   detail.hidden = true;
   if (roomCleanup) { try { roomCleanup(); } catch (e) { } roomCleanup = null; }
   var view = $('view');
-  view.innerHTML = VIEWS[room.slug] ? VIEWS[room.slug]() : viewPlaceholder(room);
+  var html = VIEWS[room.slug] ? VIEWS[room.slug]() : viewPlaceholder(room);
+  if (['machine', 'auction', 'creative'].indexOf(room.slug) >= 0) {
+    html += '<div class="cta-strip"><a href="/#method">Built by The Growth Den — see how I work with brands →</a></div>';
+  }
+  view.innerHTML = html;
+  /* the scanner carries no attribution at all — its report speaks for itself */
+  $('foot').style.display = room.slug === 'scanner' ? 'none' : '';
   view.style.animation = 'none';
   void view.offsetWidth;
   view.style.animation = '';
@@ -3576,16 +3909,189 @@ function render() {
   window.scrollTo(0, 0);
 }
 
+/* ============================================================
+   THE ENTRY — first load with no hash: only the collapse,
+   full-bleed, choices reachable immediately. Deep links skip it.
+   ============================================================ */
+var ENTRY = { active: false, raf: 0, p: 0, fast: false, dots: [], W: 0, H: 0, dpr: 1, t: 0 };
+var STAGES_E = [41700000, 1200000, 96000, 8400, 2000];
+
+function viewEntry() {
+  return '<div class="entry" id="entryRoot">' +
+    '<canvas id="entryCanvas"></canvas>' +
+    '<p class="entry-skip">tap anywhere to fast-forward</p>' +
+    '<div class="entry-overlay">' +
+      '<div class="entry-title">' +
+        '<p class="ek">The Growth Den Lab</p>' +
+        '<h1>The Machine</h1>' +
+        '<p class="es">40,000,000 ads want this slot. Watch Meta pick one — then make it about your brand.</p>' +
+      '</div>' +
+      '<div class="entry-card">' +
+        '<label for="entryUrl">Enter your site — the whole machine becomes about your brand</label>' +
+        '<div class="entry-row">' +
+          '<input id="entryUrl" type="text" inputmode="url" placeholder="yourbrand.com" autocomplete="off">' +
+          '<button class="run-btn" id="entryGo" type="button">Make it mine</button>' +
+        '</div>' +
+        '<div class="entry-links">' +
+          '<a href="#/machine" id="entryExplore">Just explore</a>' +
+          '<a href="#/scanner">Skip to the Brand Scanner</a>' +
+        '</div>' +
+      '</div>' +
+    '</div></div>';
+}
+
+function initEntryScene() {
+  var cv = $('entryCanvas'), ctx = cv.getContext('2d');
+  function resize() {
+    ENTRY.dpr = Math.min(2, window.devicePixelRatio || 1);
+    ENTRY.W = window.innerWidth; ENTRY.H = window.innerHeight;
+    cv.width = Math.round(ENTRY.W * ENTRY.dpr);
+    cv.height = Math.round(ENTRY.H * ENTRY.dpr);
+    if (!J.galaxy) J.galaxy = makeGalaxy(ENTRY.W, ENTRY.H);
+    ENTRY.dots = [];
+    var n = clamp(Math.round(ENTRY.W * ENTRY.H / 900), 350, 900);
+    for (var i = 0; i < n; i++) {
+      ENTRY.dots.push({ hx: Math.random(), hy: Math.random() * .72 + .04, rank: Math.random(),
+        r: .8 + Math.random() * 1.6, tw: Math.random() * 6.28, dead: 0, you: i === 42 });
+    }
+    ENTRY.dots[42].rank = .001;
+  }
+  resize();
+  ENTRY.rs = resize;
+  window.addEventListener('resize', ENTRY.rs);
+  var last = performance.now();
+  function loop(now) {
+    if (!ENTRY.active) return;
+    var dt = Math.min(.05, (now - last) / 1000); last = now;
+    ENTRY.t += dt;
+    ENTRY.p = clamp(ENTRY.p + dt * (ENTRY.fast ? 1.4 : .11), 0, 1);
+    drawEntry(ctx, dt);
+    ENTRY.raf = requestAnimationFrame(loop);
+  }
+  ENTRY.raf = requestAnimationFrame(loop);
+  // scroll or tap accelerates; never gates the choices (they're already on screen)
+  var fwd = function () { ENTRY.fast = true; };
+  cv.addEventListener('pointerdown', fwd);
+  window.addEventListener('wheel', fwd, { passive: true });
+  window.addEventListener('touchmove', fwd, { passive: true });
+  ENTRY.unfwd = function () {
+    cv.removeEventListener('pointerdown', fwd);
+    window.removeEventListener('wheel', fwd);
+    window.removeEventListener('touchmove', fwd);
+  };
+}
+
+function drawEntry(ctx, dt) {
+  var w = ENTRY.W, h = ENTRY.H, t = ENTRY.t, cp = ENTRY.p * 4;
+  ctx.setTransform(ENTRY.dpr, 0, 0, ENTRY.dpr, 0, 0);
+  ctx.clearRect(0, 0, w, h);
+  if (J.galaxy) {
+    ctx.globalAlpha = clamp(.7 - cp * .26, 0, .7);
+    ctx.drawImage(J.galaxy, 0, 0, w, h);
+    ctx.globalAlpha = 1;
+  }
+  var stage = Math.floor(cp);
+  var F = [1, .5, .26, .12, .055], F2 = [.5, .26, .12, .055, .055];
+  var surviveFrac = F[clamp(stage, 0, 4)] - (cp % 1) * (F[clamp(stage, 0, 4)] - F2[clamp(stage, 0, 4)]);
+  // index bands
+  var bandH = (h * .5) / 4;
+  for (var L = 0; L < 4; L++) {
+    var y0 = h * .12 + L * bandH;
+    var lit = clamp(1 - Math.abs(cp - (L + .5)) * 1.6, 0, 1);
+    if (lit <= 0) continue;
+    ctx.fillStyle = 'rgba(37,100,147,' + lit * .13 + ')';
+    ctx.fillRect(0, y0, w, bandH - 4);
+    var swx = ((t * .5 + L * .3) % 1) * w;
+    var grad = ctx.createLinearGradient(swx - 80, 0, swx, 0);
+    grad.addColorStop(0, 'rgba(127,200,240,0)');
+    grad.addColorStop(1, 'rgba(127,200,240,' + lit * .4 + ')');
+    ctx.fillStyle = grad;
+    ctx.fillRect(swx - 80, y0, 80, bandH - 4);
+  }
+  ENTRY.dots.forEach(function (d) {
+    var alive = d.rank < surviveFrac;
+    d.dead = lerp(d.dead, alive ? 0 : 1, dt * 2.4);
+    var fx = d.hx, fy = d.hy;
+    if (alive && cp > 3.2) {
+      var g = clamp((cp - 3.2) / .8, 0, 1);
+      fx = lerp(d.hx, .5 + (d.hx - .5) * .25, g);
+      fy = lerp(d.hy, .42 + (d.hy - .5) * .07, g);
+    }
+    var yy = fy + d.dead * .3;
+    var a = (1 - d.dead) * (.3 + .5 * Math.abs(Math.sin(t * 1.4 + d.tw)));
+    if (d.you) {
+      ctx.save();
+      ctx.shadowColor = 'rgba(254,124,43,.95)'; ctx.shadowBlur = 15;
+      ctx.fillStyle = 'rgba(254,124,43,.95)';
+      ctx.beginPath(); ctx.arc(fx * w, yy * h, 3.6 + (cp > 3.6 ? 2.4 : 0), 0, 6.29); ctx.fill();
+      ctx.restore();
+    } else if (a > .02) {
+      ctx.fillStyle = 'rgba(232,222,240,' + a + ')';
+      ctx.beginPath(); ctx.arc(fx * w, yy * h, d.r, 0, 6.29); ctx.fill();
+    }
+  });
+  // the big number
+  var i0 = clamp(stage, 0, 4), i1 = clamp(i0 + 1, 0, 4);
+  var n = cp >= 4 ? STAGES_E[4] : Math.exp(lerp(Math.log(STAGES_E[i0]), Math.log(STAGES_E[i1]), cp % 1));
+  ctx.font = '800 ' + Math.min(46, w * .09) + 'px Poppins, sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillStyle = cp > 3.6 ? 'rgba(255,197,69,.95)' : 'rgba(252,243,214,.9)';
+  ctx.fillText(Math.round(n).toLocaleString('en-US'), w / 2, h * .085);
+  ctx.font = '500 12px Poppins, sans-serif';
+  ctx.fillStyle = 'rgba(252,243,214,.55)';
+  ctx.fillText(cp >= 4 ? 'candidates left — and the orange one could be yours' : 'ads competing for one slot, right now', w / 2, h * .085 + 20);
+}
+
+function showEntry() {
+  ENTRY.active = true;
+  document.body.classList.add('entry-mode');
+  $('view').innerHTML = viewEntry();
+  initEntryScene();
+  $('entryGo').addEventListener('click', entrySubmit);
+  $('entryUrl').addEventListener('keydown', function (e) { if (e.key === 'Enter') entrySubmit(); });
+  document.title = 'The Machine — how Meta decides which ad you see · The Growth Den Lab';
+}
+function entrySubmit() {
+  var v = $('entryUrl').value.trim();
+  if (v && typeof setBrandDomain === 'function') setBrandDomain(v);
+  location.hash = '#/machine?d=' + depth;
+}
+function exitEntry() {
+  if (!ENTRY.active) return;
+  ENTRY.active = false;
+  cancelAnimationFrame(ENTRY.raf);
+  if (ENTRY.unfwd) ENTRY.unfwd();
+  if (ENTRY.rs) window.removeEventListener('resize', ENTRY.rs);
+  document.body.classList.remove('entry-mode');
+}
+
 /* ---------------- wire up ---------------- */
-document.querySelectorAll('.dial-btn').forEach(function (b) {
+var modeBtn = $('modeBtn'), modeList = $('modeList');
+function toggleModeMenu(open) {
+  var o = (open === undefined) ? modeList.hidden : open;
+  modeList.hidden = !o;
+  modeBtn.setAttribute('aria-expanded', String(o));
+}
+modeBtn.addEventListener('click', function (e) { e.stopPropagation(); toggleModeMenu(); });
+document.addEventListener('click', function (e) {
+  if (!modeList.hidden && !modeList.contains(e.target) && e.target !== modeBtn) toggleModeMenu(false);
+});
+document.addEventListener('keydown', function (e) {
+  if (e.key === 'Escape' && !modeList.hidden) toggleModeMenu(false);
+});
+document.querySelectorAll('.mode-opt').forEach(function (b) {
   b.addEventListener('click', function () {
     setDepth(b.dataset.depth, false);
+    toggleModeMenu(false);
     document.querySelectorAll('.bench-link code').forEach(function (c) {
       c.textContent = '#/' + parseHash().slug + '?d=' + depth;
     });
   });
 });
-window.addEventListener('hashchange', render);
+window.addEventListener('hashchange', function () {
+  exitEntry();
+  render();
+});
 var rsTm;
 window.addEventListener('resize', function () {
   clearTimeout(rsTm);
@@ -3595,7 +4101,21 @@ window.addEventListener('resize', function () {
 });
 
 setDepth(depth, true);
-render();
+/* restore brand context: ?brand= in the query string, or this session's active brand */
+try {
+  var qs = new URLSearchParams(location.search);
+  var qBrand = qs.get('brand');
+  var actBrand = sessionStorage.getItem('gd-brand-active');
+  if (qBrand) setBrandDomain(qBrand);
+  else if (actBrand) setBrandDomain(actBrand);
+  else applyBrandUI();
+} catch (e) { applyBrandUI(); }
+BOOTED = true;
+if (!location.hash || location.hash === '#' || location.hash === '#/') {
+  showEntry();
+} else {
+  render();
+}
 })();
 </script>
 </body>
