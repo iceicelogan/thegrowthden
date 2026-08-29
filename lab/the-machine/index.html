@@ -897,6 +897,20 @@ body.entry-mode #askBtn, body.entry-mode #askPanel { display: none !important; }
   .prod-drop { flex: 1 1 100%; min-height: 60px; }
 }
 
+/* ---------- the loader: the collapse as the wait ---------- */
+.loader { position: relative; min-height: 100dvh; overflow: hidden; cursor: pointer; }
+.loader canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+.ld-line {
+  position: absolute; left: 0; right: 0; bottom: 16%;
+  text-align: center; font-size: 15.5px; font-weight: 600; color: var(--cream);
+  padding: 0 24px; pointer-events: none;
+}
+.ld-line .ld-sub { display: block; font-size: 11.5px; font-weight: 400; color: var(--muted); margin-top: 6px; }
+.ld-skip {
+  position: absolute; top: 14px; right: 16px; z-index: 3;
+  font-size: 11px; color: rgba(252,243,214,.45); pointer-events: none;
+}
+
 /* ---------- footer ---------- */
 #foot {
   border-top: 1px solid var(--line);
@@ -3582,11 +3596,157 @@ function wireInput() {
   $('prodDemo').addEventListener('click', function (e) { e.preventDefault(); runRead('thegrowthden.com', { demo: true }); });
 }
 
+/* ============================================================
+   THE LOADER — the collapse animation IS the loading state.
+   Coupled to the analysis promise: resolves early when the answer
+   arrives early; a tap fast-forwards; it never blocks the result.
+   ============================================================ */
+var LOADER = { active: false, raf: 0, p: 0, fast: false, resolved: false, done: null, t: 0, dots: [], W: 0, H: 0, dpr: 1, rs: null };
+var LOAD_STAGES = [41700000, 1200000, 96000, 8400, 2000];
+var LOAD_LINES = [
+  'reading your site…',
+  'ten million ads are technically eligible for your buyers’ feeds…',
+  'finding the people your signals actually call…',
+  'writing the verdict…',
+];
+
+function showLoader() {
+  LOADER.active = true; LOADER.p = 0; LOADER.fast = false; LOADER.resolved = false; LOADER.t = 0;
+  document.body.classList.add('entry-mode');
+  $('view').innerHTML = '<div class="loader" id="ldRoot">' +
+    '<canvas id="ldCv"></canvas>' +
+    '<p class="ld-skip">tap to skip the show</p>' +
+    '<p class="ld-line" aria-live="polite"><span id="ldLine"></span><span class="ld-sub" id="ldSub"></span></p></div>';
+  var cv = $('ldCv'), ctx = cv.getContext('2d');
+  function resize() {
+    LOADER.dpr = Math.min(2, window.devicePixelRatio || 1);
+    LOADER.W = window.innerWidth; LOADER.H = window.innerHeight;
+    cv.width = Math.round(LOADER.W * LOADER.dpr);
+    cv.height = Math.round(LOADER.H * LOADER.dpr);
+    if (!J.galaxy) J.galaxy = makeGalaxy(LOADER.W, LOADER.H);
+    LOADER.dots = [];
+    var n = clamp(Math.round(LOADER.W * LOADER.H / 900), 350, 900);
+    for (var i = 0; i < n; i++) {
+      LOADER.dots.push({ hx: Math.random(), hy: Math.random() * .72 + .04, rank: Math.random(),
+        r: .8 + Math.random() * 1.6, tw: Math.random() * 6.28, dead: 0, you: i === 42 });
+    }
+    LOADER.dots[42].rank = .001;
+  }
+  resize();
+  LOADER.rs = resize;
+  window.addEventListener('resize', LOADER.rs);
+  $('ldRoot').addEventListener('pointerdown', function () { LOADER.fast = true; });
+  var last = performance.now();
+  function loop(now) {
+    if (!LOADER.active) return;
+    var dt = Math.min(.05, (now - last) / 1000); last = now;
+    LOADER.t += dt;
+    var cap = LOADER.resolved ? 1 : .82;   // hold before the finale until the answer is real
+    LOADER.p = Math.min(cap, LOADER.p + dt * (LOADER.fast ? 1.6 : 1 / 6.5));
+    drawLoader(ctx, dt);
+    var li = LOADER.resolved && LOADER.p > .8 ? 3 : Math.min(3, Math.floor(LOADER.p * 4.2));
+    var lineEl = $('ldLine');
+    if (lineEl && lineEl.textContent !== LOAD_LINES[li]) lineEl.textContent = LOAD_LINES[li];
+    var sub = $('ldSub');
+    if (sub) sub.textContent = (!LOADER.resolved && LOADER.p >= .82) ? 'the machine is still thinking — almost there' : '';
+    if (LOADER.resolved && LOADER.p >= 1) {
+      hideLoader();
+      var cb = LOADER.done; LOADER.done = null;
+      if (cb) cb();
+      return;
+    }
+    LOADER.raf = requestAnimationFrame(loop);
+  }
+  LOADER.raf = requestAnimationFrame(loop);
+}
+function drawLoader(ctx, dt) {
+  var w = LOADER.W, h = LOADER.H, t = LOADER.t, cp = LOADER.p * 4;
+  ctx.setTransform(LOADER.dpr, 0, 0, LOADER.dpr, 0, 0);
+  ctx.clearRect(0, 0, w, h);
+  if (J.galaxy) {
+    ctx.globalAlpha = clamp(.7 - cp * .26, 0, .7);
+    ctx.drawImage(J.galaxy, 0, 0, w, h);
+    ctx.globalAlpha = 1;
+  }
+  var stage = Math.floor(cp);
+  var F = [1, .5, .26, .12, .055], F2 = [.5, .26, .12, .055, .055];
+  var surviveFrac = F[clamp(stage, 0, 4)] - (cp % 1) * (F[clamp(stage, 0, 4)] - F2[clamp(stage, 0, 4)]);
+  var bandH = (h * .5) / 4;
+  for (var L = 0; L < 4; L++) {
+    var y0 = h * .12 + L * bandH;
+    var lit = clamp(1 - Math.abs(cp - (L + .5)) * 1.6, 0, 1);
+    if (lit <= 0) continue;
+    ctx.fillStyle = 'rgba(37,100,147,' + lit * .13 + ')';
+    ctx.fillRect(0, y0, w, bandH - 4);
+    var swx = ((t * .5 + L * .3) % 1) * w;
+    var grad = ctx.createLinearGradient(swx - 80, 0, swx, 0);
+    grad.addColorStop(0, 'rgba(127,200,240,0)');
+    grad.addColorStop(1, 'rgba(127,200,240,' + lit * .4 + ')');
+    ctx.fillStyle = grad;
+    ctx.fillRect(swx - 80, y0, 80, bandH - 4);
+  }
+  LOADER.dots.forEach(function (d) {
+    var alive = d.rank < surviveFrac;
+    d.dead = lerp(d.dead, alive ? 0 : 1, dt * 2.4);
+    var fx = d.hx, fy = d.hy;
+    if (alive && cp > 3.2) {
+      var g = clamp((cp - 3.2) / .8, 0, 1);
+      fx = lerp(d.hx, .5 + (d.hx - .5) * .25, g);
+      fy = lerp(d.hy, .42 + (d.hy - .5) * .07, g);
+    }
+    var yy = fy + d.dead * .3;
+    var a = (1 - d.dead) * (.3 + .5 * Math.abs(Math.sin(t * 1.4 + d.tw)));
+    if (d.you) {
+      ctx.save();
+      ctx.shadowColor = 'rgba(254,124,43,.95)'; ctx.shadowBlur = 15;
+      ctx.fillStyle = 'rgba(254,124,43,.95)';
+      ctx.beginPath(); ctx.arc(fx * w, yy * h, 3.6 + (cp > 3.6 ? 2.4 : 0), 0, 6.29); ctx.fill();
+      ctx.restore();
+    } else if (a > .02) {
+      ctx.fillStyle = 'rgba(232,222,240,' + a + ')';
+      ctx.beginPath(); ctx.arc(fx * w, yy * h, d.r, 0, 6.29); ctx.fill();
+    }
+  });
+  var i0 = clamp(stage, 0, 4), i1 = clamp(i0 + 1, 0, 4);
+  var n = cp >= 4 ? LOAD_STAGES[4] : Math.exp(lerp(Math.log(LOAD_STAGES[i0]), Math.log(LOAD_STAGES[i1]), cp % 1));
+  ctx.font = '800 ' + Math.min(46, w * .09) + 'px Poppins, sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillStyle = cp > 3.6 ? 'rgba(255,197,69,.95)' : 'rgba(252,243,214,.9)';
+  ctx.fillText(Math.round(n).toLocaleString('en-US'), w / 2, h * .085);
+  ctx.font = '500 12px Poppins, sans-serif';
+  ctx.fillStyle = 'rgba(252,243,214,.55)';
+  ctx.fillText(cp >= 4 ? 'candidates left — the orange one is yours' : 'ads competing for your buyers, right now', w / 2, h * .085 + 20);
+}
+function hideLoader() {
+  LOADER.active = false;
+  cancelAnimationFrame(LOADER.raf);
+  if (LOADER.rs) window.removeEventListener('resize', LOADER.rs);
+}
+/* run `promise` behind the show; the show resolves as soon as the promise does */
+function runWithLoader(promise, onDone, onFail) {
+  showLoader();
+  promise.then(function (res) {
+    LOADER.resolved = true;
+    LOADER.fast = true;
+    LOADER.done = function () { onDone(res); };
+  }, function (err) {
+    hideLoader();
+    onFail(err);
+  });
+}
+
 function runRead(rawUrl, opts) {
   var dom = normDomain(rawUrl);
   if (!dom) { $('prodStatus').textContent = 'that doesn’t look like a domain — try yourbrand.com'; return; }
-  /* the loader and verdict engine land in the next steps of this build */
-  $('prodStatus').textContent = '🛠️ input wired for ' + dom + ' — the reader engine lands in the next commit.';
+  /* the analysis engine lands in the next commit; the show is wired */
+  runWithLoader(
+    new Promise(function (res) { setTimeout(res, 5200); }),
+    function () {
+      showProduct();
+      $('prodStatus').textContent = '🛠️ show complete for ' + dom + ' — the verdict engine lands in the next commit.';
+    },
+    function () { showProduct(); }
+  );
 }
 
 /* ---------------- boot ---------------- */
