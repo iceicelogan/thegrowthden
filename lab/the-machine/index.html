@@ -972,6 +972,27 @@ body.v5 { background: #fcf3d6; color: #341f44; font-weight: 300; }
   animation: v5pulse 1.1s ease-in-out infinite; opacity: 1; transform: none;
 }
 @keyframes v5pulse { 50% { opacity: .45; } }
+
+/* the tap drawer, restyled for the cream system */
+body.v5 #whyPanel {
+  background: #fffdf5; border-left: 1px solid #e8dcb8; color: #341f44;
+  box-shadow: -30px 0 80px rgba(52,31,68,.18);
+}
+body.v5 .why-head { border-bottom: 1px solid #e8dcb8; }
+body.v5 .why-head b { color: #341f44; }
+body.v5 .why-body { color: #4a3a5e; font-size: 13px; }
+body.v5 .why-body b, body.v5 .why-body i { color: #341f44; }
+body.v5 .why-foot { border-top: 1px solid #e8dcb8; }
+body.v5 .why-foot span { color: #8a7a5c !important; }
+body.v5 #whyDeeper { display: none; }
+body.v5 #whyScrim { background: rgba(52,31,68,.25); }
+body.v5 .ask-close { color: #341f44; }
+body.v5 .badge { background: #fff; }
+body.v5 .badge.g-meta { color: #256493; border-color: rgba(37,100,147,.6); }
+body.v5 .badge.g-measured { color: #fe7c2b; border-color: rgba(254,124,43,.6); }
+body.v5 .badge.g-folklore { color: #a08e69; border-color: #c9b98d; }
+body.v5 .folk-card { border-color: #c9b98d !important; background: rgba(255,197,69,.12) !important; }
+body.v5 .folk-card::after { color: #a08e69; }
 .v5-verdict {
   background: #341f44; color: #fcf3d6; border-radius: 12px;
   padding: 12px 14px; font-size: 13.5px; font-weight: 400;
@@ -3805,6 +3826,25 @@ function v5Fail(err) {
   else if (err instanceof SyntaxError) s.textContent = 'the read came back garbled — run it once more.';
   else s.textContent = 'the reader only runs on the live site (thegrowthden.com) — this is a local preview.';
 }
+/* ---- depth on tap: the small explanation drawer ---- */
+function openWhy(title, html) {
+  $('whyTitle').textContent = title;
+  $('whyBody').innerHTML = html;
+  $('whyScrim').hidden = false;
+  $('whyPanel').classList.add('open');
+}
+function closeWhy() {
+  $('whyPanel').classList.remove('open');
+  $('whyScrim').hidden = true;
+}
+(function wireWhy() {
+  $('whyClose').addEventListener('click', closeWhy);
+  $('whyScrim').addEventListener('click', closeWhy);
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && $('whyPanel').classList.contains('open')) closeWhy();
+  });
+})();
+
 function runRead(rawUrl, opts) {
   opts = opts || {};
   var dom = normDomain(rawUrl);
@@ -3825,16 +3865,37 @@ function runRead(rawUrl, opts) {
   });
 }
 
-/* ---- screen 1 · The Read (minimal render — the animated version lands next) ---- */
+/* ---- screen 1 · The Read ---- */
 V5_SCREENS[1] = function screenRead() {
   var d = V5.run.data;
   v5Mount(
     '<h2>Reading ' + escHtml(V5.dom) + '…</h2>' +
-    '<div class="v5-chips">' + d.signals.map(function (s) {
-      return '<span class="v5-chip in ' + (s.type === 'warm' ? 'warm' : s.type === 'missing' ? 'miss' : '') + '">' + escHtml(s.label) + '</span>';
+    '<p class="v5-sub">tap a chip — why it matters</p>' +
+    '<div class="v5-chips" id="v5SigChips">' + d.signals.map(function (s, i) {
+      var cls = s.type === 'warm' ? ' warm' : s.type === 'missing' ? ' miss' : '';
+      return '<button type="button" class="v5-chip' + cls + '" data-sig="' + i + '">' + escHtml(s.label) + '</button>';
     }).join('') + '</div>' +
-    '<div class="v5-verdict in"><b>' + escHtml(d.readVerdict.headline) + '</b> ' + escHtml(d.readVerdict.line) + '</div>'
+    '<div class="v5-verdict" id="v5Verdict"><b>' + escHtml(d.readVerdict.headline) + '</b> ' + escHtml(d.readVerdict.line) + '</div>' +
+    '<button class="v5-next" id="v5Next" type="button">next →</button>'
   );
+  var chips = Array.prototype.slice.call(document.querySelectorAll('#v5SigChips .v5-chip'));
+  chips.forEach(function (c, i) { setTimeout(function () { c.classList.add('in'); }, 240 + i * 360); });
+  setTimeout(function () { var v = $('v5Verdict'); if (v) v.classList.add('in'); }, 240 + chips.length * 360 + 260);
+  chips.forEach(function (c) {
+    c.addEventListener('click', function () {
+      var s = d.signals[parseInt(c.dataset.sig, 10)];
+      var typeName = s.type === 'strong' ? 'a strong signal' : s.type === 'warm' ? 'a warm signal — useful, not yet working for you' : 'missing — the machine hears nothing here';
+      openWhy(s.label, '<p style="font-size:11px;font-weight:600;color:' +
+        (s.type === 'missing' ? '#a08e69' : s.type === 'warm' ? '#fe7c2b' : '#256493') + '">' + typeName + '</p>' +
+        '<p style="margin-top:8px">' + escHtml(s.why) + '</p>');
+    });
+  });
+  $('v5Next').addEventListener('click', function () { goScreen(2); });
+};
+
+/* ---- screen 2 · placeholder (lands next commit) ---- */
+V5_SCREENS[2] = function () {
+  v5Mount('<h2>Change the message. Watch who Meta finds.</h2><p class="v5-sub">this screen lands in the next commit</p>');
 };
 
 /* ---------------- boot ---------------- *//* ---------------- boot ---------------- */
