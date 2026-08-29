@@ -13,6 +13,17 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <title>The Machine — how Meta's ad delivery system works · The Growth Den Lab</title>
 <meta name="description" content="Follow one impression through Meta's ad delivery pipeline — retrieval, ranking, the value equation, the auction — in the ~100ms before an ad appears.">
 <meta name="robots" content="noindex">
+<meta property="og:type" content="website">
+<meta property="og:title" content="The Machine — how Meta decides which ad you see">
+<meta property="og:description" content="Millions of ads collapse to the one on your screen in about 100 milliseconds — walk through exactly how the machine chooses, step by step.">
+<meta property="og:url" content="https://thegrowthden.com/lab/the-machine/">
+<meta property="og:image" content="https://thegrowthden.com/lab/the-machine/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The Machine — how Meta decides which ad you see">
+<meta name="twitter:description" content="Millions of ads collapse to the one on your screen in about 100 milliseconds — walk through exactly how the machine chooses, step by step.">
+<meta name="twitter:image" content="https://thegrowthden.com/lab/the-machine/og.png">
 <link rel="icon" href="../../favicon-32x32.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -923,7 +934,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <nav id="tabbar" aria-label="Rooms"><div class="rail" id="tabRail"></div></nav>
 
-<main id="view"></main>
+<main id="view">
+  <!-- static fallback: replaced by the app the moment JS boots -->
+  <div class="view-pad" style="max-width:720px;margin:0 auto;padding:48px 20px;font-size:15px;line-height:1.75;color:rgba(252,243,214,.85)">
+    <h1 style="font-size:26px;color:#fff;margin-bottom:14px">The Machine — how Meta decides which ad you see</h1>
+    <p style="margin-bottom:12px">Every time you open Instagram or Facebook, millions of ads are technically eligible to fill the slot in front of you. In roughly 100 milliseconds, Meta's delivery system collapses those millions down to one: retrieval models pull a few thousand plausible candidates, ranking models score what you're actually likely to do with each, a value equation blends bid, predicted action rate and ad quality, and an auction clears — with the winner paying the minimum needed to win.</p>
+    <p style="margin-bottom:12px">The Machine is an interactive walkthrough of that pipeline: watch the collapse happen, run the auction yourself against simulated competitors, see why creative has become the targeting, and scan any brand's public signals the way the delivery system might read them. Every claim is graded — Meta-published, independently measured, or practitioner folklore — so you always know which parts are documented and which are industry legend.</p>
+    <p style="color:rgba(252,243,214,.55);font-size:13px">This page needs JavaScript — the whole thing is a live simulation. From <a href="/" style="color:#ffc545">The Growth Den</a>.</p>
+  </div>
+</main>
 
 <footer id="foot">
   <p>Built with AI · <a href="/">The Growth Den</a> · Enter with problems. Exit with systems.</p>
