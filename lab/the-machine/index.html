@@ -994,6 +994,25 @@ body.v5 { background: #fcf3d6; color: #341f44; font-weight: 300; }
   text-decoration: underline; text-underline-offset: 2px; padding: 4px 6px;
 }
 
+/* the territory map (screen 3) */
+.v5-terr {
+  position: absolute; border-radius: 50%;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  text-align: center; font-size: 10.5px; line-height: 1.35; padding: 8px;
+  font-weight: 300; cursor: pointer; border: 1.5px solid transparent;
+}
+.v5-terr b { font-weight: 600; }
+.v5-terr.crowded { background: rgba(52,31,68,.14); color: #341f44; }
+.v5-terr.open-b { border: 1.5px dashed #256493; color: #256493; }
+.v5-terr.open-o { border: 1.5px dashed #fe7c2b; color: #fe7c2b; }
+.v5-you {
+  position: absolute; width: 12px; height: 12px; border-radius: 50%;
+  background: #e5340b; box-shadow: 0 0 0 5px rgba(229,52,11,.15); z-index: 2;
+}
+.v5-you-lab { position: absolute; font-size: 10px; font-weight: 600; color: #e5340b; z-index: 2; }
+.v5-terr-note { min-height: 20px; font-size: 12px; font-weight: 400; text-align: center; margin-top: 8px; color: #341f44; }
+.v5-map-note { font-size: 10.5px; font-weight: 300; color: #8a7a5c; text-align: center; margin-top: 6px; }
+
 /* the tap drawer, restyled for the cream system */
 body.v5 #whyPanel {
   background: #fffdf5; border-left: 1px solid #e8dcb8; color: #341f44;
@@ -3999,9 +4018,82 @@ V5_SCREENS[2] = function screenFrames() {
   $('v5Next').addEventListener('click', function () { goScreen(3); });
 };
 
-/* ---- screen 3 · placeholder (lands next commit) ---- */
-V5_SCREENS[3] = function () {
-  v5Mount('<h2>Where your category shouts — and where it’s quiet.</h2><p class="v5-sub">this screen lands in the next commit</p>');
+/* ---- screen 3 · Your Place in the Ecosystem ---- */
+function boldFirstSentence(line) {
+  var i = line.indexOf('. ');
+  if (i < 0) return '<b>' + escHtml(line) + '</b>';
+  return '<b>' + escHtml(line.slice(0, i + 1)) + '</b> ' + escHtml(line.slice(i + 2));
+}
+V5_SCREENS[3] = function screenMap() {
+  var eco = V5.run.data.ecosystem;
+  var crowded = (eco.crowded || []).slice(0, 2);
+  var open = (eco.open || []).slice(0, 2);
+  var CROWD_SLOTS = [
+    { l: '5%', t: '8%', w: '54%', h: '46%' },
+    { l: '60%', t: '60%', w: '33%', h: '26%' },
+  ];
+  var OPEN_SLOTS = [
+    { l: '62%', t: '14%', w: '34%', h: '32%', cls: 'open-b' },
+    { l: '18%', t: '60%', w: '36%', h: '30%', cls: 'open-o' },
+  ];
+  var terrs = '';
+  crowded.forEach(function (c, i) {
+    var s = CROWD_SLOTS[i];
+    terrs += '<div class="v5-terr crowded" data-terr="c' + i + '" style="left:' + s.l + ';top:' + s.t + ';width:' + s.w + ';height:' + s.h + '">' +
+      escHtml(c.label) + '<b>crowded</b></div>';
+  });
+  open.forEach(function (o, i) {
+    var s = OPEN_SLOTS[i];
+    terrs += '<div class="v5-terr ' + s.cls + '" data-terr="o' + i + '" style="left:' + s.l + ';top:' + s.t + ';width:' + s.w + ';height:' + s.h + '">' +
+      escHtml(o.label) + '<b>open</b></div>';
+  });
+  v5Mount(
+    '<h2>Where your category shouts — and where it’s quiet.</h2>' +
+    '<div class="v5-canvas" style="height:250px" id="v5Map">' + terrs +
+      '<div class="v5-you" id="v5You" style="display:none"></div>' +
+      '<div class="v5-you-lab" id="v5YouLab" style="display:none">you</div>' +
+    '</div>' +
+    '<p class="v5-terr-note" id="v5TerrNote">tap a territory — who wins there</p>' +
+    '<div class="v5-verdict in">' + boldFirstSentence(eco.verdictLine || '') + ' ' +
+      '<button class="v5-why" type="button" id="v5WhyMap" style="color:#ffc545">why?</button></div>' +
+    '<p class="v5-map-note">map is an informed read, not scraped data</p>' +
+    '<button class="v5-next" id="v5Next" type="button">next →</button>'
+  );
+  /* the red "you" dot sits in the brand's current territory */
+  var youKey = null;
+  crowded.forEach(function (c, i) { if (c.label === eco.you) youKey = 'c' + i; });
+  open.forEach(function (o, i) { if (o.label === eco.you) youKey = 'o' + i; });
+  var host = youKey ? document.querySelector('[data-terr="' + youKey + '"]') : null;
+  if (!host) host = document.querySelector('.v5-terr.crowded') || document.querySelector('.v5-terr');
+  if (host) {
+    var mr = $('v5Map').getBoundingClientRect(), hr = host.getBoundingClientRect();
+    var cx = hr.left - mr.left + hr.width * .32, cy = hr.top - mr.top + hr.height * .38;
+    var you = $('v5You'), lab = $('v5YouLab');
+    you.style.left = cx + 'px'; you.style.top = cy + 'px'; you.style.display = 'block';
+    lab.style.left = (cx + 16) + 'px'; lab.style.top = (cy - 14) + 'px'; lab.style.display = 'block';
+  }
+  var notes = {};
+  crowded.forEach(function (c, i) { notes['c' + i] = c; });
+  open.forEach(function (o, i) { notes['o' + i] = o; });
+  document.querySelectorAll('[data-terr]').forEach(function (el) {
+    el.addEventListener('click', function () {
+      var t = notes[el.dataset.terr];
+      $('v5TerrNote').innerHTML = '<b>' + escHtml(t.label) + '</b> — ' + escHtml(t.note || '');
+    });
+  });
+  $('v5WhyMap').addEventListener('click', function () {
+    openWhy('Why a crowded angle costs more',
+      '<p>Every advertiser shouting the same message competes for the same people — so the auction clears higher, and the audience tires of the angle faster. Open territory is the same product in a quieter room.</p>' +
+      '<p style="font-size:12px;margin-top:10px">' + claim('Auction pricing is pays-minimum against the runner-up: more rivals on one angle raises what winning costs.', 'meta', SRC.auction.name, SRC.auction.url) + '</p>' +
+      '<p style="font-size:12px">' + claim('Meta’s own 2022 research measured ~45% performance decline after four exposures — repetition wears an angle out.', 'measured', SRC.fatigue22.name, SRC.fatigue22.url) + '</p>' +
+      '<p style="font-size:11px;color:#a08e69;margin-top:10px">The map itself is an informed read from your public signals — labeled inference, not scraped data.</p>');
+  });
+  $('v5Next').addEventListener('click', function () { goScreen(4); });
+};
+
+/* ---- screen 4 · placeholder (lands next commit) ---- */
+V5_SCREENS[4] = function () {
+  v5Mount('<h2>Two moves into open territory.</h2><p class="v5-sub">this screen lands in the next commit</p>');
 };
 
 /* ---------------- boot ---------------- *//* ---------------- boot ---------------- */
