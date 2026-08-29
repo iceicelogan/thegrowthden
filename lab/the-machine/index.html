@@ -1045,6 +1045,20 @@ body.v5 { background: #fcf3d6; color: #341f44; font-weight: 300; }
 .v5-foot .receipt { margin-top: 5px; font-size: 10px; color: #a08e69; }
 .v5-foot .receipt a { color: #8a7a5c; }
 
+/* the rival (screen +, never in the dot count) */
+.v5-them { position: absolute; width: 12px; height: 12px; border-radius: 50%; background: #341f44; box-shadow: 0 0 0 5px rgba(52,31,68,.15); z-index: 2; }
+.v5-them-lab { position: absolute; font-size: 10px; font-weight: 600; color: #341f44; z-index: 2; }
+.v5-side { display: flex; gap: 8px; margin-top: 12px; }
+.v5-side .half {
+  flex: 1; border: 1.5px solid #e8dcb8; border-radius: 10px;
+  padding: 9px 8px; font-size: 10px; font-weight: 300; text-align: center; background: #fff;
+}
+.v5-side .half b { display: block; font-weight: 600; margin-top: 2px; font-size: 11px; }
+.v5-side .half.win { border-color: #256493; background: #f4f8fb; }
+.v5-side .st-open { color: #256493; }
+.v5-side .st-crowded { color: #e5340b; }
+.v5-back { display: block; text-align: center; font-size: 12px; font-weight: 300; color: #8a7a5c; margin-top: 14px; text-decoration: underline; text-underline-offset: 2px; }
+
 /* the tap drawer, restyled for the cream system */
 body.v5 #whyPanel {
   background: #fffdf5; border-left: 1px solid #e8dcb8; color: #341f44;
@@ -4057,7 +4071,7 @@ function boldFirstSentence(line) {
   if (i < 0) return '<b>' + escHtml(line) + '</b>';
   return '<b>' + escHtml(line.slice(0, i + 1)) + '</b> ' + escHtml(line.slice(i + 2));
 }
-V5_SCREENS[3] = function screenMap() {
+function v5Territories() {
   var eco = V5.run.data.ecosystem;
   var crowded = (eco.crowded || []).slice(0, 2);
   var open = (eco.open || []).slice(0, 2);
@@ -4069,20 +4083,38 @@ V5_SCREENS[3] = function screenMap() {
     { l: '62%', t: '14%', w: '34%', h: '32%', cls: 'open-b' },
     { l: '18%', t: '60%', w: '36%', h: '30%', cls: 'open-o' },
   ];
-  var terrs = '';
+  var html = '';
+  var byLabel = {};
   crowded.forEach(function (c, i) {
     var s = CROWD_SLOTS[i];
-    terrs += '<div class="v5-terr crowded" data-terr="c' + i + '" style="left:' + s.l + ';top:' + s.t + ';width:' + s.w + ';height:' + s.h + '">' +
+    byLabel[c.label] = { key: 'c' + i, status: 'crowded', t: c };
+    html += '<div class="v5-terr crowded" data-terr="c' + i + '" style="left:' + s.l + ';top:' + s.t + ';width:' + s.w + ';height:' + s.h + '">' +
       escHtml(c.label) + '<b>crowded</b></div>';
   });
   open.forEach(function (o, i) {
     var s = OPEN_SLOTS[i];
-    terrs += '<div class="v5-terr ' + s.cls + '" data-terr="o' + i + '" style="left:' + s.l + ';top:' + s.t + ';width:' + s.w + ';height:' + s.h + '">' +
+    byLabel[o.label] = { key: 'o' + i, status: 'open', t: o };
+    html += '<div class="v5-terr ' + s.cls + '" data-terr="o' + i + '" style="left:' + s.l + ';top:' + s.t + ';width:' + s.w + ';height:' + s.h + '">' +
       escHtml(o.label) + '<b>open</b></div>';
   });
+  return { html: html, byLabel: byLabel, eco: eco };
+}
+/* place a dot inside a territory (fx/fy are the fraction of the territory box) */
+function v5PlaceDot(mapEl, label, dotEl, labEl, byLabel, fx, fy) {
+  var entry = byLabel[label];
+  var host = entry ? mapEl.querySelector('[data-terr="' + entry.key + '"]') : null;
+  if (!host) host = mapEl.querySelector('.v5-terr.crowded') || mapEl.querySelector('.v5-terr');
+  if (!host) return;
+  var mr = mapEl.getBoundingClientRect(), hr = host.getBoundingClientRect();
+  var cx = hr.left - mr.left + hr.width * fx, cy = hr.top - mr.top + hr.height * fy;
+  dotEl.style.left = cx + 'px'; dotEl.style.top = cy + 'px'; dotEl.style.display = 'block';
+  labEl.style.left = (cx + 16) + 'px'; labEl.style.top = (cy - 14) + 'px'; labEl.style.display = 'block';
+}
+V5_SCREENS[3] = function screenMap() {
+  var T = v5Territories(), eco = T.eco;
   v5Mount(
     '<h2>Where your category shouts — and where it’s quiet.</h2>' +
-    '<div class="v5-canvas" style="height:250px" id="v5Map">' + terrs +
+    '<div class="v5-canvas" style="height:250px" id="v5Map">' + T.html +
       '<div class="v5-you" id="v5You" style="display:none"></div>' +
       '<div class="v5-you-lab" id="v5YouLab" style="display:none">you</div>' +
     '</div>' +
@@ -4092,26 +4124,12 @@ V5_SCREENS[3] = function screenMap() {
     '<p class="v5-map-note">map is an informed read, not scraped data</p>' +
     '<button class="v5-next" id="v5Next" type="button">next →</button>'
   );
-  /* the red "you" dot sits in the brand's current territory */
-  var youKey = null;
-  crowded.forEach(function (c, i) { if (c.label === eco.you) youKey = 'c' + i; });
-  open.forEach(function (o, i) { if (o.label === eco.you) youKey = 'o' + i; });
-  var host = youKey ? document.querySelector('[data-terr="' + youKey + '"]') : null;
-  if (!host) host = document.querySelector('.v5-terr.crowded') || document.querySelector('.v5-terr');
-  if (host) {
-    var mr = $('v5Map').getBoundingClientRect(), hr = host.getBoundingClientRect();
-    var cx = hr.left - mr.left + hr.width * .32, cy = hr.top - mr.top + hr.height * .38;
-    var you = $('v5You'), lab = $('v5YouLab');
-    you.style.left = cx + 'px'; you.style.top = cy + 'px'; you.style.display = 'block';
-    lab.style.left = (cx + 16) + 'px'; lab.style.top = (cy - 14) + 'px'; lab.style.display = 'block';
-  }
-  var notes = {};
-  crowded.forEach(function (c, i) { notes['c' + i] = c; });
-  open.forEach(function (o, i) { notes['o' + i] = o; });
+  v5PlaceDot($('v5Map'), eco.you, $('v5You'), $('v5YouLab'), T.byLabel, .32, .38);
   document.querySelectorAll('[data-terr]').forEach(function (el) {
     el.addEventListener('click', function () {
-      var t = notes[el.dataset.terr];
-      $('v5TerrNote').innerHTML = '<b>' + escHtml(t.label) + '</b> — ' + escHtml(t.note || '');
+      var label = Object.keys(T.byLabel).filter(function (k) { return T.byLabel[k].key === el.dataset.terr; })[0];
+      if (!label) return;
+      $('v5TerrNote').innerHTML = '<b>' + escHtml(label) + '</b> — ' + escHtml(T.byLabel[label].t.note || '');
     });
   });
   $('v5WhyMap').addEventListener('click', function () {
@@ -4260,11 +4278,13 @@ V5_SCREENS[5] = function screenCard() {
     '<button class="v5-btn blue" id="v5Dl" type="button">Download the card</button>' +
     '<button class="v5-copylink" id="v5Cp" type="button">copy a link that re-runs this read</button>' +
     '<a class="v5-btn ghost" href="https://calendar.app.google/dy8683mNDXyWAkPo9" target="_blank" rel="noopener noreferrer" style="text-decoration:none">Want this on your account every week? Talk to Logan →</a>' +
+    '<button class="v5-copylink" id="v5Rival" type="button" style="color:#341f44">Think a competitor’s ad beats yours? →</button>' +
     '<div class="v5-foot">' +
       '<p>Curious how the machine actually works? <a href="#/machine">Walk through the full lab →</a></p>' +
       '<p class="receipt">Built with AI · <a href="/">The Growth Den</a></p>' +
     '</div>'
   );
+  $('v5Rival').addEventListener('click', function () { screenRival(); });
   $('v5Dl').addEventListener('click', function () {
     buildV5CardPng(function (url) {
       var a = document.createElement('a');
@@ -4281,6 +4301,95 @@ V5_SCREENS[5] = function screenCard() {
     } else window.prompt('copy this link:', link);
   });
 };
+
+/* ---- screen + · The Rival (post-card, optional, never in the dot count) ---- */
+function screenRival() {
+  var T = v5Territories();
+  v5Mount(
+    '<h2>Think a competitor’s ad beats yours?</h2>' +
+    '<div class="v5-drop" id="rvDrop" role="button" tabindex="0" aria-label="Drop their ad">' +
+      '<input type="file" id="rvFile" accept="image/*">' +
+      '<span id="rvDropTxt">＋ drop their ad</span>' +
+    '</div>' +
+    '<p class="v5-status" id="rvStatus"></p>' +
+    '<div id="rvOut" style="display:none">' +
+      '<div class="v5-canvas" style="height:210px" id="rvMap">' + T.html +
+        '<div class="v5-you" id="rvYou" style="display:none"></div>' +
+        '<div class="v5-you-lab" id="rvYouLab" style="display:none">you</div>' +
+        '<div class="v5-them" id="rvThem" style="display:none"></div>' +
+        '<div class="v5-them-lab" id="rvThemLab" style="display:none">them</div>' +
+      '</div>' +
+      '<div class="v5-side" id="rvSide"></div>' +
+      '<p class="v5-sub" id="rvRead" style="text-align:center;margin-top:10px"></p>' +
+    '</div>' +
+    '<a class="v5-back" href="#" id="rvBack">← back to your card</a>',
+    { noDot: true }
+  );
+  $('rvBack').addEventListener('click', function (e) { e.preventDefault(); goScreen(5); });
+  var drop = $('rvDrop'), file = $('rvFile');
+  function fromFile(f) {
+    if (!f || !/^image\//.test(f.type)) { $('rvStatus').textContent = 'that file doesn’t look like an image — try a JPG or PNG.'; return; }
+    var rd = new FileReader();
+    rd.onload = function () {
+      loadAdImage(rd.result, function (out) {
+        if (!out) { $('rvStatus').textContent = 'couldn’t read that image — try another.'; return; }
+        runRival(out.split(',')[1], T);
+      });
+    };
+    rd.readAsDataURL(f);
+  }
+  drop.addEventListener('click', function (e) { if (e.target !== file) file.click(); });
+  drop.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); file.click(); } });
+  file.addEventListener('change', function () { fromFile(file.files[0]); });
+  drop.addEventListener('dragover', function (e) { e.preventDefault(); drop.classList.add('drag'); });
+  drop.addEventListener('dragleave', function () { drop.classList.remove('drag'); });
+  drop.addEventListener('drop', function (e) {
+    e.preventDefault(); drop.classList.remove('drag');
+    if (e.dataTransfer.files && e.dataTransfer.files[0]) fromFile(e.dataTransfer.files[0]);
+  });
+}
+function runRival(imgData, T) {
+  if (V5.busy) return;
+  V5.busy = true;
+  $('rvStatus').textContent = 'placing their ad on your map…';
+  var eco = T.eco;
+  var sys = 'You are “The Machine”. You already mapped ' + V5.dom + '’s category into these territories: ' +
+    JSON.stringify({ crowded: eco.crowded, open: eco.open, theBrandSitsIn: eco.you }) + '. ' +
+    'You now receive ONE competitor ad image. Place it on the SAME map. ' +
+    'Reply with STRICT JSON only — no prose, no code fences: ' +
+    '{"theirsTerritory": exactly one existing territory label from the map that this ad’s angle occupies, ' +
+    '"status": "crowded" or "open" — that territory’s status on the map, ' +
+    '"read": [exactly 2 lines, 14 words max each, comparing whose territory is smarter — plain speech]}. ' +
+    'Rules: never invent spend, reach, or audience numbers; never mention pixels, tags, tracking, or analytics.';
+  streamClaude({
+    model: 'claude-sonnet-4-5', max_tokens: 600, stream: false, system: sys,
+    messages: [{ role: 'user', content: [
+      { type: 'image', source: { type: 'base64', media_type: 'image/jpeg', data: imgData } },
+      { type: 'text', text: 'The competitor’s ad is attached.' },
+    ] }],
+  }, function () { }).then(function (full) {
+    var data = JSON.parse(full.slice(full.indexOf('{'), full.lastIndexOf('}') + 1));
+    var yoursEntry = T.byLabel[T.eco.you];
+    var yoursStatus = yoursEntry ? yoursEntry.status : 'crowded';
+    var theirsStatus = data.status === 'open' ? 'open' : 'crowded';
+    $('rvStatus').textContent = '';
+    $('rvOut').style.display = 'block';
+    v5PlaceDot($('rvMap'), T.eco.you, $('rvYou'), $('rvYouLab'), T.byLabel, .32, .38);
+    v5PlaceDot($('rvMap'), data.theirsTerritory, $('rvThem'), $('rvThemLab'), T.byLabel, .62, .55);
+    var yoursWin = yoursStatus === 'open' && theirsStatus === 'crowded';
+    var theirsWin = theirsStatus === 'open' && yoursStatus === 'crowded';
+    $('rvSide').innerHTML =
+      '<div class="half' + (yoursWin ? ' win' : '') + '">YOURS<b class="st-' + yoursStatus + '">' + escHtml(yoursStatus === 'open' ? 'open territory' : 'crowded angle') + '</b></div>' +
+      '<div class="half' + (theirsWin ? ' win' : '') + '">THEIRS<b class="st-' + theirsStatus + '">' + escHtml(theirsStatus === 'open' ? 'open territory' : 'crowded angle') + '</b></div>';
+    $('rvRead').innerHTML = (data.read || []).slice(0, 2).map(escHtml).join('<br>');
+  }).catch(function (err) {
+    var s = $('rvStatus');
+    if (err && err.code === 429) s.textContent = 'the lab is busy — give it a minute.';
+    else if (err && err.code === 503) s.textContent = 'the machine is napping — try again shortly.';
+    else if (err instanceof SyntaxError) s.textContent = 'the read came back garbled — drop it once more.';
+    else s.textContent = 'the reader only runs on the live site — this is a local preview.';
+  }).then(function () { V5.busy = false; });
+}
 
 /* ---------------- boot ---------------- *//* ---------------- boot ---------------- */
 function route() {
