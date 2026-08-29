@@ -1013,6 +1013,18 @@ body.v5 { background: #fcf3d6; color: #341f44; font-weight: 300; }
 .v5-terr-note { min-height: 20px; font-size: 12px; font-weight: 400; text-align: center; margin-top: 8px; color: #341f44; }
 .v5-map-note { font-size: 10.5px; font-weight: 300; color: #8a7a5c; text-align: center; margin-top: 6px; }
 
+/* the plays (screen 4) */
+.v5-play { background: #fff; border: 1.5px solid #341f44; border-radius: 12px; padding: 12px 13px; margin-top: 10px; }
+.v5-play .pf { font-size: 10px; font-weight: 600; color: #256493; letter-spacing: .4px; text-transform: uppercase; }
+.v5-play .pp { font-size: 11px; font-weight: 300; color: #6b5a84; margin-top: 3px; line-height: 1.45; }
+.v5-play .ph { font-size: 13.5px; font-weight: 600; margin-top: 6px; line-height: 1.35; color: #341f44; }
+.v5-play .pcomp { font-size: 10.5px; font-weight: 400; color: #fe7c2b; margin-top: 6px; }
+.v5-play .pc { margin-top: 8px; font-size: 10.5px; font-weight: 600; color: #e5340b; }
+.v5-play .pc button {
+  font: inherit; color: inherit; background: none; border: none;
+  cursor: pointer; padding: 3px 0; letter-spacing: inherit;
+}
+
 /* the tap drawer, restyled for the cream system */
 body.v5 #whyPanel {
   background: #fffdf5; border-left: 1px solid #e8dcb8; color: #341f44;
@@ -4091,9 +4103,57 @@ V5_SCREENS[3] = function screenMap() {
   $('v5Next').addEventListener('click', function () { goScreen(4); });
 };
 
-/* ---- screen 4 · placeholder (lands next commit) ---- */
-V5_SCREENS[4] = function () {
-  v5Mount('<h2>Two moves into open territory.</h2><p class="v5-sub">this screen lands in the next commit</p>');
+/* ---- screen 4 · The Plays ---- */
+function briefText(p) {
+  var b = p.brief || {};
+  return 'PLAY: ' + (p.playName || '') + '\nPRINCIPLE: ' + (p.principle || '') +
+    '\nHOOK: ' + (b.hook || p.hook || '') + '\nVISUAL: ' + (b.visual || '') +
+    '\nOPENING COPY: ' + (b.copy || '') + '\nTERRITORY: ' + (p.territoryRef || '') +
+    (p.complianceNote ? '\nCOMPLIANCE: ' + p.complianceNote : '');
+}
+V5_SCREENS[4] = function screenPlays() {
+  var plays = V5.run.data.plays.slice(0, 3);
+  var countWord = plays.length === 3 ? 'Three' : 'Two';
+  v5Mount(
+    '<h2>' + countWord + ' moves into open territory.</h2>' +
+    plays.map(function (p, i) {
+      return '<div class="v5-play">' +
+        '<div class="pf">PLAY · ' + escHtml(p.playName) + '</div>' +
+        '<div class="pp">' + escHtml(p.principle) + '</div>' +
+        '<div class="ph">' + escHtml(p.hook) + '</div>' +
+        (p.complianceNote ? '<div class="pcomp">⚖ ' + escHtml(p.complianceNote) + '</div>' : '') +
+        '<div class="pc"><button type="button" data-copy="' + i + '">copy the brief →</button>' +
+        ' · <button type="button" data-pwhy="' + i + '">why this works ?</button></div>' +
+      '</div>';
+    }).join('') +
+    '<button class="v5-next" id="v5Next" type="button">next →</button>'
+  );
+  document.querySelectorAll('[data-copy]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var p = plays[parseInt(b.dataset.copy, 10)];
+      var done = function () { b.textContent = '✓ brief copied'; };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(briefText(p)).then(done, function () { window.prompt('copy the brief:', briefText(p)); });
+      } else window.prompt('copy the brief:', briefText(p));
+    });
+  });
+  document.querySelectorAll('[data-pwhy]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var p = plays[parseInt(b.dataset.pwhy, 10)];
+      openWhy(p.playName,
+        '<p><b>' + escHtml(p.playName) + '</b> enters “' + escHtml(p.territoryRef || 'open ground') + '” — an open territory from your map, where the auction is quieter and the angle is fresh.</p>' +
+        '<p style="margin-top:8px">' + escHtml(p.principle) + '</p>' +
+        '<p style="font-size:12px;margin-top:10px">' + claim('A genuinely different frame is a different retrieval signal — it recruits its own audience instead of re-bidding on the crowded one.', 'meta', SRC.andromeda.name, SRC.andromeda.url) + '</p>' +
+        '<p style="font-size:12px">' + claim('Fewer rivals on the angle means a lower clearing price: the auction charges the minimum needed to beat the runner-up.', 'meta', SRC.auction.name, SRC.auction.url) + '</p>' +
+        (p.complianceNote ? '<p style="font-size:11.5px;color:#fe7c2b;margin-top:10px">⚖ ' + escHtml(p.complianceNote) + '</p>' : ''));
+    });
+  });
+  $('v5Next').addEventListener('click', function () { goScreen(5); });
+};
+
+/* ---- screen 5 · placeholder (lands next commit) ---- */
+V5_SCREENS[5] = function () {
+  v5Mount('<h2>Yours to keep.</h2><p class="v5-sub">this screen lands in the next commit</p>');
 };
 
 /* ---------------- boot ---------------- *//* ---------------- boot ---------------- */
