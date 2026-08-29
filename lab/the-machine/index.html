@@ -3735,18 +3735,104 @@ function runWithLoader(promise, onDone, onFail) {
   });
 }
 
+/* ============================================================
+   THE ANALYSIS — one consolidated call.
+   /fetch the homepage → parse public signals → ONE sonnet request
+   (vision block included when an ad was dropped) → strict JSON.
+   ============================================================ */
+var LAST_RUN = null;   // {data, sig, dom, hadAd, date, adThumb}
+
+function readerPrompt(hadAd) {
+  return 'You are “The Machine”, a brand reader built on Meta’s ad delivery mechanics (user-conditioned retrieval, estimated action rates, the total-value auction, quality penalties, creative-as-targeting, fatigue, similarity collapse). ' +
+    'You receive parsed PUBLIC homepage signals' + (hadAd ? ' plus ONE ad image from the brand' : '') + '. ' +
+    'Reply with STRICT JSON only — no prose, no code fences: ' +
+    '{"verdict": {' +
+      '"headline": one sharp sentence. ' + (hadAd
+        ? 'Name the single biggest problem or strength of THIS AD for this brand, and say explicitly whether it is a CREATIVE problem or a DELIVERY problem. '
+        : 'A real verdict on the brand’s positioning and creative readiness from the homepage alone — never ask for an ad, never say “upload an ad”. ') +
+      ', "impact": one felt-impact line anchored to their business (e.g. “a hook this generic is likely costing you $40+ per lead against category norms”) — always hedged as directional (“likely”, “roughly”, “against category norms”), never fake precision, never invented account data}, ' +
+    '"angles": [exactly 3 of {' +
+      '"name": 2-5 word angle name, ' +
+      '"frame": "persona × emotion × format" — one short phrase naming all three, ' +
+      '"why": one line on why this works in DELIVERY terms (signal strength, fatigue risk, or similarity risk), ' +
+      '"brief": {"hook": the opening hook line, "visual": one-line visual direction, "copy": 1-2 sentences of opening primary text}, ' +
+      '"complianceNote": ONLY if the brand’s category is regulated (healthcare, finance, supplements): one line on claim safety — otherwise OMIT this key}], ' +
+    '"personas": [exactly 3 of {' +
+      '"descriptor": a vivid one-line person (like “the skeptical 41-year-old who’s tried everything”), ' +
+      '"grounding": REQUIRED — a line starting “based on: ” citing the concrete observed signals (price points, guarantees, offer language, category buying patterns) that justify this persona, ' +
+      '"quote": 2-3 sentences of plain present-tense speech reacting to ' + (hadAd ? 'THE AD' : 'the homepage’s current messaging') + ', ' +
+      '"resonates": "yes" | "no" | "partial"}], ' +
+    '"category": 2-4 word category, ' +
+    '"adLibraryQuery": the best search term for finding this brand in Meta’s Ad Library (usually the brand name)}. ' +
+    'SELF-CHECK before returning: verify no two angles share a persona, an emotion, OR a format — if any two do, regenerate the duplicates until all three angles differ on all three dimensions. If the site’s content is thin, still diverge on frame — never return reskins of one idea. ' +
+    'Rules: infer only from the provided signals' + (hadAd ? ' and image' : '') + '; never invent spend, reach, or audience numbers — none are public; every impact figure must read as a hedged directional estimate; NEVER mention pixels, tags, tracking, or analytics; do not name The Growth Den; write plainly — no jargon without a gloss.';
+}
+
+function analyze(dom, adData) {
+  return fetch(PROXY_URL + '/fetch', {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ url: 'https://' + dom }),
+  }).then(function (r) {
+    if (r.status === 429) throw { code: 429 };
+    if (r.status === 503) throw { code: 503 };
+    if (!r.ok) throw { code: r.status };
+    return r.json();
+  }).then(function (f) {
+    if (!f.html || (f.status && f.status >= 400)) throw { code: 'blocked' };
+    var sig = parseSiteLite(f.html, dom);
+    var content = [];
+    if (adData) content.push({ type: 'image', source: { type: 'base64', media_type: 'image/jpeg', data: adData } });
+    content.push({ type: 'text', text: 'HOMEPAGE SIGNALS:\n' + JSON.stringify(sig, null, 1) +
+      (adData ? '\n\nThe attached image is one of this brand’s ads.' : '\n\nNo ad was provided — read the brand from the homepage signals alone.') });
+    return streamClaude({
+      model: 'claude-sonnet-4-5', max_tokens: 3500, stream: false,
+      system: readerPrompt(!!adData),
+      messages: [{ role: 'user', content: content }],
+    }, function () { }).then(function (full) {
+      var data = JSON.parse(full.slice(full.indexOf('{'), full.lastIndexOf('}') + 1));
+      if (!data.verdict || !data.angles || !data.personas) throw new SyntaxError('shape');
+      return { data: data, sig: sig, dom: dom, hadAd: !!adData,
+        adThumb: adData ? AD.thumb : null, date: new Date().toISOString().slice(0, 10) };
+    });
+  });
+}
+
+function readFail(err) {
+  showProduct();
+  var s = $('prodStatus');
+  if (!s) return;
+  if (err && err.code === 429) s.textContent = depthMsg(MSG_BUSY);
+  else if (err && err.code === 503) s.textContent = depthMsg(MSG_NAP);
+  else if (err && err.code === 413) s.textContent = '📦 that ad image is too heavy for the wire — try a smaller crop.';
+  else if (err && err.code === 'blocked') s.textContent = '🚪 that site bounced our reader at the door — some do. Try another domain, or the demo read.';
+  else if (err instanceof SyntaxError) s.textContent = '🤖 the verdict came back garbled — run it once more.';
+  else s.textContent = depthMsg(MSG_LOCAL);
+}
+
 function runRead(rawUrl, opts) {
+  opts = opts || {};
   var dom = normDomain(rawUrl);
   if (!dom) { $('prodStatus').textContent = 'that doesn’t look like a domain — try yourbrand.com'; return; }
-  /* the analysis engine lands in the next commit; the show is wired */
-  runWithLoader(
-    new Promise(function (res) { setTimeout(res, 5200); }),
-    function () {
-      showProduct();
-      $('prodStatus').textContent = '🛠️ show complete for ' + dom + ' — the verdict engine lands in the next commit.';
-    },
-    function () { showProduct(); }
-  );
+  var adData = opts.demo ? null : AD.data;
+  runWithLoader(analyze(dom, adData), function (res) {
+    LAST_RUN = res;
+    /* the lab reads the brand context live from its canvases */
+    var name = res.sig.siteName || (res.sig.title || '').split(/[|–—-]/)[0].trim() || prettyDomain(dom);
+    BRAND = { domain: dom, name: name, category: res.data.category || '', resolved: true };
+    showScorecard(res);
+  }, readFail);
+}
+
+/* scorecard skeleton — completed in the next step */
+function showScorecard(res) {
+  document.body.classList.add('entry-mode');
+  var v = res.data.verdict || {};
+  $('view').innerHTML = '<div class="view-pad" style="max-width:760px">' +
+    '<div class="card"><h2 style="font-size:24px;line-height:1.3">' + escHtml(v.headline || '') + '</h2>' +
+    '<p style="font-size:15px">' + escHtml(v.impact || '') + '</p></div>' +
+    '<p style="text-align:center"><a href="#" onclick="location.reload();return false" style="font-size:13px">run another read</a></p>' +
+    '</div>';
+  window.scrollTo(0, 0);
 }
 
 /* ---------------- boot ---------------- */
