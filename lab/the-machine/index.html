@@ -790,6 +790,39 @@ h1.room-title {
 .rep-body { padding: 16px 22px 22px; }
 .rep-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 18px; }
 
+/* ---------- your creative: the ad reader ---------- */
+.up-zone {
+  border: 2px dashed rgba(252,243,214,.35); border-radius: 16px;
+  padding: 22px 16px; text-align: center; cursor: pointer;
+  transition: border-color .2s, background .2s;
+}
+.up-zone:hover, .up-zone.drag { border-color: var(--gold); background: rgba(255,197,69,.05); }
+.up-zone input { display: none; }
+.up-thumb { max-height: 190px; width: auto; border-radius: 12px; margin: 0 auto 10px; }
+.ad-text {
+  width: 100%; margin-top: 10px; font-family: 'Poppins', sans-serif; font-size: 13px;
+  color: var(--cream); background: rgba(252,243,214,.07);
+  border: 1.5px solid rgba(252,243,214,.35); border-radius: 14px;
+  padding: 10px 14px; outline: none; resize: vertical; min-height: 52px;
+}
+.ad-text:focus { border-color: var(--gold); }
+.niche-hero { text-align: center; padding: 10px 6px 4px; }
+.niche-hero .nk { font-size: 10px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: var(--sky); }
+.niche-hero h3 { font-size: 21px; font-weight: 800; color: var(--white); line-height: 1.35; margin: 8px 0 4px; }
+.sig-chips { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin: 12px 0 6px; }
+.sig-chip {
+  font-size: 11.5px; font-weight: 500; color: var(--sky);
+  border: 1px solid rgba(127,200,240,.45); border-radius: 100px; padding: 4px 12px;
+}
+.ar-h { font-size: 15px; font-weight: 800; color: var(--gold); border-bottom: 1px dashed var(--line); padding-bottom: 6px; margin: 18px 0 10px; }
+.angle-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(235px, 1fr)); gap: 10px; margin-top: 10px; }
+.angle-card { border: 1px solid var(--line); border-radius: 14px; background: rgba(252,243,214,.04); padding: 13px 14px; }
+.angle-card .ap { font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--your-ad); }
+.angle-card .af { font-size: 10.5px; color: var(--sky); margin: 2px 0 7px; }
+.angle-card .ah { font-size: 13.5px; font-weight: 600; color: var(--cream); line-height: 1.45; }
+.angle-card.counter { border-color: rgba(229,52,11,.5); }
+.angle-card.counter .ap { color: #ff8a70; }
+
 /* the reading animation: a scan sweep over the extracted signals */
 #scanReport.scanning { position: relative; }
 #scanReport.scanning::after {
@@ -1127,9 +1160,14 @@ var CONTENT = {
     pro: 'Impression-level decay, caps vs. auction-native suppression, fatigue diagnostics that beat gut feel.',
   },
   'creative.tag': {
-    kid: 'How an ad whistles for its own audience.',
-    cmo: 'Creative as targeting: signal strength, concept diversity, and the bland tax.',
-    pro: 'Creative-side signal: hook taxonomy, diversity vs. account structure, the real cost of exploration.',
+    kid: 'Show the machine your ad, and it tells you whose ears perk up.',
+    cmo: 'Upload an ad; the machine reads the audience it’s actually calling — and the angles you’re not running.',
+    pro: 'Vision read of one creative: inferred cohort, driving signals, delivery treatment, eight distinct angle territories.',
+  },
+  'yc.intro': {
+    kid: '<p>Every ad whistles for its own crowd — you just watched it happen. Now show the machine one of <b>your</b> ads (or try a demo ad) and it will tell you whose ears perk up, which parts of the ad do the calling, and what other crowds you could call instead.</p>',
+    cmo: '<p>You watched creative act as targeting. Now point it at your own: upload an ad and the machine reads it the way delivery does — who it’s really calling, which creative elements do the calling, and how the auction will likely treat it. Then eight genuinely different angles — not eight versions of yours.</p>',
+    pro: '<p>One vision call, grounded in the portal’s mechanics: inferred audience, signal attribution, delivery treatment in estimated-action-rate / fatigue / similarity terms, then eight distinct angle territories. The image is downscaled client-side and used only for the single model call.</p>',
   },
   'scanner.tag': {
     kid: 'Feed any brand’s website to the scanner and see what the machine sees.',
@@ -3606,6 +3644,189 @@ var initCreativeField = function () {
     window.removeEventListener('resize', rs);
     document.querySelectorAll('.mode-opt').forEach(function (b) { b.removeEventListener('click', dialHook); });
   };
+};
+
+/* ============================================================
+   YOUR CREATIVE — #/creative · one vision read of one ad.
+   The analyzer is reusable: Your Market's "read a rival" panel
+   mounts the same flow with rival=true.
+   ============================================================ */
+function demoAdDataUrl(which) {
+  var cv = document.createElement('canvas'); cv.width = 600; cv.height = 750;
+  var c = cv.getContext('2d');
+  function center(t, font, color, y) {
+    c.font = font; c.fillStyle = color; c.textAlign = 'center'; c.fillText(t, 300, y);
+  }
+  if (which === 1) {
+    c.fillStyle = '#f5ead2'; c.fillRect(0, 0, 600, 750);
+    c.fillStyle = '#2a1d12'; c.fillRect(0, 0, 600, 92);
+    center('GLOWBREW', '800 30px Poppins, Arial, sans-serif', '#f5ead2', 58);
+    c.fillStyle = '#3a2a18';
+    c.beginPath(); c.roundRect(210, 150, 180, 300, 24); c.fill();
+    c.fillStyle = '#c98e46'; c.fillRect(210, 300, 180, 60);
+    center('COLD BREW', '700 20px Poppins, Arial, sans-serif', '#f5ead2', 338);
+    center('Barista-grade cold brew.', '800 36px Poppins, Arial, sans-serif', '#2a1d12', 520);
+    center('At home. In 8 seconds.', '800 36px Poppins, Arial, sans-serif', '#2a1d12', 562);
+    center('4.9★ from 2,314 caffeine-dependent adults', '400 19px Poppins, Arial, sans-serif', '#6b5433', 604);
+    c.fillStyle = '#2a1d12'; c.beginPath(); c.roundRect(150, 640, 300, 62, 31); c.fill();
+    center('Get the starter kit →', '700 22px Poppins, Arial, sans-serif', '#f5ead2', 680);
+  } else {
+    c.fillStyle = '#101b2d'; c.fillRect(0, 0, 600, 750);
+    c.fillStyle = '#1c2f4d'; c.beginPath(); c.ellipse(300, 330, 240, 130, -0.25, 0, 7); c.fill();
+    c.fillStyle = '#9ef01a';
+    c.beginPath(); c.moveTo(140, 360); c.quadraticCurveTo(300, 250, 470, 330);
+    c.quadraticCurveTo(460, 380, 420, 385); c.quadraticCurveTo(280, 330, 160, 400); c.closePath(); c.fill();
+    center('TRAILPRO', '800 26px Poppins, Arial, sans-serif', '#9ef01a', 70);
+    center('Your knees have opinions.', '800 40px Poppins, Arial, sans-serif', '#ffffff', 500);
+    center('Plated cushioning for downhill miles —', '400 20px Poppins, Arial, sans-serif', '#b9c6da', 548);
+    center('30-day dirt-back guarantee.', '400 20px Poppins, Arial, sans-serif', '#b9c6da', 576);
+    c.fillStyle = '#fe7c2b'; c.beginPath(); c.roundRect(160, 630, 280, 62, 31); c.fill();
+    center('Run 30 days free →', '700 22px Poppins, Arial, sans-serif', '#ffffff', 670);
+  }
+  return cv.toDataURL('image/jpeg', .9);
+}
+
+function adAnalyzerHtml(px, rival) {
+  return '<div class="card">' +
+    '<div class="up-zone" id="' + px + 'Zone">' +
+      '<input type="file" id="' + px + 'File" accept="image/*">' +
+      '<img class="up-thumb" id="' + px + 'Thumb" alt="" style="display:none">' +
+      '<p style="font-size:14.5px;color:var(--cream);font-weight:600" id="' + px + 'ZoneTxt">' +
+        (rival ? '🕵️ Drop a competitor’s ad you’ve seen' : '📤 Upload your ad') + ' — tap to choose an image</p>' +
+      '<p style="font-size:11.5px;color:var(--muted);margin-top:4px">the image stays in your browser except for the one AI read; nothing is stored</p>' +
+    '</div>' +
+    '<textarea class="ad-text" id="' + px + 'Text" rows="2" placeholder="optional: paste the ad’s primary text"></textarea>' +
+    '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px">' +
+      '<button class="run-btn" id="' + px + 'Go" type="button" disabled>🧠 ' + (rival ? 'read their ad' : 'read this ad') + '</button>' +
+      (rival ? '' :
+        '<button class="run-btn ghost" id="' + px + 'Demo1" type="button">no ad handy? demo ad 1</button>' +
+        '<button class="run-btn ghost" id="' + px + 'Demo2" type="button">demo ad 2</button>') +
+    '</div>' +
+    '<p class="scan-status" id="' + px + 'Status"></p>' +
+  '</div>' +
+  '<div class="card" id="' + px + 'Out" style="display:none"></div>';
+}
+
+function wireAdAnalyzer(px, opts) {
+  opts = opts || {};
+  var rival = !!opts.rival;
+  var imgData = null, busyA = false;
+  var zone = $(px + 'Zone'), file = $(px + 'File'), thumb = $(px + 'Thumb'), go = $(px + 'Go');
+  function status(t) { var el = $(px + 'Status'); if (el) el.innerHTML = t; }
+  function setImage(dataUrl) {
+    var img = new Image();
+    img.onload = function () {
+      var scale = Math.min(1, 1500 / Math.max(img.width, img.height));
+      var cw = Math.round(img.width * scale), ch = Math.round(img.height * scale);
+      var cv = document.createElement('canvas'); cv.width = cw; cv.height = ch;
+      cv.getContext('2d').drawImage(img, 0, 0, cw, ch);
+      var out = cv.toDataURL('image/jpeg', .85);
+      imgData = out.split(',')[1];
+      thumb.src = out; thumb.style.display = 'block';
+      $(px + 'ZoneTxt').textContent = '✓ ad loaded — ready to read';
+      go.disabled = false;
+      status('');
+    };
+    img.onerror = function () { status('that file doesn’t look like an image — try a JPG or PNG.'); };
+    img.src = dataUrl;
+  }
+  function fromFile(f) {
+    if (!f || !/^image\//.test(f.type)) { status('that file doesn’t look like an image — try a JPG or PNG.'); return; }
+    var rd = new FileReader();
+    rd.onload = function () { setImage(rd.result); };
+    rd.readAsDataURL(f);
+  }
+  zone.addEventListener('click', function (e) { if (e.target !== file) file.click(); });
+  file.addEventListener('change', function () { fromFile(file.files[0]); });
+  zone.addEventListener('dragover', function (e) { e.preventDefault(); zone.classList.add('drag'); });
+  zone.addEventListener('dragleave', function () { zone.classList.remove('drag'); });
+  zone.addEventListener('drop', function (e) {
+    e.preventDefault(); zone.classList.remove('drag');
+    if (e.dataTransfer.files && e.dataTransfer.files[0]) fromFile(e.dataTransfer.files[0]);
+  });
+  if (!rival) {
+    $(px + 'Demo1').addEventListener('click', function () { setImage(demoAdDataUrl(1)); });
+    $(px + 'Demo2').addEventListener('click', function () { setImage(demoAdDataUrl(2)); });
+  }
+  function renderRead(data) {
+    var out = $(px + 'Out');
+    out.style.display = 'block';
+    var angleList = rival ? (data.counters || []) : (data.angles || []);
+    out.innerHTML =
+      '<div class="niche-hero"><p class="nk">' + (rival ? 'the audience their ad is calling' : 'the audience your ad is calling') + '</p>' +
+      '<h3>' + escHtml(data.niche || '—') + '</h3></div>' +
+      '<div class="sig-chips">' + (data.signals || []).slice(0, 6).map(function (s) {
+        return '<span class="sig-chip">' + escHtml(s) + '</span>';
+      }).join('') + '</div>' +
+      '<h3 class="ar-h">How delivery would likely treat it</h3>' +
+      '<p style="font-size:13.5px;line-height:1.7;color:var(--muted)">' + escHtml(data.deliveryRead || '') + '</p>' +
+      '<h3 class="ar-h">' + (rival ? 'Counter-angles you could run against it' : '8 genuinely different angles') + '</h3>' +
+      '<div class="angle-grid">' + angleList.slice(0, 8).map(function (a) {
+        return '<div class="angle-card' + (rival ? ' counter' : '') + '">' +
+          '<p class="ap">' + escHtml(a.persona || '') + '</p>' +
+          '<p class="af">' + escHtml(a.frame || '') + '</p>' +
+          '<p class="ah">' + escHtml(a.hook || '') + '</p></div>';
+      }).join('') + '</div>' +
+      '<p style="font-size:11px;color:var(--muted);margin-top:12px">AI inference from the creative alone — not platform data. No spend, reach, or audience numbers exist publicly.</p>';
+    out.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+  go.addEventListener('click', function () {
+    if (!imgData || busyA) return;
+    busyA = true;
+    go.disabled = true;
+    status('🧠 ' + (depth === 'kid' ? 'the machine is reading your ad…' : 'reading the creative…'));
+    var primary = ($(px + 'Text').value || '').trim();
+    var sys = 'You are the creative reader inside “The Machine”, a teaching portal about Meta’s ad delivery system (retrieval/Andromeda, ranking/GEM, estimated action rates, the total-value auction, quality penalties, creative-as-targeting, fatigue, similarity collapse). ' +
+      (rival ? 'The user shows you a COMPETITOR’S ad they have seen; read it on their behalf. ' : 'The user shows you one of THEIR OWN ads. ') +
+      'Reply with STRICT JSON only — no prose, no code fences: ' +
+      '{"niche": one sentence — who this ad is REALLY geared toward, specific and concrete, written like the machine found them, ' +
+      '"signals": [4-6 short strings — the creative elements driving that read], ' +
+      '"deliveryRead": 3-5 sentences — how delivery would likely treat this ad, in the portal’s own mechanics: estimated-action-rate language, fatigue risk, similarity risk' +
+      (rival
+        ? ', "counters": [5 objects {"persona": a distinct buyer persona, "frame": the emotional frame, "hook": one-line hook} — counter-angles the user could run against this competitor]'
+        : ', "angles": [8 objects {"persona": a distinct buyer persona, "frame": the emotional frame, "hook": one-line hook} — genuinely different buyer motivations, never cosmetic variants of one idea]') +
+      '}. ' +
+      'Write at this register: ' + REGISTER_DESC[depth] + '. ' +
+      'Rules: infer only from the image and any provided text; never invent spend, reach, or audience numbers — none are public; NEVER mention pixels, tags, tracking, or analytics.';
+    streamClaude({
+      model: 'claude-sonnet-4-5', max_tokens: 3000, stream: false, system: sys,
+      messages: [{ role: 'user', content: [
+        { type: 'image', source: { type: 'base64', media_type: 'image/jpeg', data: imgData } },
+        { type: 'text', text: primary ? 'PRIMARY TEXT of the ad:\n' + primary : 'No primary text provided — read the image alone.' },
+      ] }],
+    }, function () { }).then(function (full) {
+      var data = JSON.parse(full.slice(full.indexOf('{'), full.lastIndexOf('}') + 1));
+      renderRead(data);
+      status('✅ ' + (depth === 'kid' ? 'read complete!' : 'read complete.'));
+      if (opts.storeKey) {
+        try { sessionStorage.setItem(opts.storeKey, JSON.stringify(data)); } catch (e) { }
+      }
+      if (opts.onDone) opts.onDone(data);
+    }).catch(function (err) {
+      if (err && err.code === 429) status(depthMsg(MSG_BUSY));
+      else if (err && err.code === 503) status(depthMsg(MSG_NAP));
+      else if (err && err.code === 413) status('📦 that image is too heavy for the wire — try a smaller crop.');
+      else if (err instanceof SyntaxError) status('🤖 the read came back garbled — run it once more.');
+      else status(depthMsg(MSG_LOCAL));
+    }).then(function () { busyA = false; go.disabled = false; });
+  });
+}
+
+function viewYourCreative() {
+  return '<div class="view-pad">' +
+    '<p class="room-kicker">Step 3 · Your Creative</p>' +
+    '<h1 class="room-title">🎨 Your creative, read by the machine</h1>' +
+    '<p class="room-tag" style="margin-bottom:20px">' + d3('creative.tag') + '</p>' +
+    '<div class="card"><div style="font-size:14.5px;line-height:1.7;color:var(--muted)">' + d3('yc.intro') + '</div></div>' +
+    adAnalyzerHtml('yc', false) +
+    '<a class="next-room" href="#/market"><span class="nr-k">step 4 · Your Market</span>' +
+      '<span class="nr-t">Now let’s see what everyone else in your category is running →</span></a>' +
+    '</div>';
+}
+VIEWS.creative = viewYourCreative;
+INITS.creative = function () {
+  wireAdAnalyzer('yc', { storeKey: 'gd-ad-analysis' });
+  return null;
 };
 
 /* ============================================================
