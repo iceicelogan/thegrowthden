@@ -1025,6 +1025,26 @@ body.v5 { background: #fcf3d6; color: #341f44; font-weight: 300; }
   cursor: pointer; padding: 3px 0; letter-spacing: inherit;
 }
 
+/* the mini-card (screen 5) — the one allowed dark element */
+.v5-mini {
+  background: linear-gradient(135deg, #341f44, #4b2f66);
+  border-radius: 14px; color: #fcf3d6; padding: 15px; margin-top: 14px;
+}
+.v5-mini .mt { font-size: 10px; font-weight: 600; color: #ffc545; letter-spacing: .5px; text-transform: uppercase; }
+.v5-mini .mv { font-size: 13px; font-weight: 400; margin-top: 5px; line-height: 1.45; }
+.v5-mini .mrow { display: flex; gap: 6px; margin-top: 11px; flex-wrap: wrap; }
+.v5-mini .mchip { background: rgba(252,243,214,.14); border-radius: 8px; padding: 5px 9px; font-size: 9.5px; font-weight: 300; }
+.v5-copylink {
+  display: block; width: 100%; text-align: center; font-family: 'Poppins', sans-serif;
+  font-size: 11.5px; font-weight: 400; color: #256493; margin-top: 10px;
+  background: none; border: none; cursor: pointer;
+  text-decoration: underline; text-underline-offset: 2px;
+}
+.v5-foot { margin-top: auto; padding-top: 20px; text-align: center; font-size: 11px; font-weight: 300; color: #8a7a5c; }
+.v5-foot a { color: #256493; }
+.v5-foot .receipt { margin-top: 5px; font-size: 10px; color: #a08e69; }
+.v5-foot .receipt a { color: #8a7a5c; }
+
 /* the tap drawer, restyled for the cream system */
 body.v5 #whyPanel {
   background: #fffdf5; border-left: 1px solid #e8dcb8; color: #341f44;
@@ -3910,6 +3930,7 @@ function runRead(rawUrl, opts) {
     V5.busy = false;
     V5.run = run;
     BRAND = { domain: dom, name: run.name, category: '', resolved: true };
+    try { localStorage.setItem('gd-read-last', JSON.stringify({ dom: dom, date: run.date })); } catch (e) { }
     goScreen(1);
   }, function (err) {
     V5.busy = false;
@@ -4151,9 +4172,114 @@ V5_SCREENS[4] = function screenPlays() {
   $('v5Next').addEventListener('click', function () { goScreen(5); });
 };
 
-/* ---- screen 5 · placeholder (lands next commit) ---- */
-V5_SCREENS[5] = function () {
-  v5Mount('<h2>Yours to keep.</h2><p class="v5-sub">this screen lands in the next commit</p>');
+/* ---- screen 5 · The Card ---- */
+function buildV5CardPng(cb) {
+  var d = V5.run.data;
+  var W = 1080, H = 720;
+  var cv = document.createElement('canvas'); cv.width = W; cv.height = H;
+  var c = cv.getContext('2d');
+  c.fillStyle = '#fcf3d6'; c.fillRect(0, 0, W, H);
+  function wrap(t, font, maxW) {
+    c.font = font;
+    var words = String(t).split(/\s+/), lines = [], line = '';
+    words.forEach(function (w) {
+      var probe = line ? line + ' ' + w : w;
+      if (c.measureText(probe).width > maxW && line) { lines.push(line); line = w; }
+      else line = probe;
+    });
+    if (line) lines.push(line);
+    return lines;
+  }
+  function finish() {
+    /* the ink card */
+    var cx = 64, cy = 150, cw = W - 128, ch = 380;
+    var g = c.createLinearGradient(cx, cy, cx + cw, cy + ch);
+    g.addColorStop(0, '#341f44'); g.addColorStop(1, '#4b2f66');
+    c.fillStyle = g;
+    c.beginPath(); c.roundRect(cx, cy, cw, ch, 26); c.fill();
+    /* dot-cluster motif, right side */
+    var seed = 11;
+    function rnd() { seed = (seed * 1664525 + 1013904223) % 4294967296; return seed / 4294967296; }
+    for (var i = 0; i < 26; i++) {
+      var a = rnd() * 6.28, r = 26 + rnd() * 74;
+      var x = cx + cw - 130 + Math.cos(a) * r, y = cy + 120 + Math.sin(a) * r * .8;
+      c.fillStyle = i % 2 ? 'rgba(159,192,216,.55)' : 'rgba(201,191,216,.45)';
+      c.beginPath(); c.arc(x, y, 3.4 + rnd() * 2.2, 0, 6.29); c.fill();
+    }
+    c.fillStyle = '#e5340b';
+    c.beginPath(); c.arc(cx + cw - 130, cy + 120, 9, 0, 6.29); c.fill();
+    c.strokeStyle = 'rgba(229,52,11,.3)'; c.lineWidth = 6;
+    c.beginPath(); c.arc(cx + cw - 130, cy + 120, 16, 0, 6.29); c.stroke();
+    /* card text */
+    c.fillStyle = '#ffc545'; c.font = '600 19px Poppins, Arial, sans-serif';
+    c.fillText((V5.dom + ' · READ BY THE MACHINE').toUpperCase(), cx + 44, cy + 68);
+    c.fillStyle = '#fcf3d6'; c.font = '600 32px Poppins, Arial, sans-serif';
+    var y = cy + 128;
+    wrap(d.cardSummary || '', '600 32px Poppins, Arial, sans-serif', cw - 300).forEach(function (l) {
+      c.fillText(l, cx + 44, y); y += 44;
+    });
+    /* chips */
+    var chips = ['your signals', 'your territory', (d.plays || []).length + ' plays'];
+    var chx = cx + 44, chy = cy + ch - 78;
+    chips.forEach(function (t) {
+      c.font = '300 17px Poppins, Arial, sans-serif';
+      var w2 = c.measureText(t).width + 34;
+      c.fillStyle = 'rgba(252,243,214,.14)';
+      c.beginPath(); c.roundRect(chx, chy, w2, 40, 10); c.fill();
+      c.fillStyle = '#fcf3d6';
+      c.fillText(t, chx + 17, chy + 27);
+      chx += w2 + 12;
+    });
+    /* footer */
+    c.fillStyle = '#8a7a5c'; c.font = '300 18px Poppins, Arial, sans-serif';
+    c.fillText('Re-run this on ' + plus30(V5.run.date) + ' and compare.', 64, H - 64);
+    c.textAlign = 'right';
+    c.fillText('thegrowthden.com/lab/the-machine', W - 64, H - 64);
+    c.textAlign = 'left';
+    cb(cv.toDataURL('image/png'));
+  }
+  var logo = new Image();
+  logo.onload = function () {
+    var lw = 230, lh = lw * (logo.height / logo.width || 200 / 750);
+    c.drawImage(logo, 64, 56, lw, lh);
+    finish();
+  };
+  logo.onerror = finish;   // never block the download on the logo
+  logo.src = V5_LOGO;
+}
+V5_SCREENS[5] = function screenCard() {
+  var d = V5.run.data;
+  v5Mount(
+    '<h2>Yours to keep.</h2>' +
+    '<div class="v5-mini">' +
+      '<div class="mt">' + escHtml(V5.dom) + ' · READ BY THE MACHINE</div>' +
+      '<div class="mv">' + escHtml(d.cardSummary || '') + '</div>' +
+      '<div class="mrow"><span class="mchip">your signals</span><span class="mchip">your territory</span>' +
+      '<span class="mchip">' + (d.plays || []).length + ' plays</span></div>' +
+    '</div>' +
+    '<button class="v5-btn blue" id="v5Dl" type="button">Download the card</button>' +
+    '<button class="v5-copylink" id="v5Cp" type="button">copy a link that re-runs this read</button>' +
+    '<a class="v5-btn ghost" href="https://calendar.app.google/dy8683mNDXyWAkPo9" target="_blank" rel="noopener noreferrer" style="text-decoration:none">Want this on your account every week? Talk to Logan →</a>' +
+    '<div class="v5-foot">' +
+      '<p>Curious how the machine actually works? <a href="#/machine">Walk through the full lab →</a></p>' +
+      '<p class="receipt">Built with AI · <a href="/">The Growth Den</a></p>' +
+    '</div>'
+  );
+  $('v5Dl').addEventListener('click', function () {
+    buildV5CardPng(function (url) {
+      var a = document.createElement('a');
+      a.href = url;
+      a.download = 'the-machine-read-' + V5.dom.replace(/[^a-z0-9.-]/g, '') + '.png';
+      document.body.appendChild(a); a.click(); a.remove();
+    });
+  });
+  $('v5Cp').addEventListener('click', function () {
+    var link = location.origin + location.pathname + '?brand=' + encodeURIComponent(V5.dom);
+    var done = function () { $('v5Cp').textContent = '✓ copied — the link re-runs the read'; };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(link).then(done, function () { window.prompt('copy this link:', link); });
+    } else window.prompt('copy this link:', link);
+  });
 };
 
 /* ---------------- boot ---------------- *//* ---------------- boot ---------------- */
