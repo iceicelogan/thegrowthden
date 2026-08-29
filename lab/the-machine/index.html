@@ -103,96 +103,6 @@ body.d-kid .d3 > .kid, body.d-cmo .d3 > .cmo, body.d-pro .d3 > .pro { display: b
   white-space: nowrap;
 }
 
-/* Teaching mode — compact header menu (Operator is the default) */
-#modeWrap { position: relative; flex: 0 0 auto; }
-#modeBtn {
-  font-family: 'Poppins', sans-serif; font-weight: 600; font-size: 12px;
-  color: var(--muted); background: rgba(26,16,37,.7);
-  border: 1.5px solid rgba(252,243,214,.3); border-radius: 100px;
-  padding: 8px 13px; cursor: pointer; white-space: nowrap; min-height: 38px;
-  transition: color .2s, border-color .2s;
-}
-#modeBtn:hover, #modeBtn[aria-expanded="true"] { color: var(--cream); border-color: rgba(252,243,214,.55); }
-#modeBtn .short { display: none; }
-#modeList {
-  position: absolute; right: 0; top: calc(100% + 8px); z-index: 60;
-  min-width: 250px; padding: 6px;
-  background: rgba(26,16,37,.97); border: 1px solid var(--line); border-radius: 14px;
-  box-shadow: 0 14px 40px rgba(0,0,0,.5);
-}
-.mode-opt {
-  display: block; width: 100%; text-align: left;
-  font-family: 'Poppins', sans-serif; font-size: 12.5px; font-weight: 600;
-  color: var(--muted); background: transparent; border: none; border-radius: 10px;
-  padding: 9px 11px; cursor: pointer; min-height: 40px;
-  transition: background .2s, color .2s;
-}
-.mode-opt:hover { background: rgba(252,243,214,.08); color: var(--cream); }
-.mode-opt.active { color: var(--cream); }
-.mode-opt.active::before { content: '✓ '; color: var(--gold); }
-.mode-opt .mo-sub { display: block; font-size: 10.5px; font-weight: 400; color: var(--muted); margin-top: 2px; }
-@media (max-width: 640px) {
-  #modeBtn { padding: 8px 11px; font-size: 11.5px; }
-  #modeBtn .full { display: none; }
-  #modeBtn .short { display: inline; }
-}
-
-/* ---------- tab pill bar ---------- */
-#tabbar {
-  position: sticky; top: var(--topbar-h); z-index: 40;
-  background: rgba(26,16,37,.82); backdrop-filter: blur(10px);
-  border-bottom: 1px solid var(--line);
-}
-#tabbar .rail {
-  display: flex; gap: 8px; align-items: center;
-  max-width: 1100px; margin: 0 auto;
-  padding: 8px 16px;
-  overflow-x: auto; -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
-}
-#tabbar .rail::-webkit-scrollbar { display: none; }
-.tab-pill {
-  display: inline-flex; align-items: center; gap: 6px;
-  font-size: 13px; font-weight: 500; color: var(--muted);
-  text-decoration: none; white-space: nowrap;
-  border: 1.5px solid transparent; border-radius: 100px;
-  padding: 8px 14px; min-height: 38px;
-  transition: color .2s, border-color .2s, background .2s;
-}
-.tab-pill:hover { color: var(--cream); border-color: rgba(252,243,214,.3); }
-.tab-pill[aria-current="page"] {
-  color: var(--deep); font-weight: 700;
-  background: var(--gold); border-color: var(--gold);
-}
-.tab-pill .ico { font-size: 15px; }
-
-/* ---------- the journey spine: 1 YOU · 2 THE MACHINE · 3 YOUR CREATIVE · 4 YOUR MARKET · finale ---------- */
-.spine-step {
-  display: inline-flex; align-items: center; gap: 7px;
-  font-size: 12.5px; font-weight: 600; color: var(--muted);
-  text-decoration: none; white-space: nowrap;
-  border: 1.5px solid transparent; border-radius: 100px;
-  padding: 6px 13px 6px 7px; min-height: 38px;
-  transition: color .2s, border-color .2s, background .2s;
-}
-.spine-step .sp-num {
-  display: inline-flex; align-items: center; justify-content: center;
-  width: 23px; height: 23px; border-radius: 50%; flex: 0 0 auto;
-  font-size: 11px; font-weight: 800;
-  color: var(--cream); border: 1.5px solid rgba(252,243,214,.45);
-}
-a.spine-step:hover { color: var(--cream); border-color: rgba(252,243,214,.3); }
-.spine-step[aria-current="page"] { color: var(--deep); font-weight: 700; background: var(--gold); border-color: var(--gold); }
-.spine-step[aria-current="page"] .sp-num { color: var(--gold); background: var(--deep); border-color: var(--deep); }
-a.spine-step.seen:not([aria-current]) .sp-num { color: var(--gold); border-color: rgba(255,197,69,.6); }
-.spine-step.locked { opacity: .38; cursor: default; }
-.sp-arrow { color: rgba(252,243,214,.28); font-size: 11px; flex: 0 0 auto; }
-@media (max-width: 700px) {
-  .spine-step { padding: 6px 9px 6px 6px; font-size: 11.5px; gap: 5px; }
-  .spine-step:not([aria-current]) .sp-name { display: none; }
-  .spine-step:not([aria-current]) { padding-right: 7px; }
-}
-
 /* ---------- view ---------- */
 #view { flex: 1; width: 100%; animation: view-in .3s ease; }
 .view-pad { max-width: 1100px; margin: 0 auto; padding: 34px 20px 30px; }
@@ -952,101 +862,40 @@ details.interlude > summary::after { color: var(--your-ad); }
 /* ---------- the entry (first load, no hash) ---------- */
 body.entry-mode #topbar, body.entry-mode #tabbar, body.entry-mode #foot,
 body.entry-mode #askBtn, body.entry-mode #askPanel { display: none !important; }
-.entry { position: relative; min-height: 100dvh; overflow: hidden; }
-.entry canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
-.entry-overlay {
-  position: relative; z-index: 3;
-  min-height: 100dvh; display: flex; flex-direction: column;
-  align-items: center; justify-content: flex-end;
+/* ---------- the product: one screen ---------- */
+.prod {
+  min-height: 100dvh; display: flex; align-items: center; justify-content: center;
   padding: 24px 18px calc(24px + env(safe-area-inset-bottom, 0px));
-  pointer-events: none;
 }
-.entry-overlay > * { pointer-events: auto; }
-.entry-title {
-  text-align: center; margin-bottom: 10px;
-  animation: entry-in .6s ease both;
-}
-.entry-title .ek {
-  font-size: 11px; font-weight: 700; letter-spacing: .22em; text-transform: uppercase;
-  color: var(--your-ad);
-}
-.entry-title h1 {
-  font-size: clamp(34px, 8vw, 58px); font-weight: 800; letter-spacing: -.01em;
-  color: var(--white); line-height: 1.05;
-}
-.entry-title .es { font-size: 14px; color: var(--muted); margin-top: 6px; }
-.entry-card {
-  width: min(560px, 100%);
-  background: rgba(26,16,37,.9); backdrop-filter: blur(10px);
-  border: 1px solid rgba(252,243,214,.25); border-radius: var(--r);
-  padding: 18px; box-shadow: 0 24px 60px rgba(0,0,0,.5);
-  animation: entry-in .6s ease .25s both;
-}
-@keyframes entry-in { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
-.entry-card label { display: block; font-size: 13.5px; font-weight: 600; color: var(--cream); margin-bottom: 10px; line-height: 1.5; }
-.entry-row { display: flex; gap: 8px; flex-wrap: wrap; }
-.entry-row input {
-  flex: 1; min-width: 200px; font-family: 'Poppins', sans-serif; font-size: 15px;
+.prod-inner { width: min(620px, 100%); text-align: center; animation: view-in .4s ease; }
+.prod .ek { font-size: 11px; font-weight: 700; letter-spacing: .22em; text-transform: uppercase; color: var(--your-ad); }
+.prod h1 { font-size: clamp(38px, 8vw, 62px); font-weight: 800; letter-spacing: -.01em; color: var(--white); line-height: 1.05; margin: 4px 0 12px; }
+.prod-promise { font-size: 15.5px; color: var(--muted); line-height: 1.6; margin-bottom: 24px; }
+.prod-row { display: flex; gap: 10px; align-items: stretch; }
+.prod-row input[type="text"] {
+  flex: 1; min-width: 0; font-family: 'Poppins', sans-serif; font-size: 16px;
   color: var(--cream); background: rgba(252,243,214,.07);
-  border: 1.5px solid rgba(252,243,214,.35); border-radius: 100px;
-  padding: 12px 18px; min-height: 50px; outline: none;
+  border: 1.5px solid rgba(252,243,214,.35); border-radius: 16px;
+  padding: 14px 18px; min-height: 74px; outline: none;
 }
-.entry-row input:focus { border-color: var(--gold); }
-.entry-links {
-  display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;
-  margin-top: 14px; font-size: 13.5px;
+.prod-row input[type="text"]:focus { border-color: var(--gold); }
+.prod-drop {
+  position: relative; flex: 0 0 104px; min-height: 74px;
+  border: 2px dashed rgba(252,243,214,.35); border-radius: 16px;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  overflow: hidden; transition: border-color .2s, background .2s;
 }
-.entry-links a { color: var(--muted); text-decoration: underline; padding: 6px 2px; min-height: 34px; }
-.entry-links a:hover { color: var(--cream); }
-.entry-skip {
-  position: absolute; top: 14px; right: 16px; z-index: 4;
-  font-size: 11px; color: rgba(252,243,214,.45); pointer-events: none;
+.prod-drop:hover, .prod-drop.drag { border-color: var(--gold); background: rgba(255,197,69,.05); }
+.prod-drop input { display: none; }
+.prod-drop span { font-size: 10.5px; line-height: 1.35; color: var(--muted); padding: 4px; }
+.prod-drop img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.prod-drop-sub { font-size: 11.5px; color: var(--muted); margin-top: 9px; }
+.prod-go { width: 100%; margin-top: 14px; font-size: 17px; min-height: 56px; }
+.prod-demo { display: inline-block; margin-top: 16px; font-size: 13px; color: var(--muted); padding: 6px; }
+@media (max-width: 460px) {
+  .prod-row { flex-wrap: wrap; }
+  .prod-drop { flex: 1 1 100%; min-height: 60px; }
 }
-
-/* onboarding: one screen, under ten seconds */
-.ob-q { font-size: 16px; font-weight: 700; color: var(--white); margin-bottom: 10px; }
-.ob-levels { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
-.ob-lvl {
-  flex: 1; min-width: 118px; text-align: center;
-  font-family: 'Poppins', sans-serif; font-weight: 600; font-size: 12.5px;
-  color: var(--cream); background: rgba(252,243,214,.06);
-  border: 1.5px solid rgba(252,243,214,.35); border-radius: 14px;
-  padding: 11px 10px; min-height: 46px; cursor: pointer;
-  transition: background .2s, border-color .2s, color .2s;
-}
-.ob-lvl:hover { border-color: var(--cream); }
-.ob-lvl.on { background: var(--cream); color: var(--deep); border-color: var(--cream); font-weight: 700; }
-.ob-lvl .ob-sub { display: block; font-size: 10px; font-weight: 400; margin-top: 2px; opacity: .75; }
-.ob-start { width: 100%; margin-top: 12px; }
-
-/* return visit: continue-where-you-left-off bar */
-#contBar {
-  position: fixed; left: 50%; transform: translateX(-50%);
-  bottom: calc(16px + env(safe-area-inset-bottom, 0px)); z-index: 64;
-  display: flex; align-items: center; gap: 12px;
-  font-size: 12.5px; color: var(--cream);
-  background: rgba(26,16,37,.95); backdrop-filter: blur(8px);
-  border: 1px solid rgba(252,243,214,.3); border-radius: 100px;
-  padding: 9px 16px; box-shadow: 0 10px 30px rgba(0,0,0,.45);
-  max-width: calc(100vw - 90px);
-}
-#contBar a, #contBar button {
-  font-family: 'Poppins', sans-serif; font-size: 12px; font-weight: 600;
-  color: var(--gold); background: none; border: none; cursor: pointer;
-  text-decoration: underline; padding: 4px 2px; white-space: nowrap;
-}
-
-/* header extras: brand chip + menu (steps 2 & 4) */
-#brandSlot { display: flex; align-items: center; min-width: 0; flex: 1; justify-content: flex-end; }
-.brand-chip {
-  display: inline-flex; align-items: center; gap: 7px;
-  font-size: 12px; font-weight: 600; color: var(--deep);
-  background: var(--your-ad); border-radius: 100px; padding: 6px 12px;
-  max-width: 230px; white-space: nowrap; overflow: hidden;
-}
-.brand-chip b { overflow: hidden; text-overflow: ellipsis; }
-.brand-chip button { background: none; border: none; color: var(--deep); font-weight: 800; cursor: pointer; font-size: 13px; padding: 2px 4px; }
-.brand-link { font-size: 12px; color: var(--muted); text-decoration: underline; white-space: nowrap; }
 
 /* ---------- footer ---------- */
 #foot {
@@ -1089,18 +938,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <img src="../../uploads/Growth_Den__Logo_Horizontal_White.svg" alt="The Growth Den">
     <span class="lab-tag">Lab · The Machine</span>
   </a>
-  <div id="brandSlot"></div>
-  <div id="modeWrap">
-    <button id="modeBtn" type="button" aria-haspopup="menu" aria-expanded="false"><span class="full">Level</span><span class="short">Lvl</span> ▾</button>
-    <div id="modeList" role="menu" aria-label="Level" hidden>
-      <button class="mode-opt" data-depth="kid" type="button" role="menuitemradio">Explain like I’m 8<span class="mo-sub">the same machine, taught to anyone — try it</span></button>
-      <button class="mode-opt" data-depth="cmo" type="button" role="menuitemradio">Professional</button>
-      <button class="mode-opt" data-depth="pro" type="button" role="menuitemradio">Expert</button>
-    </div>
-  </div>
 </header>
-
-<nav id="tabbar" aria-label="The journey"><div class="rail" id="tabRail"></div></nav>
 
 <main id="view">
   <!-- static fallback: replaced by the app the moment JS boots -->
@@ -1717,65 +1555,25 @@ var CONTENT = {
   },
 };
 
-/* ---------------- the journey / depth ---------------- */
+/* ---------------- rooms (the full lab) / registers ---------------- */
 var ROOMS = [
-  { slug: 'you',      name: 'You',           ico: '🔍', num: 1, open: true },
-  { slug: 'machine',  name: 'The Machine',   ico: '⚙️', num: 2, open: true },
-  { slug: 'creative', name: 'Your Creative', ico: '🎨', num: 3, open: true },
-  { slug: 'market',   name: 'Your Market',   ico: '🌐', num: 4, open: true },
-  { slug: 'debrief',  name: 'The Debrief',   ico: '🏁', finale: true, open: true },
-  /* off-spine, footer-linked only */
-  { slug: 'dispatch', name: 'The Dispatch',      ico: '📰', open: true, hidden: true },
+  { slug: 'machine',  name: 'The full lab',  ico: '⚙️', open: true },
+  { slug: 'dispatch', name: 'The Dispatch',  ico: '📰', open: true },
 ];
-var STEP_ORDER = ['you', 'machine', 'creative', 'market', 'debrief'];
-function nextStepSlug(slug) {
-  var i = STEP_ORDER.indexOf(slug);
-  return i >= 0 && i < STEP_ORDER.length - 1 ? STEP_ORDER[i + 1] : null;
-}
-/* visited steps: the spine unlocks what the journey has reached */
-function getVisited() {
-  try { return JSON.parse(sessionStorage.getItem('gd-journey-visited')) || []; } catch (e) { return []; }
-}
-function markVisited(slug) {
-  if (STEP_ORDER.indexOf(slug) < 0) return;
-  try {
-    var v = getVisited();
-    if (v.indexOf(slug) < 0) { v.push(slug); sessionStorage.setItem('gd-journey-visited', JSON.stringify(v)); }
-    sessionStorage.setItem('gd-last-step', slug);
-  } catch (e) { }
-}
 var DEPTHS = ['kid', 'cmo', 'pro'];
-var DEPTH_KEY = 'gd-machine-depth';
-/* room registries: each room may register a view builder and an init
-   that returns a cleanup fn (declared early — rooms assign into these) */
+var depth = 'cmo';   // plain register by default; drawers can go pro / kid
+/* room registries: each room registers a view builder and an init
+   that returns a cleanup fn */
 var VIEWS = {}, INITS = {}, roomCleanup = null;
 
-function storedDepth() {
-  try {
-    var d = localStorage.getItem(DEPTH_KEY);
-    if (DEPTHS.indexOf(d) >= 0) return d;
-    var legacy = localStorage.getItem('gd-auction-mode');
-    if (legacy === 'kid' || legacy === 'cmo') return legacy;
-  } catch (e) { }
-  return 'cmo';
-}
-var depth = storedDepth();
-
-function setDepth(d, fromUrl) {
+function setDepth(d) {
   if (DEPTHS.indexOf(d) < 0) d = 'cmo';
   depth = d;
   document.body.classList.remove('d-kid', 'd-cmo', 'd-pro');
   document.body.classList.add('d-' + d);
-  document.querySelectorAll('.mode-opt').forEach(function (b) {
-    var on = b.dataset.depth === d;
-    b.classList.toggle('active', on);
-    b.setAttribute('aria-checked', String(on));
-  });
-  try { localStorage.setItem(DEPTH_KEY, d); } catch (e) { }
-  if (!fromUrl) canonicalizeHash();
 }
 
-/* d3(key): all three registers in the markup; CSS shows only the
+/* d3(key):/* d3(key): all three registers in the markup; CSS shows only the
    active teaching mode's span. */
 function d3(key) {
   var c = CONTENT[key];
@@ -1843,42 +1641,23 @@ document.addEventListener('keydown', function (e) {
 function parseHash() {
   var h = location.hash.replace(/^#\/?/, '');
   var q = h.split('?');
-  var slug = q[0].replace(/\/+$/, '') || 'you';
+  var slug = q[0].replace(/\/+$/, '');
   var params = {};
   (q[1] || '').split('&').forEach(function (kv) {
     var p = kv.split('=');
     if (p[0]) params[p[0]] = decodeURIComponent(p[1] || '');
   });
-  /* old routes redirect to their nearest new home */
+  /* lab-internal legacy routes */
   if (slug === 'models' || slug === 'model-room' || slug === 'recency' || slug === 'auction') slug = 'machine';
-  if (slug === 'scanner') slug = 'you';
-  if (!ROOMS.some(function (r) { return r.slug === slug; })) slug = 'you';
+  /* retired journey routes come home to the product */
+  if (['scanner', 'you', 'creative', 'market', 'debrief'].indexOf(slug) >= 0) slug = '';
+  if (slug && !ROOMS.some(function (r) { return r.slug === slug; })) slug = '';
   return { slug: slug, params: params };
 }
-function canonicalizeHash() {
-  var cur = parseHash();
-  history.replaceState(null, '', '#/' + cur.slug + '?d=' + depth);
-}
-function roomLink(slug) { return '#/' + slug; }
-
-function renderTabs(active) {
-  var visited = getVisited();
-  $('tabRail').innerHTML = ROOMS.filter(function (r) { return !r.hidden; }).map(function (r, i) {
-    var seen = visited.indexOf(r.slug) >= 0 || r.slug === active;
-    var num = '<span class="sp-num">' + (r.finale ? '🏁' : r.num) + '</span>';
-    var name = '<span class="sp-name">' + r.name.toUpperCase() + '</span>';
-    var pill = seen
-      ? '<a class="spine-step seen" href="' + roomLink(r.slug) + '"' +
-        (r.slug === active ? ' aria-current="page"' : '') + '>' + num + name + '</a>'
-      : '<span class="spine-step locked" title="the journey reaches this step">' + num + name + '</span>';
-    return (i ? '<span class="sp-arrow">→</span>' : '') + pill;
-  }).join('');
-  var cur = $('tabRail').querySelector('[aria-current]');
-  if (cur && cur.scrollIntoView) cur.scrollIntoView({ block: 'nearest', inline: 'center' });
-}
+function roomLink(slug) { return '#/' + slug; }function roomLink(slug) { return '#/' + slug; }
 
 /* ============================================================
-   THE JOURNEY — #/machine
+   THE FULL LAB — #/machine
    ============================================================ */
 function jstep(id, sceneName, titleKey, bodyKey, claimsHtml, extraStage) {
   return '<section class="jstep" id="' + id + '" data-scene="' + sceneName + '">' +
@@ -2031,8 +1810,8 @@ function viewJourney() {
       '</ol>');
 
   /* onward */
-  h += '<a class="next-room" href="#/creative"><span class="nr-k">step 3 · Your Creative</span>' +
-    '<span class="nr-t">The machine reads creative above almost everything. Let’s read YOURS →</span></a>';
+  h += '<a class="next-room" href="#/"><span class="nr-k">the brand reader</span>' +
+    '<span class="nr-t">← Back to your read — the machine reads creative above almost everything</span></a>';
 
   h += '</div>';
   return h;
@@ -2778,7 +2557,7 @@ function streamClaude(payload, onDelta) {
    Set from the entry, the Scanner, or ?brand=<domain>. Cached in
    sessionStorage per domain. Failures degrade to {name: domain}.
    ============================================================ */
-var BRAND = null, brandAutoScanned = null, SCAN_BUSY = false, BOOTED = false;
+var BRAND = null;   // set from the product run; lab canvases read it live
 function escHtml(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
 function normDomain(raw) {
   var d = String(raw || '').trim().toLowerCase()
@@ -2805,157 +2584,6 @@ function parseSiteLite(html, dom) {
     };
   } catch (e) { return { domain: dom, title: '', siteName: '', description: '', headlines: [], ogType: '' }; }
 }
-function applyBrandUI() {
-  var slot = $('brandSlot');
-  if (!slot) return;
-  if (BRAND) {
-    slot.innerHTML = '<span class="brand-chip">viewing as: <b>' + escHtml(BRAND.name) + '</b>' +
-      '<button id="brandClear" type="button" aria-label="Clear brand context">✕</button></span>';
-    var bc = $('brandClear');
-    if (bc) bc.addEventListener('click', clearBrand);
-  } else {
-    slot.innerHTML = '<a class="brand-link" href="#/you">make this about your brand</a>';
-  }
-}
-function clearBrand() {
-  BRAND = null;
-  brandAutoScanned = null;
-  try { sessionStorage.removeItem('gd-brand-active'); } catch (e) { }
-  applyBrandUI();
-  render();
-}
-function refreshForBrand() {
-  applyBrandUI();
-  if (!BOOTED) return;  // boot renders right after restoring the brand — don't render twice
-  var slug = parseHash().slug;
-  if (slug === 'you' && SCAN_BUSY) return;  // a read is mid-flight — don't wipe its report
-  if (slug === 'creative' || slug === 'you') render();  // chip labels & prefill live in DOM
-  // machine + auction labels read BRAND live from their canvas loops
-}
-/* returns a promise resolving to the (possibly minimal) BRAND */
-function setBrandDomain(raw) {
-  var dom = normDomain(raw);
-  if (!dom) return Promise.resolve(null);
-  if (BRAND && BRAND.domain === dom && BRAND.resolved) { applyBrandUI(); return Promise.resolve(BRAND); }
-  BRAND = { domain: dom, name: prettyDomain(dom), resolved: false };
-  try { sessionStorage.setItem('gd-brand-active', dom); } catch (e) { }
-  applyBrandUI();
-  try {
-    var cached = sessionStorage.getItem('gd-brand-' + dom);
-    if (cached) {
-      BRAND = JSON.parse(cached);
-      refreshForBrand();
-      return Promise.resolve(BRAND);
-    }
-  } catch (e) { }
-  return fetch(PROXY_URL + '/fetch', {
-    method: 'POST', headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ url: 'https://' + dom }),
-  }).then(function (r) {
-    if (!r.ok) throw 0;
-    return r.json();
-  }).then(function (f) {
-    if (!f.html) throw 0;
-    var sig = parseSiteLite(f.html, dom);
-    if (BRAND && BRAND.domain === dom) {
-      BRAND.signals = sig;
-      if (sig.siteName) { BRAND.name = sig.siteName; applyBrandUI(); }
-    }
-    return fetch(PROXY_URL + '/claude', {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: 'claude-haiku-4-5', max_tokens: 400, stream: false,
-        system: 'You will receive parsed public signals from a brand homepage. Reply with STRICT JSON only — no prose, no code fences: {"name": short brand name, "category": 2-4 word category, "offer": one line describing what they sell, "oneLiner": one sharp sentence describing the brand, "hooks": [4 plausible and genuinely different Meta ad hooks for this brand, each under 10 words]}',
-        messages: [{ role: 'user', content: JSON.stringify(sig) }],
-      }),
-    }).then(function (r2) {
-      if (!r2.ok) throw 0;
-      return r2.json();
-    }).then(function (j) {
-      var txt = (j.content || []).map(function (b) { return b.text || ''; }).join('');
-      var m = txt.match(/\{[\s\S]*\}/);
-      var data = JSON.parse(m[0]);
-      if (BRAND && BRAND.domain === dom) {
-        BRAND = {
-          domain: dom, resolved: true,
-          name: data.name || BRAND.name,
-          category: data.category || '',
-          offer: data.offer || '',
-          oneLiner: data.oneLiner || '',
-          hooks: Array.isArray(data.hooks) ? data.hooks.slice(0, 4) : [],
-          signals: sig,
-        };
-        try { sessionStorage.setItem('gd-brand-' + dom, JSON.stringify(BRAND)); } catch (e) { }
-        refreshForBrand();
-      }
-      return BRAND;
-    });
-  }).catch(function () {
-    // 429/503/blocked/anything: keep {domain, name} and never block the portal
-    return BRAND;
-  });
-}
-
-/* ---- Ask the Machine (global, every tab) ---- */
-(function wireAsk() {
-  var panel = $('askPanel'), msgs = $('askMsgs'), input = $('askInput');
-  var history = [], busy = false, greeted = false;
-  function addMsg(cls, html) {
-    var d = document.createElement('div');
-    d.className = 'msg ' + cls;
-    d.innerHTML = html;
-    msgs.appendChild(d);
-    msgs.scrollTop = msgs.scrollHeight;
-    return d;
-  }
-  $('askBtn').addEventListener('click', function () {
-    panel.classList.toggle('open');
-    if (panel.classList.contains('open') && !greeted) {
-      greeted = true;
-      addMsg('bot', d3('ask.hello'));
-    }
-    if (panel.classList.contains('open')) input.focus();
-  });
-  $('askClose').addEventListener('click', function () { panel.classList.remove('open'); });
-  function send() {
-    var q = input.value.trim();
-    if (!q || busy) return;
-    input.value = '';
-    addMsg('user', q.replace(/</g, '&lt;'));
-    history.push({ role: 'user', content: q });
-    var bot = addMsg('bot', '<i>thinking…</i>');
-    busy = true;
-    var started = false;
-    var sys = 'You are “Ask the Machine”, the assistant inside The Growth Den’s teaching portal about Meta’s ad delivery system. ' +
-      'Answer ONLY from the PORTAL CORPUS below. Answer at this register: ' + REGISTER_DESC[depth] + '. ' +
-      'If asked something the corpus does not cover, say plainly what the portal doesn’t cover and point to the closest covered topic — never guess. ' +
-      'Keep every answer under 150 words. Never claim that spend, reach, or audience data exists publicly for commercial advertisers.\n\nPORTAL CORPUS:\n' + buildCorpus();
-    streamClaude({ model: 'claude-haiku-4-5', max_tokens: 300, stream: true, system: sys, messages: history.slice(-8) },
-      function (delta) {
-        if (!started) { started = true; bot.textContent = ''; }
-        bot.textContent += delta;
-        msgs.scrollTop = msgs.scrollHeight;
-      }).then(function (full) {
-        history.push({ role: 'assistant', content: full || '(no reply)' });
-      }).catch(function (err) {
-        bot.textContent = err && err.code === 429 ? depthMsg(MSG_BUSY)
-          : err && err.code === 503 ? depthMsg(MSG_NAP)
-          : depthMsg(MSG_LOCAL);
-        history.pop();
-      }).then(function () { busy = false; });
-  }
-  $('askSend').addEventListener('click', send);
-  input.addEventListener('keydown', function (e) { if (e.key === 'Enter') send(); });
-})();
-
-/* ---- Journey step 1: How Meta sees you — #/you (built on the Brand Scanner) ---- */
-function getScanCache(dom) {
-  try { return JSON.parse(sessionStorage.getItem('gd-scan-' + dom)); } catch (e) { return null; }
-}
-function putScanCache(dom, obj) {
-  try { sessionStorage.setItem('gd-scan-' + dom, JSON.stringify(obj)); } catch (e) { }
-}
-/* the collapse motif — shared by the on-page header and the PNG export */
 function drawCollapse(c, W, H, alpha) {
   var seed = 7;
   function rnd() { seed = (seed * 1664525 + 1013904223) % 4294967296; return seed / 4294967296; }
@@ -2976,282 +2604,6 @@ function drawCollapse(c, W, H, alpha) {
   c.strokeStyle = 'rgba(254,124,43,.45)'; c.lineWidth = 1.4;
   c.beginPath(); c.arc(FX, FY, 13, 0, 7); c.stroke();
 }
-
-function viewYou() {
-  var hasBrand = !!BRAND;
-  return '<div class="view-pad">' +
-    '<p class="room-kicker">Step 1 · You</p>' +
-    '<h1 class="room-title">🔍 How Meta sees ' + (hasBrand ? escHtml(BRAND.name) : 'you') + '</h1>' +
-    '<p class="room-tag" style="margin-bottom:20px">' + d3('you.tag') + '</p>' +
-    '<div class="card">' +
-      '<div style="font-size:14.5px;line-height:1.7;color:var(--muted)">' + d3(hasBrand ? 'you.intro.brand' : 'you.intro.generic') + '</div>' +
-      '<div class="scan-row" style="margin-top:14px">' +
-        '<input id="scanUrl" type="url" placeholder="' + (hasBrand ? escHtml(BRAND.domain) : 'yourbrand.com — make it about your brand') + '" autocomplete="off">' +
-        '<button class="run-btn" id="scanGo" type="button">🔍 ' + (hasBrand ? 're-read a site' : 'read my site') + '</button>' +
-      '</div>' +
-      '<p class="scan-status" id="scanStatus"></p>' +
-    '</div>' +
-    '<div class="card" id="scanReport" style="display:none"></div>' +
-    '<div class="honesty-panel">' + d3('s.honesty') +
-      ' <a href="https://www.facebook.com/ads/library/" target="_blank" rel="noopener noreferrer">→ the Ad Library</a></div>' +
-    '<a class="next-room" href="#/machine"><span class="nr-k">step 2 · The Machine</span>' +
-      '<span class="nr-t">That’s what Meta sees. Now watch what it does with it in 100 milliseconds →</span></a>' +
-    '</div>';
-}
-INITS.you = function () {
-  var busy = false, readTicker = 0;
-  function status(t) { var el = $('scanStatus'); if (el) el.innerHTML = t; }
-  function esc(s) { return escHtml(s); }
-  function mdLite(s) {
-    var lines = esc(s).split('\n'), out = [], inList = false;
-    lines.forEach(function (ln) {
-      ln = ln.trim();
-      var isLi = /^(\d+[.)]|[-*•])\s+/.test(ln);
-      if (inList && !isLi) { out.push('</ol>'); inList = false; }
-      if (/^#{1,3}\s+/.test(ln)) out.push('<h3>' + ln.replace(/^#{1,3}\s+/, '') + '</h3>');
-      else if (isLi) { if (!inList) { out.push('<ol>'); inList = true; } out.push('<li>' + ln.replace(/^(\d+[.)]|[-*•])\s+/, '') + '</li>'); }
-      else if (ln) out.push('<p>' + ln + '</p>');
-    });
-    if (inList) out.push('</ol>');
-    return out.join('').replace(/\*\*([^*]+)\*\*/g, '<b>$1</b>');
-  }
-  function parseSections(md) {
-    var secs = [], cur = null;
-    md.split('\n').forEach(function (ln) {
-      ln = ln.trim();
-      if (/^#{1,3}\s+/.test(ln)) { cur = { h: ln.replace(/^#{1,3}\s+/, ''), lines: [] }; secs.push(cur); }
-      else if (ln) {
-        if (!cur) { cur = { h: '', lines: [] }; secs.push(cur); }
-        cur.lines.push(ln.replace(/\*\*/g, ''));
-      }
-    });
-    return secs;
-  }
-  function headCanvas() {
-    var cv = $('repCv'); if (!cv) return;
-    var w = cv.offsetWidth || 600, h = cv.offsetHeight || 150;
-    cv.width = w; cv.height = h;
-    drawCollapse(cv.getContext('2d'), w, h, 0.55);
-  }
-  /* the whole report as one self-contained PNG, in the og.png aesthetic */
-  function buildReportPng(name, dom2, md) {
-    var W = 1080, pad = 64, maxW = W - pad * 2, lh = 27;
-    var bodyFont = '400 16.5px Poppins, Arial, sans-serif';
-    var headFont = '700 22px Poppins, Arial, sans-serif';
-    var meas = document.createElement('canvas').getContext('2d');
-    function wrap(t, font) {
-      meas.font = font;
-      var words = t.split(/\s+/), lines = [], line = '';
-      words.forEach(function (w) {
-        var probe = line ? line + ' ' + w : w;
-        if (meas.measureText(probe).width > maxW && line) { lines.push(line); line = w; }
-        else line = probe;
-      });
-      if (line) lines.push(line);
-      return lines;
-    }
-    var blocks = parseSections(md).map(function (s) {
-      var lines = [];
-      s.lines.forEach(function (ln) {
-        wrap(ln, bodyFont).forEach(function (l) { lines.push(l); });
-        lines.push('');
-      });
-      return { h: s.h, lines: lines };
-    });
-    var HEAD = 240, yEnd = HEAD + 52;
-    blocks.forEach(function (b) {
-      if (b.h) yEnd += 12 + 32;
-      b.lines.forEach(function (l) { yEnd += l ? lh : 12; });
-      yEnd += 8;
-    });
-    var H = yEnd + 12;
-    var cv = document.createElement('canvas'); cv.width = W; cv.height = H;
-    var c = cv.getContext('2d');
-    c.fillStyle = '#1a1025'; c.fillRect(0, 0, W, H);
-    var g1 = c.createRadialGradient(W * 0.8, 0, 0, W * 0.8, 0, W * 0.7);
-    g1.addColorStop(0, 'rgba(37,100,147,.4)'); g1.addColorStop(1, 'rgba(37,100,147,0)');
-    c.fillStyle = g1; c.fillRect(0, 0, W, H);
-    c.fillStyle = 'rgba(0,0,0,.18)'; c.fillRect(0, 0, W, HEAD);
-    drawCollapse(c, W, HEAD, 1);
-    c.fillStyle = '#7fb4d8'; c.font = '700 13px Poppins, Arial, sans-serif';
-    c.fillText('H O W   T H E   M A C H I N E   S E E S', pad, 92);
-    c.fillStyle = '#ffffff'; c.font = '800 44px Poppins, Arial, sans-serif';
-    c.fillText(String(name).slice(0, 42), pad, 142);
-    c.fillStyle = 'rgba(252,243,214,.62)'; c.font = '400 15px Poppins, Arial, sans-serif';
-    c.fillText(dom2 + ' · scanned ' + new Date().toISOString().slice(0, 10), pad, 172);
-    c.strokeStyle = 'rgba(252,243,214,.16)';
-    c.beginPath(); c.moveTo(0, HEAD + .5); c.lineTo(W, HEAD + .5); c.stroke();
-    var y = HEAD + 52;
-    blocks.forEach(function (b) {
-      if (b.h) {
-        c.fillStyle = '#ffc545'; c.font = headFont;
-        c.fillText(b.h, pad, y); y += 12;
-        c.strokeStyle = 'rgba(252,243,214,.16)';
-        c.setLineDash([4, 5]); c.beginPath(); c.moveTo(pad, y); c.lineTo(W - pad, y); c.stroke(); c.setLineDash([]);
-        y += 32;
-      }
-      c.fillStyle = 'rgba(252,243,214,.8)'; c.font = bodyFont;
-      b.lines.forEach(function (l) { if (l) { c.fillText(l, pad, y); y += lh; } else y += 12; });
-      y += 8;
-    });
-    return cv.toDataURL('image/png');
-  }
-  function reportShell(name, sig) {
-    var adlib = 'https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=ALL&q=' + encodeURIComponent(name);
-    var report = $('scanReport');
-    report.style.display = 'block';
-    report.innerHTML =
-      '<div class="rep-head"><canvas id="repCv"></canvas><div class="rep-head-txt">' +
-        '<p class="rk">How the Machine sees</p>' +
-        '<h2>' + esc(name) + '</h2>' +
-        '<p class="rd">' + esc(sig.domain) + ' · scanned ' + new Date().toISOString().slice(0, 10) + '</p>' +
-      '</div></div>' +
-      '<div class="rep-body">' +
-        '<div class="sig-grid">' +
-          '<div class="sig"><b>title</b>' + esc(sig.title || '—') + '</div>' +
-          '<div class="sig"><b>description</b>' + esc((sig.description || '—').slice(0, 140)) + '</div>' +
-          '<div class="sig"><b>their live ads</b><a href="' + adlib + '" target="_blank" rel="noopener noreferrer">see them in Meta’s own transparency tool →</a></div>' +
-        '</div>' +
-        '<div class="report" id="scanMd"><p><i>…</i></p></div>' +
-      '</div>';
-    headCanvas();
-    return report;
-  }
-  function finishReport(report, name, dom, md) {
-    $('scanMd').innerHTML = mdLite(md);
-    report.classList.remove('scanning');
-    var body = report.querySelector('.rep-body');
-    var act = document.createElement('div');
-    act.className = 'rep-actions';
-    act.innerHTML = '<button class="run-btn" id="repDl" type="button">⬇ Download report</button>' +
-      '<button class="run-btn ghost" id="repCp" type="button">🔗 Copy link</button>';
-    body.appendChild(act);
-    $('repDl').addEventListener('click', function () {
-      var a = document.createElement('a');
-      a.href = buildReportPng(name, dom, md);
-      a.download = 'how-the-machine-sees-' + dom.replace(/[^a-z0-9.-]/g, '') + '.png';
-      document.body.appendChild(a); a.click(); a.remove();
-    });
-    $('repCp').addEventListener('click', function () {
-      var link = location.origin + location.pathname + '?brand=' + encodeURIComponent(dom) + '#/you';
-      var done = function () { $('repCp').textContent = '✓ copied — the link re-runs this read for whoever opens it'; };
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(link).then(done, function () { window.prompt('copy this link:', link); });
-      } else window.prompt('copy this link:', link);
-    });
-    status('✅ ' + (depth === 'kid' ? 'report card done! Now — see what the machine does with all this ↓' : 'read complete. Now watch what delivery does with it ↓'));
-  }
-  var READ_LINES = [
-    'reading the title…', 'reading the offer language…', 'mapping the category…',
-    'checking what retrieval can index…', 'weighing the creative signal…',
-  ];
-  function startReadTicker() {
-    var i = 0;
-    clearInterval(readTicker);
-    status('📡 ' + READ_LINES[0]);
-    readTicker = setInterval(function () {
-      i = (i + 1) % READ_LINES.length;
-      status('📡 ' + READ_LINES[i]);
-    }, 1100);
-  }
-  function scan(url, setBrand) {
-    if (busy) return;
-    var dom = normDomain(url);
-    /* cached read: render instantly, no calls */
-    var cached = dom && getScanCache(dom);
-    if (cached && cached.md) {
-      var rep = reportShell(cached.name, { domain: dom, title: cached.title, description: cached.description });
-      finishReport(rep, cached.name, dom, cached.md);
-      if (setBrand && typeof setBrandDomain === 'function') setBrandDomain(dom);
-      return;
-    }
-    busy = true;
-    SCAN_BUSY = true;
-    if (setBrand && dom) brandAutoScanned = dom;  // this scan IS the auto-run for this domain
-    var report = $('scanReport');
-    report.style.display = 'none';
-    startReadTicker();
-    /* brand context first: its /fetch + parse is cached per domain,
-       so the scan reuses that instead of fetching the site twice */
-    var pre = (setBrand && dom && typeof setBrandDomain === 'function') ? setBrandDomain(dom) : Promise.resolve(null);
-    pre.then(function () {
-      if (dom && BRAND && BRAND.domain === dom && BRAND.signals) return BRAND.signals;
-      return fetch(PROXY_URL + '/fetch', {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ url: url }),
-      }).then(function (r) {
-        if (r.status === 429) throw { code: 429 };
-        if (r.status === 503) throw { code: 503 };
-        if (!r.ok) throw { code: r.status };
-        return r.json();
-      }).then(function (f) {
-        if (!f.html || (f.status && f.status >= 400)) throw { code: 'blocked' };
-        return parseSiteLite(f.html, dom || (f.finalUrl || url).replace(/^https?:\/\/(www\.)?/, '').split('/')[0]);
-      });
-    }).then(function (sig) {
-      var name = (setBrand && BRAND && BRAND.domain === sig.domain && BRAND.name) ||
-        sig.siteName || (sig.title || '').split(/[|–—-]/)[0].trim() || sig.domain;
-      report = reportShell(name, sig);
-      report.classList.add('scanning');
-      var known = (BRAND && BRAND.domain === sig.domain && BRAND.resolved)
-        ? { category: BRAND.category, offer: BRAND.offer, oneLiner: BRAND.oneLiner, hooks: BRAND.hooks }
-        : null;
-      var sys = 'You are the Brand Scanner inside “The Machine”, a teaching portal that explains Meta’s ad delivery system (retrieval/Andromeda, ranking/GEM, the total-value auction, quality penalties, creative-as-targeting, fatigue). ' +
-        'You receive parsed PUBLIC signals from a brand’s homepage. Produce “How the Machine Sees This Brand” in markdown with EXACTLY these sections: ' +
-        '“## What the site feeds delivery” (read the actual signals: clarity of offer and category, how the page copy works as delivery input, 4-6 sentences); ' +
-        '“## Mechanisms they’re using well — or fighting” (tie specifically to retrieval indexability, creative signal strength, quality surface, learning consolidation); ' +
-        '“## 10 genuinely different angles” (numbered list of ten creative angle opportunities, each a DISTINCT buyer motivation or hook territory — never cosmetic variants of one idea; one concrete line each). ' +
-        'Write at this register: ' + REGISTER_DESC[depth] + '. ' +
-        'Rules: infer only from the provided signals; never invent spend, reach, or audience numbers — none are public; NEVER mention or speculate about pixels, tags, tracking, or analytics — you cannot see any of that; do not name The Growth Den or this portal inside the report; total under 600 words.';
-      var lastPaint = 0, acc = '';
-      return streamClaude({ model: 'claude-sonnet-4-5', max_tokens: 3000, stream: true, system: sys,
-        messages: [{ role: 'user', content: 'SIGNALS:\n' + JSON.stringify(sig, null, 1) +
-          (known ? '\n\nKNOWN BRAND CONTEXT (from an earlier read of the same public signals):\n' + JSON.stringify(known, null, 1) : '') }] },
-        function (delta) {
-          acc += delta;
-          clearInterval(readTicker);
-          status('🧠 ' + (depth === 'kid' ? 'the helper is writing the report card…' : 'writing the read…'));
-          var now = Date.now();
-          if (now - lastPaint > 180) {
-            lastPaint = now;
-            var el = $('scanMd'); if (el) el.innerHTML = mdLite(acc);
-          }
-        }).then(function (full) {
-          finishReport(report, name, sig.domain, full);
-          putScanCache(sig.domain, { name: name, domain: sig.domain, md: full,
-            title: sig.title, description: sig.description, date: new Date().toISOString().slice(0, 10) });
-        });
-    }).catch(function (err) {
-      clearInterval(readTicker);
-      if (report) report.classList.remove('scanning');
-      if (err && err.code === 429) status(depthMsg(MSG_BUSY));
-      else if (err && err.code === 503) status(depthMsg(MSG_NAP));
-      else if (err && err.code === 'blocked') status('🚪 ' + (depth === 'kid'
-        ? 'That site slammed the door on our scanner — rude! Some sites do that. Try another one.'
-        : 'That site bounced us at the door — some homepages refuse anything that isn’t a browser. No judgment; strong bouncer. Try another domain, or continue — the journey works without it.'));
-      else status(depthMsg(MSG_LOCAL));
-    }).then(function () { busy = false; SCAN_BUSY = false; clearInterval(readTicker); });
-  }
-  $('scanGo').addEventListener('click', function () {
-    var u = $('scanUrl').value.trim();
-    if (!u) { status(depth === 'kid' ? 'type a website first!' : 'enter a URL first.'); return; }
-    if (!/^https?:\/\//.test(u)) u = 'https://' + u;
-    scan(u, true);
-  });
-  $('scanUrl').addEventListener('keydown', function (e) { if (e.key === 'Enter') $('scanGo').click(); });
-  /* arrival: the brand read auto-runs; generic mode shows the demo read */
-  if (BRAND) {
-    $('scanUrl').value = BRAND.domain;
-    if (brandAutoScanned !== BRAND.domain || getScanCache(BRAND.domain)) {
-      scan('https://' + BRAND.domain, true);
-    }
-  } else {
-    scan('https://thegrowthden.com', false);
-  }
-  return function () { clearInterval(readTicker); };
-};
-VIEWS.you = viewYou;
-
 
 /* ============================================================
    THE DISPATCH — #/dispatch · lab logbook
@@ -3680,498 +3032,6 @@ var initCreativeField = function () {
     document.querySelectorAll('.mode-opt').forEach(function (b) { b.removeEventListener('click', dialHook); });
   };
 };
-
-/* ============================================================
-   YOUR CREATIVE — #/creative · one vision read of one ad.
-   The analyzer is reusable: Your Market's "read a rival" panel
-   mounts the same flow with rival=true.
-   ============================================================ */
-function demoAdDataUrl(which) {
-  var cv = document.createElement('canvas'); cv.width = 600; cv.height = 750;
-  var c = cv.getContext('2d');
-  function center(t, font, color, y) {
-    c.font = font; c.fillStyle = color; c.textAlign = 'center'; c.fillText(t, 300, y);
-  }
-  if (which === 1) {
-    c.fillStyle = '#f5ead2'; c.fillRect(0, 0, 600, 750);
-    c.fillStyle = '#2a1d12'; c.fillRect(0, 0, 600, 92);
-    center('GLOWBREW', '800 30px Poppins, Arial, sans-serif', '#f5ead2', 58);
-    c.fillStyle = '#3a2a18';
-    c.beginPath(); c.roundRect(210, 150, 180, 300, 24); c.fill();
-    c.fillStyle = '#c98e46'; c.fillRect(210, 300, 180, 60);
-    center('COLD BREW', '700 20px Poppins, Arial, sans-serif', '#f5ead2', 338);
-    center('Barista-grade cold brew.', '800 36px Poppins, Arial, sans-serif', '#2a1d12', 520);
-    center('At home. In 8 seconds.', '800 36px Poppins, Arial, sans-serif', '#2a1d12', 562);
-    center('4.9★ from 2,314 caffeine-dependent adults', '400 19px Poppins, Arial, sans-serif', '#6b5433', 604);
-    c.fillStyle = '#2a1d12'; c.beginPath(); c.roundRect(150, 640, 300, 62, 31); c.fill();
-    center('Get the starter kit →', '700 22px Poppins, Arial, sans-serif', '#f5ead2', 680);
-  } else {
-    c.fillStyle = '#101b2d'; c.fillRect(0, 0, 600, 750);
-    c.fillStyle = '#1c2f4d'; c.beginPath(); c.ellipse(300, 330, 240, 130, -0.25, 0, 7); c.fill();
-    c.fillStyle = '#9ef01a';
-    c.beginPath(); c.moveTo(140, 360); c.quadraticCurveTo(300, 250, 470, 330);
-    c.quadraticCurveTo(460, 380, 420, 385); c.quadraticCurveTo(280, 330, 160, 400); c.closePath(); c.fill();
-    center('TRAILPRO', '800 26px Poppins, Arial, sans-serif', '#9ef01a', 70);
-    center('Your knees have opinions.', '800 40px Poppins, Arial, sans-serif', '#ffffff', 500);
-    center('Plated cushioning for downhill miles —', '400 20px Poppins, Arial, sans-serif', '#b9c6da', 548);
-    center('30-day dirt-back guarantee.', '400 20px Poppins, Arial, sans-serif', '#b9c6da', 576);
-    c.fillStyle = '#fe7c2b'; c.beginPath(); c.roundRect(160, 630, 280, 62, 31); c.fill();
-    center('Run 30 days free →', '700 22px Poppins, Arial, sans-serif', '#ffffff', 670);
-  }
-  return cv.toDataURL('image/jpeg', .9);
-}
-
-function adAnalyzerHtml(px, rival) {
-  return '<div class="card">' +
-    '<div class="up-zone" id="' + px + 'Zone">' +
-      '<input type="file" id="' + px + 'File" accept="image/*">' +
-      '<img class="up-thumb" id="' + px + 'Thumb" alt="" style="display:none">' +
-      '<p style="font-size:14.5px;color:var(--cream);font-weight:600" id="' + px + 'ZoneTxt">' +
-        (rival ? '🕵️ Drop a competitor’s ad you’ve seen' : '📤 Upload your ad') + ' — tap to choose an image</p>' +
-      '<p style="font-size:11.5px;color:var(--muted);margin-top:4px">the image stays in your browser except for the one AI read; nothing is stored</p>' +
-    '</div>' +
-    '<textarea class="ad-text" id="' + px + 'Text" rows="2" placeholder="optional: paste the ad’s primary text"></textarea>' +
-    '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px">' +
-      '<button class="run-btn" id="' + px + 'Go" type="button" disabled>🧠 ' + (rival ? 'read their ad' : 'read this ad') + '</button>' +
-      (rival ? '' :
-        '<button class="run-btn ghost" id="' + px + 'Demo1" type="button">no ad handy? demo ad 1</button>' +
-        '<button class="run-btn ghost" id="' + px + 'Demo2" type="button">demo ad 2</button>') +
-    '</div>' +
-    '<p class="scan-status" id="' + px + 'Status"></p>' +
-  '</div>' +
-  '<div class="card" id="' + px + 'Out" style="display:none"></div>';
-}
-
-function wireAdAnalyzer(px, opts) {
-  opts = opts || {};
-  var rival = !!opts.rival;
-  var imgData = null, busyA = false;
-  var zone = $(px + 'Zone'), file = $(px + 'File'), thumb = $(px + 'Thumb'), go = $(px + 'Go');
-  function status(t) { var el = $(px + 'Status'); if (el) el.innerHTML = t; }
-  function setImage(dataUrl) {
-    var img = new Image();
-    img.onload = function () {
-      var scale = Math.min(1, 1500 / Math.max(img.width, img.height));
-      var cw = Math.round(img.width * scale), ch = Math.round(img.height * scale);
-      var cv = document.createElement('canvas'); cv.width = cw; cv.height = ch;
-      cv.getContext('2d').drawImage(img, 0, 0, cw, ch);
-      var out = cv.toDataURL('image/jpeg', .85);
-      imgData = out.split(',')[1];
-      thumb.src = out; thumb.style.display = 'block';
-      $(px + 'ZoneTxt').textContent = '✓ ad loaded — ready to read';
-      go.disabled = false;
-      status('');
-    };
-    img.onerror = function () { status('that file doesn’t look like an image — try a JPG or PNG.'); };
-    img.src = dataUrl;
-  }
-  function fromFile(f) {
-    if (!f || !/^image\//.test(f.type)) { status('that file doesn’t look like an image — try a JPG or PNG.'); return; }
-    var rd = new FileReader();
-    rd.onload = function () { setImage(rd.result); };
-    rd.readAsDataURL(f);
-  }
-  zone.addEventListener('click', function (e) { if (e.target !== file) file.click(); });
-  file.addEventListener('change', function () { fromFile(file.files[0]); });
-  zone.addEventListener('dragover', function (e) { e.preventDefault(); zone.classList.add('drag'); });
-  zone.addEventListener('dragleave', function () { zone.classList.remove('drag'); });
-  zone.addEventListener('drop', function (e) {
-    e.preventDefault(); zone.classList.remove('drag');
-    if (e.dataTransfer.files && e.dataTransfer.files[0]) fromFile(e.dataTransfer.files[0]);
-  });
-  if (!rival) {
-    $(px + 'Demo1').addEventListener('click', function () { setImage(demoAdDataUrl(1)); });
-    $(px + 'Demo2').addEventListener('click', function () { setImage(demoAdDataUrl(2)); });
-  }
-  function renderRead(data) {
-    var out = $(px + 'Out');
-    out.style.display = 'block';
-    var angleList = rival ? (data.counters || []) : (data.angles || []);
-    out.innerHTML =
-      '<div class="niche-hero"><p class="nk">' + (rival ? 'the audience their ad is calling' : 'the audience your ad is calling') + '</p>' +
-      '<h3>' + escHtml(data.niche || '—') + '</h3></div>' +
-      '<div class="sig-chips">' + (data.signals || []).slice(0, 6).map(function (s) {
-        return '<span class="sig-chip">' + escHtml(s) + '</span>';
-      }).join('') + '</div>' +
-      '<h3 class="ar-h">How delivery would likely treat it</h3>' +
-      '<p style="font-size:13.5px;line-height:1.7;color:var(--muted)">' + escHtml(data.deliveryRead || '') + '</p>' +
-      '<h3 class="ar-h">' + (rival ? 'Counter-angles you could run against it' : '8 genuinely different angles') + '</h3>' +
-      '<div class="angle-grid">' + angleList.slice(0, 8).map(function (a) {
-        return '<div class="angle-card' + (rival ? ' counter' : '') + '">' +
-          '<p class="ap">' + escHtml(a.persona || '') + '</p>' +
-          '<p class="af">' + escHtml(a.frame || '') + '</p>' +
-          '<p class="ah">' + escHtml(a.hook || '') + '</p></div>';
-      }).join('') + '</div>' +
-      '<p style="font-size:11px;color:var(--muted);margin-top:12px">AI inference from the creative alone — not platform data. No spend, reach, or audience numbers exist publicly.</p>';
-    out.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }
-  go.addEventListener('click', function () {
-    if (!imgData || busyA) return;
-    busyA = true;
-    go.disabled = true;
-    status('🧠 ' + (depth === 'kid' ? 'the machine is reading your ad…' : 'reading the creative…'));
-    var primary = ($(px + 'Text').value || '').trim();
-    var sys = 'You are the creative reader inside “The Machine”, a teaching portal about Meta’s ad delivery system (retrieval/Andromeda, ranking/GEM, estimated action rates, the total-value auction, quality penalties, creative-as-targeting, fatigue, similarity collapse). ' +
-      (rival ? 'The user shows you a COMPETITOR’S ad they have seen; read it on their behalf. ' : 'The user shows you one of THEIR OWN ads. ') +
-      'Reply with STRICT JSON only — no prose, no code fences: ' +
-      '{"niche": one sentence — who this ad is REALLY geared toward, specific and concrete, written like the machine found them, ' +
-      '"signals": [4-6 short strings — the creative elements driving that read], ' +
-      '"deliveryRead": 3-5 sentences — how delivery would likely treat this ad, in the portal’s own mechanics: estimated-action-rate language, fatigue risk, similarity risk' +
-      (rival
-        ? ', "counters": [5 objects {"persona": a distinct buyer persona, "frame": the emotional frame, "hook": one-line hook} — counter-angles the user could run against this competitor]'
-        : ', "angles": [8 objects {"persona": a distinct buyer persona, "frame": the emotional frame, "hook": one-line hook} — genuinely different buyer motivations, never cosmetic variants of one idea]') +
-      '}. ' +
-      'Write at this register: ' + REGISTER_DESC[depth] + '. ' +
-      'Rules: infer only from the image and any provided text; never invent spend, reach, or audience numbers — none are public; NEVER mention pixels, tags, tracking, or analytics.';
-    streamClaude({
-      model: 'claude-sonnet-4-5', max_tokens: 3000, stream: false, system: sys,
-      messages: [{ role: 'user', content: [
-        { type: 'image', source: { type: 'base64', media_type: 'image/jpeg', data: imgData } },
-        { type: 'text', text: primary ? 'PRIMARY TEXT of the ad:\n' + primary : 'No primary text provided — read the image alone.' },
-      ] }],
-    }, function () { }).then(function (full) {
-      var data = JSON.parse(full.slice(full.indexOf('{'), full.lastIndexOf('}') + 1));
-      renderRead(data);
-      status('✅ ' + (depth === 'kid' ? 'read complete!' : 'read complete.'));
-      if (opts.storeKey) {
-        try { sessionStorage.setItem(opts.storeKey, JSON.stringify(data)); } catch (e) { }
-      }
-      if (opts.onDone) opts.onDone(data);
-    }).catch(function (err) {
-      if (err && err.code === 429) status(depthMsg(MSG_BUSY));
-      else if (err && err.code === 503) status(depthMsg(MSG_NAP));
-      else if (err && err.code === 413) status('📦 that image is too heavy for the wire — try a smaller crop.');
-      else if (err instanceof SyntaxError) status('🤖 the read came back garbled — run it once more.');
-      else status(depthMsg(MSG_LOCAL));
-    }).then(function () { busyA = false; go.disabled = false; });
-  });
-}
-
-function viewYourCreative() {
-  return '<div class="view-pad">' +
-    '<p class="room-kicker">Step 3 · Your Creative</p>' +
-    '<h1 class="room-title">🎨 Your creative, read by the machine</h1>' +
-    '<p class="room-tag" style="margin-bottom:20px">' + d3('creative.tag') + '</p>' +
-    '<div class="card"><div style="font-size:14.5px;line-height:1.7;color:var(--muted)">' + d3('yc.intro') + '</div></div>' +
-    adAnalyzerHtml('yc', false) +
-    '<a class="next-room" href="#/market"><span class="nr-k">step 4 · Your Market</span>' +
-      '<span class="nr-t">Now let’s see what everyone else in your category is running →</span></a>' +
-    '</div>';
-}
-VIEWS.creative = viewYourCreative;
-INITS.creative = function () {
-  wireAdAnalyzer('yc', { storeKey: 'gd-ad-analysis' });
-  return null;
-};
-
-/* ============================================================
-   YOUR MARKET — #/market · built honest.
-   (a) likely competitors — AI inference, editable, Ad Library links
-   (b) angle territory — dominant + whitespace, ○-labeled
-   (c) read a rival — the step-3 analyzer in rival mode
-   ============================================================ */
-function adLibLink(name) {
-  return 'https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=ALL&q=' + encodeURIComponent(name);
-}
-function viewMarket() {
-  var ctxName = BRAND ? BRAND.name : 'The Growth Den';
-  return '<div class="view-pad">' +
-    '<p class="room-kicker">Step 4 · Your Market</p>' +
-    '<h1 class="room-title">🌐 ' + escHtml(ctxName) + '’s market, mapped honestly</h1>' +
-    '<p class="room-tag" style="margin-bottom:20px">' + d3('market.tag') + '</p>' +
-    '<div class="card"><div style="font-size:14.5px;line-height:1.7;color:var(--muted)">' + d3('mk.intro') + '</div>' +
-      (BRAND ? '' : '<p style="font-size:12.5px;margin-top:8px;color:var(--muted)">You’re seeing the demo market (ours). <a href="#/you">Make it about your brand →</a></p>') +
-      '<p class="scan-status" id="mkStatus"></p></div>' +
-
-    '<div class="card"><h2>🥊 Likely competitors</h2>' +
-      '<p style="font-size:12.5px">' + claim('Competitor identification is AI inference from the category — edit the list freely; the links are the ground truth.', 'folklore', 'Model inference; verify in Meta’s Ad Library', null) + '</p>' +
-      '<div id="mkComp"><p style="font-size:13px;color:var(--muted)">thinking about the neighborhood…</p></div>' +
-      '<div class="scan-row" style="margin-top:12px">' +
-        '<input id="mkAddName" type="text" placeholder="add your own competitor by name" autocomplete="off">' +
-        '<button class="run-btn ghost" id="mkAdd" type="button">+ add</button>' +
-      '</div></div>' +
-
-    '<div class="card folk-card"><h2>🗺️ Angle territory</h2>' +
-      '<p style="font-size:13px;color:var(--muted)">The angle patterns this category leans on, and the territories sitting empty — inferred, not measured, which is why this whole panel wears the dashed border.</p>' +
-      '<div id="mkTerr"><p style="font-size:13px;color:var(--muted)">mapping the territory…</p></div></div>' +
-
-    '<div class="card" style="background:transparent;border:none;box-shadow:none;padding:0;margin-bottom:0"><h2 style="padding:0 4px">🕵️ Read a rival</h2>' +
-      '<p style="font-size:13px;color:var(--muted);padding:0 4px 10px">Seen a competitor’s ad that worries you? Drop it here — same reader as your own ad, plus the counter-angles.</p></div>' +
-    adAnalyzerHtml('rv', true) +
-
-    '<div class="honesty-panel">' + d3('s.honesty') +
-      ' <a href="https://www.facebook.com/ads/library/" target="_blank" rel="noopener noreferrer">→ the Ad Library</a></div>' +
-
-    '<a class="next-room" href="#/debrief"><span class="nr-k">the finale · The Debrief</span>' +
-      '<span class="nr-t">Let’s put it all together →</span></a>' +
-    '</div>';
-}
-INITS.market = function () {
-  function status(t) { var el = $('mkStatus'); if (el) el.innerHTML = t; }
-  function compRow(name, why, yours) {
-    return '<div class="comp-row"><span class="cn">' + escHtml(name) +
-      (yours ? '<span class="cy">yours</span>' : '') + '</span>' +
-      '<a href="' + adLibLink(name) + '" target="_blank" rel="noopener noreferrer">see what they’re actually running, in Meta’s own transparency tool →</a>' +
-      (why ? '<span class="cw">' + escHtml(why) + '</span>' : '') + '</div>';
-  }
-  function renderMarket(data) {
-    var comp = $('mkComp'), terr = $('mkTerr');
-    if (comp) comp.innerHTML = (data.competitors || []).slice(0, 6).map(function (c) {
-      return compRow(c.name, c.why, false);
-    }).join('') || '<p style="font-size:13px;color:var(--muted)">no inference available — add names below.</p>';
-    if (terr) terr.innerHTML = '<div class="terr-grid">' +
-      (data.dominantAngles || []).slice(0, 8).map(function (a) {
-        return '<div class="terr-card"><p class="tn">' + escHtml(a.name) + '</p><p class="td">' + escHtml(a.desc || '') + '</p></div>';
-      }).join('') +
-      (data.whitespace || []).slice(0, 3).map(function (a) {
-        return '<div class="terr-card ws"><p class="tn">' + escHtml(a.name) + '</p><p class="td">' + escHtml(a.desc || '') + '</p></div>';
-      }).join('') + '</div>';
-  }
-  function loadMarket() {
-    var dom = BRAND ? BRAND.domain : 'thegrowthden.com';
-    var cached = null;
-    try { cached = JSON.parse(sessionStorage.getItem('gd-market-' + dom)); } catch (e) { }
-    if (cached) { renderMarket(cached); status(''); return; }
-    status('🧠 ' + (depth === 'kid' ? 'the machine is sizing up the neighborhood…' : 'inferring the competitive set…'));
-    var ctx = BRAND && BRAND.resolved
-      ? { name: BRAND.name, domain: BRAND.domain, category: BRAND.category, offer: BRAND.offer, oneLiner: BRAND.oneLiner }
-      : BRAND
-        ? { name: BRAND.name, domain: BRAND.domain }
-        : { name: 'The Growth Den', domain: 'thegrowthden.com', category: 'growth marketing agency', offer: 'paid-social growth systems for DTC brands' };
-    var sys = 'You are the market mapper inside “The Machine”, a teaching portal about Meta’s ad delivery system. ' +
-      'Given a brand’s public context, infer its competitive landscape. Reply with STRICT JSON only — no prose, no code fences: ' +
-      '{"competitors": [4-6 objects {"name": a real, likely direct competitor brand (well-known where possible), "why": one short clause on why they compete}], ' +
-      '"dominantAngles": [6-8 objects {"name": 2-5 word angle territory, "desc": one line on how the category runs it}], ' +
-      '"whitespace": [2-3 objects {"name": 2-5 word underused angle territory, "desc": one line on why it is open}]}. ' +
-      'Write at this register: ' + REGISTER_DESC[depth] + '. ' +
-      'Rules: competitor identification is best-effort inference — prefer genuinely plausible direct competitors; never invent spend, reach, or audience numbers; never mention pixels, tags, tracking, or analytics.';
-    streamClaude({
-      model: 'claude-sonnet-4-5', max_tokens: 2000, stream: false, system: sys,
-      messages: [{ role: 'user', content: 'BRAND CONTEXT:\n' + JSON.stringify(ctx, null, 1) }],
-    }, function () { }).then(function (full) {
-      var data = JSON.parse(full.slice(full.indexOf('{'), full.lastIndexOf('}') + 1));
-      renderMarket(data);
-      try { sessionStorage.setItem('gd-market-' + dom, JSON.stringify(data)); } catch (e) { }
-      try {
-        sessionStorage.setItem('gd-market', JSON.stringify({
-          domain: dom,
-          competitors: (data.competitors || []).map(function (c) { return c.name; }),
-          whitespace: data.whitespace || [],
-        }));
-      } catch (e) { }
-      status('✅ mapped. Every name links to their live ads — that part isn’t inference.');
-    }).catch(function (err) {
-      if (err && err.code === 429) status(depthMsg(MSG_BUSY));
-      else if (err && err.code === 503) status(depthMsg(MSG_NAP));
-      else if (err instanceof SyntaxError) status('🤖 the map came back garbled — reload to retry.');
-      else status(depthMsg(MSG_LOCAL));
-      var comp = $('mkComp');
-      if (comp) comp.innerHTML = '<p style="font-size:13px;color:var(--muted)">no inference available right now — add competitor names below and the Ad Library links still work.</p>';
-      var terr = $('mkTerr');
-      if (terr) terr.innerHTML = '<p style="font-size:13px;color:var(--muted)">territory map unavailable in this preview.</p>';
-    });
-  }
-  $('mkAdd').addEventListener('click', function () {
-    var n = $('mkAddName').value.trim();
-    if (!n) return;
-    $('mkAddName').value = '';
-    var comp = $('mkComp');
-    var first = comp.firstElementChild;
-    var d = document.createElement('div');
-    d.innerHTML = compRow(n, '', true);
-    comp.insertBefore(d.firstElementChild, first);
-  });
-  $('mkAddName').addEventListener('keydown', function (e) { if (e.key === 'Enter') $('mkAdd').click(); });
-  wireAdAnalyzer('rv', { rival: true, storeKey: 'gd-rival-analysis' });
-  loadMarket();
-  return null;
-};
-VIEWS.market = viewMarket;
-
-/* ============================================================
-   THE DEBRIEF — #/debrief · the journey, compiled onto one card.
-   Sections come from this session's storage and are gracefully
-   absent when a step was skipped.
-   ============================================================ */
-var LEVEL_LABEL = { kid: 'Explain like I’m 8', cmo: 'Professional', pro: 'Expert' };
-function firstScanSection(md) {
-  var lines = md.split('\n'), out = [], started = false;
-  for (var i = 0; i < lines.length; i++) {
-    var ln = lines[i].trim();
-    if (/^#{1,3}\s+/.test(ln)) { if (started) break; started = true; continue; }
-    if (started && ln) out.push(ln.replace(/\*\*/g, ''));
-  }
-  var t = out.join(' ');
-  return t.length > 420 ? t.slice(0, 417).replace(/\s+\S*$/, '') + '…' : t;
-}
-function debriefData() {
-  var d = { brand: BRAND || null, scan: null, ad: null, market: null };
-  try {
-    if (BRAND) d.scan = getScanCache(BRAND.domain);
-    d.ad = JSON.parse(sessionStorage.getItem('gd-ad-analysis') || 'null');
-    var mk = JSON.parse(sessionStorage.getItem('gd-market') || 'null');
-    if (mk && (!BRAND || mk.domain === BRAND.domain)) d.market = mk;
-  } catch (e) { }
-  return d;
-}
-function viewDebrief() {
-  var d = debriefData();
-  var title = d.brand ? d.brand.name : 'Your walk through the Machine';
-  var subtitle = (d.brand ? d.brand.domain + ' · ' : '') +
-    'debrief · ' + new Date().toISOString().slice(0, 10) + ' · level: ' + LEVEL_LABEL[depth];
-  var h = '<div class="view-pad">' +
-    '<p class="room-kicker">The finale · The Debrief</p>' +
-    '<h1 class="room-title">🏁 The Debrief</h1>' +
-    '<p class="room-tag" style="margin-bottom:20px">' + d3('debrief.tag') + '</p>' +
-    '<div class="card" id="dbCard" style="padding:0;overflow:hidden">' +
-      '<div class="rep-head"><canvas id="dbCv"></canvas><div class="rep-head-txt">' +
-        '<p class="rk">The debrief</p>' +
-        '<h2>' + escHtml(title) + '</h2>' +
-        '<p class="rd">' + escHtml(subtitle) + '</p>' +
-      '</div></div>' +
-      '<div class="rep-body">';
-  if (d.scan && d.scan.md) {
-    h += '<h3 class="ar-h">How Meta sees ' + escHtml(d.scan.name) + '</h3>' +
-      '<p style="font-size:13.5px;line-height:1.7;color:var(--muted)">' + escHtml(firstScanSection(d.scan.md)) + '</p>' +
-      '<p style="font-size:11.5px;color:var(--muted)"><a href="#/you">the full read lives in step 1 →</a></p>';
-  }
-  h += '<h3 class="ar-h">What the machine taught you</h3>' +
-    '<div style="font-size:13.5px;line-height:1.7;color:var(--muted)">' + d3('db.takeaways') + '</div>';
-  if (d.ad && d.ad.niche) {
-    h += '<h3 class="ar-h">Your ad’s real audience</h3>' +
-      '<p style="font-size:14px;font-weight:600;color:var(--cream);line-height:1.55">' + escHtml(d.ad.niche) + '</p>';
-    var tops = (d.ad.angles || []).slice(0, 3);
-    if (tops.length) {
-      h += '<p style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sky);margin:10px 0 6px">three angles to try next</p>' +
-        '<div class="angle-grid">' + tops.map(function (a) {
-          return '<div class="angle-card"><p class="ap">' + escHtml(a.persona || '') + '</p>' +
-            '<p class="af">' + escHtml(a.frame || '') + '</p><p class="ah">' + escHtml(a.hook || '') + '</p></div>';
-        }).join('') + '</div>';
-    }
-  }
-  if (d.market && d.market.whitespace && d.market.whitespace.length) {
-    h += '<h3 class="ar-h">Whitespace in your market</h3>' +
-      '<div class="terr-grid">' + d.market.whitespace.slice(0, 3).map(function (w) {
-        return '<div class="terr-card ws"><p class="tn">' + escHtml(w.name) + '</p><p class="td">' + escHtml(w.desc || '') + '</p></div>';
-      }).join('') + '</div>';
-  }
-  var skipped = [];
-  if (!d.scan) skipped.push('<a href="#/you">read your brand (step 1) →</a>');
-  if (!d.ad) skipped.push('<a href="#/creative">read one of your ads (step 3) →</a>');
-  if (!d.market) skipped.push('<a href="#/market">map your market (step 4) →</a>');
-  if (skipped.length) {
-    h += '<p style="font-size:12px;color:var(--muted);margin-top:16px">This card grows as you go: ' + skipped.join(' · ') + '</p>';
-  }
-  h += '<div class="rep-actions">' +
-      '<button class="run-btn" id="dbDl" type="button">⬇ Download the debrief</button>' +
-      '<button class="run-btn ghost" id="dbCp" type="button">🔗 Copy your link</button>' +
-    '</div>' +
-    '</div></div>';
-  /* the page's ONE hard CTA — clearly separated from the card */
-  h += '<div class="talk-cta" style="border-top:none;margin-top:26px">' +
-    '<p>Want this level of clarity on your account every week?</p>' +
-    '<a href="https://calendar.app.google/dy8683mNDXyWAkPo9" target="_blank" rel="noopener noreferrer">Talk to Logan →</a></div>';
-  h += '</div>';
-  return h;
-}
-function buildDebriefPng() {
-  var d = debriefData();
-  var title = d.brand ? d.brand.name : 'The Machine — debrief';
-  var W = 1080, pad = 64, maxW = W - pad * 2, lh = 27;
-  var bodyFont = '400 16.5px Poppins, Arial, sans-serif';
-  var headFont = '700 22px Poppins, Arial, sans-serif';
-  var meas = document.createElement('canvas').getContext('2d');
-  function wrap(t) {
-    meas.font = bodyFont;
-    var words = String(t).split(/\s+/), lines = [], line = '';
-    words.forEach(function (w) {
-      var probe = line ? line + ' ' + w : w;
-      if (meas.measureText(probe).width > maxW && line) { lines.push(line); line = w; }
-      else line = probe;
-    });
-    if (line) lines.push(line);
-    return lines;
-  }
-  var secs = [];
-  if (d.scan && d.scan.md) secs.push({ h: 'How Meta sees ' + d.scan.name, items: [firstScanSection(d.scan.md)] });
-  var take = CONTENT['db.takeaways'][depth].replace(/<li>/g, '• ').replace(/<[^>]+>/g, '\n');
-  secs.push({ h: 'What the machine taught you', items: take.split('\n').map(function (s) { return s.trim(); }).filter(Boolean) });
-  if (d.ad && d.ad.niche) {
-    var items = ['Your ad is really calling: ' + d.ad.niche];
-    (d.ad.angles || []).slice(0, 3).forEach(function (a, i) {
-      items.push('Angle ' + (i + 1) + ' — ' + (a.persona || '') + ': ' + (a.hook || ''));
-    });
-    secs.push({ h: 'Your ad’s real audience', items: items });
-  }
-  if (d.market && d.market.whitespace && d.market.whitespace.length) {
-    secs.push({ h: 'Whitespace in your market', items: d.market.whitespace.slice(0, 3).map(function (w) {
-      return w.name + ' — ' + (w.desc || '');
-    }) });
-  }
-  var blocks = secs.map(function (s) {
-    var lines = [];
-    s.items.forEach(function (it) { wrap(it).forEach(function (l) { lines.push(l); }); lines.push(''); });
-    return { h: s.h, lines: lines };
-  });
-  var HEAD = 240, yEnd = HEAD + 52;
-  blocks.forEach(function (b) {
-    yEnd += 12 + 32;
-    b.lines.forEach(function (l) { yEnd += l ? lh : 12; });
-    yEnd += 8;
-  });
-  var H = yEnd + 12;
-  var cv = document.createElement('canvas'); cv.width = W; cv.height = H;
-  var c = cv.getContext('2d');
-  c.fillStyle = '#1a1025'; c.fillRect(0, 0, W, H);
-  var g1 = c.createRadialGradient(W * 0.8, 0, 0, W * 0.8, 0, W * 0.7);
-  g1.addColorStop(0, 'rgba(37,100,147,.4)'); g1.addColorStop(1, 'rgba(37,100,147,0)');
-  c.fillStyle = g1; c.fillRect(0, 0, W, H);
-  c.fillStyle = 'rgba(0,0,0,.18)'; c.fillRect(0, 0, W, HEAD);
-  drawCollapse(c, W, HEAD, 1);
-  c.fillStyle = '#7fb4d8'; c.font = '700 13px Poppins, Arial, sans-serif';
-  c.fillText('T H E   D E B R I E F', pad, 92);
-  c.fillStyle = '#ffffff'; c.font = '800 44px Poppins, Arial, sans-serif';
-  c.fillText(String(title).slice(0, 42), pad, 142);
-  c.fillStyle = 'rgba(252,243,214,.62)'; c.font = '400 15px Poppins, Arial, sans-serif';
-  c.fillText((d.brand ? d.brand.domain + ' · ' : '') + new Date().toISOString().slice(0, 10) + ' · ' + LEVEL_LABEL[depth], pad, 172);
-  c.strokeStyle = 'rgba(252,243,214,.16)';
-  c.beginPath(); c.moveTo(0, HEAD + .5); c.lineTo(W, HEAD + .5); c.stroke();
-  var y = HEAD + 52;
-  blocks.forEach(function (b) {
-    c.fillStyle = '#ffc545'; c.font = headFont;
-    c.fillText(b.h, pad, y); y += 12;
-    c.strokeStyle = 'rgba(252,243,214,.16)';
-    c.setLineDash([4, 5]); c.beginPath(); c.moveTo(pad, y); c.lineTo(W - pad, y); c.stroke(); c.setLineDash([]);
-    y += 32;
-    c.fillStyle = 'rgba(252,243,214,.8)'; c.font = bodyFont;
-    b.lines.forEach(function (l) { if (l) { c.fillText(l, pad, y); y += lh; } else y += 12; });
-    y += 8;
-  });
-  return cv.toDataURL('image/png');
-}
-INITS.debrief = function () {
-  var cv = $('dbCv');
-  if (cv) {
-    var w = cv.offsetWidth || 600, hh = cv.offsetHeight || 150;
-    cv.width = w; cv.height = hh;
-    drawCollapse(cv.getContext('2d'), w, hh, 0.55);
-  }
-  $('dbDl').addEventListener('click', function () {
-    var a = document.createElement('a');
-    a.href = buildDebriefPng();
-    a.download = 'the-machine-debrief' + (BRAND ? '-' + BRAND.domain.replace(/[^a-z0-9.-]/g, '') : '') + '.png';
-    document.body.appendChild(a); a.click(); a.remove();
-  });
-  $('dbCp').addEventListener('click', function () {
-    var link = location.origin + location.pathname + (BRAND ? '?brand=' + encodeURIComponent(BRAND.domain) : '');
-    var done = function () { $('dbCp').textContent = '✓ copied — the link runs the journey for whoever opens it'; };
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(link).then(done, function () { window.prompt('copy this link:', link); });
-    } else window.prompt('copy this link:', link);
-  });
-  return null;
-};
-VIEWS.debrief = viewDebrief;
 
 /* ============================================================
    RECENCY & FATIGUE — #/recency
@@ -4625,256 +3485,128 @@ INITS.machine = function () {
 
 function render() {
   var cur = parseHash();
-  if (cur.params.d && DEPTHS.indexOf(cur.params.d) >= 0 && cur.params.d !== depth) {
-    setDepth(cur.params.d, true);
-  }
-  if (cur.params.brand && typeof setBrandDomain === 'function') setBrandDomain(cur.params.brand);
-  canonicalizeHash();
   var room = ROOMS.filter(function (r) { return r.slug === cur.slug; })[0];
+  if (!room) return;
+  document.body.classList.remove('entry-mode');
   CLAIMS.length = 0;
   popover.hidden = true;
   detail.hidden = true;
   if (roomCleanup) { try { roomCleanup(); } catch (e) { } roomCleanup = null; }
   var view = $('view');
-  var html = VIEWS[room.slug] ? VIEWS[room.slug]() : viewPlaceholder(room);
-  /* the quiet attribution strip lives on the teaching step only */
-  if (room.slug === 'machine') {
-    html += '<div class="cta-strip"><a href="/#method">Built by The Growth Den — see how I work with brands →</a></div>';
-  }
-  view.innerHTML = html;
+  view.innerHTML = VIEWS[room.slug] ? VIEWS[room.slug]() : viewPlaceholder(room);
   view.style.animation = 'none';
   void view.offsetWidth;
   view.style.animation = '';
-  markVisited(room.slug);
-  renderTabs(room.slug);
   if (INITS[room.slug]) roomCleanup = INITS[room.slug]() || null;
-  document.title = (room.slug === 'machine' ? 'The Machine' : room.name + ' · The Machine') +
-    ' — The Growth Den Lab';
+  document.title = room.name + ' · The Machine — The Growth Den Lab';
   window.scrollTo(0, 0);
 }
 
 /* ============================================================
-   ONBOARDING — one screen, under ten seconds. Root loads with no
-   hash show it; ?brand= / ?d= params and deep links skip it.
+   THE PRODUCT — one screen: "The Machine reads your brand".
+   Root shows only the input; everything else is on-demand.
    ============================================================ */
-var ENTRY = { active: false, raf: 0, dots: [], W: 0, H: 0, dpr: 1, t: 0 };
-var obDepth = depth;   // level picked on the card (defaults to the stored level)
+var AD = { data: null, thumb: null };   // downscaled ad image (base64 jpeg body + display url)
 
-function viewEntry() {
-  return '<div class="entry" id="entryRoot">' +
-    '<canvas id="entryCanvas"></canvas>' +
-    '<div class="entry-overlay">' +
-      '<div class="entry-title">' +
-        '<p class="ek">The Growth Den Lab</p>' +
-        '<h1>The Machine</h1>' +
-        '<p class="es">See how Meta sees your brand — a guided walk through the machine that spends your budget.</p>' +
+function viewInput() {
+  return '<div class="prod" id="prodRoot"><div class="prod-inner">' +
+    '<p class="ek">The Growth Den Lab</p>' +
+    '<h1>The Machine</h1>' +
+    '<p class="prod-promise">Paste your site. The machine tells you what Meta sees — and what to run instead.</p>' +
+    '<div class="prod-row">' +
+      '<input id="prodUrl" type="text" inputmode="url" placeholder="yourbrand.com" autocomplete="off" aria-label="Your site URL">' +
+      '<div class="prod-drop" id="prodDrop" role="button" tabindex="0" aria-label="Optional: add an ad image">' +
+        '<input type="file" id="prodFile" accept="image/*">' +
+        '<img id="prodThumb" alt="" style="display:none">' +
+        '<span id="prodDropTxt">have an ad?<br>drop it in</span>' +
       '</div>' +
-      '<div class="entry-card">' +
-        '<p class="ob-q">How deep should we go?</p>' +
-        '<div class="ob-levels">' +
-          '<button class="ob-lvl" data-depth="kid" type="button">Explain like I’m 8<span class="ob-sub">the same machine, taught to anyone</span></button>' +
-          '<button class="ob-lvl" data-depth="cmo" type="button">Professional</button>' +
-          '<button class="ob-lvl" data-depth="pro" type="button">Expert</button>' +
-        '</div>' +
-        '<label for="entryUrl">Your site — the whole journey becomes about your brand</label>' +
-        '<div class="entry-row">' +
-          '<input id="entryUrl" type="text" inputmode="url" placeholder="yourbrand.com" autocomplete="off">' +
-        '</div>' +
-        '<button class="run-btn ob-start" id="entryGo" type="button">Start the journey →</button>' +
-        '<div class="entry-links">' +
-          '<a href="#" id="entrySkip">just show me around</a>' +
-        '</div>' +
-      '</div>' +
-    '</div></div>';
+    '</div>' +
+    '<p class="prod-drop-sub" id="prodDropSub">have an ad? drop it in — you’ll get a sharper verdict</p>' +
+    '<button class="run-btn prod-go" id="prodGo" type="button">Read my brand</button>' +
+    '<p class="scan-status" id="prodStatus" style="text-align:center"></p>' +
+    '<a class="prod-demo" href="#" id="prodDemo">no site handy? see a demo read</a>' +
+  '</div></div>';
 }
 
-/* a subtle ambient dot-field behind the card — no collapse, no countdown */
-function initEntryScene() {
-  var cv = $('entryCanvas'), ctx = cv.getContext('2d');
-  function resize() {
-    ENTRY.dpr = Math.min(2, window.devicePixelRatio || 1);
-    ENTRY.W = window.innerWidth; ENTRY.H = window.innerHeight;
-    cv.width = Math.round(ENTRY.W * ENTRY.dpr);
-    cv.height = Math.round(ENTRY.H * ENTRY.dpr);
-    if (!J.galaxy) J.galaxy = makeGalaxy(ENTRY.W, ENTRY.H);
-    ENTRY.dots = [];
-    var n = clamp(Math.round(ENTRY.W * ENTRY.H / 3200), 120, 320);
-    for (var i = 0; i < n; i++) {
-      ENTRY.dots.push({
-        x: Math.random(), y: Math.random(),
-        vx: (Math.random() - .5) * .0045, vy: (Math.random() - .5) * .0045,
-        r: .8 + Math.random() * 1.6, tw: Math.random() * 6.28, you: i === 42,
-      });
-    }
-  }
-  resize();
-  ENTRY.rs = resize;
-  window.addEventListener('resize', ENTRY.rs);
-  var last = performance.now();
-  function loop(now) {
-    if (!ENTRY.active) return;
-    var dt = Math.min(.05, (now - last) / 1000); last = now;
-    ENTRY.t += dt;
-    drawEntry(ctx, dt);
-    ENTRY.raf = requestAnimationFrame(loop);
-  }
-  ENTRY.raf = requestAnimationFrame(loop);
-}
-
-function drawEntry(ctx, dt) {
-  var w = ENTRY.W, h = ENTRY.H, t = ENTRY.t;
-  ctx.setTransform(ENTRY.dpr, 0, 0, ENTRY.dpr, 0, 0);
-  ctx.clearRect(0, 0, w, h);
-  if (J.galaxy) {
-    ctx.globalAlpha = .4;
-    ctx.drawImage(J.galaxy, 0, 0, w, h);
-    ctx.globalAlpha = 1;
-  }
-  ENTRY.dots.forEach(function (d) {
-    d.x += d.vx * dt; d.y += d.vy * dt;
-    if (d.x < 0 || d.x > 1) d.vx *= -1;
-    if (d.y < 0 || d.y > 1) d.vy *= -1;
-    if (d.you) {
-      ctx.save();
-      ctx.shadowColor = 'rgba(254,124,43,.9)'; ctx.shadowBlur = 14;
-      ctx.fillStyle = 'rgba(254,124,43,' + (.65 + Math.sin(t * 1.8) * .3) + ')';
-      ctx.beginPath(); ctx.arc(d.x * w, d.y * h, 3.4, 0, 6.29); ctx.fill();
-      ctx.restore();
-    } else {
-      var a = .18 + .3 * Math.abs(Math.sin(t * 1.1 + d.tw));
-      ctx.fillStyle = 'rgba(232,222,240,' + a + ')';
-      ctx.beginPath(); ctx.arc(d.x * w, d.y * h, d.r, 0, 6.29); ctx.fill();
-    }
-  });
-}
-
-function showEntry() {
-  ENTRY.active = true;
-  document.body.classList.add('entry-mode');
-  $('view').innerHTML = viewEntry();
-  initEntryScene();
-  obDepth = depth;
-  var syncLvls = function () {
-    document.querySelectorAll('.ob-lvl').forEach(function (b) {
-      b.classList.toggle('on', b.dataset.depth === obDepth);
-    });
+function loadAdImage(dataUrl, cb) {
+  var img = new Image();
+  img.onload = function () {
+    var scale = Math.min(1, 1500 / Math.max(img.width, img.height));
+    var cw = Math.round(img.width * scale), ch = Math.round(img.height * scale);
+    var cv = document.createElement('canvas'); cv.width = cw; cv.height = ch;
+    cv.getContext('2d').drawImage(img, 0, 0, cw, ch);
+    cb(cv.toDataURL('image/jpeg', .85));
   };
-  syncLvls();
-  document.querySelectorAll('.ob-lvl').forEach(function (b) {
-    b.addEventListener('click', function () { obDepth = b.dataset.depth; syncLvls(); });
-  });
-  $('entryGo').addEventListener('click', function () { onboardDone($('entryUrl').value.trim()); });
-  $('entryUrl').addEventListener('keydown', function (e) { if (e.key === 'Enter') onboardDone($('entryUrl').value.trim()); });
-  $('entrySkip').addEventListener('click', function (e) { e.preventDefault(); obDepth = 'cmo'; onboardDone(''); });
-  document.title = 'The Machine — see how Meta sees your brand · The Growth Den Lab';
-}
-function onboardDone(url) {
-  setDepth(obDepth, true);
-  try { localStorage.setItem('gd-onboarded', '1'); } catch (e) { }
-  if (url && typeof setBrandDomain === 'function') setBrandDomain(url);
-  location.hash = '#/you?d=' + depth;
-}
-function exitEntry() {
-  if (!ENTRY.active) return;
-  ENTRY.active = false;
-  cancelAnimationFrame(ENTRY.raf);
-  if (ENTRY.rs) window.removeEventListener('resize', ENTRY.rs);
-  document.body.classList.remove('entry-mode');
+  img.onerror = function () { cb(null); };
+  img.src = dataUrl;
 }
 
-/* return visits: pick up at the last visited step, with a way back out */
-function showContinueBar() {
-  if ($('contBar')) return;
-  var bar = document.createElement('div');
-  bar.id = 'contBar';
-  bar.innerHTML = '<span>Continuing where you left off</span>' +
-    '<button type="button" id="contReset">start over</button>' +
-    '<button type="button" id="contHide" aria-label="Dismiss" style="text-decoration:none;color:var(--muted)">✕</button>';
-  document.body.appendChild(bar);
-  $('contHide').addEventListener('click', function () { bar.remove(); });
-  $('contReset').addEventListener('click', resetJourney);
-}
-function resetJourney() {
-  try {
-    localStorage.removeItem('gd-onboarded');
-    sessionStorage.removeItem('gd-journey-visited');
-    sessionStorage.removeItem('gd-last-step');
-    sessionStorage.removeItem('gd-brand-active');
-  } catch (e) { }
-  BRAND = null; brandAutoScanned = null;
-  applyBrandUI();
-  var bar = $('contBar'); if (bar) bar.remove();
+function showProduct() {
   if (roomCleanup) { try { roomCleanup(); } catch (e) { } roomCleanup = null; }
-  history.replaceState(null, '', location.pathname);
-  showEntry();
+  document.body.classList.add('entry-mode');
+  $('view').innerHTML = viewInput();
+  wireInput();
+  document.title = 'The Machine — what Meta sees when it reads your brand · The Growth Den Lab';
+  window.scrollTo(0, 0);
 }
 
-/* ---------------- wire up ---------------- */
-var modeBtn = $('modeBtn'), modeList = $('modeList');
-function toggleModeMenu(open) {
-  var o = (open === undefined) ? modeList.hidden : open;
-  modeList.hidden = !o;
-  modeBtn.setAttribute('aria-expanded', String(o));
-}
-modeBtn.addEventListener('click', function (e) { e.stopPropagation(); toggleModeMenu(); });
-document.addEventListener('click', function (e) {
-  if (!modeList.hidden && !modeList.contains(e.target) && e.target !== modeBtn) toggleModeMenu(false);
-});
-document.addEventListener('keydown', function (e) {
-  if (e.key === 'Escape' && !modeList.hidden) toggleModeMenu(false);
-});
-document.querySelectorAll('.mode-opt').forEach(function (b) {
-  b.addEventListener('click', function () {
-    setDepth(b.dataset.depth, false);
-    toggleModeMenu(false);
-    document.querySelectorAll('.bench-link code').forEach(function (c) {
-      c.textContent = '#/' + parseHash().slug + '?d=' + depth;
-    });
+function wireInput() {
+  var drop = $('prodDrop'), file = $('prodFile'), thumb = $('prodThumb');
+  function setFromFile(f) {
+    if (!f || !/^image\//.test(f.type)) { $('prodStatus').textContent = 'that file doesn’t look like an image — try a JPG or PNG.'; return; }
+    var rd = new FileReader();
+    rd.onload = function () {
+      loadAdImage(rd.result, function (out) {
+        if (!out) { $('prodStatus').textContent = 'couldn’t read that image — try another.'; return; }
+        AD.data = out.split(',')[1];
+        AD.thumb = out;
+        thumb.src = out; thumb.style.display = 'block';
+        $('prodDropTxt').style.display = 'none';
+        $('prodDropSub').textContent = '✓ ad loaded — the verdict will read it too';
+        $('prodStatus').textContent = '';
+      });
+    };
+    rd.readAsDataURL(f);
+  }
+  drop.addEventListener('click', function (e) { if (e.target !== file) file.click(); });
+  drop.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); file.click(); } });
+  file.addEventListener('change', function () { setFromFile(file.files[0]); });
+  drop.addEventListener('dragover', function (e) { e.preventDefault(); drop.classList.add('drag'); });
+  drop.addEventListener('dragleave', function () { drop.classList.remove('drag'); });
+  drop.addEventListener('drop', function (e) {
+    e.preventDefault(); drop.classList.remove('drag');
+    if (e.dataTransfer.files && e.dataTransfer.files[0]) setFromFile(e.dataTransfer.files[0]);
   });
-});
-window.addEventListener('hashchange', function () {
-  exitEntry();
-  render();
-});
-var rsTm;
-window.addEventListener('resize', function () {
-  clearTimeout(rsTm);
-  rsTm = setTimeout(function () {
-    Object.keys(J.scenes).forEach(function (k) { J.scenes[k].ready = false; });
-  }, 150);
-});
+  $('prodGo').addEventListener('click', function () { runRead($('prodUrl').value, {}); });
+  $('prodUrl').addEventListener('keydown', function (e) { if (e.key === 'Enter') $('prodGo').click(); });
+  $('prodDemo').addEventListener('click', function (e) { e.preventDefault(); runRead('thegrowthden.com', { demo: true }); });
+}
 
-setDepth(depth, true);
-/* restore brand + level; ?brand= and ?d= URL params work and skip onboarding */
-var qBrand = null, qD = null;
-try {
-  var qs = new URLSearchParams(location.search);
-  qBrand = qs.get('brand'); qD = qs.get('d');
-  if (qD && DEPTHS.indexOf(qD) >= 0) setDepth(qD, true);
-  var actBrand = sessionStorage.getItem('gd-brand-active');
-  if (qBrand) setBrandDomain(qBrand);
-  else if (actBrand) setBrandDomain(actBrand);
-  else applyBrandUI();
-} catch (e) { applyBrandUI(); }
-BOOTED = true;
-var hasHash = !(!location.hash || location.hash === '#' || location.hash === '#/');
-var onboarded = false, lastStep = null;
-try {
-  onboarded = !!localStorage.getItem('gd-onboarded');
-  lastStep = sessionStorage.getItem('gd-last-step');
-} catch (e) { }
-if (hasHash || qBrand || qD) {
-  /* deep links and share params bypass onboarding */
-  try { localStorage.setItem('gd-onboarded', '1'); } catch (e) { }
-  if (!hasHash) history.replaceState(null, '', '#/you?d=' + depth);
-  render();
-} else if (onboarded) {
-  var resume = STEP_ORDER.indexOf(lastStep) >= 0 ? lastStep : 'you';
-  history.replaceState(null, '', '#/' + resume + '?d=' + depth);
-  render();
-  if (resume !== 'you') showContinueBar();
-} else {
-  showEntry();
+function runRead(rawUrl, opts) {
+  var dom = normDomain(rawUrl);
+  if (!dom) { $('prodStatus').textContent = 'that doesn’t look like a domain — try yourbrand.com'; return; }
+  /* the loader and verdict engine land in the next steps of this build */
+  $('prodStatus').textContent = '🛠️ input wired for ' + dom + ' — the reader engine lands in the next commit.';
+}
+
+/* ---------------- boot ---------------- */
+function route() {
+  var cur = parseHash();
+  var raw = location.hash.replace(/^#\/?/, '').split('?')[0].replace(/\/+$/, '');
+  if (raw !== cur.slug) {
+    history.replaceState(null, '', cur.slug ? '#/' + cur.slug : location.pathname + location.search);
+  }
+  if (!cur.slug) showProduct();
+  else render();
+}
+window.addEventListener('hashchange', route);
+setDepth('cmo');
+var qBrand = null;
+try { qBrand = new URLSearchParams(location.search).get('brand'); } catch (e) { }
+route();
+if (qBrand && !parseHash().slug) {
+  var pf = $('prodUrl');
+  if (pf) pf.value = qBrand;
 }
 })();
 </script>
