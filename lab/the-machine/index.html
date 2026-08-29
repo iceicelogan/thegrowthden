@@ -745,6 +745,24 @@ h1.room-title {
 }
 .sig b { display: block; font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: var(--sky); }
 
+/* the report card — self-contained, og.png aesthetic */
+#scanReport { padding: 0; overflow: hidden; }
+.rep-head {
+  position: relative; min-height: 150px;
+  background:
+    radial-gradient(ellipse 90% 70% at 80% 0%, rgba(37,100,147,.4) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 45% at 4% 100%, rgba(229,52,11,.15) 0%, transparent 55%),
+    #140b1e;
+  border-bottom: 1px solid var(--line);
+}
+.rep-head canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+.rep-head-txt { position: relative; padding: 28px 22px 24px; }
+.rep-head-txt .rk { font-size: 10px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: var(--sky); margin-bottom: 4px; }
+.rep-head-txt h2 { font-size: 26px; line-height: 1.2; color: var(--white); margin: 0 0 5px; border: none; padding: 0; }
+.rep-head-txt .rd { font-size: 12px; color: var(--muted); }
+.rep-body { padding: 16px 22px 22px; }
+.rep-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 18px; }
+
 /* ---------- placeholder rooms ---------- */
 .bench { text-align: center; padding: 52px 24px 46px; border-style: dashed; border-width: 1.5px; }
 .flask { font-size: 54px; display: inline-block; animation: bubble 2.6s ease-in-out infinite; }
@@ -1036,9 +1054,9 @@ var CONTENT = {
     pro: 'Creative-side signal: hook taxonomy, diversity vs. account structure, the real cost of exploration.',
   },
   'scanner.tag': {
-    kid: 'Feed your ad to the scanner and see what the machine sees.',
-    cmo: 'Pre-flight your creative: quality flags, policy tripwires, a signal readout before you spend.',
-    pro: 'Static pre-flight heuristics: low-quality attributes, policy surface area, expected signal profile.',
+    kid: 'Feed any brand’s website to the scanner and see what the machine sees.',
+    cmo: 'How the Machine sees any brand: public homepage signals in, a delivery-eye report out.',
+    pro: 'Public-signal parse → grounded model read → ten distinct angle territories. Downloadable, shareable.',
   },
   'dispatch.tag': {
     kid: 'Lab news! What we built, what broke, what we learned.',
@@ -1488,9 +1506,9 @@ var CONTENT = {
 
   /* ============ brand scanner + chat ============ */
   's.intro': {
-    kid: '<p>Type in any brand’s website, and the scanner reads it the way the fair’s machines would: what the site is about, whether it wears the fair’s little tracking pin, and what kinds of signs it could make. Then our helper writes a report card. Try the demo button — it scans our own site!</p>',
-    cmo: '<p>Point the scanner at a brand’s homepage. It reads the public signals a site feeds delivery — title, description, detectable Meta pixel, offer language — links you to their live ads in Meta’s own transparency tool, and then writes “How the Machine Sees This Brand” at your current depth, ending with ten genuinely different angle opportunities.</p>',
-    pro: '<p>Client-side parse of the fetched homepage (title, meta, fbq detection, offer/category signals) → deep link into the Ad Library (we link, never scrape) → one model call producing the delivery-signal read and ten distinct angle territories. Inference from public signals, labeled as such.</p>',
+    kid: '<p>Type in any brand’s website and the scanner reads it the way the fair’s machines would: what the site says it is, what it sells, and what kinds of signs it could make. Then our helper writes a report card you can save and share. Try the demo button — it scans our own site!</p>',
+    cmo: '<p>Point the scanner at a brand’s homepage. It reads the public signals a site feeds delivery — title, description, offer language — links you to their live ads in Meta’s own transparency tool, and writes “How the Machine Sees This Brand” at your current teaching mode, ending with ten genuinely different angle opportunities. Download the report card, or copy a link that re-runs the scan for whoever opens it.</p>',
+    pro: '<p>Client-side parse of the fetched homepage (title, meta, offer/category signals) → deep link into the Ad Library (we link, never scrape) → one model call producing the delivery-signal read and ten distinct angle territories. Inference from public page copy only — nothing here detects or speculates about tracking or analytics.</p>',
   },
   's.honesty': {
     kid: '<b>The honest part:</b> nobody outside a company can see how much they spend on ads or how many people saw them. Anyone who shows you those numbers is guessing. What you CAN see: every ad they’re running right now, in Meta’s own public library.',
@@ -2557,7 +2575,7 @@ function streamClaude(payload, onDelta) {
    Set from the entry, the Scanner, or ?brand=<domain>. Cached in
    sessionStorage per domain. Failures degrade to {name: domain}.
    ============================================================ */
-var BRAND = null, brandAutoScanned = null;
+var BRAND = null, brandAutoScanned = null, SCAN_BUSY = false;
 function escHtml(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
 function normDomain(raw) {
   var d = String(raw || '').trim().toLowerCase()
@@ -2606,6 +2624,7 @@ function clearBrand() {
 function refreshForBrand() {
   applyBrandUI();
   var slug = parseHash().slug;
+  if (slug === 'scanner' && SCAN_BUSY) return;  // a scan is mid-flight — don't wipe its report
   if (slug === 'creative' || slug === 'scanner') render();  // chip labels & prefill live in DOM
   // machine + auction labels read BRAND live from their canvas loops
 }
@@ -2747,7 +2766,7 @@ function viewScanner() {
 INITS.scanner = function () {
   var busy = false;
   function status(t) { var el = $('scanStatus'); if (el) el.innerHTML = t; }
-  function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+  function esc(s) { return escHtml(s); }
   function mdLite(s) {
     var lines = esc(s).split('\n'), out = [], inList = false;
     lines.forEach(function (ln) {
@@ -2761,72 +2780,204 @@ INITS.scanner = function () {
     if (inList) out.push('</ol>');
     return out.join('').replace(/\*\*([^*]+)\*\*/g, '<b>$1</b>');
   }
-  function parseSite(html, url) {
-    var doc = new DOMParser().parseFromString(html, 'text/html');
-    var pick = function (sel, attr) { var el = doc.querySelector(sel); return el ? (attr ? el.getAttribute(attr) : el.textContent).trim() : ''; };
-    var pixel = /fbq\s*\(\s*['"]init['"]\s*,\s*['"](\d+)['"]/.exec(html);
-    var h1s = Array.from(doc.querySelectorAll('h1, h2')).slice(0, 4).map(function (h) { return h.textContent.replace(/\s+/g, ' ').trim(); }).filter(Boolean);
-    var siteName = pick('meta[property="og:site_name"]', 'content') || '';
-    var title = pick('title') || '';
-    var brand = siteName || title.split(/[|–—-]/)[0].trim() || url.replace(/^https?:\/\/(www\.)?/, '').split('/')[0];
-    return {
-      url: url, brand: brand, title: title,
-      description: pick('meta[name="description"]', 'content') || pick('meta[property="og:description"]', 'content'),
-      metaPixel: pixel ? { present: true, id: pixel[1] } : { present: false },
-      headlines: h1s,
-      ogType: pick('meta[property="og:type"]', 'content'),
-    };
+  function parseSections(md) {
+    var secs = [], cur = null;
+    md.split('\n').forEach(function (ln) {
+      ln = ln.trim();
+      if (/^#{1,3}\s+/.test(ln)) { cur = { h: ln.replace(/^#{1,3}\s+/, ''), lines: [] }; secs.push(cur); }
+      else if (ln) {
+        if (!cur) { cur = { h: '', lines: [] }; secs.push(cur); }
+        cur.lines.push(ln.replace(/\*\*/g, ''));
+      }
+    });
+    return secs;
+  }
+  /* the collapse motif — shared by the on-page header and the PNG export */
+  function drawCollapse(c, W, H, alpha) {
+    var seed = 7;
+    function rnd() { seed = (seed * 1664525 + 1013904223) % 4294967296; return seed / 4294967296; }
+    var FX = W * 0.84, FY = H * 0.42;
+    for (var i = 0; i < Math.floor(W * H / 2000); i++) {
+      var x = rnd() * W, y = rnd() * H;
+      var d = Math.hypot(x - FX, y - FY);
+      if (d < 34) continue;
+      var a = (0.05 + rnd() * 0.25) * (0.3 + 0.7 * Math.min(1, (W - x) / (W * 0.8))) * (alpha || 1);
+      c.fillStyle = 'rgba(252,243,214,' + a.toFixed(3) + ')';
+      c.beginPath(); c.arc(x, y, 0.8 + rnd() * 1.5, 0, 7); c.fill();
+    }
+    c.save();
+    c.shadowColor = 'rgba(254,124,43,.9)'; c.shadowBlur = 26;
+    c.fillStyle = '#fe7c2b';
+    c.beginPath(); c.arc(FX, FY, 6, 0, 7); c.fill();
+    c.restore();
+    c.strokeStyle = 'rgba(254,124,43,.45)'; c.lineWidth = 1.4;
+    c.beginPath(); c.arc(FX, FY, 13, 0, 7); c.stroke();
+  }
+  function headCanvas() {
+    var cv = $('repCv'); if (!cv) return;
+    var w = cv.offsetWidth || 600, h = cv.offsetHeight || 150;
+    cv.width = w; cv.height = h;
+    drawCollapse(cv.getContext('2d'), w, h, 0.55);
+  }
+  /* the whole report as one self-contained PNG, in the og.png aesthetic */
+  function buildReportPng(name, dom2, md) {
+    var W = 1080, pad = 64, maxW = W - pad * 2, lh = 27;
+    var bodyFont = '400 16.5px Poppins, Arial, sans-serif';
+    var headFont = '700 22px Poppins, Arial, sans-serif';
+    var meas = document.createElement('canvas').getContext('2d');
+    function wrap(t, font) {
+      meas.font = font;
+      var words = t.split(/\s+/), lines = [], line = '';
+      words.forEach(function (w) {
+        var probe = line ? line + ' ' + w : w;
+        if (meas.measureText(probe).width > maxW && line) { lines.push(line); line = w; }
+        else line = probe;
+      });
+      if (line) lines.push(line);
+      return lines;
+    }
+    var blocks = parseSections(md).map(function (s) {
+      var lines = [];
+      s.lines.forEach(function (ln) {
+        wrap(ln, bodyFont).forEach(function (l) { lines.push(l); });
+        lines.push('');
+      });
+      return { h: s.h, lines: lines };
+    });
+    var HEAD = 240, yEnd = HEAD + 52;
+    blocks.forEach(function (b) {
+      if (b.h) yEnd += 12 + 32;
+      b.lines.forEach(function (l) { yEnd += l ? lh : 12; });
+      yEnd += 8;
+    });
+    var H = yEnd + 12;
+    var cv = document.createElement('canvas'); cv.width = W; cv.height = H;
+    var c = cv.getContext('2d');
+    c.fillStyle = '#1a1025'; c.fillRect(0, 0, W, H);
+    var g1 = c.createRadialGradient(W * 0.8, 0, 0, W * 0.8, 0, W * 0.7);
+    g1.addColorStop(0, 'rgba(37,100,147,.4)'); g1.addColorStop(1, 'rgba(37,100,147,0)');
+    c.fillStyle = g1; c.fillRect(0, 0, W, H);
+    c.fillStyle = 'rgba(0,0,0,.18)'; c.fillRect(0, 0, W, HEAD);
+    drawCollapse(c, W, HEAD, 1);
+    c.fillStyle = '#7fb4d8'; c.font = '700 13px Poppins, Arial, sans-serif';
+    c.fillText('H O W   T H E   M A C H I N E   S E E S', pad, 92);
+    c.fillStyle = '#ffffff'; c.font = '800 44px Poppins, Arial, sans-serif';
+    c.fillText(String(name).slice(0, 42), pad, 142);
+    c.fillStyle = 'rgba(252,243,214,.62)'; c.font = '400 15px Poppins, Arial, sans-serif';
+    c.fillText(dom2 + ' · scanned ' + new Date().toISOString().slice(0, 10), pad, 172);
+    c.strokeStyle = 'rgba(252,243,214,.16)';
+    c.beginPath(); c.moveTo(0, HEAD + .5); c.lineTo(W, HEAD + .5); c.stroke();
+    var y = HEAD + 52;
+    blocks.forEach(function (b) {
+      if (b.h) {
+        c.fillStyle = '#ffc545'; c.font = headFont;
+        c.fillText(b.h, pad, y); y += 12;
+        c.strokeStyle = 'rgba(252,243,214,.16)';
+        c.setLineDash([4, 5]); c.beginPath(); c.moveTo(pad, y); c.lineTo(W - pad, y); c.stroke(); c.setLineDash([]);
+        y += 32;
+      }
+      c.fillStyle = 'rgba(252,243,214,.8)'; c.font = bodyFont;
+      b.lines.forEach(function (l) { if (l) { c.fillText(l, pad, y); y += lh; } else y += 12; });
+      y += 8;
+    });
+    return cv.toDataURL('image/png');
   }
   function scan(url) {
     if (busy) return;
     busy = true;
+    SCAN_BUSY = true;
+    var dom = normDomain(url);
+    if (dom) brandAutoScanned = dom;  // this scan IS the auto-run for this domain
     var report = $('scanReport');
     report.style.display = 'none';
     status('📡 ' + (depth === 'kid' ? 'knocking on their front door…' : 'fetching the homepage…'));
-    fetch(PROXY_URL + '/fetch', {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ url: url }),
-    }).then(function (r) {
-      if (r.status === 429) throw { code: 429 };
-      if (r.status === 503) throw { code: 503 };
-      if (!r.ok) throw { code: r.status };
-      return r.json();
-    }).then(function (f) {
-      if (!f.html || (f.status && f.status >= 400)) throw { code: 'blocked' };
-      var sig = parseSite(f.html, f.finalUrl || url);
-      var adlib = 'https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=ALL&q=' + encodeURIComponent(sig.brand);
+    /* brand context first: its /fetch + parse is cached per domain,
+       so the scan reuses that instead of fetching the site twice */
+    var pre = (dom && typeof setBrandDomain === 'function') ? setBrandDomain(dom) : Promise.resolve(null);
+    pre.then(function () {
+      if (dom && BRAND && BRAND.domain === dom && BRAND.signals) return BRAND.signals;
+      return fetch(PROXY_URL + '/fetch', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ url: url }),
+      }).then(function (r) {
+        if (r.status === 429) throw { code: 429 };
+        if (r.status === 503) throw { code: 503 };
+        if (!r.ok) throw { code: r.status };
+        return r.json();
+      }).then(function (f) {
+        if (!f.html || (f.status && f.status >= 400)) throw { code: 'blocked' };
+        return parseSiteLite(f.html, dom || (f.finalUrl || url).replace(/^https?:\/\/(www\.)?/, '').split('/')[0]);
+      });
+    }).then(function (sig) {
+      var name = (BRAND && BRAND.domain === sig.domain && BRAND.name) ||
+        sig.siteName || (sig.title || '').split(/[|–—-]/)[0].trim() || sig.domain;
+      var adlib = 'https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=ALL&q=' + encodeURIComponent(name);
       status('🧠 ' + (depth === 'kid' ? 'the helper is writing the report card…' : 'generating the read…'));
       report.style.display = 'block';
-      report.innerHTML = '<h2>How the Machine Sees ' + esc(sig.brand) + '</h2>' +
-        '<div class="sig-grid">' +
-          '<div class="sig"><b>title</b>' + esc(sig.title || '—') + '</div>' +
-          '<div class="sig"><b>description</b>' + esc((sig.description || '—').slice(0, 140)) + '</div>' +
-          '<div class="sig"><b>meta pixel</b>' + (sig.metaPixel.present ? '✅ detected (id ' + sig.metaPixel.id + ')' : '❌ not detected') + '</div>' +
-          '<div class="sig"><b>their live ads</b><a href="' + adlib + '" target="_blank" rel="noopener noreferrer">see them in Meta’s own transparency tool →</a></div>' +
-        '</div><div class="report" id="scanMd"><p><i>…</i></p></div>';
-      var sys = 'You are the Brand Scanner inside The Growth Den’s teaching portal “The Machine”, which explains Meta’s ad delivery system (retrieval/Andromeda, ranking/GEM, the total-value auction, quality penalties, creative-as-targeting, fatigue). ' +
+      report.innerHTML =
+        '<div class="rep-head"><canvas id="repCv"></canvas><div class="rep-head-txt">' +
+          '<p class="rk">How the Machine sees</p>' +
+          '<h2>' + esc(name) + '</h2>' +
+          '<p class="rd">' + esc(sig.domain) + ' · scanned ' + new Date().toISOString().slice(0, 10) + '</p>' +
+        '</div></div>' +
+        '<div class="rep-body">' +
+          '<div class="sig-grid">' +
+            '<div class="sig"><b>title</b>' + esc(sig.title || '—') + '</div>' +
+            '<div class="sig"><b>description</b>' + esc((sig.description || '—').slice(0, 140)) + '</div>' +
+            '<div class="sig"><b>their live ads</b><a href="' + adlib + '" target="_blank" rel="noopener noreferrer">see them in Meta’s own transparency tool →</a></div>' +
+          '</div>' +
+          '<div class="report" id="scanMd"><p><i>…</i></p></div>' +
+        '</div>';
+      headCanvas();
+      var known = (BRAND && BRAND.domain === sig.domain && BRAND.resolved)
+        ? { category: BRAND.category, offer: BRAND.offer, oneLiner: BRAND.oneLiner, hooks: BRAND.hooks }
+        : null;
+      var sys = 'You are the Brand Scanner inside “The Machine”, a teaching portal that explains Meta’s ad delivery system (retrieval/Andromeda, ranking/GEM, the total-value auction, quality penalties, creative-as-targeting, fatigue). ' +
         'You receive parsed PUBLIC signals from a brand’s homepage. Produce “How the Machine Sees This Brand” in markdown with EXACTLY these sections: ' +
-        '“## What the site feeds delivery” (read the actual signals: pixel present or absent and what that means, clarity of offer/category, 4-6 sentences); ' +
+        '“## What the site feeds delivery” (read the actual signals: clarity of offer and category, how the page copy works as delivery input, 4-6 sentences); ' +
         '“## Mechanisms they’re using well — or fighting” (tie specifically to retrieval indexability, creative signal strength, quality surface, learning consolidation); ' +
         '“## 10 genuinely different angles” (numbered list of ten creative angle opportunities, each a DISTINCT buyer motivation or hook territory — never cosmetic variants of one idea; one concrete line each). ' +
         'Write at this register: ' + REGISTER_DESC[depth] + '. ' +
-        'Rules: infer only from the provided signals; never invent spend, reach, or audience numbers — none are public; total under 600 words.';
-      var el = null, started = false;
+        'Rules: infer only from the provided signals; never invent spend, reach, or audience numbers — none are public; NEVER mention or speculate about pixels, tags, tracking, or analytics — you cannot see any of that; do not name The Growth Den or this portal inside the report; total under 600 words.';
       return streamClaude({ model: 'claude-sonnet-4-5', max_tokens: 3000, stream: true, system: sys,
-        messages: [{ role: 'user', content: 'SIGNALS:\n' + JSON.stringify(sig, null, 1) }] },
+        messages: [{ role: 'user', content: 'SIGNALS:\n' + JSON.stringify(sig, null, 1) +
+          (known ? '\n\nKNOWN BRAND CONTEXT (from an earlier read of the same public signals):\n' + JSON.stringify(known, null, 1) : '') }] },
         function () { }).then(function (full) {
-          $('scanMd').innerHTML = mdLite(full) +
-            '<div class="talk-cta"><p>Want this level of clarity on your own account?</p>' +
-            '<a href="https://calendar.app.google/dy8683mNDXyWAkPo9" target="_blank" rel="noopener noreferrer">Talk to Logan →</a></div>';
+          $('scanMd').innerHTML = mdLite(full);
+          var body = report.querySelector('.rep-body');
+          var act = document.createElement('div');
+          act.className = 'rep-actions';
+          act.innerHTML = '<button class="run-btn" id="repDl" type="button">⬇ Download report</button>' +
+            '<button class="run-btn ghost" id="repCp" type="button">🔗 Copy link</button>';
+          body.appendChild(act);
+          var cta = document.createElement('div');
+          cta.className = 'talk-cta';
+          cta.innerHTML = '<p>Want this level of clarity on your own account?</p>' +
+            '<a href="https://calendar.app.google/dy8683mNDXyWAkPo9" target="_blank" rel="noopener noreferrer">Talk to Logan →</a>';
+          body.appendChild(cta);
+          $('repDl').addEventListener('click', function () {
+            var a = document.createElement('a');
+            a.href = buildReportPng(name, sig.domain, full);
+            a.download = 'how-the-machine-sees-' + sig.domain.replace(/[^a-z0-9.-]/g, '') + '.png';
+            document.body.appendChild(a); a.click(); a.remove();
+          });
+          $('repCp').addEventListener('click', function () {
+            var link = location.origin + location.pathname + '?brand=' + encodeURIComponent(sig.domain) + '#/scanner';
+            var done = function () { $('repCp').textContent = '✓ copied — the link re-runs this scan for whoever opens it'; };
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+              navigator.clipboard.writeText(link).then(done, function () { window.prompt('copy this link:', link); });
+            } else window.prompt('copy this link:', link);
+          });
           status('✅ ' + (depth === 'kid' ? 'report card done!' : 'scan complete.'));
         });
     }).catch(function (err) {
       if (err && err.code === 429) status(depthMsg(MSG_BUSY));
       else if (err && err.code === 503) status(depthMsg(MSG_NAP));
-      else if (err && err.code === 'blocked') status('🚪 ' + (depth === 'kid' ? 'That site slammed the door on our scanner — some do! Try the demo scan instead.' : 'That site blocked the fetch (some do). Try the demo scan — thegrowthden.com always answers.'));
+      else if (err && err.code === 'blocked') status('🚪 ' + (depth === 'kid'
+        ? 'That site slammed the door on our scanner — rude! Some sites do that. Try the demo scan instead.'
+        : 'That site bounced us at the door — some homepages refuse anything that isn’t a browser. No judgment; strong bouncer. Try the demo scan: thegrowthden.com always lets us in.'));
       else status(depthMsg(MSG_LOCAL) + ' · ' + (depth === 'kid' ? 'or try the demo!' : 'demo scan works on the live site.'));
-      busy = false;
-    }).then(function () { busy = false; });
+    }).then(function () { busy = false; SCAN_BUSY = false; });
   }
   $('scanGo').addEventListener('click', function () {
     var u = $('scanUrl').value.trim();
