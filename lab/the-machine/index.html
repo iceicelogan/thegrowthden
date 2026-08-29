@@ -955,6 +955,32 @@ body.v5 { background: #fcf3d6; color: #341f44; font-weight: 300; }
 }
 .v5-next:active { transform: scale(.97); }
 
+.v5-chips { margin-top: 14px; min-height: 44px; }
+.v5-chip {
+  display: inline-block; background: #fff; border: 1.5px solid #256493;
+  color: #341f44; border-radius: 18px; padding: 7px 13px;
+  font-size: 12px; font-weight: 400; margin: 4px 4px 0 0;
+  opacity: 0; transform: translateY(6px); transition: opacity .35s, transform .35s;
+  cursor: pointer;
+}
+.v5-chip.in { opacity: 1; transform: none; }
+.v5-chip.warm { border-color: #fe7c2b; }
+.v5-chip.miss { border-style: dashed; color: #a08e69; border-color: #c9b98d; }
+.v5-chip.skel {
+  border-color: #e2d5ac; color: transparent; background: #f5ecd0;
+  min-width: 92px; cursor: default;
+  animation: v5pulse 1.1s ease-in-out infinite; opacity: 1; transform: none;
+}
+@keyframes v5pulse { 50% { opacity: .45; } }
+.v5-verdict {
+  background: #341f44; color: #fcf3d6; border-radius: 12px;
+  padding: 12px 14px; font-size: 13.5px; font-weight: 400;
+  margin-top: 16px; line-height: 1.5;
+  opacity: 0; transition: opacity .4s;
+}
+.v5-verdict.in { opacity: 1; }
+.v5-verdict b { color: #ffc545; font-weight: 600; }
+
 /* ---------- footer ---------- *//* ---------- footer ---------- */
 #foot {
   border-top: 1px solid var(--line);
@@ -3605,11 +3631,12 @@ function lastSaved() {
 
 function v5Shell(inner, opts) {
   opts = opts || {};
+  var active = opts.dot !== undefined ? opts.dot : V5.screen;
   var dots = '';
   for (var i = 0; i < 6; i++) {
     var seen = V5.visited.indexOf(i) >= 0;
     dots += '<button type="button" data-dot="' + i + '"' +
-      ' class="' + (i === V5.screen && !opts.noDot ? 'on' : seen ? 'seen' : '') + '"' +
+      ' class="' + (i === active && !opts.noDot ? 'on' : seen ? 'seen' : '') + '"' +
       (seen && i !== V5.screen ? '' : ' tabindex="-1"') +
       ' aria-label="screen ' + i + '"></button>';
   }
@@ -3688,11 +3715,127 @@ function showProduct() {
   V5_SCREENS[V5.screen === 0 || !V5.run ? 0 : V5.screen]();
 }
 
+/* ---- the AI call: one consolidated request, strict JSON ---- */
+function v5Extract(html, dom) {
+  var sig = parseSiteLite(html, dom);
+  var text = '';
+  try {
+    var doc = new DOMParser().parseFromString(html, 'text/html');
+    doc.querySelectorAll('script,style,noscript,svg').forEach(function (n) { n.remove(); });
+    text = (doc.body ? doc.body.textContent : '').replace(/\s+/g, ' ').trim().slice(0, 1800);
+  } catch (e) { }
+  sig.text = text;
+  return sig;
+}
+function v5Prompt(hadAd) {
+  return 'You are “The Machine”, reading a brand the way Meta’s delivery system does (user-conditioned retrieval, creative-as-targeting, auction pressure, fatigue). ' +
+    'You receive extracted PUBLIC homepage text' + (hadAd ? ' plus ONE of the brand’s ad images' : '') + '. ' +
+    'Reply with STRICT JSON only — no prose, no code fences: ' +
+    '{"signals": [4-6 of {"label": short chip text like "$200 average order", "‘30-day guarantee’", "Tone: clinical" — 4 words max, ' +
+      '"type": "strong"|"warm"|"missing", "why": one line for the tap drawer}], ' +
+    '"readVerdict": {"headline": 6 words max, punchy, like "Strong offer. Weak feeling.", "line": 14 words max completing the thought}, ' +
+    '"frames": [exactly 3 of {"chipLabel": ONE word naming a message frame chosen for THIS product ("Proof"/"Ease"/"Gift" style), ' +
+      '"audience": 6 words max — who lights up, like "the skeptics light up", ' +
+      '"caption": 12 words max, in the exact pattern "your product, pitched on <frame> → <who lights up>"}], ' +
+    '"ecosystem": {"crowded": [1-2 of {"label": 3 words max, "note": 8 words max on who wins there}], ' +
+      '"open": [exactly 2 of {"label": 3 words max, "note": 8 words max}], ' +
+      '"you": the label of the territory this brand CURRENTLY sits in (must match one crowded or open label exactly), ' +
+      '"verdictLine": 12 words max, like "You’re pitching where it’s loudest. Two territories sit open."}, ' +
+    '"plays": [2-3 of {"playName": a NAMED reusable move in caps, "THE PROOF FLIP" style, ' +
+      '"principle": 12 words max teaching the move, "hook": the applied one-liner for THIS product, ' +
+      '"brief": {"hook": same or sharper, "visual": one-line visual direction, "copy": 1-2 sentences of opening copy}, ' +
+      '"territoryRef": the open-territory label this play enters (match exactly), ' +
+      '"complianceNote": ONLY if the category is regulated (healthcare, finance, supplements): one line on claim safety — otherwise OMIT the key}], ' +
+    '"cardSummary": 16 words max compressing verdict + territory + play count}. ' +
+    'SELF-CHECK before returning: the 3 chipLabels must be genuinely different message FRAMES, never synonyms; each play’s territoryRef must be a different open territory where possible; if any collide, regenerate them internally before answering. ' +
+    'Rules: infer only from the provided text' + (hadAd ? ' and image' : '') + '; never invent spend, reach, or audience numbers; NEVER mention pixels, tags, tracking, or analytics; keep every string inside its word budget; plain language, no jargon.';
+}
+function analyze(dom, adData) {
+  return fetch(PROXY_URL + '/fetch', {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ url: 'https://' + dom }),
+  }).then(function (r) {
+    if (r.status === 429) throw { code: 429 };
+    if (r.status === 503) throw { code: 503 };
+    if (!r.ok) throw { code: r.status };
+    return r.json();
+  }).then(function (f) {
+    if (!f.html || (f.status && f.status >= 400)) throw { code: 'blocked' };
+    var sig = v5Extract(f.html, dom);
+    var content = [];
+    if (adData) content.push({ type: 'image', source: { type: 'base64', media_type: 'image/jpeg', data: adData } });
+    content.push({ type: 'text', text: 'HOMEPAGE (' + dom + '):\n' + JSON.stringify(sig, null, 1) +
+      (adData ? '\n\nThe attached image is one of this brand’s ads — factor it into the read.' : '') });
+    return streamClaude({
+      model: 'claude-sonnet-4-5', max_tokens: 3500, stream: false,
+      system: v5Prompt(!!adData),
+      messages: [{ role: 'user', content: content }],
+    }, function () { }).then(function (full) {
+      var data = JSON.parse(full.slice(full.indexOf('{'), full.lastIndexOf('}') + 1));
+      if (!data.signals || !data.readVerdict || !data.frames || !data.ecosystem || !data.plays) throw new SyntaxError('shape');
+      return {
+        data: data, dom: dom, hadAd: !!adData,
+        adThumb: adData ? V5.ad.thumb : null,
+        name: sig.siteName || (sig.title || '').split(/[|–—-]/)[0].trim() || prettyDomain(dom),
+        date: new Date().toISOString().slice(0, 10),
+      };
+    });
+  });
+}
+/* the wait: screen 1's shell with skeleton chips pulsing — no cinematic loader */
+function mountReading(dom) {
+  v5Mount(
+    '<h2>Reading ' + escHtml(dom) + '…</h2>' +
+    '<p class="v5-sub">your signals appear one by one</p>' +
+    '<div class="v5-chips" id="v5ReadChips">' +
+      '<span class="v5-chip skel">&nbsp;</span><span class="v5-chip skel" style="min-width:120px">&nbsp;</span>' +
+      '<span class="v5-chip skel" style="min-width:78px">&nbsp;</span>' +
+    '</div>',
+    { dot: 1 }
+  );
+}
+function v5Fail(err) {
+  V5_SCREENS[0]();
+  var s = $('v5Status');
+  if (!s) return;
+  if (err && err.code === 429) s.textContent = 'the lab is busy — give it a minute, then read again.';
+  else if (err && err.code === 503) s.textContent = 'the machine is napping — try again shortly.';
+  else if (err && err.code === 413) s.textContent = 'that ad image is too heavy — try a smaller crop.';
+  else if (err && err.code === 'blocked') s.textContent = 'that site bounced our reader — some do. Try another domain, or the demo.';
+  else if (err instanceof SyntaxError) s.textContent = 'the read came back garbled — run it once more.';
+  else s.textContent = 'the reader only runs on the live site (thegrowthden.com) — this is a local preview.';
+}
 function runRead(rawUrl, opts) {
+  opts = opts || {};
   var dom = normDomain(rawUrl);
   if (!dom) { $('v5Status').textContent = 'that doesn’t look like a domain — try yourbrand.com'; return; }
-  $('v5Status').textContent = '🛠️ the reader lands in the next commit — screens are being wired.';
+  if (V5.busy) return;
+  V5.busy = true;
+  var adData = opts.demo ? null : V5.ad.data;
+  V5.dom = dom;
+  mountReading(dom);
+  analyze(dom, adData).then(function (run) {
+    V5.busy = false;
+    V5.run = run;
+    BRAND = { domain: dom, name: run.name, category: '', resolved: true };
+    goScreen(1);
+  }, function (err) {
+    V5.busy = false;
+    v5Fail(err);
+  });
 }
+
+/* ---- screen 1 · The Read (minimal render — the animated version lands next) ---- */
+V5_SCREENS[1] = function screenRead() {
+  var d = V5.run.data;
+  v5Mount(
+    '<h2>Reading ' + escHtml(V5.dom) + '…</h2>' +
+    '<div class="v5-chips">' + d.signals.map(function (s) {
+      return '<span class="v5-chip in ' + (s.type === 'warm' ? 'warm' : s.type === 'missing' ? 'miss' : '') + '">' + escHtml(s.label) + '</span>';
+    }).join('') + '</div>' +
+    '<div class="v5-verdict in"><b>' + escHtml(d.readVerdict.headline) + '</b> ' + escHtml(d.readVerdict.line) + '</div>'
+  );
+};
 
 /* ---------------- boot ---------------- *//* ---------------- boot ---------------- */
 function route() {
