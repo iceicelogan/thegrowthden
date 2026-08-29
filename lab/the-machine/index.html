@@ -862,115 +862,6 @@ details.interlude > summary::after { color: var(--your-ad); }
 /* ---------- the entry (first load, no hash) ---------- */
 body.entry-mode #topbar, body.entry-mode #tabbar, body.entry-mode #foot,
 body.entry-mode #askBtn, body.entry-mode #askPanel { display: none !important; }
-/* ---------- the product: one screen ---------- */
-.prod {
-  min-height: 100dvh; display: flex; align-items: center; justify-content: center;
-  padding: 24px 18px calc(24px + env(safe-area-inset-bottom, 0px));
-}
-.prod-inner { width: min(620px, 100%); text-align: center; animation: view-in .4s ease; }
-.prod .ek { font-size: 11px; font-weight: 700; letter-spacing: .22em; text-transform: uppercase; color: var(--your-ad); }
-.prod h1 { font-size: clamp(38px, 8vw, 62px); font-weight: 800; letter-spacing: -.01em; color: var(--white); line-height: 1.05; margin: 4px 0 12px; }
-.prod-promise { font-size: 15.5px; color: var(--muted); line-height: 1.6; margin-bottom: 24px; }
-.prod-row { display: flex; gap: 10px; align-items: stretch; }
-.prod-row input[type="text"] {
-  flex: 1; min-width: 0; font-family: 'Poppins', sans-serif; font-size: 16px;
-  color: var(--cream); background: rgba(252,243,214,.07);
-  border: 1.5px solid rgba(252,243,214,.35); border-radius: 16px;
-  padding: 14px 18px; min-height: 74px; outline: none;
-}
-.prod-row input[type="text"]:focus { border-color: var(--gold); }
-.prod-drop {
-  position: relative; flex: 0 0 104px; min-height: 74px;
-  border: 2px dashed rgba(252,243,214,.35); border-radius: 16px;
-  cursor: pointer; display: flex; align-items: center; justify-content: center;
-  overflow: hidden; transition: border-color .2s, background .2s;
-}
-.prod-drop:hover, .prod-drop.drag { border-color: var(--gold); background: rgba(255,197,69,.05); }
-.prod-drop input { display: none; }
-.prod-drop span { font-size: 10.5px; line-height: 1.35; color: var(--muted); padding: 4px; }
-.prod-drop img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-.prod-drop-sub { font-size: 11.5px; color: var(--muted); margin-top: 9px; }
-.prod-go { width: 100%; margin-top: 14px; font-size: 17px; min-height: 56px; }
-.prod-demo { display: inline-block; margin-top: 16px; font-size: 13px; color: var(--muted); padding: 6px; }
-@media (max-width: 460px) {
-  .prod-row { flex-wrap: wrap; }
-  .prod-drop { flex: 1 1 100%; min-height: 60px; }
-}
-
-/* ---------- the scorecard ---------- */
-.score { min-height: 100dvh; padding: 34px 18px calc(30px + env(safe-area-inset-bottom, 0px)); }
-.sc-wrap { max-width: 760px; margin: 0 auto; }
-.sc-kicker {
-  display: flex; justify-content: space-between; align-items: baseline; gap: 10px; flex-wrap: wrap;
-  font-size: 11px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase;
-  color: var(--your-ad); margin-bottom: 12px;
-}
-.sc-kicker .sc-date { color: var(--muted); letter-spacing: .08em; font-weight: 500; }
-.sc-verdict h1 {
-  font-size: clamp(24px, 4.6vw, 38px); font-weight: 800; letter-spacing: -.01em;
-  color: var(--white); line-height: 1.22; margin-bottom: 14px;
-}
-.sc-impact {
-  font-size: 16px; font-weight: 600; color: var(--gold); line-height: 1.55;
-  border-left: 3px solid var(--gold); padding-left: 14px; margin-bottom: 8px;
-}
-.sc-h2 { font-size: 13px; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; color: var(--cream); margin: 30px 0 12px; }
-.sc-h2 .sc-sub { display: block; font-size: 11px; font-weight: 400; letter-spacing: .02em; text-transform: none; color: var(--muted); margin-top: 3px; }
-details.ang {
-  background: var(--glass); border: 1px solid var(--line); border-radius: var(--r);
-  margin-bottom: 10px; overflow: hidden;
-}
-details.ang > summary {
-  list-style: none; cursor: pointer; padding: 16px 18px; min-height: 54px;
-  display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap;
-}
-details.ang > summary::-webkit-details-marker { display: none; }
-details.ang > summary::after { content: '＋'; margin-left: auto; font-size: 17px; color: var(--your-ad); }
-details.ang[open] > summary::after { content: '－'; }
-.ang-name { font-size: 15.5px; font-weight: 700; color: var(--white); }
-.ang-why { flex-basis: 100%; font-size: 12.5px; color: var(--muted); line-height: 1.55; }
-.ang-flag {
-  font-size: 9.5px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase;
-  color: var(--deep); background: var(--gold); border-radius: 100px; padding: 2px 8px;
-}
-.ang-body { padding: 2px 18px 18px; border-top: 1px dashed var(--line); }
-.brief {
-  background: rgba(15,9,24,.6); border: 1px solid rgba(255,197,69,.35); border-radius: 14px;
-  padding: 14px 16px; margin: 14px 0 12px; position: relative;
-}
-.brief .b-k { font-size: 9.5px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: var(--sky); margin-top: 9px; }
-.brief .b-k:first-child { margin-top: 0; }
-.brief .b-v { font-size: 13.5px; color: var(--cream); line-height: 1.55; }
-.brief .b-copy {
-  position: absolute; top: 10px; right: 10px;
-  font-family: 'Poppins', sans-serif; font-size: 11px; font-weight: 700;
-  color: var(--cream); background: rgba(252,243,214,.1);
-  border: 1px solid rgba(252,243,214,.35); border-radius: 100px;
-  padding: 5px 11px; cursor: pointer;
-}
-.ang-ev { font-size: 12.5px; color: var(--muted); line-height: 1.6; border-left: 2px solid rgba(127,200,240,.4); padding-left: 12px; margin: 10px 0; }
-.ang-ev b { color: var(--cream); }
-.ang-links { font-size: 12px; margin-top: 10px; }
-.per-card {
-  background: var(--glass); border: 1px solid var(--line); border-radius: var(--r);
-  padding: 16px 18px; margin-bottom: 10px;
-}
-.per-top { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
-.per-desc { font-size: 14px; font-weight: 700; color: var(--white); }
-.per-mark { font-size: 11px; font-weight: 800; letter-spacing: .06em; white-space: nowrap; border-radius: 100px; padding: 3px 10px; border: 1.5px solid; }
-.per-mark.m-yes { color: var(--green); border-color: rgba(143,214,148,.6); }
-.per-mark.m-no { color: #ff8a70; border-color: rgba(229,52,11,.55); }
-.per-mark.m-partial { color: var(--gold); border-color: rgba(255,197,69,.55); }
-.per-quote { font-size: 14px; font-style: italic; color: var(--cream); line-height: 1.65; margin: 10px 0 8px; }
-.per-ground { font-size: 11.5px; color: var(--sky); line-height: 1.5; }
-.sc-evidence {
-  border: 1.5px dashed rgba(255,197,69,.5); border-radius: 14px;
-  background: rgba(255,197,69,.05); padding: 14px 16px;
-  font-size: 13px; line-height: 1.65; color: var(--muted); margin-top: 26px;
-}
-.sc-share { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 22px; }
-.sc-again { text-align: center; margin-top: 22px; font-size: 13px; }
-
 /* ---------- the "why?" layer: slide-in explanation drawer ---------- */
 .why-link {
   font-family: 'Poppins', sans-serif; font-size: 11.5px; font-weight: 600;
@@ -1004,41 +895,200 @@ details.ang[open] > summary::after { content: '－'; }
 .prod-foot .egg { font-size: 10.5px; color: rgba(252,243,214,.35); }
 .prod-foot .egg.on { color: var(--gold); }
 
-/* ---------- memory: delta + side-by-side strips ---------- */
-.sc-delta {
-  border: 1px dashed rgba(127,200,240,.5); border-radius: 12px;
-  background: rgba(127,200,240,.06); padding: 10px 14px;
-  font-size: 12.5px; line-height: 1.6; color: var(--muted); margin-bottom: 16px;
+/* ============ v5: the cream journey (locked wireframe) ============
+   cream ground; ink #341f44 + blue #256493 as ink/accents only;
+   warm accents #e5340b / #fe7c2b / #ffc545; Poppins 600 / 300. */
+body.v5 { background: #fcf3d6; color: #341f44; font-weight: 300; }
+.v5 { min-height: 100dvh; display: flex; flex-direction: column; }
+.v5-wrap {
+  width: min(440px, 100%); margin: 0 auto; flex: 1;
+  display: flex; flex-direction: column;
+  padding: 18px 18px calc(22px + env(safe-area-inset-bottom, 0px));
 }
-.sc-delta b { color: var(--sky); }
-.sc-adcmp {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
-  border: 1px solid var(--line); border-radius: 14px;
-  background: rgba(252,243,214,.04); padding: 12px; margin-bottom: 16px;
+.v5-logo { height: 20px; width: auto; align-self: flex-start; margin-bottom: 12px; }
+.v5-dots { display: flex; gap: 6px; justify-content: center; margin-bottom: 18px; }
+.v5-dots button {
+  width: 8px; height: 8px; padding: 0; border-radius: 50%;
+  background: #ddd0a8; border: none; cursor: default; transition: background .2s;
 }
-.sc-adcmp .ac-col { min-width: 0; }
-.sc-adcmp .ac-k { font-size: 9.5px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: var(--sky); margin-bottom: 6px; }
-.sc-adcmp img { width: 100%; max-height: 110px; object-fit: cover; border-radius: 8px; margin-bottom: 6px; }
-.sc-adcmp .ac-h { font-size: 11.5px; line-height: 1.5; color: var(--cream); }
-.sc-adcmp .ac-cap { grid-column: 1 / -1; font-size: 10.5px; color: var(--muted); }
-.prod-return { margin-top: 14px; font-size: 13px; }
-.prod-return a { color: var(--gold); padding: 5px; }
+.v5-dots button.seen { background: #bfae80; cursor: pointer; }
+.v5-dots button.on { background: #256493; cursor: default; }
+.v5 h2 { font-weight: 600; font-size: 24px; line-height: 1.28; letter-spacing: -.2px; color: #341f44; }
+.v5-sub { font-weight: 300; font-size: 13px; color: #6b5a84; margin-top: 6px; }
+.v5-field {
+  width: 100%; border: 1.5px solid #341f44; border-radius: 12px;
+  padding: 13px 15px; font-family: 'Poppins', sans-serif; font-weight: 300; font-size: 15px;
+  color: #341f44; background: #fff; margin-top: 18px; outline: none;
+}
+.v5-field::placeholder { color: #9b8c6c; }
+.v5-field:focus { border-color: #256493; }
+.v5-drop {
+  border: 1.5px dashed #256493; border-radius: 12px; padding: 12px 13px;
+  font-size: 12.5px; font-weight: 300; color: #256493; margin-top: 10px;
+  text-align: center; background: #f4f8fb; cursor: pointer; position: relative; overflow: hidden;
+}
+.v5-drop.drag { background: #e6f0f8; }
+.v5-drop input { display: none; }
+.v5-drop img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.v5-btn {
+  display: block; width: 100%; background: #e5340b; color: #fff;
+  border: none; border-radius: 12px; text-align: center; padding: 13px;
+  font-family: 'Poppins', sans-serif; font-weight: 600; font-size: 15px;
+  margin-top: 14px; cursor: pointer; min-height: 48px;
+}
+.v5-btn:active { transform: scale(.985); }
+.v5-btn.blue { background: #256493; }
+.v5-btn.ghost {
+  background: transparent; color: #256493; border: 1.5px solid #256493;
+  font-weight: 400; font-size: 12.5px; padding: 10px; min-height: 42px;
+}
+.v5-demo {
+  display: block; text-align: center; font-size: 12px; font-weight: 300;
+  color: #8a7a5c; margin-top: 16px; text-decoration: underline; text-underline-offset: 2px;
+}
+.v5-status { min-height: 20px; font-size: 12px; font-weight: 400; color: #e5340b; text-align: center; margin-top: 10px; }
+.v5-next {
+  align-self: flex-end; margin-top: auto;
+  background: #341f44; color: #fcf3d6; border: none; border-radius: 100px;
+  padding: 11px 20px; font-family: 'Poppins', sans-serif; font-weight: 600; font-size: 13px;
+  cursor: pointer; min-height: 42px;
+}
+.v5-next:active { transform: scale(.97); }
 
-/* ---------- the loader: the collapse as the wait ---------- */
-.loader { position: relative; min-height: 100dvh; overflow: hidden; cursor: pointer; }
-.loader canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
-.ld-line {
-  position: absolute; left: 0; right: 0; bottom: 16%;
-  text-align: center; font-size: 15.5px; font-weight: 600; color: var(--cream);
-  padding: 0 24px; pointer-events: none;
+.v5-chips { margin-top: 14px; min-height: 44px; }
+.v5-chip {
+  display: inline-block; background: #fff; border: 1.5px solid #256493;
+  color: #341f44; border-radius: 18px; padding: 7px 13px;
+  font-size: 12px; font-weight: 400; margin: 4px 4px 0 0;
+  opacity: 0; transform: translateY(6px); transition: opacity .35s, transform .35s;
+  cursor: pointer;
 }
-.ld-line .ld-sub { display: block; font-size: 11.5px; font-weight: 400; color: var(--muted); margin-top: 6px; }
-.ld-skip {
-  position: absolute; top: 14px; right: 16px; z-index: 3;
-  font-size: 11px; color: rgba(252,243,214,.45); pointer-events: none;
+.v5-chip.in { opacity: 1; transform: none; }
+.v5-chip.warm { border-color: #fe7c2b; }
+.v5-chip.miss { border-style: dashed; color: #a08e69; border-color: #c9b98d; }
+.v5-chip.skel {
+  border-color: #e2d5ac; color: transparent; background: #f5ecd0;
+  min-width: 92px; cursor: default;
+  animation: v5pulse 1.1s ease-in-out infinite; opacity: 1; transform: none;
+}
+@keyframes v5pulse { 50% { opacity: .45; } }
+
+/* the audience canvas (screens 2 / 3 / rival) */
+.v5-canvas {
+  position: relative; margin-top: 14px; height: 240px;
+  border: 1px solid #eee2bd; border-radius: 14px;
+  background: radial-gradient(circle at 50% 42%, #fff 0%, #fffdf5 60%);
+  overflow: hidden;
+}
+.v5-canvas canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+.v5-cap {
+  position: absolute; left: 8px; right: 8px; bottom: 10px;
+  text-align: center; font-size: 12.5px; font-weight: 400; color: #341f44;
+  pointer-events: none;
+}
+.v5-cap b { font-weight: 600; }
+.v5-chip.sel { background: #341f44; border-color: #341f44; color: #fcf3d6; }
+.v5-why {
+  font-family: 'Poppins', sans-serif; font-size: 11.5px; font-weight: 600;
+  color: #256493; background: none; border: none; cursor: pointer;
+  text-decoration: underline; text-underline-offset: 2px; padding: 4px 6px;
 }
 
-/* ---------- footer ---------- */
+/* the territory map (screen 3) */
+.v5-terr {
+  position: absolute; border-radius: 50%;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  text-align: center; font-size: 10.5px; line-height: 1.35; padding: 8px;
+  font-weight: 300; cursor: pointer; border: 1.5px solid transparent;
+}
+.v5-terr b { font-weight: 600; }
+.v5-terr.crowded { background: rgba(52,31,68,.14); color: #341f44; }
+.v5-terr.open-b { border: 1.5px dashed #256493; color: #256493; }
+.v5-terr.open-o { border: 1.5px dashed #fe7c2b; color: #fe7c2b; }
+.v5-you {
+  position: absolute; width: 12px; height: 12px; border-radius: 50%;
+  background: #e5340b; box-shadow: 0 0 0 5px rgba(229,52,11,.15); z-index: 2;
+}
+.v5-you-lab { position: absolute; font-size: 10px; font-weight: 600; color: #e5340b; z-index: 2; }
+.v5-terr-note { min-height: 20px; font-size: 12px; font-weight: 400; text-align: center; margin-top: 8px; color: #341f44; }
+.v5-map-note { font-size: 10.5px; font-weight: 300; color: #8a7a5c; text-align: center; margin-top: 6px; }
+
+/* the plays (screen 4) */
+.v5-play { background: #fff; border: 1.5px solid #341f44; border-radius: 12px; padding: 12px 13px; margin-top: 10px; }
+.v5-play .pf { font-size: 10px; font-weight: 600; color: #256493; letter-spacing: .4px; text-transform: uppercase; }
+.v5-play .pp { font-size: 11px; font-weight: 300; color: #6b5a84; margin-top: 3px; line-height: 1.45; }
+.v5-play .ph { font-size: 13.5px; font-weight: 600; margin-top: 6px; line-height: 1.35; color: #341f44; }
+.v5-play .pcomp { font-size: 10.5px; font-weight: 400; color: #fe7c2b; margin-top: 6px; }
+.v5-play .pc { margin-top: 8px; font-size: 10.5px; font-weight: 600; color: #e5340b; }
+.v5-play .pc button {
+  font: inherit; color: inherit; background: none; border: none;
+  cursor: pointer; padding: 3px 0; letter-spacing: inherit;
+}
+
+/* the mini-card (screen 5) — the one allowed dark element */
+.v5-mini {
+  background: linear-gradient(135deg, #341f44, #4b2f66);
+  border-radius: 14px; color: #fcf3d6; padding: 15px; margin-top: 14px;
+}
+.v5-mini .mt { font-size: 10px; font-weight: 600; color: #ffc545; letter-spacing: .5px; text-transform: uppercase; }
+.v5-mini .mv { font-size: 13px; font-weight: 400; margin-top: 5px; line-height: 1.45; }
+.v5-mini .mrow { display: flex; gap: 6px; margin-top: 11px; flex-wrap: wrap; }
+.v5-mini .mchip { background: rgba(252,243,214,.14); border-radius: 8px; padding: 5px 9px; font-size: 9.5px; font-weight: 300; }
+.v5-copylink {
+  display: block; width: 100%; text-align: center; font-family: 'Poppins', sans-serif;
+  font-size: 11.5px; font-weight: 400; color: #256493; margin-top: 10px;
+  background: none; border: none; cursor: pointer;
+  text-decoration: underline; text-underline-offset: 2px;
+}
+.v5-foot { margin-top: auto; padding-top: 20px; text-align: center; font-size: 11px; font-weight: 300; color: #8a7a5c; }
+.v5-foot a { color: #256493; }
+.v5-foot .receipt { margin-top: 5px; font-size: 10px; color: #a08e69; }
+.v5-foot .receipt a { color: #8a7a5c; }
+
+/* the rival (screen +, never in the dot count) */
+.v5-them { position: absolute; width: 12px; height: 12px; border-radius: 50%; background: #341f44; box-shadow: 0 0 0 5px rgba(52,31,68,.15); z-index: 2; }
+.v5-them-lab { position: absolute; font-size: 10px; font-weight: 600; color: #341f44; z-index: 2; }
+.v5-side { display: flex; gap: 8px; margin-top: 12px; }
+.v5-side .half {
+  flex: 1; border: 1.5px solid #e8dcb8; border-radius: 10px;
+  padding: 9px 8px; font-size: 10px; font-weight: 300; text-align: center; background: #fff;
+}
+.v5-side .half b { display: block; font-weight: 600; margin-top: 2px; font-size: 11px; }
+.v5-side .half.win { border-color: #256493; background: #f4f8fb; }
+.v5-side .st-open { color: #256493; }
+.v5-side .st-crowded { color: #e5340b; }
+.v5-back { display: block; text-align: center; font-size: 12px; font-weight: 300; color: #8a7a5c; margin-top: 14px; text-decoration: underline; text-underline-offset: 2px; }
+
+/* the tap drawer, restyled for the cream system */
+body.v5 #whyPanel {
+  background: #fffdf5; border-left: 1px solid #e8dcb8; color: #341f44;
+  box-shadow: -30px 0 80px rgba(52,31,68,.18);
+}
+body.v5 .why-head { border-bottom: 1px solid #e8dcb8; }
+body.v5 .why-head b { color: #341f44; }
+body.v5 .why-body { color: #4a3a5e; font-size: 13px; }
+body.v5 .why-body b, body.v5 .why-body i { color: #341f44; }
+body.v5 .why-foot { border-top: 1px solid #e8dcb8; }
+body.v5 .why-foot span { color: #8a7a5c !important; }
+body.v5 #whyDeeper { display: none; }
+body.v5 #whyScrim { background: rgba(52,31,68,.25); }
+body.v5 .ask-close { color: #341f44; }
+body.v5 .badge { background: #fff; }
+body.v5 .badge.g-meta { color: #256493; border-color: rgba(37,100,147,.6); }
+body.v5 .badge.g-measured { color: #fe7c2b; border-color: rgba(254,124,43,.6); }
+body.v5 .badge.g-folklore { color: #a08e69; border-color: #c9b98d; }
+body.v5 .folk-card { border-color: #c9b98d !important; background: rgba(255,197,69,.12) !important; }
+body.v5 .folk-card::after { color: #a08e69; }
+.v5-verdict {
+  background: #341f44; color: #fcf3d6; border-radius: 12px;
+  padding: 12px 14px; font-size: 13.5px; font-weight: 400;
+  margin-top: 16px; line-height: 1.5;
+  opacity: 0; transition: opacity .4s;
+}
+.v5-verdict.in { opacity: 1; }
+.v5-verdict b { color: #ffc545; font-weight: 600; }
+
+/* ---------- footer ---------- *//* ---------- footer ---------- */
 #foot {
   border-top: 1px solid var(--line);
   background: rgba(26,16,37,.6);
@@ -1085,8 +1135,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <!-- static fallback: replaced by the app the moment JS boots -->
   <div class="view-pad" style="max-width:720px;margin:0 auto;padding:48px 20px;font-size:15px;line-height:1.75;color:rgba(252,243,214,.85)">
     <h1 style="font-size:26px;color:#fff;margin-bottom:14px">The Machine — what Meta sees when it reads your brand</h1>
-    <p style="margin-bottom:12px">Paste your site — and optionally drop in one of your ads — and the machine reads you the way Meta's delivery system does. While it works, you watch tens of millions of eligible ads collapse down to one. Then you get a scorecard: a verdict on the single biggest problem or strength (and whether it's a creative problem or a delivery problem), a hedged read on what it's likely costing you, three genuinely different angles with paste-ready creative briefs, and three grounded buyer personas reacting to your messaging in their own words — each one showing exactly which of your signals it's based on.</p>
-    <p style="margin-bottom:12px">Every explanation behind the verdict is one "why?" away, sourced and graded — Meta-published, independently measured, or practitioner folklore — and the full interactive lab behind the reader is one link away. No public spend or reach data exists for commercial advertisers, and this page never pretends otherwise.</p>
+    <p style="margin-bottom:12px">Paste your site — and optionally drop in one of your ads — and the machine reads you the way Meta's delivery system does. Six short screens follow. First, the read: the signals Meta picks up from your homepage, and a one-line verdict. Then the part most advertisers never see: change the message and watch a different audience light up, because on Meta the creative <em>is</em> the targeting. A territory map shows where your category shouts, where it sits quiet, and where you're pitching today. From the open ground come two or three plays — each a named move with a hook and a paste-ready brief. It all folds into one card you can download, share, and re-run in thirty days.</p>
+    <p style="margin-bottom:12px">Every claim is one "why?" away, sourced and graded, and the full interactive lab behind the reader is one link away.</p>
     <p style="color:rgba(252,243,214,.55);font-size:13px">This page needs JavaScript — the reader is live. From <a href="/" style="color:#ffc545">The Growth Den</a>.</p>
   </div>
 </main>
@@ -3639,7 +3689,7 @@ function render() {
   var cur = parseHash();
   var room = ROOMS.filter(function (r) { return r.slug === cur.slug; })[0];
   if (!room) return;
-  document.body.classList.remove('entry-mode');
+  document.body.classList.remove('entry-mode', 'v5');
   CLAIMS.length = 0;
   popover.hidden = true;
   detail.hidden = true;
@@ -3655,38 +3705,12 @@ function render() {
 }
 
 /* ============================================================
-   THE PRODUCT — one screen: "The Machine reads your brand".
-   Root shows only the input; everything else is on-demand.
+   V5 — the cream journey. Six screens, one interaction each,
+   dots always visible, visited screens jumpable.
    ============================================================ */
-var AD = { data: null, thumb: null };   // downscaled ad image (base64 jpeg body + display url)
-
-function viewInput() {
-  return '<div class="prod" id="prodRoot"><div class="prod-inner">' +
-    '<p class="ek">The Growth Den Lab</p>' +
-    '<h1>The Machine</h1>' +
-    '<p class="prod-promise">Paste your site. The machine tells you what Meta sees — and what to run instead.</p>' +
-    '<div class="prod-row">' +
-      '<input id="prodUrl" type="text" inputmode="url" placeholder="yourbrand.com" autocomplete="off" aria-label="Your site URL">' +
-      '<div class="prod-drop" id="prodDrop" role="button" tabindex="0" aria-label="Optional: add an ad image">' +
-        '<input type="file" id="prodFile" accept="image/*">' +
-        '<img id="prodThumb" alt="" style="display:none">' +
-        '<span id="prodDropTxt">have an ad?<br>drop it in</span>' +
-      '</div>' +
-    '</div>' +
-    '<p class="prod-drop-sub" id="prodDropSub">have an ad? drop it in — you’ll get a sharper verdict</p>' +
-    '<button class="run-btn prod-go" id="prodGo" type="button">Read my brand</button>' +
-    '<p class="scan-status" id="prodStatus" style="text-align:center"></p>' +
-    returnOfferHtml() +
-    '<a class="prod-demo" href="#" id="prodDemo">no site handy? see a demo read</a>' +
-  '</div></div>';
-}
-function returnOfferHtml() {
-  var prev = lastSaved();
-  if (!prev || !prev.dom) return '';
-  return '<p class="prod-return">welcome back — ' +
-    '<a href="#" id="prodRerun" data-dom="' + escHtml(prev.dom) + '">re-run ' + escHtml(prev.dom) + ' →</a>' +
-    ' · <a href="#" id="prodDelta" data-dom="' + escHtml(prev.dom) + '">what changed since last time?</a></p>';
-}
+var V5 = { screen: 0, visited: [0], run: null, dom: null, ad: { data: null, thumb: null } };
+var V5_LOGO = '../../uploads/Growth_Den__Logo_Horizontal_Dark.svg';
+var V5_SCREENS = [];   // render fns by index, filled in below
 
 function loadAdImage(dataUrl, cb) {
   var img = new Image();
@@ -3700,225 +3724,139 @@ function loadAdImage(dataUrl, cb) {
   img.onerror = function () { cb(null); };
   img.src = dataUrl;
 }
-
-function showProduct() {
-  if (roomCleanup) { try { roomCleanup(); } catch (e) { } roomCleanup = null; }
-  document.body.classList.add('entry-mode');
-  $('view').innerHTML = viewInput();
-  wireInput();
-  document.title = 'The Machine — what Meta sees when it reads your brand · The Growth Den Lab';
-  window.scrollTo(0, 0);
+function adLibHref(q) {
+  return 'https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=ALL&q=' + encodeURIComponent(q || '');
+}
+function plus30(dateStr) {
+  var d = new Date(dateStr || Date.now());
+  d.setDate(d.getDate() + 30);
+  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+}
+function lastSaved() {
+  try { return JSON.parse(localStorage.getItem('gd-read-last')); } catch (e) { return null; }
 }
 
-function wireInput() {
-  var drop = $('prodDrop'), file = $('prodFile'), thumb = $('prodThumb');
-  function setFromFile(f) {
-    if (!f || !/^image\//.test(f.type)) { $('prodStatus').textContent = 'that file doesn’t look like an image — try a JPG or PNG.'; return; }
+function v5Shell(inner, opts) {
+  opts = opts || {};
+  var active = opts.dot !== undefined ? opts.dot : V5.screen;
+  var dots = '';
+  for (var i = 0; i < 6; i++) {
+    var seen = V5.visited.indexOf(i) >= 0;
+    dots += '<button type="button" data-dot="' + i + '"' +
+      ' class="' + (i === active && !opts.noDot ? 'on' : seen ? 'seen' : '') + '"' +
+      (seen && i !== V5.screen ? '' : ' tabindex="-1"') +
+      ' aria-label="screen ' + i + '"></button>';
+  }
+  return '<div class="v5"><div class="v5-wrap">' +
+    '<img class="v5-logo" src="' + V5_LOGO + '" alt="The Growth Den">' +
+    '<div class="v5-dots">' + dots + '</div>' +
+    inner + '</div></div>';
+}
+function v5Mount(html, opts) {
+  document.body.classList.add('v5', 'entry-mode');
+  $('view').innerHTML = v5Shell(html, opts);
+  document.querySelectorAll('.v5-dots [data-dot]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var i = parseInt(b.dataset.dot, 10);
+      if (V5.visited.indexOf(i) >= 0 && i !== V5.screen) goScreen(i);
+    });
+  });
+  window.scrollTo(0, 0);
+}
+function goScreen(i) {
+  if (i > 0 && !V5.run) return;
+  V5.screen = i;
+  if (V5.visited.indexOf(i) < 0) V5.visited.push(i);
+  V5_SCREENS[i]();
+}
+
+/* ---- screen 0 · Enter ---- */
+V5_SCREENS[0] = function screenEnter() {
+  var prev = lastSaved();
+  v5Mount(
+    '<h2 style="margin-top:6px">What does Meta see when it looks at your brand?</h2>' +
+    '<input class="v5-field" id="v5Url" type="text" inputmode="url" placeholder="yourbrand.com" autocomplete="off" aria-label="Your site">' +
+    '<div class="v5-drop" id="v5Drop" role="button" tabindex="0" aria-label="Optional: drop an ad">' +
+      '<input type="file" id="v5File" accept="image/*">' +
+      '<img id="v5Thumb" alt="" style="display:none">' +
+      '<span id="v5DropTxt">＋ drop an ad for a sharper read (optional)</span>' +
+    '</div>' +
+    '<button class="v5-btn" id="v5Go" type="button">Read my brand</button>' +
+    '<p class="v5-status" id="v5Status"></p>' +
+    '<a class="v5-demo" href="#" id="v5Demo">see a demo read</a>'
+  );
+  var drop = $('v5Drop'), file = $('v5File'), thumb = $('v5Thumb');
+  function fromFile(f) {
+    if (!f || !/^image\//.test(f.type)) { $('v5Status').textContent = 'that file doesn’t look like an image — try a JPG or PNG.'; return; }
     var rd = new FileReader();
     rd.onload = function () {
       loadAdImage(rd.result, function (out) {
-        if (!out) { $('prodStatus').textContent = 'couldn’t read that image — try another.'; return; }
-        AD.data = out.split(',')[1];
-        AD.thumb = out;
+        if (!out) { $('v5Status').textContent = 'couldn’t read that image — try another.'; return; }
+        V5.ad.data = out.split(',')[1];
+        V5.ad.thumb = out;
         thumb.src = out; thumb.style.display = 'block';
-        $('prodDropTxt').style.display = 'none';
-        $('prodDropSub').textContent = '✓ ad loaded — the verdict will read it too';
-        $('prodStatus').textContent = '';
+        $('v5DropTxt').style.visibility = 'hidden';
+        $('v5Status').textContent = '';
       });
     };
     rd.readAsDataURL(f);
   }
   drop.addEventListener('click', function (e) { if (e.target !== file) file.click(); });
   drop.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); file.click(); } });
-  file.addEventListener('change', function () { setFromFile(file.files[0]); });
+  file.addEventListener('change', function () { fromFile(file.files[0]); });
   drop.addEventListener('dragover', function (e) { e.preventDefault(); drop.classList.add('drag'); });
   drop.addEventListener('dragleave', function () { drop.classList.remove('drag'); });
   drop.addEventListener('drop', function (e) {
     e.preventDefault(); drop.classList.remove('drag');
-    if (e.dataTransfer.files && e.dataTransfer.files[0]) setFromFile(e.dataTransfer.files[0]);
+    if (e.dataTransfer.files && e.dataTransfer.files[0]) fromFile(e.dataTransfer.files[0]);
   });
-  $('prodGo').addEventListener('click', function () { runRead($('prodUrl').value, {}); });
-  $('prodUrl').addEventListener('keydown', function (e) { if (e.key === 'Enter') $('prodGo').click(); });
-  $('prodDemo').addEventListener('click', function (e) { e.preventDefault(); runRead('thegrowthden.com', { demo: true }); });
-  var rr = $('prodRerun'), rd2 = $('prodDelta');
-  if (rr) rr.addEventListener('click', function (e) { e.preventDefault(); runRead(rr.dataset.dom, {}); });
-  if (rd2) rd2.addEventListener('click', function (e) { e.preventDefault(); runRead(rd2.dataset.dom, {}); });
-  var prev = lastSaved();
-  if (prev && prev.dom && !$('prodUrl').value) $('prodUrl').value = prev.dom;
+  $('v5Go').addEventListener('click', function () { runRead($('v5Url').value, {}); });
+  $('v5Url').addEventListener('keydown', function (e) { if (e.key === 'Enter') $('v5Go').click(); });
+  $('v5Demo').addEventListener('click', function (e) { e.preventDefault(); runRead('thegrowthden.com', { demo: true }); });
+  if (prev && prev.dom && !$('v5Url').value) $('v5Url').value = prev.dom;
+  document.title = 'The Machine — what Meta sees when it reads your brand · The Growth Den Lab';
 }
 
-/* ============================================================
-   THE LOADER — the collapse animation IS the loading state.
-   Coupled to the analysis promise: resolves early when the answer
-   arrives early; a tap fast-forwards; it never blocks the result.
-   ============================================================ */
-var LOADER = { active: false, raf: 0, p: 0, fast: false, resolved: false, done: null, t: 0, dots: [], W: 0, H: 0, dpr: 1, rs: null };
-var LOAD_STAGES = [41700000, 1200000, 96000, 8400, 2000];
-var LOAD_LINES = [
-  'reading your site…',
-  'ten million ads are technically eligible for your buyers’ feeds…',
-  'finding the people your signals actually call…',
-  'writing the verdict…',
-];
-
-function showLoader() {
-  LOADER.active = true; LOADER.p = 0; LOADER.fast = false; LOADER.resolved = false; LOADER.t = 0;
-  document.body.classList.add('entry-mode');
-  $('view').innerHTML = '<div class="loader" id="ldRoot">' +
-    '<canvas id="ldCv"></canvas>' +
-    '<p class="ld-skip">tap to skip the show</p>' +
-    '<p class="ld-line" aria-live="polite"><span id="ldLine"></span><span class="ld-sub" id="ldSub"></span></p></div>';
-  var cv = $('ldCv'), ctx = cv.getContext('2d');
-  function resize() {
-    LOADER.dpr = Math.min(2, window.devicePixelRatio || 1);
-    LOADER.W = window.innerWidth; LOADER.H = window.innerHeight;
-    cv.width = Math.round(LOADER.W * LOADER.dpr);
-    cv.height = Math.round(LOADER.H * LOADER.dpr);
-    if (!J.galaxy) J.galaxy = makeGalaxy(LOADER.W, LOADER.H);
-    LOADER.dots = [];
-    var n = clamp(Math.round(LOADER.W * LOADER.H / 900), 350, 900);
-    for (var i = 0; i < n; i++) {
-      LOADER.dots.push({ hx: Math.random(), hy: Math.random() * .72 + .04, rank: Math.random(),
-        r: .8 + Math.random() * 1.6, tw: Math.random() * 6.28, dead: 0, you: i === 42 });
-    }
-    LOADER.dots[42].rank = .001;
-  }
-  resize();
-  LOADER.rs = resize;
-  window.addEventListener('resize', LOADER.rs);
-  $('ldRoot').addEventListener('pointerdown', function () { LOADER.fast = true; });
-  var last = performance.now();
-  function loop(now) {
-    if (!LOADER.active) return;
-    var dt = Math.min(.05, (now - last) / 1000); last = now;
-    LOADER.t += dt;
-    var cap = LOADER.resolved ? 1 : .82;   // hold before the finale until the answer is real
-    LOADER.p = Math.min(cap, LOADER.p + dt * (LOADER.fast ? 1.6 : 1 / 6.5));
-    drawLoader(ctx, dt);
-    var li = LOADER.resolved && LOADER.p > .8 ? 3 : Math.min(3, Math.floor(LOADER.p * 4.2));
-    var lineEl = $('ldLine');
-    if (lineEl && lineEl.textContent !== LOAD_LINES[li]) lineEl.textContent = LOAD_LINES[li];
-    var sub = $('ldSub');
-    if (sub) sub.textContent = (!LOADER.resolved && LOADER.p >= .82) ? 'the machine is still thinking — almost there' : '';
-    if (LOADER.resolved && LOADER.p >= 1) {
-      hideLoader();
-      var cb = LOADER.done; LOADER.done = null;
-      if (cb) cb();
-      return;
-    }
-    LOADER.raf = requestAnimationFrame(loop);
-  }
-  LOADER.raf = requestAnimationFrame(loop);
-}
-function drawLoader(ctx, dt) {
-  var w = LOADER.W, h = LOADER.H, t = LOADER.t, cp = LOADER.p * 4;
-  ctx.setTransform(LOADER.dpr, 0, 0, LOADER.dpr, 0, 0);
-  ctx.clearRect(0, 0, w, h);
-  if (J.galaxy) {
-    ctx.globalAlpha = clamp(.7 - cp * .26, 0, .7);
-    ctx.drawImage(J.galaxy, 0, 0, w, h);
-    ctx.globalAlpha = 1;
-  }
-  var stage = Math.floor(cp);
-  var F = [1, .5, .26, .12, .055], F2 = [.5, .26, .12, .055, .055];
-  var surviveFrac = F[clamp(stage, 0, 4)] - (cp % 1) * (F[clamp(stage, 0, 4)] - F2[clamp(stage, 0, 4)]);
-  var bandH = (h * .5) / 4;
-  for (var L = 0; L < 4; L++) {
-    var y0 = h * .12 + L * bandH;
-    var lit = clamp(1 - Math.abs(cp - (L + .5)) * 1.6, 0, 1);
-    if (lit <= 0) continue;
-    ctx.fillStyle = 'rgba(37,100,147,' + lit * .13 + ')';
-    ctx.fillRect(0, y0, w, bandH - 4);
-    var swx = ((t * .5 + L * .3) % 1) * w;
-    var grad = ctx.createLinearGradient(swx - 80, 0, swx, 0);
-    grad.addColorStop(0, 'rgba(127,200,240,0)');
-    grad.addColorStop(1, 'rgba(127,200,240,' + lit * .4 + ')');
-    ctx.fillStyle = grad;
-    ctx.fillRect(swx - 80, y0, 80, bandH - 4);
-  }
-  LOADER.dots.forEach(function (d) {
-    var alive = d.rank < surviveFrac;
-    d.dead = lerp(d.dead, alive ? 0 : 1, dt * 2.4);
-    var fx = d.hx, fy = d.hy;
-    if (alive && cp > 3.2) {
-      var g = clamp((cp - 3.2) / .8, 0, 1);
-      fx = lerp(d.hx, .5 + (d.hx - .5) * .25, g);
-      fy = lerp(d.hy, .42 + (d.hy - .5) * .07, g);
-    }
-    var yy = fy + d.dead * .3;
-    var a = (1 - d.dead) * (.3 + .5 * Math.abs(Math.sin(t * 1.4 + d.tw)));
-    if (d.you) {
-      ctx.save();
-      ctx.shadowColor = 'rgba(254,124,43,.95)'; ctx.shadowBlur = 15;
-      ctx.fillStyle = 'rgba(254,124,43,.95)';
-      ctx.beginPath(); ctx.arc(fx * w, yy * h, 3.6 + (cp > 3.6 ? 2.4 : 0), 0, 6.29); ctx.fill();
-      ctx.restore();
-    } else if (a > .02) {
-      ctx.fillStyle = 'rgba(232,222,240,' + a + ')';
-      ctx.beginPath(); ctx.arc(fx * w, yy * h, d.r, 0, 6.29); ctx.fill();
-    }
-  });
-  var i0 = clamp(stage, 0, 4), i1 = clamp(i0 + 1, 0, 4);
-  var n = cp >= 4 ? LOAD_STAGES[4] : Math.exp(lerp(Math.log(LOAD_STAGES[i0]), Math.log(LOAD_STAGES[i1]), cp % 1));
-  ctx.font = '800 ' + Math.min(46, w * .09) + 'px Poppins, sans-serif';
-  ctx.textAlign = 'center';
-  ctx.fillStyle = cp > 3.6 ? 'rgba(255,197,69,.95)' : 'rgba(252,243,214,.9)';
-  ctx.fillText(Math.round(n).toLocaleString('en-US'), w / 2, h * .085);
-  ctx.font = '500 12px Poppins, sans-serif';
-  ctx.fillStyle = 'rgba(252,243,214,.55)';
-  ctx.fillText(cp >= 4 ? 'candidates left — the orange one is yours' : 'ads competing for your buyers, right now', w / 2, h * .085 + 20);
-}
-function hideLoader() {
-  LOADER.active = false;
-  cancelAnimationFrame(LOADER.raf);
-  if (LOADER.rs) window.removeEventListener('resize', LOADER.rs);
-}
-/* run `promise` behind the show; the show resolves as soon as the promise does */
-function runWithLoader(promise, onDone, onFail) {
-  showLoader();
-  promise.then(function (res) {
-    LOADER.resolved = true;
-    LOADER.fast = true;
-    LOADER.done = function () { onDone(res); };
-  }, function (err) {
-    hideLoader();
-    onFail(err);
-  });
+function showProduct() {
+  if (roomCleanup) { try { roomCleanup(); } catch (e) { } roomCleanup = null; }
+  V5_SCREENS[V5.screen === 0 || !V5.run ? 0 : V5.screen]();
 }
 
-/* ============================================================
-   THE ANALYSIS — one consolidated call.
-   /fetch the homepage → parse public signals → ONE sonnet request
-   (vision block included when an ad was dropped) → strict JSON.
-   ============================================================ */
-var LAST_RUN = null;   // {data, sig, dom, hadAd, date, adThumb}
-
-function readerPrompt(hadAd) {
-  return 'You are “The Machine”, a brand reader built on Meta’s ad delivery mechanics (user-conditioned retrieval, estimated action rates, the total-value auction, quality penalties, creative-as-targeting, fatigue, similarity collapse). ' +
-    'You receive parsed PUBLIC homepage signals' + (hadAd ? ' plus ONE ad image from the brand' : '') + '. ' +
+/* ---- the AI call: one consolidated request, strict JSON ---- */
+function v5Extract(html, dom) {
+  var sig = parseSiteLite(html, dom);
+  var text = '';
+  try {
+    var doc = new DOMParser().parseFromString(html, 'text/html');
+    doc.querySelectorAll('script,style,noscript,svg').forEach(function (n) { n.remove(); });
+    text = (doc.body ? doc.body.textContent : '').replace(/\s+/g, ' ').trim().slice(0, 1800);
+  } catch (e) { }
+  sig.text = text;
+  return sig;
+}
+function v5Prompt(hadAd) {
+  return 'You are “The Machine”, reading a brand the way Meta’s delivery system does (user-conditioned retrieval, creative-as-targeting, auction pressure, fatigue). ' +
+    'You receive extracted PUBLIC homepage text' + (hadAd ? ' plus ONE of the brand’s ad images' : '') + '. ' +
     'Reply with STRICT JSON only — no prose, no code fences: ' +
-    '{"verdict": {' +
-      '"headline": one sharp sentence. ' + (hadAd
-        ? 'Name the single biggest problem or strength of THIS AD for this brand, and say explicitly whether it is a CREATIVE problem or a DELIVERY problem. '
-        : 'A real verdict on the brand’s positioning and creative readiness from the homepage alone — never ask for an ad, never say “upload an ad”. ') +
-      ', "impact": one felt-impact line anchored to their business (e.g. “a hook this generic is likely costing you $40+ per lead against category norms”) — always hedged as directional (“likely”, “roughly”, “against category norms”), never fake precision, never invented account data}, ' +
-    '"angles": [exactly 3 of {' +
-      '"name": 2-5 word angle name, ' +
-      '"frame": "persona × emotion × format" — one short phrase naming all three, ' +
-      '"why": one line on why this works in DELIVERY terms (signal strength, fatigue risk, or similarity risk), ' +
-      '"brief": {"hook": the opening hook line, "visual": one-line visual direction, "copy": 1-2 sentences of opening primary text}, ' +
-      '"complianceNote": ONLY if the brand’s category is regulated (healthcare, finance, supplements): one line on claim safety — otherwise OMIT this key}], ' +
-    '"personas": [exactly 3 of {' +
-      '"descriptor": a vivid one-line person (like “the skeptical 41-year-old who’s tried everything”), ' +
-      '"grounding": REQUIRED — a line starting “based on: ” citing the concrete observed signals (price points, guarantees, offer language, category buying patterns) that justify this persona, ' +
-      '"quote": 2-3 sentences of plain present-tense speech reacting to ' + (hadAd ? 'THE AD' : 'the homepage’s current messaging') + ', ' +
-      '"resonates": "yes" | "no" | "partial"}], ' +
-    '"category": 2-4 word category, ' +
-    '"adLibraryQuery": the best search term for finding this brand in Meta’s Ad Library (usually the brand name)}. ' +
-    'SELF-CHECK before returning: verify no two angles share a persona, an emotion, OR a format — if any two do, regenerate the duplicates until all three angles differ on all three dimensions. If the site’s content is thin, still diverge on frame — never return reskins of one idea. ' +
-    'Rules: infer only from the provided signals' + (hadAd ? ' and image' : '') + '; never invent spend, reach, or audience numbers — none are public; every impact figure must read as a hedged directional estimate; NEVER mention pixels, tags, tracking, or analytics; do not name The Growth Den; write plainly — no jargon without a gloss.';
+    '{"signals": [4-6 of {"label": short chip text like "$200 average order", "‘30-day guarantee’", "Tone: clinical" — 4 words max, ' +
+      '"type": "strong"|"warm"|"missing", "why": one line for the tap drawer}], ' +
+    '"readVerdict": {"headline": 6 words max, punchy, like "Strong offer. Weak feeling.", "line": 14 words max completing the thought}, ' +
+    '"frames": [exactly 3 of {"chipLabel": ONE word naming a message frame chosen for THIS product ("Proof"/"Ease"/"Gift" style), ' +
+      '"audience": 6 words max — who lights up, like "the skeptics light up", ' +
+      '"caption": 12 words max, in the exact pattern "your product, pitched on <frame> → <who lights up>"}], ' +
+    '"ecosystem": {"crowded": [1-2 of {"label": 3 words max, "note": 8 words max on who wins there}], ' +
+      '"open": [exactly 2 of {"label": 3 words max, "note": 8 words max}], ' +
+      '"you": the label of the territory this brand CURRENTLY sits in (must match one crowded or open label exactly), ' +
+      '"verdictLine": 12 words max, like "You’re pitching where it’s loudest. Two territories sit open."}, ' +
+    '"plays": [2-3 of {"playName": a NAMED reusable move in caps, "THE PROOF FLIP" style, ' +
+      '"principle": 12 words max teaching the move, "hook": the applied one-liner for THIS product, ' +
+      '"brief": {"hook": same or sharper, "visual": one-line visual direction, "copy": 1-2 sentences of opening copy}, ' +
+      '"territoryRef": the open-territory label this play enters (match exactly), ' +
+      '"complianceNote": ONLY if the category is regulated (healthcare, finance, supplements): one line on claim safety — otherwise OMIT the key}], ' +
+    '"cardSummary": 16 words max compressing verdict + territory + play count}. ' +
+    'SELF-CHECK before returning: the 3 chipLabels must be genuinely different message FRAMES, never synonyms; each play’s territoryRef must be a different open territory where possible; if any collide, regenerate them internally before answering. ' +
+    'Rules: infer only from the provided text' + (hadAd ? ' and image' : '') + '; never invent spend, reach, or audience numbers; NEVER mention pixels, tags, tracking, or analytics; keep every string inside its word budget; plain language, no jargon.';
 }
-
 function analyze(dom, adData) {
   return fetch(PROXY_URL + '/fetch', {
     method: 'POST', headers: { 'Content-Type': 'application/json' },
@@ -3930,363 +3868,530 @@ function analyze(dom, adData) {
     return r.json();
   }).then(function (f) {
     if (!f.html || (f.status && f.status >= 400)) throw { code: 'blocked' };
-    var sig = parseSiteLite(f.html, dom);
+    var sig = v5Extract(f.html, dom);
     var content = [];
     if (adData) content.push({ type: 'image', source: { type: 'base64', media_type: 'image/jpeg', data: adData } });
-    content.push({ type: 'text', text: 'HOMEPAGE SIGNALS:\n' + JSON.stringify(sig, null, 1) +
-      (adData ? '\n\nThe attached image is one of this brand’s ads.' : '\n\nNo ad was provided — read the brand from the homepage signals alone.') });
+    content.push({ type: 'text', text: 'HOMEPAGE (' + dom + '):\n' + JSON.stringify(sig, null, 1) +
+      (adData ? '\n\nThe attached image is one of this brand’s ads — factor it into the read.' : '') });
     return streamClaude({
       model: 'claude-sonnet-4-5', max_tokens: 3500, stream: false,
-      system: readerPrompt(!!adData),
+      system: v5Prompt(!!adData),
       messages: [{ role: 'user', content: content }],
     }, function () { }).then(function (full) {
       var data = JSON.parse(full.slice(full.indexOf('{'), full.lastIndexOf('}') + 1));
-      if (!data.verdict || !data.angles || !data.personas) throw new SyntaxError('shape');
-      return { data: data, sig: sig, dom: dom, hadAd: !!adData,
-        adThumb: adData ? AD.thumb : null, date: new Date().toISOString().slice(0, 10) };
+      if (!data.signals || !data.readVerdict || !data.frames || !data.ecosystem || !data.plays) throw new SyntaxError('shape');
+      return {
+        data: data, dom: dom, hadAd: !!adData,
+        adThumb: adData ? V5.ad.thumb : null,
+        name: sig.siteName || (sig.title || '').split(/[|–—-]/)[0].trim() || prettyDomain(dom),
+        date: new Date().toISOString().slice(0, 10),
+      };
     });
   });
 }
-
-function readFail(err) {
-  showProduct();
-  var s = $('prodStatus');
+/* the wait: screen 1's shell with skeleton chips pulsing — no cinematic loader */
+function mountReading(dom) {
+  v5Mount(
+    '<h2>Reading ' + escHtml(dom) + '…</h2>' +
+    '<p class="v5-sub">your signals appear one by one</p>' +
+    '<div class="v5-chips" id="v5ReadChips">' +
+      '<span class="v5-chip skel">&nbsp;</span><span class="v5-chip skel" style="min-width:120px">&nbsp;</span>' +
+      '<span class="v5-chip skel" style="min-width:78px">&nbsp;</span>' +
+    '</div>',
+    { dot: 1 }
+  );
+}
+function v5Fail(err) {
+  V5_SCREENS[0]();
+  var s = $('v5Status');
   if (!s) return;
-  if (err && err.code === 429) s.textContent = depthMsg(MSG_BUSY);
-  else if (err && err.code === 503) s.textContent = depthMsg(MSG_NAP);
-  else if (err && err.code === 413) s.textContent = '📦 that ad image is too heavy for the wire — try a smaller crop.';
-  else if (err && err.code === 'blocked') s.textContent = '🚪 that site bounced our reader at the door — some do. Try another domain, or the demo read.';
-  else if (err instanceof SyntaxError) s.textContent = '🤖 the verdict came back garbled — run it once more.';
-  else s.textContent = depthMsg(MSG_LOCAL);
+  if (err && err.code === 429) s.textContent = 'the lab is busy — give it a minute, then read again.';
+  else if (err && err.code === 503) s.textContent = 'the machine is napping — try again shortly.';
+  else if (err && err.code === 413) s.textContent = 'that ad image is too heavy — try a smaller crop.';
+  else if (err && err.code === 'blocked') s.textContent = 'that site bounced our reader — some do. Try another domain, or the demo.';
+  else if (err instanceof SyntaxError) s.textContent = 'the read came back garbled — run it once more.';
+  else s.textContent = 'the reader only runs on the live site (thegrowthden.com) — this is a local preview.';
 }
-
-/* ---- memory: last run in localStorage; this session's ad runs per brand ---- */
-function lastSaved() {
-  try { return JSON.parse(localStorage.getItem('gd-read-last')); } catch (e) { return null; }
-}
-function saveRun(res) {
-  try {
-    localStorage.setItem('gd-read-last', JSON.stringify({
-      dom: res.dom, date: res.date, headline: (res.data.verdict || {}).headline || '', hadAd: res.hadAd,
-    }));
-  } catch (e) { }
-}
-function sessionAdRuns(dom) {
-  try { return JSON.parse(sessionStorage.getItem('gd-adruns-' + dom)) || []; } catch (e) { return []; }
-}
-function pushAdRun(res) {
-  if (!res.hadAd) return;
-  try {
-    var runs = sessionAdRuns(res.dom);
-    runs.push({ headline: (res.data.verdict || {}).headline || '', thumb: res.adThumb || null });
-    sessionStorage.setItem('gd-adruns-' + res.dom, JSON.stringify(runs.slice(-2)));
-  } catch (e) { }
-}
-
-function runRead(rawUrl, opts) {
-  opts = opts || {};
-  var dom = normDomain(rawUrl);
-  if (!dom) { $('prodStatus').textContent = 'that doesn’t look like a domain — try yourbrand.com'; return; }
-  var adData = opts.demo ? null : AD.data;
-  var prev = lastSaved();
-  var priorAds = sessionAdRuns(dom);
-  runWithLoader(analyze(dom, adData), function (res) {
-    LAST_RUN = res;
-    /* the lab reads the brand context live from its canvases */
-    var name = res.sig.siteName || (res.sig.title || '').split(/[|–—-]/)[0].trim() || prettyDomain(dom);
-    BRAND = { domain: dom, name: name, category: res.data.category || '', resolved: true };
-    var cmp = {
-      prev: (prev && prev.dom === dom && prev.headline) ? prev : null,
-      adPair: (res.hadAd && priorAds.length) ? [priorAds[priorAds.length - 1], { headline: (res.data.verdict || {}).headline || '', thumb: res.adThumb || null }] : null,
-    };
-    saveRun(res);
-    pushAdRun(res);
-    showScorecard(res, cmp);
-  }, readFail);
-}
-
-/* ============================================================
-   THE "WHY?" LAYER — small links open a slide-in drawer with the
-   sourced explanation drawn from the portal's content registers.
-   Plain voice by default; "go deeper" shows the pro register; the
-   footer easter egg re-renders drawers in the kid register.
-   ============================================================ */
-var EGG = false;   // "explain it like I'm 8"
-function whyContent(key) {
-  if (key === 'verdict') {
-    return { title: 'How the machine reads a brand', html:
-      d3('j.open.body') +
-      '<p style="font-size:12px">' + claim('Andromeda, Meta’s retrieval engine, filters tens of millions of candidate ads down to a few thousand per person — your brand’s signals decide whether you’re even in the room.', 'meta', SRC.andromeda.name, SRC.andromeda.url) + '</p>' +
-      '<p style="font-size:12px">' + claim('The auction winner is the ad with the highest total value — bid × estimated action rate + quality — and pays the minimum needed to win.', 'meta', SRC.auction.name, SRC.auction.url) + '</p>' +
-      '<div class="folk-card" style="border-radius:14px;padding:12px 14px;margin-top:12px;font-size:12.5px">' + d3('s.honesty') + '</div>' };
-  }
-  if (key === 'angles') {
-    return { title: 'Why delivery cares about your angle', html:
-      d3('c.d2') +
-      '<p style="font-size:12px">' + claim('A per-ad “similarity score” is a practitioner reconstruction — not a confirmed Meta metric. The collapse behavior is what practitioners observe.', 'folklore', 'Practitioner reconstruction; no confirmed Meta metric exists', null) + '</p>' +
-      d3('r.c1') +
-      '<p style="font-size:12px">' + claim('The fatigue trigger Meta surfaces is cost-based — your cost per result vs. your own baseline — not any frequency number.', 'folklore', 'The “magic frequency number”: widely repeated, never verified', 'https://www.facebook.com/business/help') + '</p>' +
-      '<p style="font-size:12px">' + claim('Quality includes documented negative signals: ads people hide or report, clickbait and engagement bait, poor post-click landing experiences.', 'meta', SRC.quality.name, SRC.quality.url) + '</p>' };
-  }
-  /* personas */
-  return { title: 'Where these people come from', html:
-    d3('r.intro') +
-    '<p style="font-size:12px">' + claim('Within one ad set, different creatives are delivered to systematically different demographic subgroups — measured across 181,890 Meta A/B tests.', 'measured', SRC.kellogg.name, SRC.kellogg.url) + '</p>' +
-    d3('m.gem.tue') +
-    '<div class="folk-card" style="border-radius:14px;padding:12px 14px;margin-top:12px;font-size:12.5px"><b style="color:var(--gold)">The honest part:</b> these three people are AI inference, grounded only in your site’s public signals and category buying patterns — they are not real users, and no platform audience data feeds them. That’s why every card shows its “based on” line.</div>' };
-}
-function openWhy(key) {
-  var c = whyContent(key);
-  setDepth(EGG ? 'kid' : 'cmo');
-  $('whyTitle').textContent = c.title;
-  $('whyBody').innerHTML = c.html;
-  $('whyDeeper').textContent = 'go deeper →';
+/* ---- depth on tap: the small explanation drawer ---- */
+function openWhy(title, html) {
+  $('whyTitle').textContent = title;
+  $('whyBody').innerHTML = html;
   $('whyScrim').hidden = false;
   $('whyPanel').classList.add('open');
 }
 function closeWhy() {
   $('whyPanel').classList.remove('open');
   $('whyScrim').hidden = true;
-  setDepth(EGG ? 'kid' : 'cmo');
 }
 (function wireWhy() {
   $('whyClose').addEventListener('click', closeWhy);
   $('whyScrim').addEventListener('click', closeWhy);
-  $('whyDeeper').addEventListener('click', function (e) {
-    e.preventDefault();
-    var deeper = depth !== 'pro';
-    setDepth(deeper ? 'pro' : (EGG ? 'kid' : 'cmo'));
-    $('whyDeeper').textContent = deeper ? '← back to plain' : 'go deeper →';
-  });
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape' && $('whyPanel').classList.contains('open')) closeWhy();
   });
-  document.addEventListener('click', function (e) {
-    var w = e.target.closest('[data-why]');
-    if (w) { e.preventDefault(); openWhy(w.dataset.why); }
-  });
 })();
 
-/* ============================================================
-   THE SCORECARD — verdict, angles, personas, evidence, share, CTA.
-   ============================================================ */
-function markCls(r) { return r === 'yes' ? 'm-yes' : r === 'no' ? 'm-no' : 'm-partial'; }
-function markTxt(r) { return r === 'yes' ? '✓ resonates' : r === 'no' ? '✕ doesn’t land' : '◐ partial'; }
-function plus30(dateStr) {
-  var d = new Date(dateStr || Date.now());
-  d.setDate(d.getDate() + 30);
-  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-}
-function angleCard(a, i, personas) {
-  var ev = (personas || []).filter(function (p) { return p.resonates !== 'no'; }).slice(0, 2);
-  var b = a.brief || {};
-  return '<details class="ang" data-ai="' + i + '"><summary>' +
-      '<span class="ang-name">' + escHtml(a.name || '') + '</span>' +
-      (a.complianceNote ? '<span class="ang-flag" title="' + escHtml(a.complianceNote) + '">⚖ compliance</span>' : '') +
-      '<span class="ang-why">' + escHtml(a.why || '') + '</span>' +
-    '</summary><div class="ang-body">' +
-      '<div class="brief">' +
-        '<button class="b-copy" type="button" data-copy="' + i + '">⧉ copy</button>' +
-        '<p class="b-k">hook</p><p class="b-v">' + escHtml(b.hook || '') + '</p>' +
-        '<p class="b-k">visual</p><p class="b-v">' + escHtml(b.visual || '') + '</p>' +
-        '<p class="b-k">opening copy</p><p class="b-v">' + escHtml(b.copy || '') + '</p>' +
-        '<p class="b-k">frame</p><p class="b-v">' + escHtml(a.frame || '') + '</p>' +
-      '</div>' +
-      (a.complianceNote ? '<p style="font-size:12px;color:var(--gold);margin-bottom:10px">⚖ ' + escHtml(a.complianceNote) + '</p>' : '') +
-      (ev.length ? '<div class="ang-ev"><b>what your buyers would say:</b> ' + ev.map(function (p) {
-        var first = (p.quote || '').split('. ')[0];
-        return '“' + escHtml(first + (first === (p.quote || '') ? '' : '.')) + '” <span style="color:var(--sky)">— ' + escHtml(p.descriptor || '') + '</span>';
-      }).join(' · ') + '</div>' : '') +
-      '<p class="ang-links"><a href="' + adLibHref(LAST_RUN && LAST_RUN.data.adLibraryQuery) + '" target="_blank" rel="noopener noreferrer">see what the category runs, in Meta’s Ad Library →</a>' +
-        ' · <button class="why-link" type="button" data-why="angles">why does delivery care?</button></p>' +
-    '</div></details>';
-}
-function adLibHref(q) {
-  return 'https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=ALL&q=' + encodeURIComponent(q || (BRAND ? BRAND.name : ''));
-}
-function briefText(a) {
-  var b = a.brief || {};
-  return 'ANGLE: ' + (a.name || '') + '\nFRAME: ' + (a.frame || '') + '\nHOOK: ' + (b.hook || '') +
-    '\nVISUAL: ' + (b.visual || '') + '\nOPENING COPY: ' + (b.copy || '') +
-    (a.complianceNote ? '\nCOMPLIANCE: ' + a.complianceNote : '');
-}
-function showScorecard(res, cmp) {
-  cmp = cmp || {};
-  document.body.classList.add('entry-mode');
-  var d = res.data, v = d.verdict || {};
-  var name = BRAND ? BRAND.name : res.dom;
-  var h = '<div class="score"><div class="sc-wrap">' +
-    /* 1 · the verdict — first, above the fold */
-    '<div class="sc-kicker"><span>The machine read ' + escHtml(name) + '</span>' +
-      '<span class="sc-date">' + escHtml(res.dom) + ' · ' + res.date + (res.hadAd ? ' · with your ad' : '') + '</span></div>' +
-    (cmp.prev ? '<div class="sc-delta"><b>vs your last run (' + escHtml(cmp.prev.date) + '):</b> “' +
-      escHtml(cmp.prev.headline) + '” — compare it against today’s verdict below. Your own runs only; we don’t monitor anything.</div>' : '') +
-    (cmp.adPair ? '<div class="sc-adcmp">' +
-      '<div class="ac-col"><p class="ac-k">Ad 1 · earlier this session</p>' +
-        (cmp.adPair[0].thumb ? '<img src="' + cmp.adPair[0].thumb + '" alt="">' : '') +
-        '<p class="ac-h">' + escHtml(cmp.adPair[0].headline) + '</p></div>' +
-      '<div class="ac-col"><p class="ac-k">Ad 2 · this run</p>' +
-        (cmp.adPair[1].thumb ? '<img src="' + cmp.adPair[1].thumb + '" alt="">' : '') +
-        '<p class="ac-h">' + escHtml(cmp.adPair[1].headline) + '</p></div>' +
-      '<p class="ac-cap">side-by-side of your own two reads this session — built for creative reviews</p></div>' : '') +
-    '<div class="sc-verdict"><h1>' + escHtml(v.headline || '') + '</h1>' +
-    '<p class="sc-impact">' + escHtml(v.impact || '') +
-      ' <button class="why-link" type="button" data-why="verdict">why?</button></p></div>' +
-    /* 2 · angles */
-    '<h2 class="sc-h2">What to run instead<span class="sc-sub">three angles — open one for the paste-ready brief</span></h2>' +
-    (d.angles || []).slice(0, 3).map(function (a, i) { return angleCard(a, i, d.personas); }).join('') +
-    /* 3 · personas */
-    '<h2 class="sc-h2">Your buyers, reacting<span class="sc-sub">' +
-      (res.hadAd ? 'three people the machine grounded in your signals, reacting to your ad' : 'three people the machine grounded in your signals, reacting to your homepage’s current messaging') +
-      ' <button class="why-link" type="button" data-why="personas">why should I trust these?</button>' +
-    '</span></h2>' +
-    (d.personas || []).slice(0, 3).map(function (p) {
-      return '<div class="per-card"><div class="per-top">' +
-        '<span class="per-desc">' + escHtml(p.descriptor || '') + '</span>' +
-        '<span class="per-mark ' + markCls(p.resonates) + '">' + markTxt(p.resonates) + '</span></div>' +
-        '<p class="per-quote">“' + escHtml(p.quote || '') + '”</p>' +
-        '<p class="per-ground">' + escHtml(p.grounding || '') + '</p></div>';
-    }).join('') +
-    /* 4 · evidence row */
-    '<div class="sc-evidence"><b style="color:var(--gold)">The evidence:</b> ' +
-      '<a href="' + adLibHref(d.adLibraryQuery) + '" target="_blank" rel="noopener noreferrer">see what you’re actually running — in Meta’s own transparency tool →</a><br>' +
-      'And the honest part: no public spend or reach data exists for commercial advertisers. Anyone selling you competitor “spend” numbers is estimating.</div>' +
-    /* 5 · share */
-    '<div class="sc-share">' +
-      '<button class="run-btn" id="scDl" type="button">⬇ Download the card</button>' +
-      '<button class="run-btn ghost" id="scCp" type="button">🔗 Copy link</button>' +
-    '</div>' +
-    /* 6 · the one CTA */
-    '<div class="talk-cta"><p>Want this level of clarity on your account every week?</p>' +
-      '<a href="https://calendar.app.google/dy8683mNDXyWAkPo9" target="_blank" rel="noopener noreferrer">Talk to Logan →</a></div>' +
-    '<p class="sc-again"><a href="#" id="scAgain">← run another read</a></p>' +
-    /* the only doors out */
-    '<div class="prod-foot">' +
-      '<p>Curious how the machine actually works? <a href="#/machine">Walk through the full lab →</a></p>' +
-      '<p style="font-size:11px">Built with AI · <a href="/">The Growth Den</a></p>' +
-      '<p><a href="#" class="egg' + (EGG ? ' on' : '') + '" id="eggLink">explain it like I’m 8</a></p>' +
-    '</div>' +
-    '</div></div>';
-  $('view').innerHTML = h;
-  document.querySelectorAll('.b-copy').forEach(function (btn) {
-    btn.addEventListener('click', function (e) {
-      e.preventDefault();
-      var a = (res.data.angles || [])[parseInt(btn.dataset.copy, 10)];
-      if (!a) return;
-      var done = function () { btn.textContent = '✓ copied'; };
-      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(briefText(a)).then(done, function () { window.prompt('copy the brief:', briefText(a)); });
-      else window.prompt('copy the brief:', briefText(a));
-    });
+function runRead(rawUrl, opts) {
+  opts = opts || {};
+  var dom = normDomain(rawUrl);
+  if (!dom) { $('v5Status').textContent = 'that doesn’t look like a domain — try yourbrand.com'; return; }
+  if (V5.busy) return;
+  V5.busy = true;
+  var adData = opts.demo ? null : V5.ad.data;
+  V5.dom = dom;
+  mountReading(dom);
+  analyze(dom, adData).then(function (run) {
+    V5.busy = false;
+    V5.run = run;
+    BRAND = { domain: dom, name: run.name, category: '', resolved: true };
+    try { localStorage.setItem('gd-read-last', JSON.stringify({ dom: dom, date: run.date })); } catch (e) { }
+    goScreen(1);
+  }, function (err) {
+    V5.busy = false;
+    v5Fail(err);
   });
-  $('scDl').addEventListener('click', function () {
-    var a = document.createElement('a');
-    a.href = buildCardPng(res);
-    a.download = 'the-machine-read-' + res.dom.replace(/[^a-z0-9.-]/g, '') + '.png';
-    document.body.appendChild(a); a.click(); a.remove();
-  });
-  $('scCp').addEventListener('click', function () {
-    var link = location.origin + location.pathname + '?brand=' + encodeURIComponent(res.dom);
-    var done = function () { $('scCp').textContent = '✓ copied — the link re-runs this read'; };
-    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(link).then(done, function () { window.prompt('copy this link:', link); });
-    else window.prompt('copy this link:', link);
-  });
-  $('scAgain').addEventListener('click', function (e) { e.preventDefault(); showProduct(); });
-  $('eggLink').addEventListener('click', function (e) {
-    e.preventDefault();
-    EGG = !EGG;
-    e.target.classList.toggle('on', EGG);
-    e.target.textContent = EGG ? '✓ the drawers now explain it like you’re 8' : 'explain it like I’m 8';
-    setDepth(EGG ? 'kid' : 'cmo');
-  });
-  document.title = 'The machine read ' + name + ' · The Machine — The Growth Den Lab';
-  window.scrollTo(0, 0);
 }
 
-/* the downloadable card — designed, clean enough to pitch with */
-function buildCardPng(res) {
-  var d = res.data, v = d.verdict || {};
-  var W = 1080, pad = 64, maxW = W - pad * 2;
-  var meas = document.createElement('canvas').getContext('2d');
-  function wrap(t, font) {
-    meas.font = font;
+/* ---- screen 1 · The Read ---- */
+V5_SCREENS[1] = function screenRead() {
+  var d = V5.run.data;
+  v5Mount(
+    '<h2>Reading ' + escHtml(V5.dom) + '…</h2>' +
+    '<p class="v5-sub">tap a chip — why it matters</p>' +
+    '<div class="v5-chips" id="v5SigChips">' + d.signals.map(function (s, i) {
+      var cls = s.type === 'warm' ? ' warm' : s.type === 'missing' ? ' miss' : '';
+      return '<button type="button" class="v5-chip' + cls + '" data-sig="' + i + '">' + escHtml(s.label) + '</button>';
+    }).join('') + '</div>' +
+    '<div class="v5-verdict" id="v5Verdict"><b>' + escHtml(d.readVerdict.headline) + '</b> ' + escHtml(d.readVerdict.line) + '</div>' +
+    '<button class="v5-next" id="v5Next" type="button">next →</button>'
+  );
+  var chips = Array.prototype.slice.call(document.querySelectorAll('#v5SigChips .v5-chip'));
+  chips.forEach(function (c, i) { setTimeout(function () { c.classList.add('in'); }, 240 + i * 360); });
+  setTimeout(function () { var v = $('v5Verdict'); if (v) v.classList.add('in'); }, 240 + chips.length * 360 + 260);
+  chips.forEach(function (c) {
+    c.addEventListener('click', function () {
+      var s = d.signals[parseInt(c.dataset.sig, 10)];
+      var typeName = s.type === 'strong' ? 'a strong signal' : s.type === 'warm' ? 'a warm signal — useful, not yet working for you' : 'missing — the machine hears nothing here';
+      openWhy(s.label, '<p style="font-size:11px;font-weight:600;color:' +
+        (s.type === 'missing' ? '#a08e69' : s.type === 'warm' ? '#fe7c2b' : '#256493') + '">' + typeName + '</p>' +
+        '<p style="margin-top:8px">' + escHtml(s.why) + '</p>');
+    });
+  });
+  $('v5Next').addEventListener('click', function () { goScreen(2); });
+};
+
+/* ---- screen 2 · Creative Does the Targeting ---- */
+function boldFrame(caption, frame) {
+  var idx = caption.toLowerCase().indexOf(frame.toLowerCase());
+  if (idx < 0) return escHtml(caption);
+  return escHtml(caption.slice(0, idx)) + '<b>' + escHtml(caption.slice(idx, idx + frame.length)) + '</b>' + escHtml(caption.slice(idx + frame.length));
+}
+V5_SCREENS[2] = function screenFrames() {
+  var d = V5.run.data, frames = d.frames.slice(0, 3), sel = 0;
+  v5Mount(
+    '<h2>Change the message. Watch who Meta finds.</h2>' +
+    '<div class="v5-chips" style="min-height:0">' + frames.map(function (f, i) {
+      return '<button type="button" class="v5-chip in' + (i === 0 ? ' sel' : '') + '" data-frame="' + i + '">' + escHtml(f.chipLabel) + '</button>';
+    }).join('') + '</div>' +
+    '<div class="v5-canvas"><canvas id="v5Field"></canvas><div class="v5-cap" id="v5FieldCap"></div></div>' +
+    '<div class="v5-verdict in">Your targeting settings didn’t change. <b>Your words did.</b> ' +
+      '<button class="v5-why" type="button" id="v5WhyFrames" style="color:#ffc545">why?</button></div>' +
+    '<button class="v5-next" id="v5Next" type="button">next →</button>'
+  );
+  var cv = $('v5Field'), ctx = cv.getContext('2d');
+  var W = 0, H = 0, dpr = Math.min(2, window.devicePixelRatio || 1);
+  function resize() {
+    var r = cv.parentElement.getBoundingClientRect();
+    W = r.width; H = r.height;
+    cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
+  }
+  resize();
+  var CENTERS = [{ x: .28, y: .38 }, { x: .72, y: .34 }, { x: .46, y: .68 }];
+  var dots = [];
+  for (var i = 0; i < 150; i++) {
+    dots.push({
+      pop: i % 3,
+      hx: .06 + Math.random() * .88, hy: .08 + Math.random() * .78,
+      x: 0, y: 0, r: 2, tw: Math.random() * 6.28,
+      offA: Math.random() * 6.28, offR: .35 + Math.random() * .65,
+    });
+  }
+  dots.forEach(function (p) { p.x = p.hx; p.y = p.hy; });
+  function setCap() {
+    $('v5FieldCap').innerHTML = boldFrame(frames[sel].caption, frames[sel].chipLabel);
+  }
+  setCap();
+  var t = 0, last = performance.now();
+  function loop(now) {
+    if (!cv.isConnected) return;
+    var dt = Math.min(.05, (now - last) / 1000); last = now; t += dt;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, W, H);
+    dots.forEach(function (p) {
+      var mine = p.pop === sel;
+      var c = CENTERS[p.pop];
+      var tx, ty, tr;
+      if (mine) {
+        var rr = .13 * p.offR;
+        tx = c.x + Math.cos(p.offA + t * .25) * rr;
+        ty = c.y + Math.sin(p.offA + t * .25) * rr * .8;
+        tr = 3.2;
+      } else {
+        tx = p.hx; ty = p.hy; tr = 2;
+      }
+      var k = Math.min(.14, dt * 3.2);
+      p.x += (tx - p.x) * k; p.y += (ty - p.y) * k;
+      p.r += (tr - p.r) * k;
+      var a = mine ? .9 : .55 + .2 * Math.sin(t * 1.3 + p.tw);
+      ctx.fillStyle = mine ? 'rgba(37,100,147,' + a + ')' : 'rgba(201,191,216,' + a + ')';
+      ctx.beginPath(); ctx.arc(p.x * W, p.y * H, p.r, 0, 6.29); ctx.fill();
+    });
+    requestAnimationFrame(loop);
+  }
+  requestAnimationFrame(loop);
+  document.querySelectorAll('[data-frame]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      sel = parseInt(b.dataset.frame, 10);
+      document.querySelectorAll('[data-frame]').forEach(function (x) { x.classList.toggle('sel', x === b); });
+      setCap();
+    });
+  });
+  $('v5WhyFrames').addEventListener('click', function () {
+    openWhy('The message selects the audience',
+      '<p>Meta’s delivery starts from the person and asks which ad fits them. Your creative is the strongest signal it reads — change the message, and retrieval assembles a different crowd. No targeting setting touched.</p>' +
+      '<p style="font-size:12px;margin-top:10px">' + claim('Andromeda, Meta’s retrieval engine, filters tens of millions of candidate ads down to a few thousand per person — learned from the ad itself, not from interest checkboxes.', 'meta', SRC.andromeda.name, SRC.andromeda.url) + '</p>' +
+      '<p style="font-size:12px">' + claim('Within one ad set, different creatives are delivered to systematically different demographic subgroups — measured across 181,890 Meta A/B tests.', 'measured', SRC.kellogg.name, SRC.kellogg.url) + '</p>');
+  });
+  $('v5Next').addEventListener('click', function () { goScreen(3); });
+};
+
+/* ---- screen 3 · Your Place in the Ecosystem ---- */
+function boldFirstSentence(line) {
+  var i = line.indexOf('. ');
+  if (i < 0) return '<b>' + escHtml(line) + '</b>';
+  return '<b>' + escHtml(line.slice(0, i + 1)) + '</b> ' + escHtml(line.slice(i + 2));
+}
+function v5Territories() {
+  var eco = V5.run.data.ecosystem;
+  var crowded = (eco.crowded || []).slice(0, 2);
+  var open = (eco.open || []).slice(0, 2);
+  var CROWD_SLOTS = [
+    { l: '5%', t: '8%', w: '54%', h: '46%' },
+    { l: '60%', t: '60%', w: '33%', h: '26%' },
+  ];
+  var OPEN_SLOTS = [
+    { l: '62%', t: '14%', w: '34%', h: '32%', cls: 'open-b' },
+    { l: '18%', t: '60%', w: '36%', h: '30%', cls: 'open-o' },
+  ];
+  var html = '';
+  var byLabel = {};
+  crowded.forEach(function (c, i) {
+    var s = CROWD_SLOTS[i];
+    byLabel[c.label] = { key: 'c' + i, status: 'crowded', t: c };
+    html += '<div class="v5-terr crowded" data-terr="c' + i + '" style="left:' + s.l + ';top:' + s.t + ';width:' + s.w + ';height:' + s.h + '">' +
+      escHtml(c.label) + '<b>crowded</b></div>';
+  });
+  open.forEach(function (o, i) {
+    var s = OPEN_SLOTS[i];
+    byLabel[o.label] = { key: 'o' + i, status: 'open', t: o };
+    html += '<div class="v5-terr ' + s.cls + '" data-terr="o' + i + '" style="left:' + s.l + ';top:' + s.t + ';width:' + s.w + ';height:' + s.h + '">' +
+      escHtml(o.label) + '<b>open</b></div>';
+  });
+  return { html: html, byLabel: byLabel, eco: eco };
+}
+/* place a dot inside a territory (fx/fy are the fraction of the territory box) */
+function v5PlaceDot(mapEl, label, dotEl, labEl, byLabel, fx, fy) {
+  var entry = byLabel[label];
+  var host = entry ? mapEl.querySelector('[data-terr="' + entry.key + '"]') : null;
+  if (!host) host = mapEl.querySelector('.v5-terr.crowded') || mapEl.querySelector('.v5-terr');
+  if (!host) return;
+  var mr = mapEl.getBoundingClientRect(), hr = host.getBoundingClientRect();
+  var cx = hr.left - mr.left + hr.width * fx, cy = hr.top - mr.top + hr.height * fy;
+  dotEl.style.left = cx + 'px'; dotEl.style.top = cy + 'px'; dotEl.style.display = 'block';
+  labEl.style.left = (cx + 16) + 'px'; labEl.style.top = (cy - 14) + 'px'; labEl.style.display = 'block';
+}
+V5_SCREENS[3] = function screenMap() {
+  var T = v5Territories(), eco = T.eco;
+  v5Mount(
+    '<h2>Where your category shouts — and where it’s quiet.</h2>' +
+    '<div class="v5-canvas" style="height:250px" id="v5Map">' + T.html +
+      '<div class="v5-you" id="v5You" style="display:none"></div>' +
+      '<div class="v5-you-lab" id="v5YouLab" style="display:none">you</div>' +
+    '</div>' +
+    '<p class="v5-terr-note" id="v5TerrNote">tap a territory — who wins there</p>' +
+    '<div class="v5-verdict in">' + boldFirstSentence(eco.verdictLine || '') + ' ' +
+      '<button class="v5-why" type="button" id="v5WhyMap" style="color:#ffc545">why?</button></div>' +
+    '<p class="v5-map-note">map is an informed read, not scraped data</p>' +
+    '<button class="v5-next" id="v5Next" type="button">next →</button>'
+  );
+  v5PlaceDot($('v5Map'), eco.you, $('v5You'), $('v5YouLab'), T.byLabel, .32, .38);
+  document.querySelectorAll('[data-terr]').forEach(function (el) {
+    el.addEventListener('click', function () {
+      var label = Object.keys(T.byLabel).filter(function (k) { return T.byLabel[k].key === el.dataset.terr; })[0];
+      if (!label) return;
+      $('v5TerrNote').innerHTML = '<b>' + escHtml(label) + '</b> — ' + escHtml(T.byLabel[label].t.note || '');
+    });
+  });
+  $('v5WhyMap').addEventListener('click', function () {
+    openWhy('Why a crowded angle costs more',
+      '<p>Every advertiser shouting the same message competes for the same people — so the auction clears higher, and the audience tires of the angle faster. Open territory is the same product in a quieter room.</p>' +
+      '<p style="font-size:12px;margin-top:10px">' + claim('Auction pricing is pays-minimum against the runner-up: more rivals on one angle raises what winning costs.', 'meta', SRC.auction.name, SRC.auction.url) + '</p>' +
+      '<p style="font-size:12px">' + claim('Meta’s own 2022 research measured ~45% performance decline after four exposures — repetition wears an angle out.', 'measured', SRC.fatigue22.name, SRC.fatigue22.url) + '</p>' +
+      '<p style="font-size:11px;color:#a08e69;margin-top:10px">The map itself is an informed read from your public signals — labeled inference, not scraped data.</p>');
+  });
+  $('v5Next').addEventListener('click', function () { goScreen(4); });
+};
+
+/* ---- screen 4 · The Plays ---- */
+function briefText(p) {
+  var b = p.brief || {};
+  return 'PLAY: ' + (p.playName || '') + '\nPRINCIPLE: ' + (p.principle || '') +
+    '\nHOOK: ' + (b.hook || p.hook || '') + '\nVISUAL: ' + (b.visual || '') +
+    '\nOPENING COPY: ' + (b.copy || '') + '\nTERRITORY: ' + (p.territoryRef || '') +
+    (p.complianceNote ? '\nCOMPLIANCE: ' + p.complianceNote : '');
+}
+V5_SCREENS[4] = function screenPlays() {
+  var plays = V5.run.data.plays.slice(0, 3);
+  var countWord = plays.length === 3 ? 'Three' : 'Two';
+  v5Mount(
+    '<h2>' + countWord + ' moves into open territory.</h2>' +
+    plays.map(function (p, i) {
+      return '<div class="v5-play">' +
+        '<div class="pf">PLAY · ' + escHtml(p.playName) + '</div>' +
+        '<div class="pp">' + escHtml(p.principle) + '</div>' +
+        '<div class="ph">' + escHtml(p.hook) + '</div>' +
+        (p.complianceNote ? '<div class="pcomp">⚖ ' + escHtml(p.complianceNote) + '</div>' : '') +
+        '<div class="pc"><button type="button" data-copy="' + i + '">copy the brief →</button>' +
+        ' · <button type="button" data-pwhy="' + i + '">why this works ?</button></div>' +
+      '</div>';
+    }).join('') +
+    '<button class="v5-next" id="v5Next" type="button">next →</button>'
+  );
+  document.querySelectorAll('[data-copy]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var p = plays[parseInt(b.dataset.copy, 10)];
+      var done = function () { b.textContent = '✓ brief copied'; };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(briefText(p)).then(done, function () { window.prompt('copy the brief:', briefText(p)); });
+      } else window.prompt('copy the brief:', briefText(p));
+    });
+  });
+  document.querySelectorAll('[data-pwhy]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var p = plays[parseInt(b.dataset.pwhy, 10)];
+      openWhy(p.playName,
+        '<p><b>' + escHtml(p.playName) + '</b> enters “' + escHtml(p.territoryRef || 'open ground') + '” — an open territory from your map, where the auction is quieter and the angle is fresh.</p>' +
+        '<p style="margin-top:8px">' + escHtml(p.principle) + '</p>' +
+        '<p style="font-size:12px;margin-top:10px">' + claim('A genuinely different frame is a different retrieval signal — it recruits its own audience instead of re-bidding on the crowded one.', 'meta', SRC.andromeda.name, SRC.andromeda.url) + '</p>' +
+        '<p style="font-size:12px">' + claim('Fewer rivals on the angle means a lower clearing price: the auction charges the minimum needed to beat the runner-up.', 'meta', SRC.auction.name, SRC.auction.url) + '</p>' +
+        (p.complianceNote ? '<p style="font-size:11.5px;color:#fe7c2b;margin-top:10px">⚖ ' + escHtml(p.complianceNote) + '</p>' : ''));
+    });
+  });
+  $('v5Next').addEventListener('click', function () { goScreen(5); });
+};
+
+/* ---- screen 5 · The Card ---- */
+function buildV5CardPng(cb) {
+  var d = V5.run.data;
+  var W = 1080, H = 720;
+  var cv = document.createElement('canvas'); cv.width = W; cv.height = H;
+  var c = cv.getContext('2d');
+  c.fillStyle = '#fcf3d6'; c.fillRect(0, 0, W, H);
+  function wrap(t, font, maxW) {
+    c.font = font;
     var words = String(t).split(/\s+/), lines = [], line = '';
-    words.forEach(function (w2) {
-      var probe = line ? line + ' ' + w2 : w2;
-      if (meas.measureText(probe).width > maxW && line) { lines.push(line); line = w2; }
+    words.forEach(function (w) {
+      var probe = line ? line + ' ' + w : w;
+      if (c.measureText(probe).width > maxW && line) { lines.push(line); line = w; }
       else line = probe;
     });
     if (line) lines.push(line);
     return lines;
   }
-  var headFont = '800 34px Poppins, Arial, sans-serif', headLh = 44;
-  var impFont = '600 20px Poppins, Arial, sans-serif', impLh = 30;
-  var bodyFont = '400 17px Poppins, Arial, sans-serif', bodyLh = 27;
-  var hLines = wrap(v.headline || '', headFont);
-  var iLines = wrap(v.impact || '', impFont);
-  var angles = (d.angles || []).slice(0, 3);
-  var angleBlocks = angles.map(function (a) {
-    return { name: a.name || '', hook: wrap('“' + ((a.brief || {}).hook || '') + '”', bodyFont) };
+  function finish() {
+    /* the ink card */
+    var cx = 64, cy = 150, cw = W - 128, ch = 380;
+    var g = c.createLinearGradient(cx, cy, cx + cw, cy + ch);
+    g.addColorStop(0, '#341f44'); g.addColorStop(1, '#4b2f66');
+    c.fillStyle = g;
+    c.beginPath(); c.roundRect(cx, cy, cw, ch, 26); c.fill();
+    /* dot-cluster motif, right side */
+    var seed = 11;
+    function rnd() { seed = (seed * 1664525 + 1013904223) % 4294967296; return seed / 4294967296; }
+    for (var i = 0; i < 26; i++) {
+      var a = rnd() * 6.28, r = 26 + rnd() * 74;
+      var x = cx + cw - 130 + Math.cos(a) * r, y = cy + 120 + Math.sin(a) * r * .8;
+      c.fillStyle = i % 2 ? 'rgba(159,192,216,.55)' : 'rgba(201,191,216,.45)';
+      c.beginPath(); c.arc(x, y, 3.4 + rnd() * 2.2, 0, 6.29); c.fill();
+    }
+    c.fillStyle = '#e5340b';
+    c.beginPath(); c.arc(cx + cw - 130, cy + 120, 9, 0, 6.29); c.fill();
+    c.strokeStyle = 'rgba(229,52,11,.3)'; c.lineWidth = 6;
+    c.beginPath(); c.arc(cx + cw - 130, cy + 120, 16, 0, 6.29); c.stroke();
+    /* card text */
+    c.fillStyle = '#ffc545'; c.font = '600 19px Poppins, Arial, sans-serif';
+    c.fillText((V5.dom + ' · READ BY THE MACHINE').toUpperCase(), cx + 44, cy + 68);
+    c.fillStyle = '#fcf3d6'; c.font = '600 32px Poppins, Arial, sans-serif';
+    var y = cy + 128;
+    wrap(d.cardSummary || '', '600 32px Poppins, Arial, sans-serif', cw - 300).forEach(function (l) {
+      c.fillText(l, cx + 44, y); y += 44;
+    });
+    /* chips */
+    var chips = ['your signals', 'your territory', (d.plays || []).length + ' plays'];
+    var chx = cx + 44, chy = cy + ch - 78;
+    chips.forEach(function (t) {
+      c.font = '300 17px Poppins, Arial, sans-serif';
+      var w2 = c.measureText(t).width + 34;
+      c.fillStyle = 'rgba(252,243,214,.14)';
+      c.beginPath(); c.roundRect(chx, chy, w2, 40, 10); c.fill();
+      c.fillStyle = '#fcf3d6';
+      c.fillText(t, chx + 17, chy + 27);
+      chx += w2 + 12;
+    });
+    /* footer */
+    c.fillStyle = '#8a7a5c'; c.font = '300 18px Poppins, Arial, sans-serif';
+    c.fillText('Re-run this on ' + plus30(V5.run.date) + ' and compare.', 64, H - 64);
+    c.textAlign = 'right';
+    c.fillText('thegrowthden.com/lab/the-machine', W - 64, H - 64);
+    c.textAlign = 'left';
+    cb(cv.toDataURL('image/png'));
+  }
+  var logo = new Image();
+  logo.onload = function () {
+    var lw = 230, lh = lw * (logo.height / logo.width || 200 / 750);
+    c.drawImage(logo, 64, 56, lw, lh);
+    finish();
+  };
+  logo.onerror = finish;   // never block the download on the logo
+  logo.src = V5_LOGO;
+}
+V5_SCREENS[5] = function screenCard() {
+  var d = V5.run.data;
+  v5Mount(
+    '<h2>Yours to keep.</h2>' +
+    '<div class="v5-mini">' +
+      '<div class="mt">' + escHtml(V5.dom) + ' · READ BY THE MACHINE</div>' +
+      '<div class="mv">' + escHtml(d.cardSummary || '') + '</div>' +
+      '<div class="mrow"><span class="mchip">your signals</span><span class="mchip">your territory</span>' +
+      '<span class="mchip">' + (d.plays || []).length + ' plays</span></div>' +
+    '</div>' +
+    '<button class="v5-btn blue" id="v5Dl" type="button">Download the card</button>' +
+    '<button class="v5-copylink" id="v5Cp" type="button">copy a link that re-runs this read</button>' +
+    '<a class="v5-btn ghost" href="https://calendar.app.google/dy8683mNDXyWAkPo9" target="_blank" rel="noopener noreferrer" style="text-decoration:none">Want this on your account every week? Talk to Logan →</a>' +
+    '<button class="v5-copylink" id="v5Rival" type="button" style="color:#341f44">Think a competitor’s ad beats yours? →</button>' +
+    '<div class="v5-foot">' +
+      '<p>Curious how the machine actually works? <a href="#/machine">Walk through the full lab →</a></p>' +
+      '<p class="receipt">Built with AI · <a href="/">The Growth Den</a></p>' +
+    '</div>'
+  );
+  $('v5Rival').addEventListener('click', function () { screenRival(); });
+  $('v5Dl').addEventListener('click', function () {
+    buildV5CardPng(function (url) {
+      var a = document.createElement('a');
+      a.href = url;
+      a.download = 'the-machine-read-' + V5.dom.replace(/[^a-z0-9.-]/g, '') + '.png';
+      document.body.appendChild(a); a.click(); a.remove();
+    });
   });
-  var personas = (d.personas || []).slice(0, 3);
-  var HEAD = 150;
-  var y = HEAD + 64 + hLines.length * headLh + 14 + iLines.length * impLh + 30;
-  var yAngles = y;
-  angleBlocks.forEach(function (b) { y += 34 + b.hook.length * bodyLh + 16; });
-  y += 26;
-  var yPer = y;
-  y += 34 + personas.length * 32 + 26;
-  var H = y + 56;
-  var cv = document.createElement('canvas'); cv.width = W; cv.height = H;
-  var c = cv.getContext('2d');
-  c.fillStyle = '#1a1025'; c.fillRect(0, 0, W, H);
-  var g1 = c.createRadialGradient(W * .8, 0, 0, W * .8, 0, W * .7);
-  g1.addColorStop(0, 'rgba(37,100,147,.4)'); g1.addColorStop(1, 'rgba(37,100,147,0)');
-  c.fillStyle = g1; c.fillRect(0, 0, W, H);
-  c.fillStyle = 'rgba(0,0,0,.18)'; c.fillRect(0, 0, W, HEAD);
-  drawCollapse(c, W, HEAD, 1);
-  c.fillStyle = '#7fb4d8'; c.font = '700 13px Poppins, Arial, sans-serif';
-  c.fillText('T H E   M A C H I N E   R E A D', pad, 66);
-  c.fillStyle = '#ffffff'; c.font = '800 30px Poppins, Arial, sans-serif';
-  c.fillText((BRAND ? BRAND.name : res.dom).slice(0, 40), pad, 104);
-  c.fillStyle = 'rgba(252,243,214,.62)'; c.font = '400 14px Poppins, Arial, sans-serif';
-  c.fillText(res.dom + ' · ' + res.date + (res.hadAd ? ' · with ad' : ''), pad, 130);
-  c.strokeStyle = 'rgba(252,243,214,.16)';
-  c.beginPath(); c.moveTo(0, HEAD + .5); c.lineTo(W, HEAD + .5); c.stroke();
-  var yy = HEAD + 64;
-  c.fillStyle = '#ffffff'; c.font = headFont;
-  hLines.forEach(function (l) { c.fillText(l, pad, yy); yy += headLh; });
-  yy += 14;
-  c.fillStyle = '#ffc545'; c.font = impFont;
-  iLines.forEach(function (l) { c.fillText(l, pad, yy); yy += impLh; });
-  yy += 30;
-  angleBlocks.forEach(function (b, i) {
-    c.fillStyle = '#fe7c2b'; c.font = '700 18px Poppins, Arial, sans-serif';
-    c.fillText((i + 1) + ' · ' + b.name, pad, yy); yy += 30;
-    c.fillStyle = 'rgba(252,243,214,.82)'; c.font = bodyFont;
-    b.hook.forEach(function (l) { c.fillText(l, pad, yy); yy += bodyLh; });
-    yy += 16;
+  $('v5Cp').addEventListener('click', function () {
+    var link = location.origin + location.pathname + '?brand=' + encodeURIComponent(V5.dom);
+    var done = function () { $('v5Cp').textContent = '✓ copied — the link re-runs the read'; };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(link).then(done, function () { window.prompt('copy this link:', link); });
+    } else window.prompt('copy this link:', link);
   });
-  yy += 4;
-  c.fillStyle = '#7fb4d8'; c.font = '700 14px Poppins, Arial, sans-serif';
-  c.fillText('YOUR BUYERS, REACTING', pad, yy); yy += 28;
-  personas.forEach(function (p) {
-    var mark = p.resonates === 'yes' ? '✓' : p.resonates === 'no' ? '✕' : '◐';
-    c.fillStyle = p.resonates === 'yes' ? '#8fd694' : p.resonates === 'no' ? '#ff8a70' : '#ffc545';
-    c.font = '700 16px Poppins, Arial, sans-serif';
-    c.fillText(mark, pad, yy);
-    c.fillStyle = 'rgba(252,243,214,.82)'; c.font = '400 15.5px Poppins, Arial, sans-serif';
-    c.fillText(String(p.descriptor || '').slice(0, 78), pad + 30, yy);
-    yy += 32;
+};
+
+/* ---- screen + · The Rival (post-card, optional, never in the dot count) ---- */
+function screenRival() {
+  var T = v5Territories();
+  v5Mount(
+    '<h2>Think a competitor’s ad beats yours?</h2>' +
+    '<div class="v5-drop" id="rvDrop" role="button" tabindex="0" aria-label="Drop their ad">' +
+      '<input type="file" id="rvFile" accept="image/*">' +
+      '<span id="rvDropTxt">＋ drop their ad</span>' +
+    '</div>' +
+    '<p class="v5-status" id="rvStatus"></p>' +
+    '<div id="rvOut" style="display:none">' +
+      '<div class="v5-canvas" style="height:210px" id="rvMap">' + T.html +
+        '<div class="v5-you" id="rvYou" style="display:none"></div>' +
+        '<div class="v5-you-lab" id="rvYouLab" style="display:none">you</div>' +
+        '<div class="v5-them" id="rvThem" style="display:none"></div>' +
+        '<div class="v5-them-lab" id="rvThemLab" style="display:none">them</div>' +
+      '</div>' +
+      '<div class="v5-side" id="rvSide"></div>' +
+      '<p class="v5-sub" id="rvRead" style="text-align:center;margin-top:10px"></p>' +
+    '</div>' +
+    '<a class="v5-back" href="#" id="rvBack">← back to your card</a>',
+    { noDot: true }
+  );
+  $('rvBack').addEventListener('click', function (e) { e.preventDefault(); goScreen(5); });
+  var drop = $('rvDrop'), file = $('rvFile');
+  function fromFile(f) {
+    if (!f || !/^image\//.test(f.type)) { $('rvStatus').textContent = 'that file doesn’t look like an image — try a JPG or PNG.'; return; }
+    var rd = new FileReader();
+    rd.onload = function () {
+      loadAdImage(rd.result, function (out) {
+        if (!out) { $('rvStatus').textContent = 'couldn’t read that image — try another.'; return; }
+        runRival(out.split(',')[1], T);
+      });
+    };
+    rd.readAsDataURL(f);
+  }
+  drop.addEventListener('click', function (e) { if (e.target !== file) file.click(); });
+  drop.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); file.click(); } });
+  file.addEventListener('change', function () { fromFile(file.files[0]); });
+  drop.addEventListener('dragover', function (e) { e.preventDefault(); drop.classList.add('drag'); });
+  drop.addEventListener('dragleave', function () { drop.classList.remove('drag'); });
+  drop.addEventListener('drop', function (e) {
+    e.preventDefault(); drop.classList.remove('drag');
+    if (e.dataTransfer.files && e.dataTransfer.files[0]) fromFile(e.dataTransfer.files[0]);
   });
-  yy += 18;
-  c.strokeStyle = 'rgba(252,243,214,.16)';
-  c.setLineDash([4, 5]); c.beginPath(); c.moveTo(pad, yy); c.lineTo(W - pad, yy); c.stroke(); c.setLineDash([]);
-  c.fillStyle = 'rgba(252,243,214,.55)'; c.font = '400 14px Poppins, Arial, sans-serif';
-  c.fillText('Re-run this on ' + plus30(res.date) + ' and compare.', pad, yy + 30);
-  return cv.toDataURL('image/png');
+}
+function runRival(imgData, T) {
+  if (V5.busy) return;
+  V5.busy = true;
+  $('rvStatus').textContent = 'placing their ad on your map…';
+  var eco = T.eco;
+  var sys = 'You are “The Machine”. You already mapped ' + V5.dom + '’s category into these territories: ' +
+    JSON.stringify({ crowded: eco.crowded, open: eco.open, theBrandSitsIn: eco.you }) + '. ' +
+    'You now receive ONE competitor ad image. Place it on the SAME map. ' +
+    'Reply with STRICT JSON only — no prose, no code fences: ' +
+    '{"theirsTerritory": exactly one existing territory label from the map that this ad’s angle occupies, ' +
+    '"status": "crowded" or "open" — that territory’s status on the map, ' +
+    '"read": [exactly 2 lines, 14 words max each, comparing whose territory is smarter — plain speech]}. ' +
+    'Rules: never invent spend, reach, or audience numbers; never mention pixels, tags, tracking, or analytics.';
+  streamClaude({
+    model: 'claude-sonnet-4-5', max_tokens: 600, stream: false, system: sys,
+    messages: [{ role: 'user', content: [
+      { type: 'image', source: { type: 'base64', media_type: 'image/jpeg', data: imgData } },
+      { type: 'text', text: 'The competitor’s ad is attached.' },
+    ] }],
+  }, function () { }).then(function (full) {
+    var data = JSON.parse(full.slice(full.indexOf('{'), full.lastIndexOf('}') + 1));
+    var yoursEntry = T.byLabel[T.eco.you];
+    var yoursStatus = yoursEntry ? yoursEntry.status : 'crowded';
+    var theirsStatus = data.status === 'open' ? 'open' : 'crowded';
+    $('rvStatus').textContent = '';
+    $('rvOut').style.display = 'block';
+    v5PlaceDot($('rvMap'), T.eco.you, $('rvYou'), $('rvYouLab'), T.byLabel, .32, .38);
+    v5PlaceDot($('rvMap'), data.theirsTerritory, $('rvThem'), $('rvThemLab'), T.byLabel, .62, .55);
+    var yoursWin = yoursStatus === 'open' && theirsStatus === 'crowded';
+    var theirsWin = theirsStatus === 'open' && yoursStatus === 'crowded';
+    $('rvSide').innerHTML =
+      '<div class="half' + (yoursWin ? ' win' : '') + '">YOURS<b class="st-' + yoursStatus + '">' + escHtml(yoursStatus === 'open' ? 'open territory' : 'crowded angle') + '</b></div>' +
+      '<div class="half' + (theirsWin ? ' win' : '') + '">THEIRS<b class="st-' + theirsStatus + '">' + escHtml(theirsStatus === 'open' ? 'open territory' : 'crowded angle') + '</b></div>';
+    $('rvRead').innerHTML = (data.read || []).slice(0, 2).map(escHtml).join('<br>');
+  }).catch(function (err) {
+    var s = $('rvStatus');
+    if (err && err.code === 429) s.textContent = 'the lab is busy — give it a minute.';
+    else if (err && err.code === 503) s.textContent = 'the machine is napping — try again shortly.';
+    else if (err instanceof SyntaxError) s.textContent = 'the read came back garbled — drop it once more.';
+    else s.textContent = 'the reader only runs on the live site — this is a local preview.';
+  }).then(function () { V5.busy = false; });
 }
 
-/* ---------------- boot ---------------- */
+/* ---------------- boot ---------------- *//* ---------------- boot ---------------- */
 function route() {
   var cur = parseHash();
   var raw = location.hash.replace(/^#\/?/, '').split('?')[0].replace(/\/+$/, '');
