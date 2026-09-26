@@ -112,6 +112,11 @@ def load():
         dt.date.fromisoformat(meta["updated"])
         meta.setdefault("slug", re.sub(r"^\d{4}-\d{2}-\d{2}-", "", f.stem))
         meta["body"] = m.group(2).strip()
+        rendered = meta["body"] if meta.get("format") == "html" else md_to_html(meta["body"])
+        cm = re.search(r'<img[^>]*\ssrc="([^"]+)"', rendered)
+        meta["cover"] = cm.group(1) if cm else None
+        cam = re.search(r'<img[^>]*\salt="([^"]*)"', rendered) if cm else None
+        meta["cover_alt"] = html.unescape(cam.group(1)) if cam else ""
         meta["words"] = len(re.findall(r"\w+", re.sub(r"<[^>]+>", " ", meta["body"])))
         notes.append(meta)
     notes.sort(key=lambda n: n["date"], reverse=True)
@@ -154,13 +159,35 @@ STYLE = """
   .list a { color:var(--purple); font-weight:600; font-size:19px; text-decoration:none; }
   .list .d { color:var(--muted); font-size:13px; margin-top:2px; }
   .list p { margin-top:8px; }
+  .cards { list-style:none; padding:0; display:grid; grid-template-columns:repeat(auto-fill, minmax(260px, 1fr)); gap:20px; }
+  .card a { display:flex; flex-direction:column; height:100%; background:#fff; border:1px solid var(--border); border-radius:18px; overflow:hidden; text-decoration:none; color:var(--ink); transition:transform .18s, box-shadow .18s; }
+  .card a:hover { transform:translateY(-2px); box-shadow:0 10px 28px rgba(52,31,68,.12); }
+  .card a:focus-visible { outline:3px solid var(--orange); outline-offset:3px; }
+  .cover { display:block; width:100%; aspect-ratio:16/9; object-fit:cover; background:var(--purple); }
+  .cover-none { background:var(--purple) url("/uploads/Growth_Den__Illustration_Denny.png") center / auto 62% no-repeat; }
+  .card-text { display:flex; flex-direction:column; gap:4px; padding:18px 20px 22px; }
+  .card-title { color:var(--purple); font-weight:600; font-size:19px; line-height:1.3; }
+  .card .d { color:var(--muted); font-size:13px; }
+  .card-desc { margin-top:6px; font-size:15px; line-height:1.6; }
+  @media (prefers-reduced-motion: reduce) { .card a { transition:none; } .card a:hover { transform:none; } }
   h2.more-h { font-size:20px; color:var(--purple); font-weight:600; margin:48px 0 14px; }
   footer { background:var(--purple); color:rgba(255,255,255,.7); padding:28px 16px; font-size:14px; }
   footer a { color:#fff; }
 """
 
 
-def page(title, desc, url, ld, content):
+FALLBACK_IMAGE = "/uploads/Growth_Den__Illustration_Denny.png"
+
+
+def absolute(src):
+    return src if src.startswith("http") else SITE + src
+
+
+def page(title, desc, url, ld, content, image=None):
+    img_meta = ""
+    if image:
+        img_meta = f'<meta property="og:image" content="{absolute(image)}" />\n<meta name="twitter:card" content="summary_large_image" />\n<meta name="twitter:image" content="{absolute(image)}" />\n'
+
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -174,6 +201,7 @@ def page(title, desc, url, ld, content):
 <meta property="og:description" content="{html.escape(desc)}" />
 <meta property="og:url" content="{url}" />
 <meta property="og:type" content="article" />
+{img_meta}
 <link rel="icon" href="/favicon.ico" />
 <link rel="alternate" type="text/plain" title="llms.txt" href="/llms.txt" />
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
@@ -206,6 +234,8 @@ def build_issue(n, notes):
           "publisher": {"@type": "Organization", "name": "The Growth Den", "url": f"{SITE}/",
                         "logo": {"@type": "ImageObject", "url": f"{SITE}/uploads/Growth_Den__Logo_Horizontal_Primary.png"}},
           "isPartOf": {"@type": "Blog", "name": "Notes from the Den", "url": f"{SITE}/notes/"}}
+    if n["cover"]:
+        ld["image"] = absolute(n["cover"])
     others = [o for o in notes if o["slug"] != n["slug"]][:3]
     more = ""
     if others:
@@ -226,7 +256,7 @@ def build_issue(n, notes):
   {more}"""
     d = ROOT / "notes" / n["slug"]
     d.mkdir(parents=True, exist_ok=True)
-    (d / "index.html").write_text(page(n["title"], n["description"], url, ld, content), encoding="utf-8")
+    (d / "index.html").write_text(page(n["title"], n["description"], url, ld, content, n["cover"] or FALLBACK_IMAGE), encoding="utf-8")
 
 
 def build_index(notes):
@@ -236,15 +266,20 @@ def build_index(notes):
           "description": desc, "author": AUTHOR,
           "blogPost": [{"@type": "BlogPosting", "headline": n["title"], "url": f"{SITE}/notes/{n['slug']}/",
                         "datePublished": n["date"]} for n in notes]}
+    def cover(n):
+        if n["cover"]:
+            return f'<img class="cover" src="{n["cover"]}" alt="{html.escape(n["cover_alt"])}" loading="lazy" />'
+        return '<div class="cover cover-none" aria-hidden="true"></div>'
     items = "".join(
-        f'<li><a href="/notes/{n["slug"]}/">{html.escape(n["title"])}</a><div class="d">{nice(n["date"])}</div><p>{html.escape(n["description"])}</p></li>'
+        f'<li class="card"><a href="/notes/{n["slug"]}/">{cover(n)}<div class="card-text"><span class="card-title">{html.escape(n["title"])}</span>'
+        f'<span class="d">{nice(n["date"])}</span><span class="card-desc">{html.escape(n["description"])}</span></div></a></li>'
         for n in notes)
     content = f"""  <div class="tag">The newsletter</div>
   <h1>Notes from the Den</h1>
-  <div class="meta">{html.escape(desc)} Last updated <time datetime="{notes[0]['date']}">{nice(notes[0]['date'])}</time>.</div>
-  <ul class="list">{items}</ul>"""
+  <div class="meta">{html.escape(desc)} Last updated <time datetime="{max(n['updated'] for n in notes)}">{nice(max(n['updated'] for n in notes))}</time>.</div>
+  <ul class="cards">{items}</ul>"""
     (ROOT / "notes").mkdir(exist_ok=True)
-    (ROOT / "notes" / "index.html").write_text(page("Notes from the Den", desc, url, ld, content), encoding="utf-8")
+    (ROOT / "notes" / "index.html").write_text(page("Notes from the Den", desc, url, ld, content, next((n["cover"] for n in notes if n["cover"]), FALLBACK_IMAGE)), encoding="utf-8")
 
 
 def replace_block(text, name, new):
