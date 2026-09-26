@@ -7,6 +7,7 @@ Then publish library.json into the Notes editor artifact as a file.
 """
 import json
 import pathlib
+import re
 import sys
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
@@ -17,6 +18,11 @@ def main():
     out = []
     for n in b.load():
         body = n["body"] if n.get("format") == "html" else b.md_to_html(n["body"])
+        # images that came from the editor keep their asset id as the file name,
+        # so point them back at the editor's stored copy (the editor can't load
+        # images from the live site)
+        body = re.sub(r'src="/uploads/notes/[^/"]+/([0-9a-f]{32})\.[a-z]+"', r'src="/_blob/\1"', body)
+        body = body.replace(' loading="lazy"', "")
         out.append({"slug": n["slug"], "title": n["title"], "date": n["date"],
                     "description": n["description"], "linkedin": n.get("source", ""),
                     "bodyHtml": body})

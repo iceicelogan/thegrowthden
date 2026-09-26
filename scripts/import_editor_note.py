@@ -39,6 +39,10 @@ def main():
         if src.startswith("/uploads/"):
             return m.group(0)  # already on the site
         mid = re.search(r"([0-9a-f]{32})", src)
+        if mid:
+            on_site = sorted(out_dir.glob(mid.group(1) + ".*"))
+            if on_site:  # already published with this note
+                return f'src="/uploads/notes/{slug}/{on_site[0].name}"'
         if not (mid and imgdir):
             raise SystemExit(f"image {src} has no downloaded file")
         found = sorted(imgdir.glob(mid.group(1) + ".*"))
@@ -50,15 +54,20 @@ def main():
         return f'src="/uploads/notes/{slug}/{dest.name}"'
 
     body = re.sub(r'src="([^"]+)"', swap, body)
-    body = body.replace("<img ", '<img loading="lazy" ')
+    body = re.sub(r'<img (?![^>]*loading=)', '<img loading="lazy" ', body)
     fm = ["---", f"title: {note['title']}", f"date: {note['date']}", f"slug: {slug}",
           f"description: {' '.join(note['description'].split())}", "format: html"]
     if note.get("linkedin"):
         fm.append(f"source: {note['linkedin']}")
     fm.append("---")
-    # editing a live note replaces its source file, even if the date changed
-    for old in (ROOT / "notes" / "_src").glob(f"*-{slug}.md"):
+    # editing a live note replaces its source file, even if the date changed,
+    # and marks it updated today
+    existing = list((ROOT / "notes" / "_src").glob(f"*-{slug}.md"))
+    for old in existing:
         old.unlink()
+    if existing:
+        import datetime as dt
+        fm.insert(3, f"updated: {dt.date.today().isoformat()}")
     path = ROOT / "notes" / "_src" / f"{note['date']}-{slug}.md"
     path.write_text("\n".join(fm) + "\n\n" + body.strip() + "\n", encoding="utf-8")
     print(path.relative_to(ROOT))

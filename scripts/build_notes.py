@@ -108,6 +108,8 @@ def load():
             if not meta.get(k):
                 raise SystemExit(f"{f.name}: front matter needs '{k}'")
         dt.date.fromisoformat(meta["date"])
+        meta.setdefault("updated", meta["date"])
+        dt.date.fromisoformat(meta["updated"])
         meta.setdefault("slug", re.sub(r"^\d{4}-\d{2}-\d{2}-", "", f.stem))
         meta["body"] = m.group(2).strip()
         meta["words"] = len(re.findall(r"\w+", re.sub(r"<[^>]+>", " ", meta["body"])))
@@ -199,7 +201,7 @@ AUTHOR = {"@type": "Person", "@id": f"{SITE}/#logan", "name": "Logan Ice", "url"
 def build_issue(n, notes):
     url = f"{SITE}/notes/{n['slug']}/"
     ld = {"@context": "https://schema.org", "@type": "BlogPosting", "headline": n["title"],
-          "description": n["description"], "datePublished": n["date"], "dateModified": n["date"],
+          "description": n["description"], "datePublished": n["date"], "dateModified": n["updated"],
           "url": url, "mainEntityOfPage": url, "wordCount": n["words"], "author": AUTHOR,
           "publisher": {"@type": "Organization", "name": "The Growth Den", "url": f"{SITE}/",
                         "logo": {"@type": "ImageObject", "url": f"{SITE}/uploads/Growth_Den__Logo_Horizontal_Primary.png"}},
@@ -212,7 +214,7 @@ def build_issue(n, notes):
             for o in others) + "</ul>"
     content = f"""  <div class="tag">Notes from the Den</div>
   <h1>{html.escape(n['title'])}</h1>
-  <div class="meta">By Logan Ice · Published <time datetime="{n['date']}">{nice(n['date'])}</time> · Last updated <time datetime="{n['date']}">{nice(n['date'])}</time></div>
+  <div class="meta">By Logan Ice · Published <time datetime="{n['date']}">{nice(n['date'])}</time> · Last updated <time datetime="{n['updated']}">{nice(n['updated'])}</time></div>
   <article class="body">
 {n['body'] if n.get('format') == 'html' else md_to_html(n['body'])}
   </article>
@@ -259,7 +261,7 @@ def latest_list(notes, cls):
 
 
 def update_pages(notes):
-    latest = notes[0]["date"]
+    latest = max(n["updated"] for n in notes)
     home = ROOT / "index.html"
     t = home.read_text(encoding="utf-8")
     t = replace_block(t, "NOTES", latest_list(notes, "notes-date"))
@@ -273,9 +275,9 @@ def update_pages(notes):
 
 
 def build_sitemap(notes):
-    latest = notes[0]["date"]
+    latest = max(n["updated"] for n in notes)
     urls = [("", latest, "1.0")] + [(f"{s}/", latest, "0.8") for s in SEAT_PAGES] + \
-           [("notes/", latest, "0.7")] + [(f"notes/{n['slug']}/", n["date"], "0.6") for n in notes]
+           [("notes/", latest, "0.7")] + [(f"notes/{n['slug']}/", n["updated"], "0.6") for n in notes]
     x = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
     for u, d, pr in urls:
         x += f"  <url>\n    <loc>{SITE}/{u}</loc>\n    <lastmod>{d}</lastmod>\n    <priority>{pr}</priority>\n  </url>\n"
