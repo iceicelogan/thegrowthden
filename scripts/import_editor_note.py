@@ -56,9 +56,14 @@ def main():
     if note.get("linkedin"):
         fm.append(f"source: {note['linkedin']}")
     fm.append("---")
-    # editing a live note replaces its source file, even if the date changed
-    for old in (ROOT / "notes" / "_src").glob(f"*-{slug}.md"):
+    # editing a live note replaces its source file, even if the date changed,
+    # and marks it updated today
+    existing = list((ROOT / "notes" / "_src").glob(f"*-{slug}.md"))
+    for old in existing:
         old.unlink()
+    if existing:
+        import datetime as dt
+        fm.insert(3, f"updated: {dt.date.today().isoformat()}")
     path = ROOT / "notes" / "_src" / f"{note['date']}-{slug}.md"
     path.write_text("\n".join(fm) + "\n\n" + body.strip() + "\n", encoding="utf-8")
     print(path.relative_to(ROOT))
