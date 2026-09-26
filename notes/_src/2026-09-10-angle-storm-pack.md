@@ -1,6 +1,6 @@
 ---
 title: The Angle Storm Pack
-date: 2026-09-08
+date: 2026-09-10
 slug: angle-storm-pack
 description: Logan Ice's creative development loop for paid social as seven prompts you can paste into Claude or ChatGPT: name the default angle, force new angles away from it, score them, test them on five independent personas, and loop until one of them fights for an angle.
 ---
