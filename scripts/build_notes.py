@@ -59,6 +59,9 @@ def md_to_html(md):
         m = re.match(r"^(#{2,4})\s+(.*)", line)
         if not line.strip():
             flush()
+        elif line.startswith(">"):
+            flush()
+            out.append("<blockquote><p>" + inline(line.lstrip("> ").strip()) + "</p></blockquote>")
         elif m:
             flush()
             lvl = len(m.group(1))
@@ -135,6 +138,7 @@ STYLE = """
   .body h2 { font-size:24px; font-weight:600; color:var(--purple); line-height:1.3; margin:44px 0 14px; }
   .body h3 { font-size:19px; font-weight:600; color:var(--purple); margin:32px 0 10px; }
   .body p { margin-bottom:18px; font-size:17px; }
+  .body blockquote { border-left:4px solid var(--orange); padding:4px 0 4px 18px; margin:0 0 18px; font-style:italic; color:var(--purple); }
   .body ul, .body ol { padding-left:22px; margin-bottom:18px; }
   .box { background:var(--purple); color:rgba(255,255,255,.85); border-radius:20px; padding:28px; margin-top:48px; }
   .box h2 { color:#fff; font-size:22px; margin-bottom:8px; }
