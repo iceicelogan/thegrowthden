@@ -39,6 +39,10 @@ def main():
         if src.startswith("/uploads/"):
             return m.group(0)  # already on the site
         mid = re.search(r"([0-9a-f]{32})", src)
+        if mid:
+            on_site = sorted(out_dir.glob(mid.group(1) + ".*"))
+            if on_site:  # already published with this note
+                return f'src="/uploads/notes/{slug}/{on_site[0].name}"'
         if not (mid and imgdir):
             raise SystemExit(f"image {src} has no downloaded file")
         found = sorted(imgdir.glob(mid.group(1) + ".*"))
@@ -50,7 +54,7 @@ def main():
         return f'src="/uploads/notes/{slug}/{dest.name}"'
 
     body = re.sub(r'src="([^"]+)"', swap, body)
-    body = body.replace("<img ", '<img loading="lazy" ')
+    body = re.sub(r'<img (?![^>]*loading=)', '<img loading="lazy" ', body)
     fm = ["---", f"title: {note['title']}", f"date: {note['date']}", f"slug: {slug}",
           f"description: {' '.join(note['description'].split())}", "format: html"]
     if note.get("linkedin"):
