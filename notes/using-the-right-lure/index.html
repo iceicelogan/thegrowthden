@@ -77,6 +77,11 @@
   .body img { display:block; max-width:100%; height:auto; border-radius:12px; margin:8px 0 18px; }
   .body blockquote p { margin:0; }
   .body blockquote { border-left:4px solid var(--orange); padding:4px 0 4px 18px; margin:0 0 18px; font-style:italic; color:var(--purple); }
+  .body pre.prompt, .body pre { position:relative; background:#fff; border:1px solid var(--border); border-left:4px solid var(--purple); border-radius:12px; padding:18px 18px 18px 20px; margin:0 0 22px; white-space:pre-wrap; word-wrap:break-word; font-family:'Poppins',sans-serif; font-size:15px; line-height:1.65; color:var(--ink); }
+  .body pre code { font-family:inherit; }
+  .copy-prompt { position:absolute; top:10px; right:10px; font-family:'Poppins',sans-serif; font-size:12px; font-weight:600; color:var(--purple); background:var(--cream); border:1px solid var(--border); border-radius:100px; padding:5px 12px; cursor:pointer; }
+  .copy-prompt:hover { border-color:var(--purple); }
+  .body pre.has-copy { padding-top:48px; }
   .body ul, .body ol { padding-left:22px; margin-bottom:18px; }
   .box { background:var(--purple); color:rgba(255,255,255,.85); border-radius:20px; padding:28px; margin-top:48px; }
   .box h2 { color:#fff; font-size:22px; margin-bottom:8px; }
@@ -128,8 +133,20 @@
     <p>I'm a fractional growth advisor for growth-stage DTC and e-commerce brands. I handle strategy and take execution off your plate, in whatever seat you need, from $7,500 a month.</p>
     <a class="cta" href="https://calendar.app.google/dy8683mNDXyWAkPo9" target="_blank">Let's see if we're a fit</a><a class="more" href="/#seats">See the seats →</a>
   </div>
-  <h2 class="more-h">More from Notes from the Den</h2><ul class="list"><li><a href="/notes/dnd-dialogue-six-years-later/">Dungeons &amp; Dragons &amp; Dialogue, Six Years Later</a><div class="d">September 15, 2026</div></li></ul>
+  <h2 class="more-h">More from Notes from the Den</h2><ul class="list"><li><a href="/notes/dnd-dialogue-six-years-later/">Dungeons &amp; Dragons &amp; Dialogue, Six Years Later</a><div class="d">September 15, 2026</div></li><li><a href="/notes/angle-storm-pack/">The Angle Storm Pack</a><div class="d">September 8, 2026</div></li></ul>
 </main>
 <footer><div class="in">© 2026 The Growth Den LLC · Logan Ice, St. Louis · <a href="mailto:logan@thegrowthden.com">logan@thegrowthden.com</a></div></footer>
+<script>
+document.querySelectorAll(".body pre").forEach(function (pre) {
+  var b = document.createElement("button");
+  b.type = "button"; b.className = "copy-prompt"; b.textContent = "Copy prompt";
+  b.addEventListener("click", function () {
+    var t = pre.querySelector("code") ? pre.querySelector("code").innerText : pre.innerText;
+    var done = function () { b.textContent = "Copied"; setTimeout(function () { b.textContent = "Copy prompt"; }, 1800); };
+    if (navigator.clipboard) { navigator.clipboard.writeText(t).then(done, function () {}); }
+  });
+  pre.classList.add("has-copy"); pre.appendChild(b);
+});
+</script>
 </body>
 </html>
