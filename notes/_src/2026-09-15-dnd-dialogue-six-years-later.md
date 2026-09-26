@@ -3,15 +3,16 @@ title: Dungeons & Dragons & Dialogue, Six Years Later
 date: 2026-09-15
 slug: dnd-dialogue-six-years-later
 description: Six years after writing about how D&D makes you better at your job, Logan Ice revisits empathy, diversity and ambiguity from the Dungeon Master's side of the table, adds what changes when AI agents join the party, and makes the case for a Session Zero in every client engagement.
+source: https://www.linkedin.com/pulse/dungeons-dragons-dialogue-six-years-later-logan-ice-aaskc
 ---
 
-Six years ago I wrote [a post about how Dungeons & Dragons makes you better at your job](https://loganice.medium.com/dungeons-dragons-dialogue-5983cfa6371d). I wrote it from the wrong side of the table.
+Six years ago I wrote [a post about how Dungeons & Dragons makes you better at your job](https://loganice.medium.com/dungeons-dragons-dialogue-5983cfa6371d) - and I'm hoping today to convince you that this hobby has done nothing but appreciate in value.
 
-Back then I was a player. My first character was Rhorash, an orphan who was hellbent on summoning an evil dragon goddess named Tiamat. I played alongside Tree, a barbarian named for his habit of smashing things with a tree, and Backpack, a lil' guy that liked hanging out in Tree's backpack. I still think that post holds up! The three lessons were empathy, diversity, and leaning into ambiguity - all still just as important now if not more so.
+Back then I was a player. My first character was Rhorash, an orphan who was hellbent on summoning an evil 5-headed dragon goddess named Tiamat with my long lost brother, Dragomir. I played alongside Tree, a barbarian named for his habit of smashing things with a tree, and Backpack, a lil' guy that liked hanging out in Tree's backpack. I still think that post holds up! The three lessons were empathy, diversity, and leaning into ambiguity - all still just as important now if not more so.
 
 What I didn't have in 2020 was any idea what it's like to run the game. These days I'm the Dungeon Master for a homebrew campaign I built from scratch, and I also run The Growth Den, which means I'm juggling five clients at once with a bench of AI agents doing a lot of the heavy lifting. And I'll tell you what, those are largely the same job. So this is the 2026 version of that post. The same three lessons, told from behind the DM screen.
 
-Fair warning, this is still a very nerdy post.
+> Fair warning, this is still a very nerdy post.
 
 ## 1. Empathy is still the whole game, and the machines can't do it for you
 

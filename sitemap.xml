@@ -2,33 +2,38 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://thegrowthden.com/</loc>
-    <lastmod>2026-09-15</lastmod>
+    <lastmod>2026-09-26</lastmod>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://thegrowthden.com/fractional-growth-strategy/</loc>
-    <lastmod>2026-09-15</lastmod>
+    <lastmod>2026-09-26</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://thegrowthden.com/fractional-head-of-creative/</loc>
-    <lastmod>2026-09-15</lastmod>
+    <lastmod>2026-09-26</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://thegrowthden.com/meta-media-buyer/</loc>
-    <lastmod>2026-09-15</lastmod>
+    <lastmod>2026-09-26</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://thegrowthden.com/marketing-team-builder/</loc>
-    <lastmod>2026-09-15</lastmod>
+    <lastmod>2026-09-26</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://thegrowthden.com/notes/</loc>
-    <lastmod>2026-09-15</lastmod>
+    <lastmod>2026-09-26</lastmod>
     <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://thegrowthden.com/notes/using-the-right-lure/</loc>
+    <lastmod>2026-09-26</lastmod>
+    <priority>0.6</priority>
   </url>
   <url>
     <loc>https://thegrowthden.com/notes/dnd-dialogue-six-years-later/</loc>

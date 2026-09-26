@@ -35,6 +35,7 @@ GTM = """<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new D
 # ---------- markdown (small, dependency-free) ----------
 def inline(text):
     t = html.escape(text, quote=False)
+    t = re.sub(r"!\[([^\]]*)\]\(((?:https?://|/)[^)\s]+)\)", r'<img src="\2" alt="\1" loading="lazy" />', t)
     t = re.sub(r"\[([^\]]+)\]\((https?://[^)\s]+)\)", r'<a href="\2">\1</a>', t)
     t = re.sub(r"\*\*(.+?)\*\*", r"<strong>\1</strong>", t)
     t = re.sub(r"(?<![\w*])\*(?!\s)(.+?)(?<!\s)\*(?![\w*])", r"<em>\1</em>", t)
@@ -59,6 +60,9 @@ def md_to_html(md):
         m = re.match(r"^(#{2,4})\s+(.*)", line)
         if not line.strip():
             flush()
+        elif line.startswith(">"):
+            flush()
+            out.append("<blockquote><p>" + inline(line.lstrip("> ").strip()) + "</p></blockquote>")
         elif m:
             flush()
             lvl = len(m.group(1))
@@ -106,7 +110,7 @@ def load():
         dt.date.fromisoformat(meta["date"])
         meta.setdefault("slug", re.sub(r"^\d{4}-\d{2}-\d{2}-", "", f.stem))
         meta["body"] = m.group(2).strip()
-        meta["words"] = len(re.findall(r"\w+", meta["body"]))
+        meta["words"] = len(re.findall(r"\w+", re.sub(r"<[^>]+>", " ", meta["body"])))
         notes.append(meta)
     notes.sort(key=lambda n: n["date"], reverse=True)
     return notes
@@ -135,6 +139,9 @@ STYLE = """
   .body h2 { font-size:24px; font-weight:600; color:var(--purple); line-height:1.3; margin:44px 0 14px; }
   .body h3 { font-size:19px; font-weight:600; color:var(--purple); margin:32px 0 10px; }
   .body p { margin-bottom:18px; font-size:17px; }
+  .body img { display:block; max-width:100%; height:auto; border-radius:12px; margin:8px 0 18px; }
+  .body blockquote p { margin:0; }
+  .body blockquote { border-left:4px solid var(--orange); padding:4px 0 4px 18px; margin:0 0 18px; font-style:italic; color:var(--purple); }
   .body ul, .body ol { padding-left:22px; margin-bottom:18px; }
   .box { background:var(--purple); color:rgba(255,255,255,.85); border-radius:20px; padding:28px; margin-top:48px; }
   .box h2 { color:#fff; font-size:22px; margin-bottom:8px; }
@@ -207,7 +214,7 @@ def build_issue(n, notes):
   <h1>{html.escape(n['title'])}</h1>
   <div class="meta">By Logan Ice · Published <time datetime="{n['date']}">{nice(n['date'])}</time> · Last updated <time datetime="{n['date']}">{nice(n['date'])}</time></div>
   <article class="body">
-{md_to_html(n['body'])}
+{n['body'] if n.get('format') == 'html' else md_to_html(n['body'])}
   </article>
   <div class="box">
     <h2>Work with Logan</h2>

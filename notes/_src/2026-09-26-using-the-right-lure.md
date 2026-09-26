@@ -1,0 +1,31 @@
+---
+title: Using the Right Lure
+date: 2026-09-26
+slug: using-the-right-lure
+description: A stranger found Logan Ice through ChatGPT because his website says one specific thing about how he works. Why a narrow, plain-spoken pitch helps you get found now that buyers ask AI for help, and what to change on your own site this week.
+source: https://www.linkedin.com/pulse/using-right-lure-logan-ice-2jrzc
+---
+
+I got a lead this week from somewhere I never expected.
+
+A guy reached out to talk about working together. We'd never met, as far as I can tell we don't share a single connection, and nobody referred him. That matters, because almost every piece of work I've landed since starting The Growth Den has come through someone I know or a second degree connection (shoutout to literally everyone on that front). When I asked him how he found me, his answer was ChatGPT. He'd been in a thread about how to improve his company's marketing, and at some point it pulled my website into the conversation.
+
+Specifically -
+
+> ...it (ChatGPT) grabbed your website as you specifically reference building a system that can be utilized by the company and not the agency model.
+
+What made me so happy wasn't the lead itself, although I'll happily take it! It was the reason it found me. It didn't grab my site because I'm the biggest name out there or because I've got some magic SEO / AEO trick running in the background. It grabbed it because I say something pretty specific about how I work, and that specific thing matched exactly what he was asking about.
+
+I don't particularly like the agency model. I never have. The way most marketing help works is that you hire an agency, and they build everything inside their own accounts and their own heads. The day you stop paying them, you find out how little of it actually belongs to you. Then you start over with the next agency and pay to learn the same lessons again. What I do instead is come in, build the systems with your team, and teach your people to run them, so the thing we build is yours whether I'm around or not. It's the old teach-someone-to-fish idea, applied to marketing.
+
+The funny part is that it hasn't made me any less sticky. Most of my clients keep me around well past the build, and I like that a lot better than being kept around because someone's afraid of what happens if they leave. I've built lasting relationships this way, because of the way we've built mutual trust.
+
+It's a narrow pitch. It's not for the company that wants to hand everything off and never think about it - which truthfully, is a fair number of people. What I didn't fully appreciate until this week is how much that narrowness helps you get found, now that people are asking AI for help instead of scrolling through page after page of inane Google results.
+
+My best guess at what happened is pretty simple. When somebody types "We're doing things ourselves and don't want to give that up to an agency, but need help" into ChatGPT, it goes looking for pages that talk about that exact problem. A page that says "full-service digital marketing for businesses of all sizes" doesn't answer that question at all. A page that says "I build systems your company owns instead of renting you an agency" answers it directly. The more specific you are about who you help and how, the easier it is to match you to the person who's asking.
+
+This is the same advice people have been giving about niching down for SEO for years, except it used to be about humans. The person you meet at a conference remembers "the fractional marketer who can't stand the agency model" a lot longer than "a marketing consultant." Now, the machines work about the same way. The stakes are higher now, too, because more and more of your future customers' first conversations are happening in a chat window you aren't particularly privy to.
+
+So if your website is trying to talk to everyone, I'd push you to go look at it this week and find the one thing you believe about your work that most of your competitors wouldn't say. Write it down in plain words and put it somewhere obvious, even (especially?) if it scares a few people off.
+
+I'm talking to him later this week, and I genuinely have no idea whether it turns into work. Either way I'll let you know how it goes. And if someone has ever found you through ChatGPT or Claude or anything like it, I'd really love to hear the story, because I'm still a little amazed this happened at all.
