@@ -55,8 +55,20 @@ def md_to_html(md):
             out.append(f"<{tag}>" + "".join(f"<li>{inline(i)}</li>" for i in lst[1]) + f"</{tag}>")
             lst = None
 
+    fence = None
     for raw in md.splitlines():
         line = raw.rstrip()
+        if line.startswith("```"):
+            if fence is None:
+                flush()
+                fence = []
+            else:
+                out.append('<pre class="prompt"><code>' + html.escape("\n".join(fence).strip("\n"), quote=False) + "</code></pre>")
+                fence = None
+            continue
+        if fence is not None:
+            fence.append(raw.rstrip())
+            continue
         m = re.match(r"^(#{2,4})\s+(.*)", line)
         if not line.strip():
             flush()
@@ -149,6 +161,11 @@ STYLE = """
   .body img { display:block; max-width:100%; height:auto; border-radius:12px; margin:8px 0 18px; }
   .body blockquote p { margin:0; }
   .body blockquote { border-left:4px solid var(--orange); padding:4px 0 4px 18px; margin:0 0 18px; font-style:italic; color:var(--purple); }
+  .body pre.prompt, .body pre { position:relative; background:#fff; border:1px solid var(--border); border-left:4px solid var(--purple); border-radius:12px; padding:18px 18px 18px 20px; margin:0 0 22px; white-space:pre-wrap; word-wrap:break-word; font-family:'Poppins',sans-serif; font-size:15px; line-height:1.65; color:var(--ink); }
+  .body pre code { font-family:inherit; }
+  .copy-prompt { position:absolute; top:10px; right:10px; font-family:'Poppins',sans-serif; font-size:12px; font-weight:600; color:var(--purple); background:var(--cream); border:1px solid var(--border); border-radius:100px; padding:5px 12px; cursor:pointer; }
+  .copy-prompt:hover { border-color:var(--purple); }
+  .body pre.has-copy { padding-top:48px; }
   .body ul, .body ol { padding-left:22px; margin-bottom:18px; }
   .box { background:var(--purple); color:rgba(255,255,255,.85); border-radius:20px; padding:28px; margin-top:48px; }
   .box h2 { color:#fff; font-size:22px; margin-bottom:8px; }
@@ -216,6 +233,18 @@ def page(title, desc, url, ld, content, image=None):
 {content}
 </main>
 <footer><div class="in">© {dt.date.today().year} The Growth Den LLC · Logan Ice, St. Louis · <a href="mailto:logan@thegrowthden.com">logan@thegrowthden.com</a></div></footer>
+<script>
+document.querySelectorAll(".body pre").forEach(function (pre) {{
+  var b = document.createElement("button");
+  b.type = "button"; b.className = "copy-prompt"; b.textContent = "Copy prompt";
+  b.addEventListener("click", function () {{
+    var t = pre.querySelector("code") ? pre.querySelector("code").innerText : pre.innerText;
+    var done = function () {{ b.textContent = "Copied"; setTimeout(function () {{ b.textContent = "Copy prompt"; }}, 1800); }};
+    if (navigator.clipboard) {{ navigator.clipboard.writeText(t).then(done, function () {{}}); }}
+  }});
+  pre.classList.add("has-copy"); pre.appendChild(b);
+}});
+</script>
 </body>
 </html>
 """

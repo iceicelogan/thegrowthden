@@ -49,6 +49,12 @@
    "headline": "Dungeons & Dragons & Dialogue, Six Years Later",
    "url": "https://thegrowthden.com/notes/dnd-dialogue-six-years-later/",
    "datePublished": "2026-09-15"
+  },
+  {
+   "@type": "BlogPosting",
+   "headline": "The Angle Storm Pack",
+   "url": "https://thegrowthden.com/notes/angle-storm-pack/",
+   "datePublished": "2026-09-10"
   }
  ]
 }
@@ -73,6 +79,11 @@
   .body img { display:block; max-width:100%; height:auto; border-radius:12px; margin:8px 0 18px; }
   .body blockquote p { margin:0; }
   .body blockquote { border-left:4px solid var(--orange); padding:4px 0 4px 18px; margin:0 0 18px; font-style:italic; color:var(--purple); }
+  .body pre.prompt, .body pre { position:relative; background:#fff; border:1px solid var(--border); border-left:4px solid var(--purple); border-radius:12px; padding:18px 18px 18px 20px; margin:0 0 22px; white-space:pre-wrap; word-wrap:break-word; font-family:'Poppins',sans-serif; font-size:15px; line-height:1.65; color:var(--ink); }
+  .body pre code { font-family:inherit; }
+  .copy-prompt { position:absolute; top:10px; right:10px; font-family:'Poppins',sans-serif; font-size:12px; font-weight:600; color:var(--purple); background:var(--cream); border:1px solid var(--border); border-radius:100px; padding:5px 12px; cursor:pointer; }
+  .copy-prompt:hover { border-color:var(--purple); }
+  .body pre.has-copy { padding-top:48px; }
   .body ul, .body ol { padding-left:22px; margin-bottom:18px; }
   .box { background:var(--purple); color:rgba(255,255,255,.85); border-radius:20px; padding:28px; margin-top:48px; }
   .box h2 { color:#fff; font-size:22px; margin-bottom:8px; }
@@ -105,8 +116,20 @@
   <div class="tag">The newsletter</div>
   <h1>Notes from the Den</h1>
   <div class="meta">Notes from the Den is Logan Ice&#x27;s newsletter on growth marketing, running a business with AI in the loop, and the occasional D&amp;D tangent. Last updated <time datetime="2026-09-26">September 26, 2026</time>.</div>
-  <ul class="cards"><li class="card"><a href="/notes/using-the-right-lure/"><div class="cover cover-none" aria-hidden="true"></div><div class="card-text"><span class="card-title">Using the Right Lure</span><span class="d">September 26, 2026</span><span class="card-desc">A stranger found Logan Ice through ChatGPT because his website says one specific thing about how he works. Why a narrow, plain-spoken pitch helps you get found now that buyers ask AI for help, and what to change on your own site this week.</span></div></a></li><li class="card"><a href="/notes/dnd-dialogue-six-years-later/"><img class="cover" src="/uploads/notes/dnd-dialogue-six-years-later/70960b722c57a06388facd49cf7bc655.jpg" alt="A DM screen titled Dungeons &amp; Dragons &amp; Dialogue, Six Years Later, with miniatures, dice and a laptop showing a rising chart" loading="lazy" /><div class="card-text"><span class="card-title">Dungeons &amp; Dragons &amp; Dialogue, Six Years Later</span><span class="d">September 15, 2026</span><span class="card-desc">Six years after writing about how D&amp;D makes you better at your job, Logan Ice revisits empathy, diversity and ambiguity from the Dungeon Master&#x27;s side of the table, adds what changes when AI agents join the party, and makes the case for a Session Zero in every client engagement.</span></div></a></li></ul>
+  <ul class="cards"><li class="card"><a href="/notes/using-the-right-lure/"><div class="cover cover-none" aria-hidden="true"></div><div class="card-text"><span class="card-title">Using the Right Lure</span><span class="d">September 26, 2026</span><span class="card-desc">A stranger found Logan Ice through ChatGPT because his website says one specific thing about how he works. Why a narrow, plain-spoken pitch helps you get found now that buyers ask AI for help, and what to change on your own site this week.</span></div></a></li><li class="card"><a href="/notes/dnd-dialogue-six-years-later/"><img class="cover" src="/uploads/notes/dnd-dialogue-six-years-later/70960b722c57a06388facd49cf7bc655.jpg" alt="A DM screen titled Dungeons &amp; Dragons &amp; Dialogue, Six Years Later, with miniatures, dice and a laptop showing a rising chart" loading="lazy" /><div class="card-text"><span class="card-title">Dungeons &amp; Dragons &amp; Dialogue, Six Years Later</span><span class="d">September 15, 2026</span><span class="card-desc">Six years after writing about how D&amp;D makes you better at your job, Logan Ice revisits empathy, diversity and ambiguity from the Dungeon Master&#x27;s side of the table, adds what changes when AI agents join the party, and makes the case for a Session Zero in every client engagement.</span></div></a></li><li class="card"><a href="/notes/angle-storm-pack/"><div class="cover cover-none" aria-hidden="true"></div><div class="card-text"><span class="card-title">The Angle Storm Pack</span><span class="d">September 10, 2026</span><span class="card-desc">Logan Ice&#x27;s creative development loop for paid social as seven prompts you can paste into Claude or ChatGPT: name the default angle, force new angles away from it, score them, test them on five independent personas, and loop until one of them fights for an angle.</span></div></a></li></ul>
 </main>
 <footer><div class="in">© 2026 The Growth Den LLC · Logan Ice, St. Louis · <a href="mailto:logan@thegrowthden.com">logan@thegrowthden.com</a></div></footer>
+<script>
+document.querySelectorAll(".body pre").forEach(function (pre) {
+  var b = document.createElement("button");
+  b.type = "button"; b.className = "copy-prompt"; b.textContent = "Copy prompt";
+  b.addEventListener("click", function () {
+    var t = pre.querySelector("code") ? pre.querySelector("code").innerText : pre.innerText;
+    var done = function () { b.textContent = "Copied"; setTimeout(function () { b.textContent = "Copy prompt"; }, 1800); };
+    if (navigator.clipboard) { navigator.clipboard.writeText(t).then(done, function () {}); }
+  });
+  pre.classList.add("has-copy"); pre.appendChild(b);
+});
+</script>
 </body>
 </html>
