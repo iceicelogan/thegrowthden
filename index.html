@@ -1246,6 +1246,16 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .seat-big a { color: var(--gold); font-weight: 600; }
   @media (max-width: 768px) { .seat-cols { grid-template-columns: 1fr; gap: 24px; } .seat-panel { padding: 24px; } #seats { padding: 80px 0; } }
 
+  /* ── NOTES ── */
+  #notes { padding: 90px 0 20px; background: var(--cream); }
+  .notes-header h2 { font-size: clamp(28px, 3.4vw, 44px); font-weight: 700; color: var(--purple); margin-bottom: 28px; }
+  .notes-list { list-style: none; display: flex; flex-direction: column; gap: 12px; max-width: 860px; }
+  .notes-list li { background: var(--white); border: 1px solid var(--border); border-radius: var(--r-md); padding: 18px 22px; }
+  .notes-list a { color: var(--purple); font-weight: 600; font-size: 17px; }
+  .notes-date { display: block; color: var(--muted); font-size: 13px; margin-top: 2px; }
+  .notes-all { display: inline-block; margin-top: 18px; color: var(--blue); font-weight: 600; }
+  #faq { padding-top: 60px; }
+
   /* ── FAQ ── */
   #faq { padding: 100px 0; background: var(--cream); }
   .faq-header { max-width: 640px; margin-bottom: 40px; }
@@ -1273,6 +1283,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <li><a href="#pricing">Pricing</a></li>
       <li><a href="#about">About</a></li>
       <li><a href="#faq">FAQ</a></li>
+      <li><a href="/notes/">Notes</a></li>
     </ul>
     <a href="https://calendar.app.google/dy8683mNDXyWAkPo9" target="_blank" class="btn btn-primary nav-cta">Let's Talk</a>
     <button class="hamburger" id="hamburger" aria-label="Menu">
@@ -1286,6 +1297,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <a href="#pricing" onclick="closeMobile()">Pricing</a>
   <a href="#about" onclick="closeMobile()">About</a>
   <a href="#faq" onclick="closeMobile()">FAQ</a>
+  <a href="/notes/" onclick="closeMobile()">Notes</a>
   <a href="https://calendar.app.google/dy8683mNDXyWAkPo9" target="_blank" class="btn btn-primary" onclick="closeMobile()">Let's Talk</a>
 </div>
 
@@ -1622,6 +1634,18 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </div>
 </section>
 
+<!-- NOTES -->
+<section id="notes">
+  <div class="wrap">
+    <div class="notes-header reveal">
+      <div class="tag">Notes from the Den</div>
+      <h2>What I'm writing about lately.</h2>
+    </div>
+    <ul class="notes-list reveal"><!-- NOTES:START --><li><a href="/notes/dnd-dialogue-six-years-later/">Dungeons &amp; Dragons &amp; Dialogue, Six Years Later</a> <span class="notes-date">September 15, 2026</span></li><!-- NOTES:END --></ul>
+    <a class="notes-all" href="/notes/">All notes →</a>
+  </div>
+</section>
+
 <!-- FAQ -->
 <section id="faq">
   <div class="wrap">
@@ -1665,6 +1689,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <li><a href="#pricing">Pricing</a></li>
         <li><a href="#about">About</a></li>
       <li><a href="#faq">FAQ</a></li>
+        <li><a href="/notes/">Notes</a></li>
         <li><a href="https://calendar.app.google/dy8683mNDXyWAkPo9" target="_blank">Let's Talk</a></li>
       </ul>
     </div>
