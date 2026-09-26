@@ -15,3 +15,6 @@ Contact: logan@thegrowthden.com · Book a call: https://calendar.app.google/dy86
 ## More
 - [Homepage with pricing and FAQ](https://thegrowthden.com/)
 - [Growth Den Labs](https://thegrowthden.com/lab/the-machine/): free interactive explainers, including how the Meta ad auction works
+
+## Notes from the Den
+- [Dungeons & Dragons & Dialogue, Six Years Later](https://thegrowthden.com/notes/dnd-dialogue-six-years-later/) (2026-09-15): Six years after writing about how D&D makes you better at your job, Logan Ice revisits empathy, diversity and ambiguity from the Dungeon Master's side of the table, adds what changes when AI agents join the party, and makes the case for a Session Zero in every client engagement.
