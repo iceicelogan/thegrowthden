@@ -23,3 +23,5 @@ python3 scripts/build_notes.py
 ```
 
 and open a pull request. Source files with `format: html` keep the editor's HTML body as-is.
+
+When the editor note has a `slug` it's an edit to a live page: the import replaces that note's existing source file. After any publish, refresh the editor's "Open a note" menu with `python3 scripts/editor_library.py > library.json` and publish that file into the editor artifact.

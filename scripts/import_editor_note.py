@@ -36,6 +36,8 @@ def main():
 
     def swap(m):
         src = m.group(1)
+        if src.startswith("/uploads/"):
+            return m.group(0)  # already on the site
         mid = re.search(r"([0-9a-f]{32})", src)
         if not (mid and imgdir):
             raise SystemExit(f"image {src} has no downloaded file")
@@ -54,6 +56,9 @@ def main():
     if note.get("linkedin"):
         fm.append(f"source: {note['linkedin']}")
     fm.append("---")
+    # editing a live note replaces its source file, even if the date changed
+    for old in (ROOT / "notes" / "_src").glob(f"*-{slug}.md"):
+        old.unlink()
     path = ROOT / "notes" / "_src" / f"{note['date']}-{slug}.md"
     path.write_text("\n".join(fm) + "\n\n" + body.strip() + "\n", encoding="utf-8")
     print(path.relative_to(ROOT))
