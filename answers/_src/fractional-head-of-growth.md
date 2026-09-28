@@ -1,5 +1,5 @@
 ---
-title: Fractional head of growth for DTC and e-commerce brands ($5M–$80M)
+title: Fractional Head of Growth for DTC Brands ($5M-$80M)
 h1: What a fractional head of growth actually does for a DTC brand
 description: A fractional head of growth owns your acquisition and retention numbers part-time, usually two to three days a week, and unlike most fractional CMOs, does the work rather than just directing it. I'm Logan Ice. For growth-stage DTC and e-commerce brands doing roughly $5M to $80M, this is the seat I fill most often, from $7,500 a month.
 updated: 2026-09-28

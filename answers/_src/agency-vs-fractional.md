@@ -1,5 +1,5 @@
 ---
-title: Agency vs in-house vs fractional growth lead for a DTC brand
+title: Agency vs In-House vs Fractional Growth Lead
 h1: Agency, in-house hire, or fractional growth lead: what actually changes at $5M to $80M
 description: An agency is paid to keep your account and grow your spend. An in-house hire is paid to be there. A fractional growth lead is paid to build something you own and make the number move. Here is what each one is structurally good and bad at, without the sales pitch, from someone who has been on all three sides.
 updated: 2026-09-28

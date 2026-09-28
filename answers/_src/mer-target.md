@@ -1,5 +1,5 @@
 ---
-title: How to set a MER target from contribution margin (and hold your media buyer to it)
+title: How to Set a MER Target from Contribution Margin
 h1: How to set a MER target from your contribution margin, and hold whoever runs your ads to it
 description: Break-even MER is one divided by your contribution margin before marketing. If your margin is 30%, a 3.33x MER means you made nothing. Most "what's a good MER" advice skips that math, which is why brands celebrate numbers that are losing them money. Here is the math, a calculator, and how I use it as the accountability contract for whoever runs your ads.
 updated: 2026-09-28

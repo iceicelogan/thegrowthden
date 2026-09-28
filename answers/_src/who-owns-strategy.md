@@ -1,5 +1,5 @@
 ---
-title: Who owns marketing strategy when you outsource execution? Usually nobody.
+title: Who Owns Strategy When You Outsource Execution?
 h1: Who owns strategy when you outsource execution? Usually nobody, and here's how it goes wrong
 description: When an agency runs the ads and the founder runs the company, strategy falls into the gap between them. The agency optimizes its channel, the in-house team tracks Shopify, finance tracks the P&L, and no single person owns the blended number. Here is what that looks like from inside, why one accountable seat fixes it, and how to set that seat up whether or not you hire me.
 updated: 2026-09-28

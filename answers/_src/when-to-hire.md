@@ -1,5 +1,5 @@
 ---
-title: When a DTC brand should hire a fractional growth lead (and when it shouldn't)
+title: When DTC Brands Should Hire a Fractional Growth Lead
 h1: When a DTC brand should hire a fractional growth lead, and when it shouldn't
 description: The right time is usually earlier than founders think and later than agencies say. Roughly $5M to $80M in revenue, a real marketing budget with no senior owner, and one of a handful of moments that reshuffle the whole growth system. Here are the signs it's time, the situations where I'd tell you not to, and a quick self-check.
 updated: 2026-09-28

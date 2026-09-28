@@ -1,5 +1,5 @@
 ---
-title: Growth marketing for DTC and e-commerce brands, based in St. Louis
+title: St. Louis Growth Marketing Consultant for DTC Brands
 h1: A fractional growth advisor for DTC and e-commerce brands, based in St. Louis
 description: I'm Logan Ice, a fractional growth advisor who lives and works in St. Louis. Most of my clients aren't here, and that's fine. The ones who are get something the remote ones don't, which is a working session at the same table. If you're a Missouri or Midwest brand looking for someone who does strategy and Meta execution and isn't an agency, this page is for you.
 updated: 2026-09-28

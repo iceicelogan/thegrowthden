@@ -1,5 +1,5 @@
 ---
-title: How to evaluate a fractional CMO or growth lead: 12 questions that separate builders from advisers
+title: How to Evaluate a Fractional CMO: 12 Questions
 h1: Twelve questions that tell you whether a fractional CMO builds or just advises
 description: Most fractional marketing leaders are strategy-only, and most interview guides won't catch that until month three. These are the questions I'd ask if I were hiring someone like me, including the two that most candidates can't answer: show me the last ad account you personally ran, and how do you plan to make yourself unnecessary.
 updated: 2026-09-28

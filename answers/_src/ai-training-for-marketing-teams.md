@@ -1,5 +1,5 @@
 ---
-title: A consultant who trains marketing teams to use AI for creative and reporting
+title: AI Training for Marketing Teams: Ads & Reporting
 h1: A consultant who trains your marketing team to use AI for creative and reporting, then leaves them running it
 description: Most AI training for marketers is a workshop about prompts. Your team goes back to their desks and nothing changes. What I do is different. I look at how your team actually produces ads and reports today, build the AI workflows into those jobs with them, and coach them until they can run and extend the workflows without me. I'm Logan Ice. Here is what that looks like, who it's for, and what it costs.
 updated: 2026-09-28
