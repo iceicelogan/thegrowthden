@@ -147,6 +147,10 @@
   header .in { display:flex; align-items:center; justify-content:space-between; gap:16px; }
   header img { height:40px; display:block; }
   header nav a { color:#fff; font-weight:500; text-decoration:none; font-size:15px; margin-left:18px; }
+  header nav a.nav-cta { background:var(--orange); color:#fff; font-weight:600; padding:9px 18px; border-radius:100px; }
+  header nav { display:flex; align-items:center; white-space:nowrap; }
+  @media (max-width:600px) { header img { height:30px; } header nav a { margin-left:12px; font-size:14px; } header nav a.nav-cta { padding:7px 12px; } }
+  @media (max-width:420px) { header nav a[href="/#seats"] { display:none; } header img { height:26px; } header nav a { margin-left:10px; font-size:13px; } }
   main { padding:56px 16px 72px; }
   .tag { font-size:11px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--orange); margin-bottom:12px; }
   h1 { font-size:clamp(30px,5vw,46px); font-weight:700; color:var(--purple); line-height:1.15; margin-bottom:16px; }
@@ -191,7 +195,7 @@
 </style>
 </head>
 <body>
-<header><div class="in"><a href="/"><img src="/uploads/Growth_Den__Logo_Horizontal_White.png" alt="The Growth Den" /></a><nav><a href="/answers/">Answers</a><a href="/notes/">Notes</a><a href="/#seats">Seats</a></nav></div></header>
+<header><div class="in"><a href="/"><img src="/uploads/Growth_Den__Logo_Horizontal_White.png" alt="The Growth Den" /></a><nav><a href="/answers/">Answers</a><a href="/notes/">Notes</a><a href="/#seats">Seats</a><a class="nav-cta" href="https://calendar.app.google/dy8683mNDXyWAkPo9" target="_blank">Let's Talk</a></nav></div></header>
 <main>
   <div class="tag">Straight answers · Logan Ice</div>
   <h1>A fractional growth advisor for DTC and e-commerce brands, based in St. Louis</h1>
@@ -209,7 +213,7 @@
 <p>Growth-stage consumer brands in St. Louis, Kansas City, Columbia and Springfield first, and the wider Midwest after that: Chicago, Indianapolis, Nashville, Louisville, Cincinnati, Columbus, Des Moines, Minneapolis. Typically $5M to $80M in revenue, selling online through Shopify and Amazon, often with a growing retail footprint, spending real money on Meta and wanting to spend it better.</p>
 <p>Apparel, food and beverage, supplements and wellness, beauty, pet, and home are where I've done most of my work. If you're a St. Louis brand in a category I haven't touched, I'd still like to hear about it.</p>
 <h2>The seats</h2>
-<p>The same four as everywhere: [head of growth strategy](/fractional-growth-strategy/), [head of creative](/fractional-head-of-creative/), a [Meta media buyer who also brings strategy](/meta-media-buyer/), and [building your marketing team and its systems](/marketing-team-builder/). From $7,500 a month whichever seat I'm in. Details on [pricing](/pricing/).</p>
+<p>The same four as everywhere: <a href="/fractional-growth-strategy/">head of growth strategy</a>, <a href="/fractional-head-of-creative/">head of creative</a>, a <a href="/meta-media-buyer/">Meta media buyer who also brings strategy</a>, and <a href="/marketing-team-builder/">building your marketing team and its systems</a>. From $7,500 a month whichever seat I'm in. Details on <a href="/pricing/">pricing</a>.</p>
 <h2>Speaking and workshops</h2>
 <p>I run half-day paid media and AI workshops for agencies and marketing teams, and I speak at events like the Midwest Digital Marketing Conference. If your St. Louis team wants a working session on Meta, creative testing or putting AI into the marketing workflow, that's a thing I do.</p>
   <h2>Questions people ask</h2><details><summary>Do you only work with St. Louis brands?</summary><p>No. Most of my clients are elsewhere in the country and we work over video. St. Louis and Missouri brands get in-person working sessions on top of that.</p></details><details><summary>Are you an agency?</summary><p>No. I'm one person, embedded in your team, building systems your company owns. When a program needs specialist hands, we scope that together and you approve it first.</p></details><details><summary>Do you do local businesses, restaurants, or B2B?</summary><p>Not really. My work is growth-stage DTC and e-commerce brands. If that's not you, I'm happy to point you toward people in town who do that well.</p></details><details><summary>Can you come to our office?</summary><p>Yes, anywhere in the St. Louis metro, and I'm glad to travel to Kansas City, Chicago or elsewhere in the Midwest for a working session when it's worth it.</p></details><details><summary>How do we start?</summary><p>A call to see if we're a fit, then a short scope with the seat and the first 90 days as a list of bets. You'll have my read of the business inside the first two weeks.</p></details>
@@ -222,5 +226,6 @@
   <h2 class="more-h">More straight answers</h2><ul class="list"><li><a href="/fractional-head-of-growth/">What a fractional head of growth actually does for a DTC brand</a></li><li><a href="/agency-vs-fractional/">Agency, in-house hire, or fractional growth lead: what actually changes at $5M to $80M</a></li><li><a href="/pricing/">What The Growth Den costs, and what you get for it</a></li><li><a href="/mer-target/">How to set a MER target from your contribution margin, and hold whoever runs your ads to it</a></li><li><a href="/when-to-hire/">When a DTC brand should hire a fractional growth lead, and when it shouldn&#x27;t</a></li><li><a href="/how-to-evaluate-a-fractional-cmo/">Twelve questions that tell you whether a fractional CMO builds or just advises</a></li><li><a href="/who-owns-strategy/">Who owns strategy when you outsource execution? Usually nobody, and here&#x27;s how it goes wrong</a></li></ul>
 </main>
 <footer><div class="in">© 2026 The Growth Den LLC · Logan Ice, St. Louis · <a href="mailto:logan@thegrowthden.com">logan@thegrowthden.com</a></div></footer>
+<script src="/assets/contact.js" defer></script>
 </body>
 </html>

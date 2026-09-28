@@ -123,6 +123,10 @@
   header .in { display:flex; align-items:center; justify-content:space-between; gap:16px; }
   header img { height:40px; display:block; }
   header nav a { color:#fff; font-weight:500; text-decoration:none; font-size:15px; margin-left:18px; }
+  header nav a.nav-cta { background:var(--orange); color:#fff; font-weight:600; padding:9px 18px; border-radius:100px; }
+  header nav { display:flex; align-items:center; white-space:nowrap; }
+  @media (max-width:600px) { header img { height:30px; } header nav a { margin-left:12px; font-size:14px; } header nav a.nav-cta { padding:7px 12px; } }
+  @media (max-width:420px) { header nav a[href="/#seats"] { display:none; } header img { height:26px; } header nav a { margin-left:10px; font-size:13px; } }
   main { padding:56px 16px 72px; }
   .tag { font-size:11px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--orange); margin-bottom:12px; }
   h1 { font-size:clamp(30px,5vw,46px); font-weight:700; color:var(--purple); line-height:1.15; margin-bottom:16px; }
@@ -167,7 +171,7 @@
 </style>
 </head>
 <body>
-<header><div class="in"><a href="/"><img src="/uploads/Growth_Den__Logo_Horizontal_White.png" alt="The Growth Den" /></a><nav><a href="/answers/">Answers</a><a href="/notes/">Notes</a><a href="/#seats">Seats</a></nav></div></header>
+<header><div class="in"><a href="/"><img src="/uploads/Growth_Den__Logo_Horizontal_White.png" alt="The Growth Den" /></a><nav><a href="/answers/">Answers</a><a href="/notes/">Notes</a><a href="/#seats">Seats</a><a class="nav-cta" href="https://calendar.app.google/dy8683mNDXyWAkPo9" target="_blank">Let's Talk</a></nav></div></header>
 <main>
   <div class="tag">Straight answers · Logan Ice</div>
   <h1>What a fractional head of growth actually does for a DTC brand</h1>
@@ -187,7 +191,7 @@
 <p>It's a poor fit under about $3M, where the money is better spent on product and a scrappy in-house generalist. It's also a poor fit if what you want is somebody to press buttons on a plan you've already decided on. I'm happy to execute, but I'll push back first.</p>
 <h2>How it's different from a fractional CMO or an agency</h2>
 <p>A fractional CMO usually owns brand, org design and budget at the strategy layer and directs other people. An agency owns one channel and gets paid on your spend. A fractional head of growth owns the acquisition and retention numbers and does a lot of the work. I cover the CMO layer when you need it, but the number is the job.</p>
-<p>If you want the longer comparison, read [agency, in-house or fractional](/agency-vs-fractional/). If you're wondering what it costs, that's [here](/pricing/).</p>
+<p>If you want the longer comparison, read <a href="/agency-vs-fractional/">agency, in-house or fractional</a>. If you're wondering what it costs, that's <a href="/pricing/">here</a>.</p>
   <h2>Questions people ask</h2><details><summary>What&#x27;s the difference between a fractional head of growth and a fractional CMO?</summary><p>A fractional CMO typically owns brand, marketing org design and the budget at a strategy level and hands execution to a team or an agency. A fractional head of growth owns acquisition, retention and marketing efficiency and does more of the work directly. I'm the second one, and I'll cover the first when a client needs it.</p></details><details><summary>Do you actually run the ads or just advise?</summary><p>Both. I'll sit in Ads Manager, build the creative pipeline and the reporting, then train your team to run it. The point is that strategy and execution come from the same person, so nothing gets lost in the handoff.</p></details><details><summary>How many hours a week is fractional?</summary><p>Usually the equivalent of two to three days a week, front-loaded in the first couple of months when there's more to build. It flexes with what the business needs rather than a fixed hour count.</p></details><details><summary>How long does an engagement last?</summary><p>Long enough to build the system and teach the team to run it, which is usually six to twelve months or more. Most clients hire me for one seat and end up keeping me around for another, but the goal is that you own the system either way.</p></details><details><summary>How much does a fractional head of growth cost?</summary><p>Published market ranges run about $5,000 to $15,000 a month for a fractional head of growth and $8,000 to $22,000 for a fractional CMO. The Growth Den starts at $7,500 a month, whichever seat I'm in, and goes up with how many seats I cover and how much building is involved. Ad spend and software stay in your accounts.</p></details><details><summary>When should we convert to a full-time hire?</summary><p>When the system is built, the cadence is running, and there's enough steady work for a full-time person to own it. I'll tell you when that point arrives, and I'll help you hire and onboard them.</p></details>
   </article>
   <div class="box">
@@ -198,5 +202,6 @@
   <h2 class="more-h">More straight answers</h2><ul class="list"><li><a href="/agency-vs-fractional/">Agency, in-house hire, or fractional growth lead: what actually changes at $5M to $80M</a></li><li><a href="/pricing/">What The Growth Den costs, and what you get for it</a></li><li><a href="/mer-target/">How to set a MER target from your contribution margin, and hold whoever runs your ads to it</a></li><li><a href="/when-to-hire/">When a DTC brand should hire a fractional growth lead, and when it shouldn&#x27;t</a></li><li><a href="/how-to-evaluate-a-fractional-cmo/">Twelve questions that tell you whether a fractional CMO builds or just advises</a></li><li><a href="/who-owns-strategy/">Who owns strategy when you outsource execution? Usually nobody, and here&#x27;s how it goes wrong</a></li><li><a href="/st-louis/">A fractional growth advisor for DTC and e-commerce brands, based in St. Louis</a></li></ul>
 </main>
 <footer><div class="in">© 2026 The Growth Den LLC · Logan Ice, St. Louis · <a href="mailto:logan@thegrowthden.com">logan@thegrowthden.com</a></div></footer>
+<script src="/assets/contact.js" defer></script>
 </body>
 </html>
