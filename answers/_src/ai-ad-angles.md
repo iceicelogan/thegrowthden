@@ -1,5 +1,5 @@
 ---
-title: How to use AI to come up with genuinely different ad angles for paid social
+title: AI for Genuinely Different Paid Social Ad Angles
 h1: How do I use AI to come up with genuinely different ad angles for paid social?
 description: Ask ChatGPT for ten ad angles and you get ten polite versions of the first one. The fix isn't a better prompt, it's a better process. Name the default angle first, force new angles away from it on purpose, test them against independent customer personas before anyone opens a design tool, and only then produce. Here is the loop I run for clients, why each step exists, and where to get the prompts.
 updated: 2026-09-28

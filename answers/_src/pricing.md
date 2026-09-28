@@ -1,5 +1,5 @@
 ---
-title: What a fractional growth lead costs (and what The Growth Den charges)
+title: What a Fractional Growth Lead Costs (Pricing)
 h1: What The Growth Den costs, and what you get for it
 description: Engagements start at $7,500 a month, whichever seat I'm in, and go up with how many seats I cover and how much building is involved. Ad spend and software stay in your accounts. Here is what that money buys week to week, how it compares to the market, and a calculator for the flat-fee-versus-percentage-of-spend question.
 updated: 2026-09-28
