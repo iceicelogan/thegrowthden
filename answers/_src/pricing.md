@@ -12,6 +12,8 @@ Almost every page about fractional marketing pricing gives you a range and none 
 
 Where it lands above $7,500 depends on three things: how many seats I'm covering at once, how much building is involved (a creative pipeline and a reporting system from scratch is more than running an account that already works), and whether specialist support is needed. Taking a whole new product to market is a bigger custom program and we'd scope that together.
 
+The one seat with a different floor is [interim head of marketing](/interim-head-of-marketing/). That's the whole function, three to four days a week, for a fixed window while you hire the permanent leader, and it starts at $12,500 a month.
+
 Ad spend and software are never part of the fee. They stay in your accounts, in your name.
 
 ## What the money buys in a normal month
@@ -61,4 +63,4 @@ Often, once spend gets past about $50,000 to $75,000 a month, because agency fee
 No. A flat monthly retainer. I don't want to be paid more when you spend more; I want to be paid to make the number better.
 
 ### Can you fill just one seat, like a media buyer?
-Yes. Head of growth strategy, head of creative, head of strategy or media buyer next to your existing lead. The fee scales with the seats, not the title.
+Yes. Head of growth strategy, head of creative, or media buyer next to your existing lead. The fee scales with the seats, not the title. The exception is the interim head of marketing seat, which covers the whole function and starts at $12,500.

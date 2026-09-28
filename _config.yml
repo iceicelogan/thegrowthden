@@ -1,0 +1,17 @@
+# GitHub Pages builds this repo with Jekyll. Nothing here is a Jekyll site;
+# the only reason this file exists is the exclude list below, which keeps
+# build sources and working files out of the published site. Every other
+# file is copied through untouched (no page has front matter).
+exclude:
+  - scripts/
+  - answers/_src/
+  - notes/_src/
+  - README.md
+  - chats/
+  - project/
+  - machine-v5-wireframe.html
+  - _config.yml
+  - Gemfile
+  - Gemfile.lock
+  - node_modules/
+  - vendor/

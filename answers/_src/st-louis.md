@@ -28,7 +28,7 @@ Apparel, food and beverage, supplements and wellness, beauty, pet, and home are 
 
 ## The seats
 
-The same four as everywhere: [head of growth strategy](/fractional-growth-strategy/), [head of creative](/fractional-head-of-creative/), a [Meta media buyer who also brings strategy](/meta-media-buyer/), and [building your marketing team and its systems](/marketing-team-builder/). From $7,500 a month whichever seat I'm in. Details on [pricing](/pricing/).
+The same five as everywhere: [head of growth strategy](/fractional-growth-strategy/), [head of creative](/fractional-head-of-creative/), a [Meta media buyer who also brings strategy](/meta-media-buyer/), [building your marketing team and its systems](/marketing-team-builder/), and an [interim head of marketing](/interim-head-of-marketing/) when you're between leaders. From $7,500 a month for the first four; the interim seat starts at $12,500. Details on [pricing](/pricing/).
 
 ## Speaking and workshops
 

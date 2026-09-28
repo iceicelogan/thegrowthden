@@ -28,7 +28,8 @@ SRC = ROOT / "notes" / "_src"
 SITE = "https://thegrowthden.com"
 CAL = "https://calendar.app.google/dy8683mNDXyWAkPo9"
 SEAT_PAGES = ["fractional-growth-strategy", "fractional-head-of-creative",
-              "meta-media-buyer", "marketing-team-builder"]
+              "meta-media-buyer", "marketing-team-builder", "interim-head-of-marketing"]
+LAB_PAGES = ["lab/the-machine", "lab/the-auction", "lab/creative-is-the-targeting", "lab/lemonade-economy"]
 GTM = """<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-TR4S2MZM');</script>"""
 
 
@@ -194,6 +195,9 @@ STYLE = """
   h2.more-h { font-size:20px; color:var(--purple); font-weight:600; margin:48px 0 14px; }
   footer { background:var(--purple); color:rgba(255,255,255,.7); padding:28px 16px; font-size:14px; }
   footer a { color:#fff; }
+  footer a.li { display:inline-block; vertical-align:-3px; margin-left:10px; color:#fff; opacity:.85; }
+  footer a.li:hover { opacity:1; }
+  footer a.li svg { width:16px; height:16px; fill:currentColor; display:block; }
 """
 
 
@@ -236,7 +240,7 @@ def page(title, desc, url, ld, content, image=None):
 <main>
 {content}
 </main>
-<footer><div class="in">© {dt.date.today().year} The Growth Den LLC · Logan Ice, St. Louis · <a href="mailto:logan@thegrowthden.com">logan@thegrowthden.com</a></div></footer>
+<footer><div class="in">© {dt.date.today().year} The Growth Den LLC · Logan Ice, St. Louis · <a href="mailto:logan@thegrowthden.com">logan@thegrowthden.com</a><a class="li" href="https://www.linkedin.com/in/loganice" target="_blank" rel="noopener" aria-label="Logan Ice on LinkedIn"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg></a></div></footer>
 <script>
 document.querySelectorAll(".body pre").forEach(function (pre) {{
   var b = document.createElement("button");
@@ -364,6 +368,7 @@ def build_sitemap(notes):
     latest = max(n["updated"] for n in notes)
     urls = [("", latest, "1.0")] + [(f"{s}/", latest, "0.8") for s in SEAT_PAGES] + \
            answer_urls() + \
+           [(f"{s}/", latest, "0.5") for s in LAB_PAGES] + \
            [("notes/", latest, "0.7")] + [(f"notes/{n['slug']}/", n["updated"], "0.6") for n in notes]
     x = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
     for u, d, pr in urls:
