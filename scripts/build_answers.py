@@ -64,6 +64,10 @@ STYLE = """
   header .in { display:flex; align-items:center; justify-content:space-between; gap:16px; }
   header img { height:40px; display:block; }
   header nav a { color:#fff; font-weight:500; text-decoration:none; font-size:15px; margin-left:18px; }
+  header nav a.nav-cta { background:var(--orange); color:#fff; font-weight:600; padding:9px 18px; border-radius:100px; }
+  header nav { display:flex; align-items:center; white-space:nowrap; }
+  @media (max-width:600px) { header img { height:30px; } header nav a { margin-left:12px; font-size:14px; } header nav a.nav-cta { padding:7px 12px; } }
+  @media (max-width:420px) { header nav a[href="/#seats"] { display:none; } header img { height:26px; } header nav a { margin-left:10px; font-size:13px; } }
   main { padding:56px 16px 72px; }
   .tag { font-size:11px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--orange); margin-bottom:12px; }
   h1 { font-size:clamp(30px,5vw,46px); font-weight:700; color:var(--purple); line-height:1.15; margin-bottom:16px; }
@@ -262,11 +266,12 @@ def page_shell(title, desc, url, ld, content, kind="article"):
 <style>{STYLE}</style>
 </head>
 <body>
-<header><div class="in"><a href="/"><img src="/uploads/Growth_Den__Logo_Horizontal_White.png" alt="The Growth Den" /></a><nav><a href="/answers/">Answers</a><a href="/notes/">Notes</a><a href="/#seats">Seats</a></nav></div></header>
+<header><div class="in"><a href="/"><img src="/uploads/Growth_Den__Logo_Horizontal_White.png" alt="The Growth Den" /></a><nav><a href="/answers/">Answers</a><a href="/notes/">Notes</a><a href="/#seats">Seats</a><a class="nav-cta" href="{CAL}" target="_blank">Let's Talk</a></nav></div></header>
 <main>
 {content}
 </main>
 <footer><div class="in">© {dt.date.today().year} The Growth Den LLC · Logan Ice, St. Louis · <a href="mailto:logan@thegrowthden.com">logan@thegrowthden.com</a></div></footer>
+<script src="/assets/contact.js" defer></script>
 </body>
 </html>
 """
