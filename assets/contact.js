@@ -48,7 +48,7 @@
       '<div class="gdc-view" data-view="choice">' +
         '<p class="gdc-tag">Let’s talk</p>' +
         '<h2 id="gdc-title">Send a message or schedule time live?</h2>' +
-        '<p>Either works. A message gets a reply from me within a business day. Scheduling grabs 30 minutes on my calendar.</p>' +
+        '<p>Either works. A message gets a reply from me today. Scheduling grabs 30 minutes on my calendar.</p>' +
         '<div class="gdc-choice">' +
           '<button class="gdc-btn gdc-btn-dark" type="button" data-act="message">Send a message</button>' +
           '<a class="gdc-btn gdc-btn-primary" data-act="schedule" href="' + CAL + '" target="_blank" rel="noopener">Schedule time live</a>' +
@@ -76,7 +76,7 @@
       '<div class="gdc-view" data-view="done" style="display:none">' +
         '<p class="gdc-tag">Sent</p>' +
         '<h2>Got it. Thanks.</h2>' +
-        '<p>I’ll reply within a business day from ' + EMAIL + '. If you’d rather not wait, you can also grab time now.</p>' +
+        '<p>I’ll reply today from ' + EMAIL + '. If you’d rather not wait, you can also grab time now.</p>' +
         '<div class="gdc-actions">' +
           '<a class="gdc-btn gdc-btn-primary" href="' + CAL + '" target="_blank" rel="noopener">Schedule time live</a>' +
           '<button class="gdc-link" type="button" data-act="close">Close</button>' +
