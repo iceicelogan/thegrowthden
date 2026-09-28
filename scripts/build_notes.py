@@ -338,9 +338,27 @@ def update_pages(notes):
         p.write_text(t, encoding="utf-8")
 
 
+def answer_urls():
+    """Straight-answer pages (built by build_answers.py) for the sitemap."""
+    try:
+        from build_answers import ANSWER_PAGES, load as load_answer
+    except ImportError:
+        return []
+    out = []
+    for slug in ANSWER_PAGES:
+        try:
+            out.append((f"{slug}/", load_answer(slug)["updated"], "0.8"))
+        except SystemExit:
+            continue
+    if out:
+        out.insert(0, ("answers/", max(u for _, u, _ in out), "0.7"))
+    return out
+
+
 def build_sitemap(notes):
     latest = max(n["updated"] for n in notes)
     urls = [("", latest, "1.0")] + [(f"{s}/", latest, "0.8") for s in SEAT_PAGES] + \
+           answer_urls() + \
            [("notes/", latest, "0.7")] + [(f"notes/{n['slug']}/", n["updated"], "0.6") for n in notes]
     x = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
     for u, d, pr in urls:
