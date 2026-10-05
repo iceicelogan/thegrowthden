@@ -127,15 +127,27 @@
   * { box-sizing:border-box; margin:0; padding:0; }
   body { font-family:'Poppins',sans-serif; font-weight:300; color:var(--ink); background:var(--cream); line-height:1.75; }
   a { color:var(--blue); }
-  header { background:var(--purple); padding:18px 16px; }
+  header { background:var(--purple); padding:18px 16px; position:relative; }
   header .in, main, footer .in { max-width:820px; margin:0 auto; }
   header .in { display:flex; align-items:center; justify-content:space-between; gap:16px; }
   header img { height:40px; display:block; }
   header nav a { color:#fff; font-weight:500; text-decoration:none; font-size:15px; margin-left:18px; }
   header nav a.nav-cta { background:var(--orange); color:#fff; font-weight:600; padding:9px 18px; border-radius:100px; }
   header nav { display:flex; align-items:center; white-space:nowrap; }
-  @media (max-width:700px) { header img { height:30px; } header nav a { margin-left:10px; font-size:14px; } header nav a.nav-cta { padding:7px 12px; } header nav a[href="/logan/"] { display:none; } }
-  @media (max-width:520px) { header nav a[href="/#services"], header nav a[href="/pricing/"] { display:none; } header img { height:26px; } header nav a { margin-left:10px; font-size:13px; } }
+  .hamburger { display:none; background:none; border:0; padding:8px; cursor:pointer; width:40px; height:40px; flex-direction:column; justify-content:center; gap:5px; }
+  .hamburger span { display:block; height:2px; width:22px; background:#fff; border-radius:2px; transition:transform .2s, opacity .2s; }
+  .hamburger[aria-expanded="true"] span:nth-child(1) { transform:translateY(7px) rotate(45deg); }
+  .hamburger[aria-expanded="true"] span:nth-child(2) { opacity:0; }
+  .hamburger[aria-expanded="true"] span:nth-child(3) { transform:translateY(-7px) rotate(-45deg); }
+  .site-menu { display:none; }
+  @media (max-width:700px) {
+    header img { height:30px; }
+    header nav { display:none; }
+    .hamburger { display:flex; }
+    .site-menu:not([hidden]) { display:flex; flex-direction:column; gap:4px; max-width:820px; margin:14px auto 0; padding-top:10px; border-top:1px solid rgba(255,255,255,.15); }
+    .site-menu a { color:#fff; font-weight:500; text-decoration:none; font-size:17px; padding:10px 4px; }
+    .site-menu a.nav-cta { background:var(--orange); font-weight:600; padding:12px 18px; border-radius:100px; text-align:center; margin-top:8px; }
+  }
   main { padding:56px 16px 72px; }
   .tag { font-size:11px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--orange); margin-bottom:12px; }
   h1 { font-size:clamp(30px,5vw,46px); font-weight:700; color:var(--purple); line-height:1.15; margin-bottom:16px; }
@@ -162,6 +174,15 @@
   .body th { background:var(--purple); color:#fff; font-weight:600; }
   .body tr:last-child td { border-bottom:none; }
   .table-wrap { overflow-x:auto; margin-bottom:22px; }
+  @media (max-width:640px) {
+    .body table, .body thead, .body tbody, .body tr, .body th, .body td { display:block; }
+    .body thead { position:absolute; left:-9999px; }
+    .body table { border:0; background:transparent; }
+    .body tr { background:#fff; border:1px solid var(--border); border-radius:14px; margin-bottom:12px; padding:6px 0; }
+    .body td { border:0; padding:8px 16px; }
+    .body td:first-child { font-weight:600; color:var(--purple); background:var(--cream); border-radius:12px 12px 0 0; margin:-6px 0 6px; padding:12px 16px; }
+    .body td[data-label]:not(:first-child)::before { content:attr(data-label); display:block; font-size:11px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--orange); margin-bottom:2px; }
+  }
   details { background:#fff; border:1px solid var(--border); border-radius:14px; padding:16px 20px; margin-bottom:10px; }
   summary { font-weight:600; color:var(--purple); cursor:pointer; }
   details p { margin-top:10px; }
@@ -193,7 +214,7 @@
 </style>
 </head>
 <body>
-<header><div class="in"><a href="/"><img src="/uploads/Growth_Den__Logo_Horizontal_White.png" alt="The Growth Den" /></a><nav><a href="/#services">Services</a><a href="/pricing/">Pricing</a><a href="/answers/">Answers</a><a href="/notes/">Notes</a><a href="/logan/">About</a><a class="nav-cta" href="https://calendar.app.google/dy8683mNDXyWAkPo9" target="_blank">Let's Talk</a></nav></div></header>
+<header><div class="in"><a href="/"><img src="/uploads/Growth_Den__Logo_Horizontal_White.png" alt="The Growth Den" /></a><nav><a href="/#services">Services</a><a href="/pricing/">Pricing</a><a href="/answers/">Answers</a><a href="/notes/">Notes</a><a href="/logan/">About</a><a class="nav-cta" href="https://calendar.app.google/dy8683mNDXyWAkPo9" target="_blank">Let's Talk</a></nav><button class="hamburger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="site-menu"><span></span><span></span><span></span></button></div><div class="site-menu" id="site-menu" hidden><a href="/#services">Services</a><a href="/pricing/">Pricing</a><a href="/answers/">Answers</a><a href="/notes/">Notes</a><a href="/logan/">About</a><a class="nav-cta" href="https://calendar.app.google/dy8683mNDXyWAkPo9" target="_blank">Let's Talk</a></div></header>
 <main>
   <div class="tag">Straight answers · Logan Ice</div>
   <h1>How to set a MER target from your contribution margin, and hold whoever runs your ads to it</h1>
@@ -206,7 +227,7 @@
 <h2>The math nobody does</h2>
 <p>Contribution margin before marketing is what's left of a dollar of revenue after product cost, shipping, payment processing and any other per-order costs, before you spend a cent on marketing. Call it m.</p>
 <p>Your break-even MER is 1 divided by m. That's it.</p>
-<div class="table-wrap"><table><thead><tr><th>Contribution margin before marketing</th><th>Break-even MER</th></tr></thead><tbody><tr><td>20%</td><td>5.00x</td></tr><tr><td>30%</td><td>3.33x</td></tr><tr><td>40%</td><td>2.50x</td></tr><tr><td>50%</td><td>2.00x</td></tr><tr><td>60%</td><td>1.67x</td></tr></tbody></table></div>
+<div class="table-wrap"><table><thead><tr><th>Contribution margin before marketing</th><th>Break-even MER</th></tr></thead><tbody><tr><td data-label="Contribution margin before marketing">20%</td><td data-label="Break-even MER">5.00x</td></tr><tr><td data-label="Contribution margin before marketing">30%</td><td data-label="Break-even MER">3.33x</td></tr><tr><td data-label="Contribution margin before marketing">40%</td><td data-label="Break-even MER">2.50x</td></tr><tr><td data-label="Contribution margin before marketing">50%</td><td data-label="Break-even MER">2.00x</td></tr><tr><td data-label="Contribution margin before marketing">60%</td><td data-label="Break-even MER">1.67x</td></tr></tbody></table></div>
 <p>So when somebody tells you "a good MER is 3 to 5" (Shopify's own guide says 3.0x to 5.0x), the right response is "compared to what margin?" A 3.0 MER at a 25% margin is losing money every single month. A 3.0 MER at a 50% margin is a healthy, growing business. The number means nothing without the margin.</p>
 <div class="calc" id="calc-mer">
   <h3>Your break-even MER</h3>
@@ -244,7 +265,7 @@
 <ol><li>Agree the contribution margin number and write it down. Finance owns it. It gets revisited quarterly.</li><li>Derive break-even MER and the target MER from it. Put both on the top of the weekly scorecard.</li><li>Whoever runs paid media is judged on blended MER against target, and on contribution dollars, not on their platform's ROAS.</li><li>Platform ROAS, CPA, CTR and the rest live on the second tab. They're for diagnosing, not for grading.</li><li>When MER drifts below target for two consecutive weeks, spend comes down or creative changes. That's the rule, agreed in advance, so nobody has to fight about it in the moment.</li></ol>
 <p>If you hire me for the strategy service, this is one of the first things I build. If you hire me to run Meta, this is what I ask you to grade me on.</p>
 <h2>MER against the other numbers you'll be shown</h2>
-<div class="table-wrap"><table><thead><tr><th>Number</th><th>What it counts</th><th>Who controls the definition</th><th>Good for</th></tr></thead><tbody><tr><td>MER</td><td>Total revenue over total marketing spend, whole business</td><td>You</td><td>Grading whoever runs your marketing; budget decisions</td></tr><tr><td>Contribution dollars</td><td>Revenue minus product, shipping, payment and marketing cost</td><td>You and finance</td><td>Knowing whether growth made money</td></tr><tr><td>Platform ROAS (Meta, Google)</td><td>Revenue the platform attributes to itself over its own spend</td><td>The platform's attribution settings</td><td>Diagnosing what to change inside one channel</td></tr><tr><td>Attribution-tool blended ROAS</td><td>A model's share-out of orders across channels</td><td>The vendor's model</td><td>Comparing channels, with a grain of salt</td></tr><tr><td>Incrementality test (holdout, geo)</td><td>Revenue that would not have happened without the ads</td><td>The test design</td><td>Settling whether a channel is incremental at all</td></tr></tbody></table></div>
+<div class="table-wrap"><table><thead><tr><th>Number</th><th>What it counts</th><th>Who controls the definition</th><th>Good for</th></tr></thead><tbody><tr><td data-label="Number">MER</td><td data-label="What it counts">Total revenue over total marketing spend, whole business</td><td data-label="Who controls the definition">You</td><td data-label="Good for">Grading whoever runs your marketing; budget decisions</td></tr><tr><td data-label="Number">Contribution dollars</td><td data-label="What it counts">Revenue minus product, shipping, payment and marketing cost</td><td data-label="Who controls the definition">You and finance</td><td data-label="Good for">Knowing whether growth made money</td></tr><tr><td data-label="Number">Platform ROAS (Meta, Google)</td><td data-label="What it counts">Revenue the platform attributes to itself over its own spend</td><td data-label="Who controls the definition">The platform's attribution settings</td><td data-label="Good for">Diagnosing what to change inside one channel</td></tr><tr><td data-label="Number">Attribution-tool blended ROAS</td><td data-label="What it counts">A model's share-out of orders across channels</td><td data-label="Who controls the definition">The vendor's model</td><td data-label="Good for">Comparing channels, with a grain of salt</td></tr><tr><td data-label="Number">Incrementality test (holdout, geo)</td><td data-label="What it counts">Revenue that would not have happened without the ads</td><td data-label="Who controls the definition">The test design</td><td data-label="Good for">Settling whether a channel is incremental at all</td></tr></tbody></table></div>
 <h2>What the numbers say</h2>
 <ul class="evidence"><li>Shopify's own guide puts a healthy blended MER target at 3.0x to 5.0x, which is exactly the kind of range that means nothing until you put a margin next to it. (<a href="https://www.shopify.com/blog/marketing-efficiency-ratio" target="_blank" rel="noopener">Shopify, Marketing Efficiency Ratio guide, July 2026</a>)</li><li>Triple Whale reports its customers' median 2025 marketing spend at 41% of revenue. Triple Whale defines MER the other way up (spend over revenue), so that is a 2.44x MER the way this page defines it. (<a href="https://www.triplewhale.com/blog/marketing-efficiency-ratio" target="_blank" rel="noopener">Triple Whale, updated September 2025</a>)</li><li>Platform numbers and incremental numbers diverge in both directions. Across 640 incrementality experiments, Haus found Meta's 7-day-click reporting under-counted incremental revenue by about 15% on average. (<a href="https://www.haus.io/blog/the-meta-report-lessons-from-640-haus-incrementality-experiments" target="_blank" rel="noopener">Haus, The Meta Report, July 2025</a>)</li><li>The same cut the other way: Stella's 225 geo tests found the gap between platform-reported and incremental ROAS often reaches 2 to 3x, with branded search and retargeting showing 5 to 10x inflation, and in its 46-study Meta analysis some brands with platform ROAS above 4.0 showed incrementality below 1.0. (<a href="https://www.stellaheystella.com/blog/2025-dtc-digital-advertising-incrementality-benchmarks" target="_blank" rel="noopener">Stella, 2025 DTC Incrementality Benchmarks, May 2026</a>; <a href="https://www.stellaheystella.com/blog/incrementality-study-how-incremental-is-meta-really" target="_blank" rel="noopener">Stella, How Incremental is Meta Really, August 2025</a>)</li></ul>
 <h2>What a measurement specialist says about it</h2>
@@ -269,6 +290,9 @@
   <h2 class="more-h">More straight answers</h2><ul class="list"><li><a href="/fractional-head-of-growth/">What a fractional head of growth actually does for a DTC brand</a></li><li><a href="/agency-vs-fractional/">Agency, in-house hire, or fractional growth lead: what actually changes at $5M to $80M</a></li><li><a href="/pricing/">What The Growth Den costs, and what you get for it</a></li><li><a href="/when-to-hire/">When a DTC brand should hire a fractional growth lead, and when it shouldn&#x27;t</a></li><li><a href="/how-to-evaluate-a-fractional-cmo/">Twelve questions that tell you whether a fractional CMO builds or just advises</a></li><li><a href="/who-owns-strategy/">Who owns strategy when you outsource execution? Usually nobody, and here&#x27;s how it goes wrong</a></li><li><a href="/ai-training-for-marketing-teams/">A consultant who trains your marketing team to use AI for creative and reporting, then leaves them running it</a></li><li><a href="/marketing-system-you-own/">How do I build a marketing system my team owns instead of relying on an agency?</a></li><li><a href="/ai-ad-angles/">How do I use AI to come up with genuinely different ad angles for paid social?</a></li><li><a href="/st-louis/">A fractional growth advisor for DTC and e-commerce brands, based in St. Louis</a></li></ul>
 </main>
 <footer><div class="in">© 2026 The Growth Den LLC · Logan Ice, St. Louis, Missouri · <a href="mailto:logan@thegrowthden.com">logan@thegrowthden.com</a><a class="li" href="https://www.linkedin.com/in/loganice" target="_blank" rel="noopener" aria-label="Logan Ice on LinkedIn"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg></a></div></footer>
+<script>
+(function(){var b=document.querySelector('.hamburger'),m=document.getElementById('site-menu');if(!b||!m)return;b.addEventListener('click',function(){var o=b.getAttribute('aria-expanded')==='true';b.setAttribute('aria-expanded',o?'false':'true');b.setAttribute('aria-label',o?'Open menu':'Close menu');m.hidden=o;});})();
+</script>
 <script src="/assets/contact.js" defer></script>
 </body>
 </html>

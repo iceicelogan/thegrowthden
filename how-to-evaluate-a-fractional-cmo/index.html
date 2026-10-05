@@ -119,15 +119,27 @@
   * { box-sizing:border-box; margin:0; padding:0; }
   body { font-family:'Poppins',sans-serif; font-weight:300; color:var(--ink); background:var(--cream); line-height:1.75; }
   a { color:var(--blue); }
-  header { background:var(--purple); padding:18px 16px; }
+  header { background:var(--purple); padding:18px 16px; position:relative; }
   header .in, main, footer .in { max-width:820px; margin:0 auto; }
   header .in { display:flex; align-items:center; justify-content:space-between; gap:16px; }
   header img { height:40px; display:block; }
   header nav a { color:#fff; font-weight:500; text-decoration:none; font-size:15px; margin-left:18px; }
   header nav a.nav-cta { background:var(--orange); color:#fff; font-weight:600; padding:9px 18px; border-radius:100px; }
   header nav { display:flex; align-items:center; white-space:nowrap; }
-  @media (max-width:700px) { header img { height:30px; } header nav a { margin-left:10px; font-size:14px; } header nav a.nav-cta { padding:7px 12px; } header nav a[href="/logan/"] { display:none; } }
-  @media (max-width:520px) { header nav a[href="/#services"], header nav a[href="/pricing/"] { display:none; } header img { height:26px; } header nav a { margin-left:10px; font-size:13px; } }
+  .hamburger { display:none; background:none; border:0; padding:8px; cursor:pointer; width:40px; height:40px; flex-direction:column; justify-content:center; gap:5px; }
+  .hamburger span { display:block; height:2px; width:22px; background:#fff; border-radius:2px; transition:transform .2s, opacity .2s; }
+  .hamburger[aria-expanded="true"] span:nth-child(1) { transform:translateY(7px) rotate(45deg); }
+  .hamburger[aria-expanded="true"] span:nth-child(2) { opacity:0; }
+  .hamburger[aria-expanded="true"] span:nth-child(3) { transform:translateY(-7px) rotate(-45deg); }
+  .site-menu { display:none; }
+  @media (max-width:700px) {
+    header img { height:30px; }
+    header nav { display:none; }
+    .hamburger { display:flex; }
+    .site-menu:not([hidden]) { display:flex; flex-direction:column; gap:4px; max-width:820px; margin:14px auto 0; padding-top:10px; border-top:1px solid rgba(255,255,255,.15); }
+    .site-menu a { color:#fff; font-weight:500; text-decoration:none; font-size:17px; padding:10px 4px; }
+    .site-menu a.nav-cta { background:var(--orange); font-weight:600; padding:12px 18px; border-radius:100px; text-align:center; margin-top:8px; }
+  }
   main { padding:56px 16px 72px; }
   .tag { font-size:11px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--orange); margin-bottom:12px; }
   h1 { font-size:clamp(30px,5vw,46px); font-weight:700; color:var(--purple); line-height:1.15; margin-bottom:16px; }
@@ -154,6 +166,15 @@
   .body th { background:var(--purple); color:#fff; font-weight:600; }
   .body tr:last-child td { border-bottom:none; }
   .table-wrap { overflow-x:auto; margin-bottom:22px; }
+  @media (max-width:640px) {
+    .body table, .body thead, .body tbody, .body tr, .body th, .body td { display:block; }
+    .body thead { position:absolute; left:-9999px; }
+    .body table { border:0; background:transparent; }
+    .body tr { background:#fff; border:1px solid var(--border); border-radius:14px; margin-bottom:12px; padding:6px 0; }
+    .body td { border:0; padding:8px 16px; }
+    .body td:first-child { font-weight:600; color:var(--purple); background:var(--cream); border-radius:12px 12px 0 0; margin:-6px 0 6px; padding:12px 16px; }
+    .body td[data-label]:not(:first-child)::before { content:attr(data-label); display:block; font-size:11px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--orange); margin-bottom:2px; }
+  }
   details { background:#fff; border:1px solid var(--border); border-radius:14px; padding:16px 20px; margin-bottom:10px; }
   summary { font-weight:600; color:var(--purple); cursor:pointer; }
   details p { margin-top:10px; }
@@ -185,7 +206,7 @@
 </style>
 </head>
 <body>
-<header><div class="in"><a href="/"><img src="/uploads/Growth_Den__Logo_Horizontal_White.png" alt="The Growth Den" /></a><nav><a href="/#services">Services</a><a href="/pricing/">Pricing</a><a href="/answers/">Answers</a><a href="/notes/">Notes</a><a href="/logan/">About</a><a class="nav-cta" href="https://calendar.app.google/dy8683mNDXyWAkPo9" target="_blank">Let's Talk</a></nav></div></header>
+<header><div class="in"><a href="/"><img src="/uploads/Growth_Den__Logo_Horizontal_White.png" alt="The Growth Den" /></a><nav><a href="/#services">Services</a><a href="/pricing/">Pricing</a><a href="/answers/">Answers</a><a href="/notes/">Notes</a><a href="/logan/">About</a><a class="nav-cta" href="https://calendar.app.google/dy8683mNDXyWAkPo9" target="_blank">Let's Talk</a></nav><button class="hamburger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="site-menu"><span></span><span></span><span></span></button></div><div class="site-menu" id="site-menu" hidden><a href="/#services">Services</a><a href="/pricing/">Pricing</a><a href="/answers/">Answers</a><a href="/notes/">Notes</a><a href="/logan/">About</a><a class="nav-cta" href="https://calendar.app.google/dy8683mNDXyWAkPo9" target="_blank">Let's Talk</a></div></header>
 <main>
   <div class="tag">Straight answers · Logan Ice</div>
   <h1>Twelve questions that tell you whether a fractional CMO builds or just advises</h1>
@@ -198,7 +219,7 @@
 <h2>The twelve questions</h2>
 <ol><li><strong>Show me the last ad account you personally ran in the past 90 days.</strong> Not oversaw. Ran. If the answer is a pause, you're talking to an adviser, which is fine as long as you know it.</li><li><strong>How would you connect our ad spend to contribution margin?</strong> You want to hear "MER against a break-even derived from your margin," or something equivalent. If you hear "ROAS" as the top-line metric, keep going.</li><li><strong>What will my team be able to do after you leave that they can't do today?</strong> The only good answer is specific: run the creative testing loop, read the dashboard, launch and grade a campaign, hire the next person.</li><li><strong>How do you plan to make yourself unnecessary?</strong> Nobody sells against their own retainer easily. The ones who have a real answer are the ones you want.</li><li><strong>What's the last thing you told a CEO they were wrong about, and what happened?</strong> You're hiring judgment. Judgment without spine is decoration.</li><li><strong>Walk me through your first 30 days here, specifically.</strong> Vague equals inexperienced. You should hear an audit, a scorecard, a 90-day list of bets, and a first set of tests.</li><li><strong>Which of our channels would you turn off first, and how would you know you were right?</strong> Tests the incrementality instinct and whether they'll spend your money carefully.</li><li><strong>What do you not do?</strong> Everyone has a gap. Someone who claims brand, performance, creative, lifecycle, data and PR at senior level is describing a department, not a person.</li><li><strong>Who else are you working with right now, and how many days a week are we getting?</strong> Fractional means shared. You want a number, and you want it to add up across their clients.</li><li><strong>What happens to the systems, logins and documentation when we part ways?</strong> Should be: they're yours, in your accounts, in your name, from day one.</li><li><strong>How do you use AI in the work?</strong> Not as a buzzword. Specifically: creative production, reporting, testing, research. If the answer is "we're exploring it," they're behind.</li><li><strong>What would make you turn this engagement down?</strong> A good operator has a list. Under a certain revenue, thin margins, a founder who wants a button-pusher.</li></ol>
 <h2>What the answers tell you</h2>
-<div class="table-wrap"><table><thead><tr><th>The question</th><th>A builder says</th><th>An adviser says</th></tr></thead><tbody><tr><td>Show me the last account you personally ran</td><td>Opens Ads Manager on the call</td><td>Describes an account their team ran</td></tr><tr><td>Connect spend to contribution margin</td><td>MER against a break-even derived from your margin</td><td>ROAS, CPA, "efficiency"</td></tr><tr><td>What will my team do after you leave</td><td>Run the creative loop, read the dashboard, grade a launch</td><td>"Have a clear strategy"</td></tr><tr><td>First 30 days, specifically</td><td>Audit, scorecard, 90-day list of bets, first tests shipped</td><td>Discovery, stakeholder interviews, a deck</td></tr><tr><td>Which channel would you turn off first</td><td>Names one and the holdout they'd run to check</td><td>"It depends" with no test</td></tr><tr><td>What happens to the systems when we part</td><td>They're in your accounts from day one</td><td>"We'll do a handover"</td></tr></tbody></table></div>
+<div class="table-wrap"><table><thead><tr><th>The question</th><th>A builder says</th><th>An adviser says</th></tr></thead><tbody><tr><td data-label="The question">Show me the last account you personally ran</td><td data-label="A builder says">Opens Ads Manager on the call</td><td data-label="An adviser says">Describes an account their team ran</td></tr><tr><td data-label="The question">Connect spend to contribution margin</td><td data-label="A builder says">MER against a break-even derived from your margin</td><td data-label="An adviser says">ROAS, CPA, "efficiency"</td></tr><tr><td data-label="The question">What will my team do after you leave</td><td data-label="A builder says">Run the creative loop, read the dashboard, grade a launch</td><td data-label="An adviser says">"Have a clear strategy"</td></tr><tr><td data-label="The question">First 30 days, specifically</td><td data-label="A builder says">Audit, scorecard, 90-day list of bets, first tests shipped</td><td data-label="An adviser says">Discovery, stakeholder interviews, a deck</td></tr><tr><td data-label="The question">Which channel would you turn off first</td><td data-label="A builder says">Names one and the holdout they'd run to check</td><td data-label="An adviser says">"It depends" with no test</td></tr><tr><td data-label="The question">What happens to the systems when we part</td><td data-label="A builder says">They're in your accounts from day one</td><td data-label="An adviser says">"We'll do a handover"</td></tr></tbody></table></div>
 <h2>What the numbers say</h2>
 <ul class="evidence"><li>CEOs and marketing leaders grade the job differently. In McKinsey's 2025 survey of Fortune 1000 C-suites, 70% of CEOs said they measure marketing on year-over-year revenue growth and margin, but only 35% of CMOs tracked that as a top metric. (<a href="https://www.mckinsey.com/capabilities/growth-marketing-and-sales/our-insights/the-cmos-comeback-aligning-the-c-suite-to-drive-customer-centric-growth" target="_blank" rel="noopener">McKinsey, The CMO's comeback, June 2025</a>)</li><li>Most marketing chiefs are doing it for the first time. Spencer Stuart found 68% of Fortune 500 CMOs in 2024 were first-time CMOs, which is a reason to ask for recent hands-on work rather than assume seniority means experience. (<a href="https://www.spencerstuart.com/research-and-insight/cmo-tenure-study-2025-the-evolution-of-marketing-leadership" target="_blank" rel="noopener">Spencer Stuart, March 2025</a>)</li><li>Fractional means shared, so ask for the number. The Fractional Work Report 2026 found 64% of fractional workers serve two or more clients, and the median bills 21 client-facing hours a week across them. (<a href="https://www.fractionaljobs.io/the-fractional-work-report" target="_blank" rel="noopener">Fractional Jobs, 2026</a>)</li><li>The hands question is worth asking either way. In that same report, 91% of fractional workers say they do hands-on execution, not just advice, which is also what every candidate will tell you; question one is how you check. (<a href="https://www.fractionaljobs.io/the-fractional-work-report" target="_blank" rel="noopener">Fractional Jobs, 2026</a>)</li></ul>
 <h2>A CMO on the metric question</h2>
@@ -227,6 +248,9 @@
   <h2 class="more-h">More straight answers</h2><ul class="list"><li><a href="/fractional-head-of-growth/">What a fractional head of growth actually does for a DTC brand</a></li><li><a href="/agency-vs-fractional/">Agency, in-house hire, or fractional growth lead: what actually changes at $5M to $80M</a></li><li><a href="/pricing/">What The Growth Den costs, and what you get for it</a></li><li><a href="/mer-target/">How to set a MER target from your contribution margin, and hold whoever runs your ads to it</a></li><li><a href="/when-to-hire/">When a DTC brand should hire a fractional growth lead, and when it shouldn&#x27;t</a></li><li><a href="/who-owns-strategy/">Who owns strategy when you outsource execution? Usually nobody, and here&#x27;s how it goes wrong</a></li><li><a href="/ai-training-for-marketing-teams/">A consultant who trains your marketing team to use AI for creative and reporting, then leaves them running it</a></li><li><a href="/marketing-system-you-own/">How do I build a marketing system my team owns instead of relying on an agency?</a></li><li><a href="/ai-ad-angles/">How do I use AI to come up with genuinely different ad angles for paid social?</a></li><li><a href="/st-louis/">A fractional growth advisor for DTC and e-commerce brands, based in St. Louis</a></li></ul>
 </main>
 <footer><div class="in">© 2026 The Growth Den LLC · Logan Ice, St. Louis, Missouri · <a href="mailto:logan@thegrowthden.com">logan@thegrowthden.com</a><a class="li" href="https://www.linkedin.com/in/loganice" target="_blank" rel="noopener" aria-label="Logan Ice on LinkedIn"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg></a></div></footer>
+<script>
+(function(){var b=document.querySelector('.hamburger'),m=document.getElementById('site-menu');if(!b||!m)return;b.addEventListener('click',function(){var o=b.getAttribute('aria-expanded')==='true';b.setAttribute('aria-expanded',o?'false':'true');b.setAttribute('aria-label',o?'Open menu':'Close menu');m.hidden=o;});})();
+</script>
 <script src="/assets/contact.js" defer></script>
 </body>
 </html>

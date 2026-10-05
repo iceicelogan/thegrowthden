@@ -142,15 +142,27 @@
   * { box-sizing:border-box; margin:0; padding:0; }
   body { font-family:'Poppins',sans-serif; font-weight:300; color:var(--ink); background:var(--cream); line-height:1.75; }
   a { color:var(--blue); }
-  header { background:var(--purple); padding:18px 16px; }
+  header { background:var(--purple); padding:18px 16px; position:relative; }
   header .in, main, footer .in { max-width:820px; margin:0 auto; }
   header .in { display:flex; align-items:center; justify-content:space-between; gap:16px; }
   header img { height:40px; display:block; }
   header nav a { color:#fff; font-weight:500; text-decoration:none; font-size:15px; margin-left:18px; }
   header nav a.nav-cta { background:var(--orange); color:#fff; font-weight:600; padding:9px 18px; border-radius:100px; }
   header nav { display:flex; align-items:center; white-space:nowrap; }
-  @media (max-width:700px) { header img { height:30px; } header nav a { margin-left:10px; font-size:14px; } header nav a.nav-cta { padding:7px 12px; } header nav a[href="/logan/"] { display:none; } }
-  @media (max-width:520px) { header nav a[href="/#services"], header nav a[href="/pricing/"] { display:none; } header img { height:26px; } header nav a { margin-left:10px; font-size:13px; } }
+  .hamburger { display:none; background:none; border:0; padding:8px; cursor:pointer; width:40px; height:40px; flex-direction:column; justify-content:center; gap:5px; }
+  .hamburger span { display:block; height:2px; width:22px; background:#fff; border-radius:2px; transition:transform .2s, opacity .2s; }
+  .hamburger[aria-expanded="true"] span:nth-child(1) { transform:translateY(7px) rotate(45deg); }
+  .hamburger[aria-expanded="true"] span:nth-child(2) { opacity:0; }
+  .hamburger[aria-expanded="true"] span:nth-child(3) { transform:translateY(-7px) rotate(-45deg); }
+  .site-menu { display:none; }
+  @media (max-width:700px) {
+    header img { height:30px; }
+    header nav { display:none; }
+    .hamburger { display:flex; }
+    .site-menu:not([hidden]) { display:flex; flex-direction:column; gap:4px; max-width:820px; margin:14px auto 0; padding-top:10px; border-top:1px solid rgba(255,255,255,.15); }
+    .site-menu a { color:#fff; font-weight:500; text-decoration:none; font-size:17px; padding:10px 4px; }
+    .site-menu a.nav-cta { background:var(--orange); font-weight:600; padding:12px 18px; border-radius:100px; text-align:center; margin-top:8px; }
+  }
   main { padding:56px 16px 72px; }
   .tag { font-size:11px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--orange); margin-bottom:12px; }
   h1 { font-size:clamp(30px,5vw,46px); font-weight:700; color:var(--purple); line-height:1.15; margin-bottom:16px; }
@@ -177,6 +189,15 @@
   .body th { background:var(--purple); color:#fff; font-weight:600; }
   .body tr:last-child td { border-bottom:none; }
   .table-wrap { overflow-x:auto; margin-bottom:22px; }
+  @media (max-width:640px) {
+    .body table, .body thead, .body tbody, .body tr, .body th, .body td { display:block; }
+    .body thead { position:absolute; left:-9999px; }
+    .body table { border:0; background:transparent; }
+    .body tr { background:#fff; border:1px solid var(--border); border-radius:14px; margin-bottom:12px; padding:6px 0; }
+    .body td { border:0; padding:8px 16px; }
+    .body td:first-child { font-weight:600; color:var(--purple); background:var(--cream); border-radius:12px 12px 0 0; margin:-6px 0 6px; padding:12px 16px; }
+    .body td[data-label]:not(:first-child)::before { content:attr(data-label); display:block; font-size:11px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--orange); margin-bottom:2px; }
+  }
   details { background:#fff; border:1px solid var(--border); border-radius:14px; padding:16px 20px; margin-bottom:10px; }
   summary { font-weight:600; color:var(--purple); cursor:pointer; }
   details p { margin-top:10px; }
@@ -208,7 +229,7 @@
 </style>
 </head>
 <body>
-<header><div class="in"><a href="/"><img src="/uploads/Growth_Den__Logo_Horizontal_White.png" alt="The Growth Den" /></a><nav><a href="/#services">Services</a><a href="/pricing/">Pricing</a><a href="/answers/">Answers</a><a href="/notes/">Notes</a><a href="/logan/">About</a><a class="nav-cta" href="https://calendar.app.google/dy8683mNDXyWAkPo9" target="_blank">Let's Talk</a></nav></div></header>
+<header><div class="in"><a href="/"><img src="/uploads/Growth_Den__Logo_Horizontal_White.png" alt="The Growth Den" /></a><nav><a href="/#services">Services</a><a href="/pricing/">Pricing</a><a href="/answers/">Answers</a><a href="/notes/">Notes</a><a href="/logan/">About</a><a class="nav-cta" href="https://calendar.app.google/dy8683mNDXyWAkPo9" target="_blank">Let's Talk</a></nav><button class="hamburger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="site-menu"><span></span><span></span><span></span></button></div><div class="site-menu" id="site-menu" hidden><a href="/#services">Services</a><a href="/pricing/">Pricing</a><a href="/answers/">Answers</a><a href="/notes/">Notes</a><a href="/logan/">About</a><a class="nav-cta" href="https://calendar.app.google/dy8683mNDXyWAkPo9" target="_blank">Let's Talk</a></div></header>
 <main>
   <div class="tag">Straight answers · Logan Ice</div>
   <h1>What The Growth Den costs, and what you get for it</h1>
@@ -224,7 +245,7 @@
 <ul><li>A weekly leadership session where we look at the scorecard and decide what changes.</li><li>Two to three days a week of hands-on work: in the ad accounts, on creative, on reporting, on whatever the seat calls for.</li><li>Systems your team keeps: the creative testing loop, the "what to do" dashboard, the SOPs and the AI workflows I build into how they work.</li><li>Straight answers, including the ones you don't want.</li></ul>
 <h2>What you get that's hard to get elsewhere</h2>
 <p>I'm not going to put other people's prices next to mine. What I'll put next to it is what changes when strategy and execution come from one person.</p>
-<div class="table-wrap"><table><thead><tr><th></th><th>Split across an agency, a strategist and your team</th><th>One person, The Growth Den</th></tr></thead><tbody><tr><td>Time to a read of your business</td><td>Weeks of onboarding, each party separately</td><td>Inside the first two weeks</td></tr><tr><td>Who owns the blended number</td><td>Usually nobody; each party reports its own</td><td>Me, with my name on it</td></tr><tr><td>Handoffs between strategy and execution</td><td>Every week, with something lost each time</td><td>None; the person who set the plan runs it</td></tr><tr><td>Reporting</td><td>Three dashboards that disagree</td><td>One scorecard that leads with what to do</td></tr><tr><td>What you own at the end</td><td>Whatever each vendor documented</td><td>Systems, SOPs and a trained team, in your accounts</td></tr></tbody></table></div>
+<div class="table-wrap"><table><thead><tr><th></th><th>Split across an agency, a strategist and your team</th><th>One person, The Growth Den</th></tr></thead><tbody><tr><td data-label="">Time to a read of your business</td><td data-label="Split across an agency, a strategist and your team">Weeks of onboarding, each party separately</td><td data-label="One person, The Growth Den">Inside the first two weeks</td></tr><tr><td data-label="">Who owns the blended number</td><td data-label="Split across an agency, a strategist and your team">Usually nobody; each party reports its own</td><td data-label="One person, The Growth Den">Me, with my name on it</td></tr><tr><td data-label="">Handoffs between strategy and execution</td><td data-label="Split across an agency, a strategist and your team">Every week, with something lost each time</td><td data-label="One person, The Growth Den">None; the person who set the plan runs it</td></tr><tr><td data-label="">Reporting</td><td data-label="Split across an agency, a strategist and your team">Three dashboards that disagree</td><td data-label="One person, The Growth Den">One scorecard that leads with what to do</td></tr><tr><td data-label="">What you own at the end</td><td data-label="Split across an agency, a strategist and your team">Whatever each vendor documented</td><td data-label="One person, The Growth Den">Systems, SOPs and a trained team, in your accounts</td></tr></tbody></table></div>
 <p>I'm a solo operator with low overhead, and I'd rather be affordable to the brands I'm best at helping than price like a firm.</p>
 <h2>What the numbers say</h2>
 <ul class="evidence"><li>Engagements like this run long enough to build something. The Fractional Work Report 2026 (1,733 survey responses) found most fractional engagements last six to twelve months and 60% last six months or longer. It is published by a fractional-jobs marketplace, so weigh it accordingly. (<a href="https://www.fractionaljobs.io/the-fractional-work-report" target="_blank" rel="noopener">Fractional Jobs, 2026</a>)</li><li>The usual alternative is slow. SHRM's 2025 benchmarking of 2,300+ members puts median time-to-fill for executive roles at about 45 days, and retained search firms lay out roughly 90 days from kickoff to a signed offer. (<a href="https://www.shrm.org/executive-network/insights/people-strategy/state-of-recruiting-2025-insights-to-maximize-recruitment" target="_blank" rel="noopener">SHRM, State of Recruiting, October 2025</a>; <a href="https://huntscanlon.com/guiding-the-search-process-with-a-timeline/" target="_blank" rel="noopener">Hunt Scanlon / The Bowdoin Group, 2022</a>)</li><li>Budgets are flat, so every dollar has to do more than one job. Among the 402 marketing leaders in Gartner's 2025 CMO Spend Survey, budgets sat at 7.7% of company revenue, 59% said that was insufficient, and paid media took 30.6% of the budget. Large-company sample. (<a href="https://www.gartner.com/en/newsroom/press-releases/2025-05-12-gartner-2025-cmo-spend-survey-reveals-marketing-budgets-have-flatlined-at-seven-percent-of-overall-company-revenue" target="_blank" rel="noopener">Gartner, May 2025</a>)</li></ul>
@@ -253,6 +274,9 @@
   <h2 class="more-h">More straight answers</h2><ul class="list"><li><a href="/fractional-head-of-growth/">What a fractional head of growth actually does for a DTC brand</a></li><li><a href="/agency-vs-fractional/">Agency, in-house hire, or fractional growth lead: what actually changes at $5M to $80M</a></li><li><a href="/mer-target/">How to set a MER target from your contribution margin, and hold whoever runs your ads to it</a></li><li><a href="/when-to-hire/">When a DTC brand should hire a fractional growth lead, and when it shouldn&#x27;t</a></li><li><a href="/how-to-evaluate-a-fractional-cmo/">Twelve questions that tell you whether a fractional CMO builds or just advises</a></li><li><a href="/who-owns-strategy/">Who owns strategy when you outsource execution? Usually nobody, and here&#x27;s how it goes wrong</a></li><li><a href="/ai-training-for-marketing-teams/">A consultant who trains your marketing team to use AI for creative and reporting, then leaves them running it</a></li><li><a href="/marketing-system-you-own/">How do I build a marketing system my team owns instead of relying on an agency?</a></li><li><a href="/ai-ad-angles/">How do I use AI to come up with genuinely different ad angles for paid social?</a></li><li><a href="/st-louis/">A fractional growth advisor for DTC and e-commerce brands, based in St. Louis</a></li></ul>
 </main>
 <footer><div class="in">© 2026 The Growth Den LLC · Logan Ice, St. Louis, Missouri · <a href="mailto:logan@thegrowthden.com">logan@thegrowthden.com</a><a class="li" href="https://www.linkedin.com/in/loganice" target="_blank" rel="noopener" aria-label="Logan Ice on LinkedIn"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg></a></div></footer>
+<script>
+(function(){var b=document.querySelector('.hamburger'),m=document.getElementById('site-menu');if(!b||!m)return;b.addEventListener('click',function(){var o=b.getAttribute('aria-expanded')==='true';b.setAttribute('aria-expanded',o?'false':'true');b.setAttribute('aria-label',o?'Open menu':'Close menu');m.hidden=o;});})();
+</script>
 <script src="/assets/contact.js" defer></script>
 </body>
 </html>
