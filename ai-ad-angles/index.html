@@ -27,13 +27,22 @@
    "url": "https://thegrowthden.com/ai-ad-angles/",
    "mainEntityOfPage": "https://thegrowthden.com/ai-ad-angles/",
    "datePublished": "2026-09-28",
-   "dateModified": "2026-09-28",
+   "dateModified": "2026-10-05",
    "author": {
     "@type": "Person",
     "@id": "https://thegrowthden.com/#logan",
     "name": "Logan Ice",
-    "url": "https://thegrowthden.com/",
-    "jobTitle": "Fractional Growth Advisor",
+    "url": "https://thegrowthden.com/logan/",
+    "mainEntityOfPage": "https://thegrowthden.com/logan/",
+    "image": "https://thegrowthden.com/uploads/IMG_6671.JPG",
+    "jobTitle": "Founder and Growth Advisor",
+    "description": "St. Louis-based growth advisor for DTC and e-commerce brands. Led growth at Wuffes ($14M to $40M+), Little Passports, Varsity Tutors and P&G.",
+    "sameAs": [
+     "https://www.linkedin.com/in/loganice/",
+     "https://loganice.medium.com/",
+     "https://www.stlbucketlistshow.com/1932300/episodes/19809221-the-growth-den-the-real-difference-between-demand-generation-and-demand-capture",
+     "https://bestmarketingconference.com/agenda/program/detail/44/standing-out-in-a-sea-of-sameness"
+    ],
     "worksFor": {
      "@type": "ProfessionalService",
      "@id": "https://thegrowthden.com/#org",
@@ -131,6 +140,16 @@
   .tag { font-size:11px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--orange); margin-bottom:12px; }
   h1 { font-size:clamp(30px,5vw,46px); font-weight:700; color:var(--purple); line-height:1.15; margin-bottom:16px; }
   .updated { color:var(--muted); font-size:14px; margin-bottom:24px; }
+  .updated a { color:var(--purple); font-weight:500; text-decoration:none; border-bottom:1px solid var(--gold); }
+  .body blockquote cite { display:block; font-style:normal; font-size:14px; color:var(--muted); margin-top:6px; }
+  .body blockquote cite a { color:var(--muted); }
+  .body ul.evidence li { background:#fff; border:1px solid var(--border); border-left:5px solid var(--gold); border-radius:12px; padding:12px 16px; list-style:none; margin-left:-22px; font-size:16px; }
+  .body ul.evidence li a { color:var(--blue); }
+  .author { display:flex; gap:16px; align-items:flex-start; background:#fff; border:1px solid var(--border); border-radius:16px; padding:18px 20px; margin-top:40px; }
+  .author img { width:72px; height:72px; border-radius:14px; object-fit:cover; flex-shrink:0; display:block; }
+  .author p { margin:0; font-size:15px; }
+  .author .author-name { font-weight:600; color:var(--purple); margin-bottom:4px; }
+  .author .author-name a { color:var(--purple); text-decoration:none; }
   .answer { font-size:19px; font-weight:400; margin-bottom:8px; }
   .body h2 { font-size:23px; font-weight:600; color:var(--purple); line-height:1.3; margin:44px 0 14px; }
   .body h3 { font-size:18px; font-weight:600; color:var(--purple); margin:28px 0 8px; }
@@ -178,7 +197,7 @@
 <main>
   <div class="tag">Straight answers · Logan Ice</div>
   <h1>How do I use AI to come up with genuinely different ad angles for paid social?</h1>
-  <p class="updated">Last updated <time datetime="2026-09-28">September 28, 2026</time></p>
+  <p class="updated">By <a href="/logan/" rel="author">Logan Ice</a> · Last updated <time datetime="2026-10-05">October 5, 2026</time></p>
   <p class="answer">Ask ChatGPT for ten ad angles and you get ten polite versions of the first one. The fix isn't a better prompt, it's a better process. Name the default angle first, force new angles away from it on purpose, test them against independent customer personas before anyone opens a design tool, and only then produce. Here is the loop I run for clients, why each step exists, and where to get the prompts.</p>
   <article class="body">
 <h2>Why AI gives you the same angle ten times</h2>
@@ -186,13 +205,14 @@
 <p>Most ad accounts don't die from bad ads. They die from ten copies of the first ad anyone thought of. So the job isn't to ask the model for ideas. It's to make the obvious idea explicit, then push the model away from it in directions a tired creative team wouldn't try on a Thursday afternoon.</p>
 <h2>The loop I run</h2>
 <p>I've published the whole thing as seven prompts you can paste into Claude or ChatGPT, in <a href="/notes/angle-storm-pack/">The Angle Storm Pack</a>. Here's the shape of it and why each step is there.</p>
-<p><strong>1. Pin the brief and name the default.</strong> Product, audience, the one thing that's true and provable, and then the angle everyone would reach for first. Writing the default down matters. You can't steer away from something you haven't named.</p>
-<p><strong>2. The storm.</strong> Force the angles apart with operations, not adjectives. Change who's speaking. Change the moment in the customer's day. Argue against the category. Take the smallest true detail and make it the whole ad. Put the product in a context it's never been sold in. Each operation produces a different kind of angle, which is the point. "Give me more creative ideas" produces more of the same.</p>
-<p><strong>3. Converge without killing the weird ones.</strong> Score for distance from the default and for whether a real customer would recognize themselves in it. Keep a couple that make you slightly uncomfortable. Those are usually the ones that end up winning or teaching you something.</p>
-<p><strong>4. Cast a focus group.</strong> Five personas built from your actual customers: reviews, support tickets, the words people use when they're not being marketed to. Not "busy mom, 34." Specific enough to disagree with each other.</p>
-<p><strong>5. Expose one persona at a time.</strong> Show each persona each angle in a separate conversation so they can't see each other's reactions. Ask what they'd feel, what they'd object to, and whether they'd stop scrolling. Independent reads are what make this more than a vibe check.</p>
-<p><strong>6. Cross-tab and decide whether to loop.</strong> Put the reactions in a grid. If one persona is fighting for an angle and the others are indifferent, you've found a segment. If everyone is politely positive about everything, your angles aren't different enough yet, so go back to step two with sharper operations.</p>
-<p><strong>7. Turn the winner into a brief and a generation prompt.</strong> The angle, the hook, the visual idea, the proof point, and a generation prompt written for the format you'll produce. I generate statics and video in Higgsfield and finish in CapCut, and the brief is what makes that fast.</p>
+<ol><li><strong>Pin the brief and name the default.</strong> Product, audience, the one thing that's true and provable, and then the angle everyone would reach for first. Writing the default down matters. You can't steer away from something you haven't named.</li><li><strong>The storm.</strong> Force the angles apart with operations, not adjectives. Change who's speaking. Change the moment in the customer's day. Argue against the category. Take the smallest true detail and make it the whole ad. Put the product in a context it's never been sold in. Each operation produces a different kind of angle, which is the point. "Give me more creative ideas" produces more of the same.</li><li><strong>Converge without killing the weird ones.</strong> Score for distance from the default and for whether a real customer would recognize themselves in it. Keep a couple that make you slightly uncomfortable. Those are usually the ones that end up winning or teaching you something.</li><li><strong>Cast a focus group.</strong> Five personas built from your actual customers: reviews, support tickets, the words people use when they're not being marketed to. Not "busy mom, 34." Specific enough to disagree with each other.</li><li><strong>Expose one persona at a time.</strong> Show each persona each angle in a separate conversation so they can't see each other's reactions. Ask what they'd feel, what they'd object to, and whether they'd stop scrolling. Independent reads are what make this more than a vibe check.</li><li><strong>Cross-tab and decide whether to loop.</strong> Put the reactions in a grid. If one persona is fighting for an angle and the others are indifferent, you've found a segment. If everyone is politely positive about everything, your angles aren't different enough yet, so go back to step two with sharper operations.</li><li><strong>Turn the winner into a brief and a generation prompt.</strong> The angle, the hook, the visual idea, the proof point, and a generation prompt written for the format you'll produce. I generate statics and video in Higgsfield and finish in CapCut, and the brief is what makes that fast.</li></ol>
+<h2>Asking for ideas versus running the loop</h2>
+<div class="table-wrap"><table><thead><tr><th></th><th>"Give me ten ad angles"</th><th>The loop</th></tr></thead><tbody><tr><td>Where the ideas start</td><td>The model's most likely answer, which is the category default</td><td>The named default, then operations that push away from it</td></tr><tr><td>How different they are</td><td>Ten versions of one idea</td><td>Different speaker, moment, context, proof; scored for distance</td></tr><tr><td>Who judges them</td><td>Whoever is in the room</td><td>Five personas built from real customer language, read separately</td></tr><tr><td>What gets produced</td><td>The one the team liked</td><td>The one a persona fought for</td></tr><tr><td>What you learn if it fails</td><td>Not much</td><td>Which segment, which angle, which operation to run next</td></tr></tbody></table></div>
+<h2>What the numbers say</h2>
+<ul class="evidence"><li>Creative is the biggest lever you control. NCSolutions' analysis of nearly 450 CPG campaigns across TV and digital found creative accounted for 49% of incremental sales contribution, ahead of brand (21%), reach (14%) and targeting (11%). (<a href="https://www.prnewswire.com/news-releases/in-advertising-the-balance-is-shifting-brand-factors-like-consumer-loyalty-now-have-a-greater-impact-on-sales-results-than-reaching-a-broader-audience-301897320.html" target="_blank" rel="noopener">NCSolutions, Five Keys to Advertising Effectiveness, August 2023</a>)</li><li>Kantar's December 2024 analysis ranks creative quality second only to brand size in advertising profitability, and the top element within the marketer's control. (<a href="https://www.kantar.com/inspiration/advertising-media/the-codependence-factor" target="_blank" rel="noopener">Kantar, The co-dependence factor, December 2024</a>)</li><li>Everyone already has the tool. Gartner found 77% of marketing organizations that have adopted generative AI use it for creative development, rising to 84% of high performers. The differentiation is the process, not the software. (<a href="https://www.gartner.com/en/newsroom/press-releases/2025-02-18-gartner-survey-reveals-over-a-quarter-of-marketing-organizations-have-limited-or-no-adoption-of-genai-for-marketing-campaigns" target="_blank" rel="noopener">Gartner, February 2025</a>)</li><li>The volume bar at the top of DTC is high. Motion's 2025 creative trends report, based on 500+ DTC advertisers and $100M+ in analyzed spend, found 86% plan to increase AI use for research and ideation and 79% for creative production. (<a href="https://motionapp.com/creative-trends" target="_blank" rel="noopener">Motion, 2025 Ad Creative &amp; Creative Strategy Trends</a>)</li></ul>
+<h2>What a Meta creative strategist sees</h2>
+<blockquote><p>Some of the top DTC brands we work with are creating 50-70 new ads weekly on Meta platforms alone.</p><cite>Gil Chaimovski, Creative Strategist, Meta, quoted in <a href="https://motionapp.com/creative-trends" target="_blank" rel="noopener">Motion's 2025 Creative Trends report</a></cite></blockquote>
+<p>You don't need fifty a week. You need the five you make to disagree with each other.</p>
 <h2>What this changes in practice</h2>
 <p>The creative team stops staring at a blank doc and starts editing a list of angles that already disagree with each other. Testing gets cheaper, because the persona round kills the weak ones before you've paid for production. And the angle library grows every cycle, so the tenth time you run it you're building on nine rounds of what your customers reacted to.</p>
 <p>For a growing agency I support across several client teams, this loop is the difference between "we need new creative" being a two-week scramble and a Tuesday. For an oral-care brand, the persona round was where the useful surprise showed up: the angle the team liked least was the one a skeptical persona wouldn't let go of.</p>
@@ -202,6 +222,13 @@
 <p>This loop is the core of my <a href="/fractional-head-of-creative/">head of creative seat</a>, and teaching a team to run it on their own is most of what I do in the <a href="/ai-training-for-marketing-teams/">AI training work</a>. But you don't need me to start. Take the prompts, run one storm this week, and pay attention to which angle your personas argue about.</p>
   <h2>Questions people ask</h2><details><summary>Why do AI ad ideas all sound the same?</summary><p>Because a language model gives the most likely answer, and the most likely ad angle is the one the category already runs. You have to name that default and deliberately push away from it, or you'll get the same idea ten times.</p></details><details><summary>What&#x27;s the best prompt for generating ad angles?</summary><p>There isn't one prompt. A sequence works: pin the brief and name the default, apply forcing operations that change the speaker, moment, context or proof, score for distance from the default, then test the survivors on independent personas. The full set is in The Angle Storm Pack.</p></details><details><summary>How do you test ad angles before producing them?</summary><p>Build five personas from real customer language, show each one every angle in a separate conversation, and cross-tab the reactions. An angle one persona fights for is worth producing; an angle everyone is mildly positive about usually isn't different enough.</p></details><details><summary>Can AI replace a creative strategist?</summary><p>No. It replaces the blank page and the first draft. Someone still has to write the brief, judge distance from the default, read the persona results honestly and decide what's worth spending money to produce.</p></details><details><summary>Which tools do you use for AI ad creative?</summary><p>Claude or ChatGPT for the angle and persona work, Higgsfield to generate statics and video, and CapCut to finish. The tools matter less than running the loop on a cadence.</p></details><details><summary>How many angles should we test at once?</summary><p>Three to five that are genuinely different from each other beats fifteen variations of one idea. The persona round is there to get you from a storm of twenty down to the few worth producing.</p></details>
   </article>
+  <aside class="author" aria-label="About the author">
+    <a href="/logan/"><img src="/uploads/IMG_6671.JPG" alt="Logan Ice" width="72" height="72" loading="lazy" /></a>
+    <div>
+      <p class="author-name"><a href="/logan/">Logan Ice</a> · Founder, The Growth Den</p>
+      <p>Fractional growth advisor for DTC and e-commerce brands, based in St. Louis. Led growth at Wuffes ($14M to $40M+), ran Little Passports at BEGiN, and grew with Varsity Tutors from a three-city company to its IPO. Studied physics and psychology at WashU. <a href="/logan/">The longer version</a> · <a href="https://www.linkedin.com/in/loganice/" target="_blank" rel="noopener">LinkedIn</a></p>
+    </div>
+  </aside>
   <div class="box">
     <h2>Work with Logan</h2>
     <p>I'm a fractional growth advisor for growth-stage DTC and e-commerce brands. I handle strategy and take execution off your plate, in whatever seat you need, from $7,500 a month.</p>

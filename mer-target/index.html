@@ -27,13 +27,22 @@
    "url": "https://thegrowthden.com/mer-target/",
    "mainEntityOfPage": "https://thegrowthden.com/mer-target/",
    "datePublished": "2026-09-28",
-   "dateModified": "2026-09-28",
+   "dateModified": "2026-10-05",
    "author": {
     "@type": "Person",
     "@id": "https://thegrowthden.com/#logan",
     "name": "Logan Ice",
-    "url": "https://thegrowthden.com/",
-    "jobTitle": "Fractional Growth Advisor",
+    "url": "https://thegrowthden.com/logan/",
+    "mainEntityOfPage": "https://thegrowthden.com/logan/",
+    "image": "https://thegrowthden.com/uploads/IMG_6671.JPG",
+    "jobTitle": "Founder and Growth Advisor",
+    "description": "St. Louis-based growth advisor for DTC and e-commerce brands. Led growth at Wuffes ($14M to $40M+), Little Passports, Varsity Tutors and P&G.",
+    "sameAs": [
+     "https://www.linkedin.com/in/loganice/",
+     "https://loganice.medium.com/",
+     "https://www.stlbucketlistshow.com/1932300/episodes/19809221-the-growth-den-the-real-difference-between-demand-generation-and-demand-capture",
+     "https://bestmarketingconference.com/agenda/program/detail/44/standing-out-in-a-sea-of-sameness"
+    ],
     "worksFor": {
      "@type": "ProfessionalService",
      "@id": "https://thegrowthden.com/#org",
@@ -65,7 +74,7 @@
      "name": "What is a good MER for an e-commerce brand?",
      "acceptedAnswer": {
       "@type": "Answer",
-      "text": "There isn't a universal one. Break-even MER is 1 divided by your contribution margin before marketing, so a 30% margin means 3.33x just to break even, and a 50% margin means 2.0x. A good target is usually 20% to 40% above your break-even."
+      "text": "There isn't a universal one. Shopify's guide says 3.0x to 5.0x and Triple Whale's customer median works out to about 2.44x, but break-even MER is 1 divided by your contribution margin before marketing, so a 30% margin means 3.33x just to break even, and a 50% margin means 2.0x. A good target is usually 20% to 40% above your break-even."
      }
     },
     {
@@ -73,7 +82,7 @@
      "name": "Should we measure on ROAS or MER?",
      "acceptedAnswer": {
       "@type": "Answer",
-      "text": "MER for decisions and platform ROAS for diagnostics. Platform attribution overstates and different platforms disagree with each other; MER is total revenue over total marketing spend and can't be gamed."
+      "text": "MER for decisions and platform ROAS for diagnostics. Platform attribution diverges from incremental results in both directions (Haus found Meta under-counting on 7-day click; Stella found branded search and retargeting over-counting by 5 to 10x), and different platforms disagree with each other; MER is total revenue over total marketing spend and can't be gamed."
      }
     },
     {
@@ -131,6 +140,16 @@
   .tag { font-size:11px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--orange); margin-bottom:12px; }
   h1 { font-size:clamp(30px,5vw,46px); font-weight:700; color:var(--purple); line-height:1.15; margin-bottom:16px; }
   .updated { color:var(--muted); font-size:14px; margin-bottom:24px; }
+  .updated a { color:var(--purple); font-weight:500; text-decoration:none; border-bottom:1px solid var(--gold); }
+  .body blockquote cite { display:block; font-style:normal; font-size:14px; color:var(--muted); margin-top:6px; }
+  .body blockquote cite a { color:var(--muted); }
+  .body ul.evidence li { background:#fff; border:1px solid var(--border); border-left:5px solid var(--gold); border-radius:12px; padding:12px 16px; list-style:none; margin-left:-22px; font-size:16px; }
+  .body ul.evidence li a { color:var(--blue); }
+  .author { display:flex; gap:16px; align-items:flex-start; background:#fff; border:1px solid var(--border); border-radius:16px; padding:18px 20px; margin-top:40px; }
+  .author img { width:72px; height:72px; border-radius:14px; object-fit:cover; flex-shrink:0; display:block; }
+  .author p { margin:0; font-size:15px; }
+  .author .author-name { font-weight:600; color:var(--purple); margin-bottom:4px; }
+  .author .author-name a { color:var(--purple); text-decoration:none; }
   .answer { font-size:19px; font-weight:400; margin-bottom:8px; }
   .body h2 { font-size:23px; font-weight:600; color:var(--purple); line-height:1.3; margin:44px 0 14px; }
   .body h3 { font-size:18px; font-weight:600; color:var(--purple); margin:28px 0 8px; }
@@ -178,17 +197,17 @@
 <main>
   <div class="tag">Straight answers · Logan Ice</div>
   <h1>How to set a MER target from your contribution margin, and hold whoever runs your ads to it</h1>
-  <p class="updated">Last updated <time datetime="2026-09-28">September 28, 2026</time></p>
+  <p class="updated">By <a href="/logan/" rel="author">Logan Ice</a> · Last updated <time datetime="2026-10-05">October 5, 2026</time></p>
   <p class="answer">Break-even MER is one divided by your contribution margin before marketing. If your margin is 30%, a 3.33x MER means you made nothing. Most "what's a good MER" advice skips that math, which is why brands celebrate numbers that are losing them money. Here is the math, a calculator, and how I use it as the accountability contract for whoever runs your ads.</p>
   <article class="body">
 <h2>Start with the only definition that matters</h2>
 <p>MER, marketing efficiency ratio, is total revenue divided by total marketing spend, across the whole business, for a period. Not one platform. Not one campaign. Everything you made over everything you spent to make it.</p>
-<p>I judge marketing on MER and contribution margin because they can't be gamed by attribution settings. Meta's ROAS, Google's ROAS and your attribution tool's blended ROAS are all useful for diagnosing what to change inside a channel, but they overstate, they disagree with each other, and they disagree with Shopify. MER just counts.</p>
+<p>I judge marketing on MER and contribution margin because they can't be gamed by attribution settings. Meta's ROAS, Google's ROAS and your attribution tool's blended ROAS are all useful for diagnosing what to change inside a channel, but they disagree with each other, they disagree with Shopify, and they diverge from what incrementality tests find, in both directions. MER just counts.</p>
 <h2>The math nobody does</h2>
 <p>Contribution margin before marketing is what's left of a dollar of revenue after product cost, shipping, payment processing and any other per-order costs, before you spend a cent on marketing. Call it m.</p>
 <p>Your break-even MER is 1 divided by m. That's it.</p>
 <div class="table-wrap"><table><thead><tr><th>Contribution margin before marketing</th><th>Break-even MER</th></tr></thead><tbody><tr><td>20%</td><td>5.00x</td></tr><tr><td>30%</td><td>3.33x</td></tr><tr><td>40%</td><td>2.50x</td></tr><tr><td>50%</td><td>2.00x</td></tr><tr><td>60%</td><td>1.67x</td></tr></tbody></table></div>
-<p>So when somebody tells you "a good MER is 3 to 5," the right response is "compared to what margin?" A 3.0 MER at a 25% margin is losing money every single month. A 3.0 MER at a 50% margin is a healthy, growing business. The number means nothing without the margin.</p>
+<p>So when somebody tells you "a good MER is 3 to 5" (Shopify's own guide says 3.0x to 5.0x), the right response is "compared to what margin?" A 3.0 MER at a 25% margin is losing money every single month. A 3.0 MER at a 50% margin is a healthy, growing business. The number means nothing without the margin.</p>
 <div class="calc" id="calc-mer">
   <h3>Your break-even MER</h3>
   <div class="hint">Contribution margin here means what's left of a dollar of revenue after product cost, shipping, payment fees and any per-order costs, before you spend anything on marketing.</div>
@@ -224,10 +243,24 @@
 <p>Here's how I set it up on every engagement:</p>
 <ol><li>Agree the contribution margin number and write it down. Finance owns it. It gets revisited quarterly.</li><li>Derive break-even MER and the target MER from it. Put both on the top of the weekly scorecard.</li><li>Whoever runs paid media is judged on blended MER against target, and on contribution dollars, not on their platform's ROAS.</li><li>Platform ROAS, CPA, CTR and the rest live on the second tab. They're for diagnosing, not for grading.</li><li>When MER drifts below target for two consecutive weeks, spend comes down or creative changes. That's the rule, agreed in advance, so nobody has to fight about it in the moment.</li></ol>
 <p>If you hire me for the strategy seat, this is one of the first things I build. If you hire me to run Meta, this is what I ask you to grade me on.</p>
+<h2>MER against the other numbers you'll be shown</h2>
+<div class="table-wrap"><table><thead><tr><th>Number</th><th>What it counts</th><th>Who controls the definition</th><th>Good for</th></tr></thead><tbody><tr><td>MER</td><td>Total revenue over total marketing spend, whole business</td><td>You</td><td>Grading whoever runs your marketing; budget decisions</td></tr><tr><td>Contribution dollars</td><td>Revenue minus product, shipping, payment and marketing cost</td><td>You and finance</td><td>Knowing whether growth made money</td></tr><tr><td>Platform ROAS (Meta, Google)</td><td>Revenue the platform attributes to itself over its own spend</td><td>The platform's attribution settings</td><td>Diagnosing what to change inside one channel</td></tr><tr><td>Attribution-tool blended ROAS</td><td>A model's share-out of orders across channels</td><td>The vendor's model</td><td>Comparing channels, with a grain of salt</td></tr><tr><td>Incrementality test (holdout, geo)</td><td>Revenue that would not have happened without the ads</td><td>The test design</td><td>Settling whether a channel is incremental at all</td></tr></tbody></table></div>
+<h2>What the numbers say</h2>
+<ul class="evidence"><li>Shopify's own guide puts a healthy blended MER target at 3.0x to 5.0x, which is exactly the kind of range that means nothing until you put a margin next to it. (<a href="https://www.shopify.com/blog/marketing-efficiency-ratio" target="_blank" rel="noopener">Shopify, Marketing Efficiency Ratio guide, July 2026</a>)</li><li>Triple Whale reports its customers' median 2025 marketing spend at 41% of revenue. Triple Whale defines MER the other way up (spend over revenue), so that is a 2.44x MER the way this page defines it. (<a href="https://www.triplewhale.com/blog/marketing-efficiency-ratio" target="_blank" rel="noopener">Triple Whale, updated September 2025</a>)</li><li>Platform numbers and incremental numbers diverge in both directions. Across 640 incrementality experiments, Haus found Meta's 7-day-click reporting under-counted incremental revenue by about 15% on average. (<a href="https://www.haus.io/blog/the-meta-report-lessons-from-640-haus-incrementality-experiments" target="_blank" rel="noopener">Haus, The Meta Report, July 2025</a>)</li><li>The same cut the other way: Stella's 225 geo tests found the gap between platform-reported and incremental ROAS often reaches 2 to 3x, with branded search and retargeting showing 5 to 10x inflation, and in its 46-study Meta analysis some brands with platform ROAS above 4.0 showed incrementality below 1.0. (<a href="https://www.stellaheystella.com/blog/2025-dtc-digital-advertising-incrementality-benchmarks" target="_blank" rel="noopener">Stella, 2025 DTC Incrementality Benchmarks, May 2026</a>; <a href="https://www.stellaheystella.com/blog/incrementality-study-how-incremental-is-meta-really" target="_blank" rel="noopener">Stella, How Incremental is Meta Really, August 2025</a>)</li></ul>
+<h2>What a measurement specialist says about it</h2>
+<blockquote><p>Platform reporting and last-click attribution are biased in predictable ways. They over-credit channels that intercept existing demand and under-credit channels that build demand over a longer horizon.</p><cite>Terence Einhorn, VP, Solutions Architect, Measured, in <a href="https://www.measured.com/faq/incrementality-testing-examples-two-surprising-results/" target="_blank" rel="noopener">Incrementality Testing Examples</a></cite></blockquote>
+<p>That is the whole reason to grade on MER. The platform number can be too high or too low, and you won't know which without a test. MER doesn't have that problem.</p>
 <h2>What about incrementality and MMM?</h2>
 <p>Complex media mix modeling matters at massive scale. For the other 99% of advertisers it's overkill. If you want to know whether a channel is actually incremental, the cheapest honest test is to turn it off in a region or for a period and watch MER. A few brands have done that with Meta lately and the results are always educational. But you don't need a model to start managing to MER this week.</p>
-  <h2>Questions people ask</h2><details><summary>What is a good MER for an e-commerce brand?</summary><p>There isn't a universal one. Break-even MER is 1 divided by your contribution margin before marketing, so a 30% margin means 3.33x just to break even, and a 50% margin means 2.0x. A good target is usually 20% to 40% above your break-even.</p></details><details><summary>Should we measure on ROAS or MER?</summary><p>MER for decisions and platform ROAS for diagnostics. Platform attribution overstates and different platforms disagree with each other; MER is total revenue over total marketing spend and can't be gamed.</p></details><details><summary>Why don&#x27;t my Meta ads numbers match Shopify?</summary><p>Attribution windows, view-through conversions, cross-device behavior and modeled conversions. Meta is counting something different from Shopify. That's why I grade on blended MER and contribution margin, not on either report.</p></details><details><summary>How often should we look at MER?</summary><p>Weekly for management, monthly for decisions about budget, quarterly for revisiting the margin assumption. Single days and single weeks are noisy.</p></details><details><summary>Does MER work for a brand with subscriptions?</summary><p>Yes, with one adjustment: set a first-order MER floor and a 90-day cohort MER target, and actually track the cohorts. A subscription brand can afford to acquire below break-even on the first order only if the cohort math proves it.</p></details><details><summary>Do we need a media mix model?</summary><p>Almost certainly not at $5M to $80M. Manage to MER, run simple holdout tests when you want to know if a channel is incremental, and save MMM for when you have the scale and the data team to use it.</p></details>
+  <h2>Questions people ask</h2><details><summary>What is a good MER for an e-commerce brand?</summary><p>There isn't a universal one. Shopify's guide says 3.0x to 5.0x and Triple Whale's customer median works out to about 2.44x, but break-even MER is 1 divided by your contribution margin before marketing, so a 30% margin means 3.33x just to break even, and a 50% margin means 2.0x. A good target is usually 20% to 40% above your break-even.</p></details><details><summary>Should we measure on ROAS or MER?</summary><p>MER for decisions and platform ROAS for diagnostics. Platform attribution diverges from incremental results in both directions (Haus found Meta under-counting on 7-day click; Stella found branded search and retargeting over-counting by 5 to 10x), and different platforms disagree with each other; MER is total revenue over total marketing spend and can't be gamed.</p></details><details><summary>Why don&#x27;t my Meta ads numbers match Shopify?</summary><p>Attribution windows, view-through conversions, cross-device behavior and modeled conversions. Meta is counting something different from Shopify. That's why I grade on blended MER and contribution margin, not on either report.</p></details><details><summary>How often should we look at MER?</summary><p>Weekly for management, monthly for decisions about budget, quarterly for revisiting the margin assumption. Single days and single weeks are noisy.</p></details><details><summary>Does MER work for a brand with subscriptions?</summary><p>Yes, with one adjustment: set a first-order MER floor and a 90-day cohort MER target, and actually track the cohorts. A subscription brand can afford to acquire below break-even on the first order only if the cohort math proves it.</p></details><details><summary>Do we need a media mix model?</summary><p>Almost certainly not at $5M to $80M. Manage to MER, run simple holdout tests when you want to know if a channel is incremental, and save MMM for when you have the scale and the data team to use it.</p></details>
   </article>
+  <aside class="author" aria-label="About the author">
+    <a href="/logan/"><img src="/uploads/IMG_6671.JPG" alt="Logan Ice" width="72" height="72" loading="lazy" /></a>
+    <div>
+      <p class="author-name"><a href="/logan/">Logan Ice</a> · Founder, The Growth Den</p>
+      <p>Fractional growth advisor for DTC and e-commerce brands, based in St. Louis. Led growth at Wuffes ($14M to $40M+), ran Little Passports at BEGiN, and grew with Varsity Tutors from a three-city company to its IPO. Studied physics and psychology at WashU. <a href="/logan/">The longer version</a> · <a href="https://www.linkedin.com/in/loganice/" target="_blank" rel="noopener">LinkedIn</a></p>
+    </div>
+  </aside>
   <div class="box">
     <h2>Work with Logan</h2>
     <p>I'm a fractional growth advisor for growth-stage DTC and e-commerce brands. I handle strategy and take execution off your plate, in whatever seat you need, from $7,500 a month.</p>

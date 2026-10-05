@@ -53,9 +53,23 @@ ANSWER_PAGES = [
     "st-louis",
 ]
 
-AUTHOR = {"@type": "Person", "@id": f"{SITE}/#logan", "name": "Logan Ice", "url": f"{SITE}/",
-          "jobTitle": "Fractional Growth Advisor",
+AUTHOR = {"@type": "Person", "@id": f"{SITE}/#logan", "name": "Logan Ice", "url": f"{SITE}/logan/",
+          "mainEntityOfPage": f"{SITE}/logan/",
+          "image": f"{SITE}/uploads/IMG_6671.JPG",
+          "jobTitle": "Founder and Growth Advisor",
+          "description": "St. Louis-based growth advisor for DTC and e-commerce brands. Led growth at Wuffes ($14M to $40M+), Little Passports, Varsity Tutors and P&G.",
+          "sameAs": ["https://www.linkedin.com/in/loganice/", "https://loganice.medium.com/",
+                     "https://www.stlbucketlistshow.com/1932300/episodes/19809221-the-growth-den-the-real-difference-between-demand-generation-and-demand-capture",
+                     "https://bestmarketingconference.com/agenda/program/detail/44/standing-out-in-a-sea-of-sameness"],
           "worksFor": {"@type": "ProfessionalService", "@id": f"{SITE}/#org", "name": "The Growth Den", "url": f"{SITE}/"}}
+
+AUTHOR_CARD = """<aside class="author" aria-label="About the author">
+    <a href="/logan/"><img src="/uploads/IMG_6671.JPG" alt="Logan Ice" width="72" height="72" loading="lazy" /></a>
+    <div>
+      <p class="author-name"><a href="/logan/">Logan Ice</a> · Founder, The Growth Den</p>
+      <p>Fractional growth advisor for DTC and e-commerce brands, based in St. Louis. Led growth at Wuffes ($14M to $40M+), ran Little Passports at BEGiN, and grew with Varsity Tutors from a three-city company to its IPO. Studied physics and psychology at WashU. <a href="/logan/">The longer version</a> · <a href="https://www.linkedin.com/in/loganice/" target="_blank" rel="noopener">LinkedIn</a></p>
+    </div>
+  </aside>"""
 
 STYLE = """
   :root { --purple:#341f44; --blue:#256493; --orange:#fe7c2b; --gold:#ffc545; --cream:#fcf3d6; --ink:#1a1025; --muted:#6b5f78; --border:rgba(52,31,68,.12); }
@@ -75,6 +89,16 @@ STYLE = """
   .tag { font-size:11px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--orange); margin-bottom:12px; }
   h1 { font-size:clamp(30px,5vw,46px); font-weight:700; color:var(--purple); line-height:1.15; margin-bottom:16px; }
   .updated { color:var(--muted); font-size:14px; margin-bottom:24px; }
+  .updated a { color:var(--purple); font-weight:500; text-decoration:none; border-bottom:1px solid var(--gold); }
+  .body blockquote cite { display:block; font-style:normal; font-size:14px; color:var(--muted); margin-top:6px; }
+  .body blockquote cite a { color:var(--muted); }
+  .body ul.evidence li { background:#fff; border:1px solid var(--border); border-left:5px solid var(--gold); border-radius:12px; padding:12px 16px; list-style:none; margin-left:-22px; font-size:16px; }
+  .body ul.evidence li a { color:var(--blue); }
+  .author { display:flex; gap:16px; align-items:flex-start; background:#fff; border:1px solid var(--border); border-radius:16px; padding:18px 20px; margin-top:40px; }
+  .author img { width:72px; height:72px; border-radius:14px; object-fit:cover; flex-shrink:0; display:block; }
+  .author p { margin:0; font-size:15px; }
+  .author .author-name { font-weight:600; color:var(--purple); margin-bottom:4px; }
+  .author .author-name a { color:var(--purple); text-decoration:none; }
   .answer { font-size:19px; font-weight:400; margin-bottom:8px; }
   .body h2 { font-size:23px; font-weight:600; color:var(--purple); line-height:1.3; margin:44px 0 14px; }
   .body h3 { font-size:18px; font-weight:600; color:var(--purple); margin:28px 0 8px; }
@@ -233,8 +257,42 @@ def render_body(md):
             out.append(("md", "\n".join(chunk)))
             chunk = []
 
+    quote = None
+
+    def flush_quote():
+        nonlocal quote
+        if quote:
+            body, cite = quote
+            h = "<blockquote><p>" + inline(body) + "</p>"
+            if cite:
+                h += "<cite>" + inline(cite) + "</cite>"
+            out.append(("html", h + "</blockquote>"))
+            quote = None
+
+    evidence = False
     for line in md.splitlines():
         s = line.strip()
+        if s.startswith(">"):
+            flush_chunk(); flush_table()
+            t = s.lstrip("> ").strip()
+            if quote and (t.startswith("—") or t.startswith("--")):
+                quote = (quote[0], t.lstrip("—- ").strip())
+            elif quote:
+                quote = (quote[0] + " " + t, quote[1])
+            else:
+                quote = (t, None)
+            continue
+        if quote:
+            flush_quote()
+        if s == "<!-- evidence -->":
+            flush_chunk(); flush_table(); evidence = True; continue
+        if evidence and s and not re.match(r"^\s*[-*]\s+", line):
+            evidence = False
+        if evidence and re.match(r"^\s*[-*]\s+", line):
+            if not out or out[-1][0] != "evidence":
+                flush_chunk(); flush_table(); out.append(("evidence", []))
+            out[-1][1].append(re.sub(r"^\s*[-*]\s+", "", line))
+            continue
         if s == "<!-- calc:mer -->":
             flush_chunk(); flush_table(); out.append(("html", CALC_MER)); continue
         if s == "<!-- calc:fee -->":
@@ -244,8 +302,17 @@ def render_body(md):
         if buf:
             flush_table()
         chunk.append(line)
-    flush_chunk(); flush_table()
-    return "\n".join(md_to_html(c) if kind == "md" else c for kind, c in out)
+    flush_chunk(); flush_table(); flush_quote()
+    parts = []
+    for kind, c in out:
+        if kind == "md":
+            parts.append(md_to_html(c))
+        elif kind == "evidence":
+            parts.append('<ul class="evidence">' + "".join(f"<li>{inline(i)}</li>" for i in c) + "</ul>")
+        else:
+            parts.append(c)
+    h = "\n".join(parts)
+    return re.sub(r'<a href="(https?://[^"]+)">', r'<a href="\1" target="_blank" rel="noopener">', h)
 
 
 def page_shell(title, desc, url, ld, content, kind="article"):
@@ -326,12 +393,13 @@ def build_page(p, pages):
         f'<li><a href="/{o["slug"]}/">{html.escape(o["h1"])}</a></li>' for o in others) + "</ul>"
     content = f"""  <div class="tag">Straight answers · Logan Ice</div>
   <h1>{html.escape(p['h1'])}</h1>
-  <p class="updated">Last updated <time datetime="{p['updated']}">{nice(p['updated'])}</time></p>
+  <p class="updated">By <a href="/logan/" rel="author">Logan Ice</a> · Last updated <time datetime="{p['updated']}">{nice(p['updated'])}</time></p>
   <p class="answer">{inline(p['description'])}</p>
   <article class="body">
 {render_body(p['main_md'])}
   {faq_html}
   </article>
+  {AUTHOR_CARD}
   <div class="box">
     <h2>Work with Logan</h2>
     <p>I'm a fractional growth advisor for growth-stage DTC and e-commerce brands. I handle strategy and take execution off your plate, in whatever seat you need, from $7,500 a month.</p>
