@@ -27,10 +27,10 @@ You have a meaningful marketing budget and no single person whose name is on the
 | Your situation | What usually fixes it | What usually doesn't |
 |---|---|---|
 | Real budget, nobody owns the blended number | A fractional growth lead who takes the number | Another agency reporting its own ROAS |
-| Retail launch broke your attribution | A strategy seat that re-does the measurement and the payback math | More spend into the same last-click model |
+| Retail launch broke your attribution | The strategy service that re-does the measurement and the payback math | More spend into the same last-click model |
 | Growth seat empty, search running | A fractional lead for the gap who then helps you hire | Leaving the founder as de facto head of growth for a quarter |
 | Fired the agency, nobody in-house can build | Build the system with a fractional lead, hire into it | Hiring a manager into chaos |
-| Growth flat, creative untested for a year | Head of creative seat plus a testing cadence | A new agency with the same brief |
+| Growth flat, creative untested for a year | The head of creative service plus a testing cadence | A new agency with the same brief |
 | Under $3M revenue | Product, a scrappy generalist, your own time in Ads Manager | A retainer at this size |
 | Thin margin, unfixed unit economics | Pricing, COGS and shipping first | Any amount of marketing skill |
 

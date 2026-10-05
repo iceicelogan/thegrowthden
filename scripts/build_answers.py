@@ -31,7 +31,7 @@ import re
 import sys
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
-from build_notes import md_to_html, inline, nice, GTM  # noqa: E402
+from build_notes import md_to_html, inline, nice, GTM, load as load_notes, latest_list  # noqa: E402
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 SRC = ROOT / "answers" / "_src"
@@ -51,6 +51,17 @@ ANSWER_PAGES = [
     "marketing-system-you-own",
     "ai-ad-angles",
     "st-louis",
+]
+
+# Service pages (the five "seats"). Built from answers/_src/<slug>.md with kind: service
+# and a `price:` line. They get the same nav, byline, author card, evidence and quote
+# conventions as the answer pages, Service + FAQPage schema, and a different tail.
+SERVICE_PAGES = [
+    "fractional-growth-strategy",
+    "fractional-head-of-creative",
+    "meta-media-buyer",
+    "marketing-team-builder",
+    "interim-head-of-marketing",
 ]
 
 AUTHOR = {"@type": "Person", "@id": f"{SITE}/#logan", "name": "Logan Ice", "url": f"{SITE}/logan/",
@@ -83,8 +94,8 @@ STYLE = """
   header nav a { color:#fff; font-weight:500; text-decoration:none; font-size:15px; margin-left:18px; }
   header nav a.nav-cta { background:var(--orange); color:#fff; font-weight:600; padding:9px 18px; border-radius:100px; }
   header nav { display:flex; align-items:center; white-space:nowrap; }
-  @media (max-width:600px) { header img { height:30px; } header nav a { margin-left:12px; font-size:14px; } header nav a.nav-cta { padding:7px 12px; } }
-  @media (max-width:420px) { header nav a[href="/#services"] { display:none; } header img { height:26px; } header nav a { margin-left:10px; font-size:13px; } }
+  @media (max-width:700px) { header img { height:30px; } header nav a { margin-left:10px; font-size:14px; } header nav a.nav-cta { padding:7px 12px; } header nav a[href="/logan/"] { display:none; } }
+  @media (max-width:520px) { header nav a[href="/#services"], header nav a[href="/pricing/"] { display:none; } header img { height:26px; } header nav a { margin-left:10px; font-size:13px; } }
   main { padding:56px 16px 72px; }
   .tag { font-size:11px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--orange); margin-bottom:12px; }
   h1 { font-size:clamp(30px,5vw,46px); font-weight:700; color:var(--purple); line-height:1.15; margin-bottom:16px; }
@@ -339,7 +350,7 @@ def page_shell(title, desc, url, ld, content, kind="article"):
 <style>{STYLE}</style>
 </head>
 <body>
-<header><div class="in"><a href="/"><img src="/uploads/Growth_Den__Logo_Horizontal_White.png" alt="The Growth Den" /></a><nav><a href="/answers/">Answers</a><a href="/notes/">Notes</a><a href="/#services">Services</a><a class="nav-cta" href="{CAL}" target="_blank">Let's Talk</a></nav></div></header>
+<header><div class="in"><a href="/"><img src="/uploads/Growth_Den__Logo_Horizontal_White.png" alt="The Growth Den" /></a><nav><a href="/#services">Services</a><a href="/pricing/">Pricing</a><a href="/answers/">Answers</a><a href="/notes/">Notes</a><a href="/logan/">About</a><a class="nav-cta" href="{CAL}" target="_blank">Let's Talk</a></nav></div></header>
 <main>
 {content}
 </main>
@@ -350,8 +361,10 @@ def page_shell(title, desc, url, ld, content, kind="article"):
 """
 
 
-def build_page(p, pages):
+def build_page(p, pages, services=None, notes=None):
     url = f"{SITE}/{p['slug']}/"
+    if p["kind"] == "service":
+        return build_service_page(p, services or [], notes or [])
     graph = [{
         "@type": "Article" if p["kind"] != "local" else "WebPage",
         "@id": url + "#article",
@@ -411,6 +424,76 @@ def build_page(p, pages):
     (d / "index.html").write_text(page_shell(p["title"], p["description"], url, ld, content), encoding="utf-8")
 
 
+def build_service_page(p, services, notes):
+    url = f"{SITE}/{p['slug']}/"
+    price = int(p.get("price", "7500"))
+    graph = [{
+        "@type": "Service",
+        "@id": url + "#service",
+        "name": p["h1"],
+        "url": url,
+        "description": p["description"],
+        "serviceType": p.get("service_type", "Fractional growth advisory"),
+        "provider": {"@id": f"{SITE}/#logan"},
+        "areaServed": "US",
+        "audience": {"@type": "BusinessAudience", "name": "Growth-stage DTC and e-commerce brands"},
+        "offers": {"@type": "Offer", "priceSpecification": {"@type": "UnitPriceSpecification", "minPrice": price, "priceCurrency": "USD", "unitText": "MONTH"}},
+    }, {
+        "@type": "WebPage",
+        "@id": url + "#page",
+        "url": url,
+        "name": p["title"],
+        "description": p["description"],
+        "datePublished": "2026-09-26",
+        "dateModified": p["updated"],
+        "author": AUTHOR,
+        "mainEntity": {"@id": url + "#service"},
+    }]
+    if p["faq"]:
+        graph.append({"@type": "FAQPage", "@id": url + "#faq", "mainEntity": [
+            {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": re.sub(r"<[^>]+>", "", md_to_html(a)).strip()}}
+            for q, a in p["faq"]]})
+    ld = {"@context": "https://schema.org", "@graph": graph}
+    faq_html = ""
+    if p["faq"]:
+        faq_html = '<h2>Questions people ask</h2>' + "".join(
+            f"<details><summary>{html.escape(q)}</summary>{md_to_html(a)}</details>" for q, a in p["faq"])
+    others = [o for o in services if o["slug"] != p["slug"]]
+    more = '<h2 class="more-h">Other services</h2><ul class="list">' + "".join(
+        f'<li><a href="/{o["slug"]}/">{html.escape(o["h1"])}</a></li>' for o in others) + "</ul>"
+    notes_html = ""
+    if notes:
+        notes_html = '<h2 class="more-h">Latest from Notes from the Den</h2><ul class="list">' + "".join(
+            f'<li><a href="/notes/{n["slug"]}/">{html.escape(n["title"])}</a> <span class="d">{nice(n["updated"])}</span></li>' for n in notes[:3]) + "</ul>"
+    content = f"""  <div class="tag">Services · Logan Ice</div>
+  <h1>{html.escape(p['h1'])}</h1>
+  <p class="updated">By <a href="/logan/" rel="author">Logan Ice</a> · Last updated <time datetime="{p['updated']}">{nice(p['updated'])}</time></p>
+  <p class="answer">{inline(p['description'])}</p>
+  <article class="body">
+{render_body(p['main_md'])}
+  {faq_html}
+  </article>
+  {AUTHOR_CARD}
+  <div class="box">
+    <h2>Work with Logan</h2>
+    <p>I'm a fractional growth advisor for growth-stage DTC and e-commerce brands. I handle strategy and take execution off your plate, in whatever seat you need, from $7,500 a month.</p>
+    <a class="cta" href="{CAL}" target="_blank">Let's see if we're a fit</a><a class="more" href="/#services">See all the services →</a>
+  </div>
+  {more}
+  {notes_html}"""
+    d = ROOT / p["slug"]
+    d.mkdir(parents=True, exist_ok=True)
+    (d / "index.html").write_text(page_shell(p["title"], p["description"], url, ld, content), encoding="utf-8")
+
+
+def update_llms_services(services):
+    p = ROOT / "llms.txt"
+    t = p.read_text(encoding="utf-8")
+    section = "## Services\n" + "".join(f"- [{x['h1']}]({SITE}/{x['slug']}/): {x['description']}\n" for x in services)
+    t = re.sub(r"## Services\n(?:- .*\n)*", section, t)
+    p.write_text(t, encoding="utf-8")
+
+
 def build_index(pages):
     url = f"{SITE}/answers/"
     desc = "Plain answers to the questions DTC founders and marketing leaders actually ask before hiring a fractional growth lead: what it costs, how it compares to an agency, when to hire, how to judge one, and how to measure the work."
@@ -458,7 +541,15 @@ def main():
     build_index(pages)
     update_llms(pages)
     update_home(pages)
-    print(f"built {len(pages)} answer page(s) + /answers/")
+    services = [load(s) for s in SERVICE_PAGES]
+    try:
+        notes = load_notes()
+    except SystemExit:
+        notes = []
+    for p in services:
+        build_service_page(p, services, notes)
+    update_llms_services(services)
+    print(f"built {len(pages)} answer page(s) + /answers/ + {len(services)} service page(s)")
 
 
 if __name__ == "__main__":

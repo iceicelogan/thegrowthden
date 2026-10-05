@@ -154,8 +154,8 @@ STYLE = """
   header nav a { color:#fff; font-weight:500; text-decoration:none; font-size:15px; margin-left:18px; }
   header nav a.nav-cta { background:var(--orange); color:#fff; font-weight:600; padding:9px 18px; border-radius:100px; }
   header nav { display:flex; align-items:center; white-space:nowrap; }
-  @media (max-width:600px) { header img { height:30px; } header nav a { margin-left:12px; font-size:14px; } header nav a.nav-cta { padding:7px 12px; } }
-  @media (max-width:420px) { header nav a[href="/#services"] { display:none; } header img { height:26px; } header nav a { margin-left:10px; font-size:13px; } }
+  @media (max-width:700px) { header img { height:30px; } header nav a { margin-left:10px; font-size:14px; } header nav a.nav-cta { padding:7px 12px; } header nav a[href="/logan/"] { display:none; } }
+  @media (max-width:520px) { header nav a[href="/#services"], header nav a[href="/pricing/"] { display:none; } header img { height:26px; } header nav a { margin-left:10px; font-size:13px; } }
   main { padding:56px 16px 72px; }
   .tag { font-size:11px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--orange); margin-bottom:12px; }
   h1 { font-size:clamp(30px,5vw,46px); font-weight:700; color:var(--purple); line-height:1.15; margin-bottom:16px; }
@@ -236,7 +236,7 @@ def page(title, desc, url, ld, content, image=None):
 <style>{STYLE}</style>
 </head>
 <body>
-<header><div class="in"><a href="/"><img src="/uploads/Growth_Den__Logo_Horizontal_White.png" alt="The Growth Den" /></a><nav><a href="/notes/">Notes</a><a href="/#services">Services</a><a class="nav-cta" href="https://calendar.app.google/dy8683mNDXyWAkPo9" target="_blank">Let's Talk</a></nav></div></header>
+<header><div class="in"><a href="/"><img src="/uploads/Growth_Den__Logo_Horizontal_White.png" alt="The Growth Den" /></a><nav><a href="/#services">Services</a><a href="/pricing/">Pricing</a><a href="/answers/">Answers</a><a href="/notes/">Notes</a><a href="/logan/">About</a><a class="nav-cta" href="https://calendar.app.google/dy8683mNDXyWAkPo9" target="_blank">Let's Talk</a></nav></div></header>
 <main>
 {content}
 </main>
@@ -339,12 +339,7 @@ def update_pages(notes):
     t = home.read_text(encoding="utf-8")
     t = replace_block(t, "NOTES", latest_list(notes, "notes-date"))
     home.write_text(t, encoding="utf-8")
-    for slug in SEAT_PAGES:
-        p = ROOT / slug / "index.html"
-        t = p.read_text(encoding="utf-8")
-        t = replace_block(t, "NOTES", latest_list(notes, "d"))
-        t = replace_block(t, "UPDATED", f'<time datetime="{latest}">{nice(latest)}</time>')
-        p.write_text(t, encoding="utf-8")
+    # Service pages are built by build_answers.py (they read the notes list themselves).
 
 
 def answer_urls():
@@ -364,9 +359,17 @@ def answer_urls():
     return out
 
 
+def service_urls():
+    try:
+        from build_answers import SERVICE_PAGES as SP, load as load_answer
+        return [(f"{s}/", load_answer(s)["updated"], "0.8") for s in SP]
+    except (ImportError, SystemExit):
+        return [(f"{s}/", "2026-10-01", "0.8") for s in SEAT_PAGES]
+
+
 def build_sitemap(notes):
     latest = max(n["updated"] for n in notes)
-    urls = [("", latest, "1.0")] + [(f"{s}/", latest, "0.8") for s in SEAT_PAGES] + \
+    urls = [("", latest, "1.0")] + [("logan/", "2026-10-05", "0.8")] + service_urls() + \
            answer_urls() + \
            [(f"{s}/", latest, "0.5") for s in LAB_PAGES] + \
            [("notes/", latest, "0.7")] + [(f"notes/{n['slug']}/", n["updated"], "0.6") for n in notes]

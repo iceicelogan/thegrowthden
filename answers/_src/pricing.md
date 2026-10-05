@@ -1,7 +1,7 @@
 ---
 title: What a Fractional Growth Lead Costs (Pricing)
 h1: What The Growth Den costs, and what you get for it
-description: Engagements start at $7,500 a month, whichever seat I'm in, and go up with how many seats I cover and how much building is involved. Ad spend and software stay in your accounts. Here is what that money buys week to week, how fast you're up and running, and why having strategy and execution in one place changes the math.
+description: Engagements start at $7,500 a month, whichever seat I'm in, and go up with how many services I cover and how much building is involved. Ad spend and software stay in your accounts. Here is what that money buys week to week, how fast you're up and running, and why having strategy and execution in one place changes the math.
 updated: 2026-10-05
 kind: pricing
 ---
@@ -10,9 +10,9 @@ kind: pricing
 
 Almost every page about fractional marketing pricing gives you a range and none of them give you their own number. Mine is simple: **from $7,500 a month**, whichever seat I'm in, whether that's head of growth strategy, head of creative, a Meta media buyer next to your existing growth lead, or building your marketing team and its systems.
 
-Where it lands above $7,500 depends on three things: how many seats I'm covering at once, how much building is involved (a creative pipeline and a reporting system from scratch is more than running an account that already works), and whether specialist support is needed. Taking a whole new product to market is a bigger custom program and we'd scope that together.
+Where it lands above $7,500 depends on three things: how many services I'm covering at once, how much building is involved (a creative pipeline and a reporting system from scratch is more than running an account that already works), and whether specialist support is needed. Taking a whole new product to market is a bigger custom program and we'd scope that together.
 
-The one seat with a different floor is [interim head of marketing](/interim-head-of-marketing/). That's the whole function, three to four days a week, for a fixed window while you hire the permanent leader, and it starts at $12,500 a month.
+The one service with a different floor is [interim head of marketing](/interim-head-of-marketing/). That's the whole function, three to four days a week, for a fixed window while you hire the permanent leader, and it starts at $12,500 a month.
 
 Ad spend and software are never part of the fee. They stay in your accounts, in your name.
 
@@ -61,14 +61,14 @@ Ad spend. Software and tools. Paid creator or influencer fees. Photo and video p
 
 1. Book a call to see if we're a fit. Thirty minutes, no deck.
 2. Tell me the number you need moved and what you've already tried. I'll give you my first read on the call.
-3. Get a short scope from me within a few days: the seat, the first 90 days as a list of bets, and the monthly number.
+3. Get a short scope from me within a few days: the service, the first 90 days as a list of bets, and the monthly number.
 4. Sign, and give me access to the accounts in your name. Nothing gets built outside them.
 5. Expect my full read of the business inside the first two weeks, and the first changes shipped in the same window.
 
 ## Questions people ask
 
 ### How much does a fractional head of growth cost?
-The Growth Den starts at $7,500 a month for any seat, and goes up with how many seats I'm covering and how much building is involved. Bigger programs, like taking a new product to market, are scoped separately.
+The Growth Den starts at $7,500 a month for any service, and goes up with how many services I'm covering and how much building is involved. Bigger programs, like taking a new product to market, are scoped separately.
 
 ### What's included in the retainer?
 Strategy and execution from the same person: the weekly leadership session, two to three days a week of hands-on work, and the systems your team keeps. Ad spend, software and production budgets are separate and stay in your accounts.
@@ -82,5 +82,5 @@ Typically within two to four weeks of the first call, and you'll have my read of
 ### Do you charge a percentage of ad spend or performance fees?
 No. A flat monthly retainer. I don't want to be paid more when you spend more; I want to be paid to make the number better.
 
-### Can you fill just one seat, like a media buyer?
-Yes. Head of growth strategy, head of creative, or media buyer next to your existing lead. The fee scales with the seats, not the title. The exception is the interim head of marketing seat, which covers the whole function and starts at $12,500.
+### Can you cover just one service, like media buying?
+Yes. Head of growth strategy, head of creative, or media buyer next to your existing lead. The fee scales with the services, not the title. The exception is the interim head of marketing service, which covers the whole function and starts at $12,500.

@@ -61,7 +61,7 @@ They skip naming the default and wonder why everything sounds familiar. They ask
 
 ## If you want help with it
 
-This loop is the core of my [head of creative seat](/fractional-head-of-creative/), and teaching a team to run it on their own is most of what I do in the [AI training work](/ai-training-for-marketing-teams/). But you don't need me to start. Take the prompts, run one storm this week, and pay attention to which angle your personas argue about.
+This loop is the core of my [head of creative service](/fractional-head-of-creative/), and teaching a team to run it on their own is most of what I do in the [AI training work](/ai-training-for-marketing-teams/). But you don't need me to start. Take the prompts, run one storm this week, and pay attention to which angle your personas argue about.
 
 ## Questions people ask
 
