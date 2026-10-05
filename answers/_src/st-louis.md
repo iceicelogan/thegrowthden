@@ -42,7 +42,7 @@ A few facts about the market I work from, from the people who count it.
 ## What a client said
 
 > It's such a gift to get to work with someone who can lead both strategy and execution. I would have paid 20x for an agency for the same engagement, and probably a worse outcome.
-> — Ari, Head of Marketing, Autobrush
+> — Ari Ziskin, Head of Marketing, Autobrush
 
 ## Who around here this fits
 

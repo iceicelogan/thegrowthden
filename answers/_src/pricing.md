@@ -47,7 +47,7 @@ I'm a solo operator with low overhead, and I'd rather be affordable to the brand
 ## What a client said about the money
 
 > I would have paid 20x for an agency for the same engagement, and probably a worse outcome. Beyond the excellence in his work, Logan is such a passionate, inclusive, and culture-driven part of this team, demonstrating influential leadership in even a fractional engagement. 11/10, can't recommend enough.
-> — Ari, Head of Marketing, Autobrush
+> — Ari Ziskin, Head of Marketing, Autobrush
 
 ## Why a flat fee
 

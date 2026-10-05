@@ -57,7 +57,7 @@ I'd rather you check my claims than take them. Here is what the people who measu
 ## What a client said about it
 
 > I have been so impressed with Logan's work, communication, and results! For the first time in our business, I feel like I have clarity into every important decision, and his pulse on our specific goals combined with his attentive responses and action are truly incredible. It's such a gift to get to work with someone who can lead both strategy and execution.
-> — Ari, Head of Marketing, Autobrush
+> — Ari Ziskin, Head of Marketing, Autobrush
 
 ## How to start, if you're going to do this
 
