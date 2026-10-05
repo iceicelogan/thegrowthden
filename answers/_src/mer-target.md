@@ -50,7 +50,7 @@ Here's how I set it up on every engagement:
 4. Platform ROAS, CPA, CTR and the rest live on the second tab. They're for diagnosing, not for grading.
 5. When MER drifts below target for two consecutive weeks, spend comes down or creative changes. That's the rule, agreed in advance, so nobody has to fight about it in the moment.
 
-If you hire me for the strategy seat, this is one of the first things I build. If you hire me to run Meta, this is what I ask you to grade me on.
+If you hire me for the strategy service, this is one of the first things I build. If you hire me to run Meta, this is what I ask you to grade me on.
 
 ## MER against the other numbers you'll be shown
 

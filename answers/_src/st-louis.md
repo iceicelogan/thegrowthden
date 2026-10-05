@@ -50,9 +50,9 @@ Growth-stage consumer brands in St. Louis, Kansas City, Columbia and Springfield
 
 Apparel, food and beverage, supplements and wellness, beauty, pet, and home are where I've done most of my work. If you're a St. Louis brand in a category I haven't touched, I'd still like to hear about it.
 
-## The seats
+## The services
 
-The same five as everywhere: [head of growth strategy](/fractional-growth-strategy/), [head of creative](/fractional-head-of-creative/), a [Meta media buyer who also brings strategy](/meta-media-buyer/), [building your marketing team and its systems](/marketing-team-builder/), and an [interim head of marketing](/interim-head-of-marketing/) when you're between leaders. From $7,500 a month for the first four; the interim seat starts at $12,500. Details on [pricing](/pricing/).
+The same five as everywhere: [head of growth strategy](/fractional-growth-strategy/), [head of creative](/fractional-head-of-creative/), a [Meta media buyer who also brings strategy](/meta-media-buyer/), [building your marketing team and its systems](/marketing-team-builder/), and an [interim head of marketing](/interim-head-of-marketing/) when you're between leaders. From $7,500 a month for the first four; the interim service starts at $12,500. Details on [pricing](/pricing/).
 
 ## Speaking and workshops
 
@@ -62,7 +62,7 @@ I run half-day paid media and AI workshops for agencies and marketing teams, I s
 
 1. Send a note or book a call. Say what number you need moved and what you've tried.
 2. Meet me at your office or a table in Clayton or the Central West End for a working session. Bring the person who owns the ad account.
-3. Get a short scope within a few days: the seat, the first 90 days as a list of bets, and the number.
+3. Get a short scope within a few days: the service, the first 90 days as a list of bets, and the number.
 4. Expect my read of the business inside two weeks, and the in-person sessions to continue for as long as they're useful.
 
 ## Questions people ask
@@ -80,4 +80,4 @@ Not really. My work is growth-stage DTC and e-commerce brands. If that's not you
 Yes, anywhere in the St. Louis metro, and I'm glad to travel to Kansas City, Chicago or elsewhere in the Midwest for a working session when it's worth it.
 
 ### How do we start?
-A call to see if we're a fit, then a short scope with the seat and the first 90 days as a list of bets. You'll have my read of the business inside the first two weeks.
+A call to see if we're a fit, then a short scope with the service and the first 90 days as a list of bets. You'll have my read of the business inside the first two weeks.

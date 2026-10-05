@@ -71,7 +71,7 @@ Keep them, at least for now. Once the scorecard exists you can grade them fairly
 
 ## How I do this on an engagement
 
-The scorecard is built in the first two weeks with your finance lead. The creative loop and launch tooling come next, usually inside the first two months. SOPs get written as each piece stabilizes, not at the end. Training runs the whole time. By month six your team should be able to run the week without me, and my job becomes deciding where the next dollar goes and pushing on what's not being tested. If you want the [team-building seat](/marketing-team-builder/) specifically, that's this work with hiring on top.
+The scorecard is built in the first two weeks with your finance lead. The creative loop and launch tooling come next, usually inside the first two months. SOPs get written as each piece stabilizes, not at the end. Training runs the whole time. By month six your team should be able to run the week without me, and my job becomes deciding where the next dollar goes and pushing on what's not being tested. If you want the [team-building service](/marketing-team-builder/) specifically, that's this work with hiring on top.
 
 ## If you're going to do this yourself
 

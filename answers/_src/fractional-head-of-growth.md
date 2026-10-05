@@ -12,7 +12,7 @@ If you search for this, most of what you'll find is written by marketplaces and 
 
 At $5M to $80M you usually can't justify a full-time head of growth plus the team underneath them, but you can't afford to have nobody accountable for the number either. A fractional head of growth is the person whose name goes on customer acquisition, retention and marketing efficiency, who shows up two or three days a week, and who is senior enough to tell you when the plan is wrong.
 
-## What I do in the seat
+## What I do
 
 I start with a read of the whole business, not one ad account. That means total revenue against total marketing cost (MER), contribution margin by channel, and where the next dollar should go. Then I write a 90-day plan as a list of bets, each with a cost, a way to tell if it's working, and a date we stop if it isn't.
 
@@ -82,7 +82,7 @@ Usually the equivalent of two to three days a week, front-loaded in the first co
 Long enough to build the system and teach the team to run it, which is usually six to twelve months or more. Most clients hire me for one seat and end up keeping me around for another, but the goal is that you own the system either way.
 
 ### How much does a fractional head of growth cost?
-The Growth Den starts at $7,500 a month, whichever seat I'm in, and goes up with how many seats I cover and how much building is involved. Ad spend and software stay in your accounts.
+The Growth Den starts at $7,500 a month, whichever seat I'm in, and goes up with how many services I cover and how much building is involved. Ad spend and software stay in your accounts.
 
 ### When should we convert to a full-time hire?
 When the system is built, the cadence is running, and there's enough steady work for a full-time person to own it. I'll tell you when that point arrives, and I'll help you hire and onboard them.
