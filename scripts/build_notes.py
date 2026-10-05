@@ -155,7 +155,7 @@ STYLE = """
   header nav a.nav-cta { background:var(--orange); color:#fff; font-weight:600; padding:9px 18px; border-radius:100px; }
   header nav { display:flex; align-items:center; white-space:nowrap; }
   @media (max-width:600px) { header img { height:30px; } header nav a { margin-left:12px; font-size:14px; } header nav a.nav-cta { padding:7px 12px; } }
-  @media (max-width:420px) { header nav a[href="/#seats"] { display:none; } header img { height:26px; } header nav a { margin-left:10px; font-size:13px; } }
+  @media (max-width:420px) { header nav a[href="/#services"] { display:none; } header img { height:26px; } header nav a { margin-left:10px; font-size:13px; } }
   main { padding:56px 16px 72px; }
   .tag { font-size:11px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--orange); margin-bottom:12px; }
   h1 { font-size:clamp(30px,5vw,46px); font-weight:700; color:var(--purple); line-height:1.15; margin-bottom:16px; }
@@ -236,11 +236,11 @@ def page(title, desc, url, ld, content, image=None):
 <style>{STYLE}</style>
 </head>
 <body>
-<header><div class="in"><a href="/"><img src="/uploads/Growth_Den__Logo_Horizontal_White.png" alt="The Growth Den" /></a><nav><a href="/notes/">Notes</a><a href="/#seats">Seats</a><a class="nav-cta" href="https://calendar.app.google/dy8683mNDXyWAkPo9" target="_blank">Let's Talk</a></nav></div></header>
+<header><div class="in"><a href="/"><img src="/uploads/Growth_Den__Logo_Horizontal_White.png" alt="The Growth Den" /></a><nav><a href="/notes/">Notes</a><a href="/#services">Services</a><a class="nav-cta" href="https://calendar.app.google/dy8683mNDXyWAkPo9" target="_blank">Let's Talk</a></nav></div></header>
 <main>
 {content}
 </main>
-<footer><div class="in">© {dt.date.today().year} The Growth Den LLC · Logan Ice, St. Louis · <a href="mailto:logan@thegrowthden.com">logan@thegrowthden.com</a><a class="li" href="https://www.linkedin.com/in/loganice" target="_blank" rel="noopener" aria-label="Logan Ice on LinkedIn"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg></a></div></footer>
+<footer><div class="in">© {dt.date.today().year} The Growth Den LLC · Logan Ice, St. Louis, Missouri · <a href="mailto:logan@thegrowthden.com">logan@thegrowthden.com</a><a class="li" href="https://www.linkedin.com/in/loganice" target="_blank" rel="noopener" aria-label="Logan Ice on LinkedIn"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg></a></div></footer>
 <script>
 document.querySelectorAll(".body pre").forEach(function (pre) {{
   var b = document.createElement("button");
@@ -260,7 +260,7 @@ document.querySelectorAll(".body pre").forEach(function (pre) {{
 
 
 AUTHOR = {"@type": "Person", "@id": f"{SITE}/#logan", "name": "Logan Ice", "url": f"{SITE}/",
-          "jobTitle": "Fractional Growth Advisor",
+          "jobTitle": "Founder and Fractional Growth Advisor",
           "worksFor": {"@type": "ProfessionalService", "name": "The Growth Den", "url": f"{SITE}/"}}
 
 
@@ -289,7 +289,7 @@ def build_issue(n, notes):
   <div class="box">
     <h2>Work with Logan</h2>
     <p>I'm a fractional growth advisor for growth-stage DTC and e-commerce brands. I handle strategy and take execution off your plate, in whatever seat you need, from $7,500 a month.</p>
-    <a class="cta" href="{CAL}" target="_blank">Let's see if we're a fit</a><a class="more" href="/#seats">See the seats →</a>
+    <a class="cta" href="{CAL}" target="_blank">Let's see if we're a fit</a><a class="more" href="/#services">See the services →</a>
   </div>
   {more}"""
     d = ROOT / "notes" / n["slug"]

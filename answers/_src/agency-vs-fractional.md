@@ -17,7 +17,8 @@ The honest answer is that the right choice depends on two things: how much of th
 | | Agency | In-house hire | Strategy-only fractional CMO | Embedded fractional growth lead |
 |---|---|---|---|---|
 | What you're paying for | A team's hours on your channels | A person's full attention | Senior judgment and direction | Senior judgment plus hands in the work |
-| Typical cost | For paid-media agencies, commonly 10% to 20% of ad spend with a minimum; full-service agencies more often charge a fixed fee | A senior salary (Salary.com puts the average VP of Marketing base at about $246,000) plus benefits, bonus and recruiting, and a hiring gap while you search | $8k to $22k a month in the ranges I see quoted | $7.5k to $20k a month |
+| How you pay | Usually a fee tied to your spend, or a fixed fee | Salary, benefits, bonus and a search | A flat monthly fee | A flat monthly fee, from $7,500 |
+| How fast you're up and running | Weeks of onboarding and account setup | A search of a few months, then onboarding | A few weeks | A read of the business inside two weeks |
 | Who owns the blended number (MER) | Usually nobody. The agency reports its channel's ROAS | The hire, if they're senior enough | The fractional CMO, on paper | The growth lead, with their name on it |
 | Incentive | Keep the account, grow the spend | Stay employed | Stay retained | Build something you own, then move seats or step back |
 | What's left when they go | Ad accounts and a reporting deck | Whatever they documented | A strategy document | Systems, SOPs and a trained team |
@@ -39,7 +40,7 @@ An embedded fractional growth lead, which is what I am, can't scale to be your w
 - Agency pay is rarely tied to your results. The ANA's 2022 compensation study found only 41% of marketers use performance incentives with their agencies, down from 61% in 2013. ([ANA, Trends in Agency Compensation, December 2022](https://www.ana.net/content/show/id/76981))
 - Media-only agency relationships are short. The ANA and 4A's 2025 tenure study found media-only agencies average 3.7 years with a client, against 7.3 years for integrated full-service agencies. ([ANA / 4A's, Client-Agency AOR Relationship Tenure, April 2025](https://www.ana.net/content/show/id/pr-2025-04-tenure))
 - Marketing leaders are trimming agency rosters. In Gartner's 2025 CMO Spend Survey of 402 marketing leaders, 39% said they plan to cut agency budgets, and 22% said generative AI has let them rely less on agencies. The sample skews to large companies. ([Gartner, May 2025](https://www.gartner.com/en/newsroom/press-releases/2025-05-12-gartner-2025-cmo-spend-survey-reveals-marketing-budgets-have-flatlined-at-seven-percent-of-overall-company-revenue))
-- The percentage-of-spend model is a paid-media convention, not an industry rule. AgencyAnalytics' 2025 pricing guide puts typical PPC management fees at 10% to 20% of spend, while the 4A's and ANA's April 2024 survey of 149 agencies found fixed fee the most-used model overall. ([AgencyAnalytics, July 2025](https://agencyanalytics.com/blog/ppc-pricing); [4A's / ANA, Decoding Compensation Models, April 2024](https://www.aaaa.org/resource/2024-compensation-methodologies-2/))
+- The percentage-of-spend model is a paid-media convention, not an industry rule. The 4A's and ANA's April 2024 survey of 149 agencies found fixed fee the most-used model overall. ([4A's / ANA, Decoding Compensation Models, April 2024](https://www.aaaa.org/resource/2024-compensation-methodologies-2/))
 
 ## One agency owner's view on the fee question
 
@@ -70,8 +71,8 @@ Yes, and it's often the best first move. I set the targets, own the MER and cont
 ### Will hiring a fractional lead mean firing our agency?
 Not automatically. Decide that after a quarter of measuring them on the blended number instead of their own reporting. Some agencies look great under that light.
 
-### Is a fractional growth lead cheaper than an agency?
-Above roughly $50,000 to $75,000 a month in ad spend, usually yes, because agency fees scale with spend and a flat retainer doesn't. Below that the fees are similar, and the question is what you get for the money.
+### How quickly can a fractional growth lead get going compared with an agency?
+Faster, usually. There is no team to onboard and no account structure to rebuild; I read the business in the first two weeks and start changing things in the same window. An agency's first month is mostly setup.
 
 ### We already have an in-house marketer. Do we need this?
 If they own strategy and measurement and have time to build, probably not. If they're a strong operator who has been asked to also be the strategist, a fractional lead sitting beside them for a few months tends to make them much better, and then I get out of the way.
