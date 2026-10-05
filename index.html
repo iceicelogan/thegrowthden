@@ -375,9 +375,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   }
 
   @media (max-width: 600px) {
-    .proof-stat { padding: 12px 20px; }
-    .proof-stat:not(:last-child)::after { display: none; }
-    .proof-strip-inner { flex-direction: column; align-items: center; gap: 4px; }
+    .logo-track img { height: 34px; }
+    .logo-marquee, .logo-track { gap: 40px; }
+    @keyframes logo-scroll { from { transform: translateX(0); } to { transform: translateX(calc(-50% - 20px)); } }
     .footer-inner { flex-direction: column; align-items: flex-start; gap: 20px; }
     .footer-links { flex-wrap: wrap; gap: 16px; }
   }
@@ -499,49 +499,25 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     .hero-process-img { max-width: 320px; }
   }
 
-  /* ── SOCIAL PROOF STRIP ── */
+  /* ── LOGO STRIP ── */
   #proof-strip {
-    background: var(--cream);
-    padding: 28px 0;
+    background: #fff;
+    padding: 26px 0 22px;
     border-top: 1px solid rgba(52,31,68,.08);
     border-bottom: 1px solid rgba(52,31,68,.08);
+    overflow: hidden;
   }
-  .proof-strip-inner {
-    display: flex;
-    align-items: center;
-    gap: 0;
-    justify-content: center;
-    flex-wrap: wrap;
-  }
-  .proof-stat {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 0 48px;
-    position: relative;
-  }
-  .proof-stat:not(:last-child)::after {
-    content: '';
-    position: absolute;
-    right: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    height: 36px;
-    width: 1px;
-    background: rgba(52,31,68,.2);
-  }
-  .proof-num {
-    font-size: 28px;
-    font-weight: 800;
-    color: var(--purple);
-    line-height: 1;
-  }
-  .proof-label {
-    font-size: 12px;
-    font-weight: 500;
-    color: var(--muted);
-    margin-top: 4px;
-    text-align: center;
+  .logo-tag { font-size: 11px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); text-align: center; margin-bottom: 18px; }
+  .logo-marquee { display: flex; width: max-content; gap: 64px; animation: logo-scroll 45s linear infinite; }
+  .logo-marquee:hover { animation-play-state: paused; }
+  .logo-track { display: flex; align-items: center; gap: 64px; list-style: none; margin: 0; padding: 0; }
+  .logo-track li { flex: 0 0 auto; display: flex; align-items: center; }
+  .logo-track img { height: 44px; width: auto; display: block; }
+  @keyframes logo-scroll { from { transform: translateX(0); } to { transform: translateX(calc(-50% - 32px)); } }
+  @media (prefers-reduced-motion: reduce) {
+    .logo-marquee { animation: none; width: auto; flex-wrap: wrap; justify-content: center; }
+    .logo-marquee .logo-track:last-child { display: none; }
+    .logo-track { flex-wrap: wrap; justify-content: center; gap: 28px 40px; padding: 0 16px; }
   }
 
   /* ── PROBLEM ── */
@@ -1307,7 +1283,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </a>
     <ul class="nav-links">
       <li><a href="#services">Services</a></li>
-      <li><a href="#pricing">Pricing</a></li>
+      <li><a href="/pricing/">Pricing</a></li>
       <li><a href="/answers/">Answers</a></li>
       <li><a href="/notes/">Notes</a></li>
       <li><a href="#about">About</a></li>
@@ -1321,7 +1297,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <div class="mobile-menu" id="mobile-menu">
   <a href="#services" onclick="closeMobile()">Services</a>
-  <a href="#pricing" onclick="closeMobile()">Pricing</a>
+  <a href="/pricing/" onclick="closeMobile()">Pricing</a>
   <a href="/answers/" onclick="closeMobile()">Answers</a>
   <a href="/notes/" onclick="closeMobile()">Notes</a>
   <a href="#about" onclick="closeMobile()">About</a>
@@ -1359,23 +1335,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </div>
 </section>
 
-<!-- PROOF STRIP -->
-<div id="proof-strip">
-  <div class="wrap">
-    <div class="proof-strip-inner">
-      <div class="proof-stat">
-        <span class="proof-num">10+</span>
-        <span class="proof-label">Brands Scaled</span>
-      </div>
-      <div class="proof-stat">
-        <span class="proof-num">$14M → $40M+</span>
-        <span class="proof-label">Wuffes, Tripled</span>
-      </div>
-      <div class="proof-stat">
-        <span class="proof-num">3 cities → global</span>
-        <span class="proof-label">Varsity Tutors growth team, Series A through C (later a $1.4B IPO)</span>
-      </div>
-    </div>
+<!-- LOGO STRIP -->
+<div id="proof-strip" aria-label="Brands and teams Logan has worked with">
+  <div class="wrap"><div class="logo-tag">Brands and teams I've worked with</div></div>
+  <div class="logo-marquee">
+    <ul class="logo-track"><li><img src="uploads/logos/autobrush.png" alt="Autobrush" loading="lazy" height="44" /></li><li><img src="uploads/logos/knownwell.png" alt="Knownwell" loading="lazy" height="44" /></li><li><img src="uploads/logos/knot.png" alt="Client logo" loading="lazy" height="44" /></li><li><img src="uploads/logos/sentic.png" alt="Sentic" loading="lazy" height="44" /></li><li><img src="uploads/logos/bucket-list.png" alt="Bucket List Creative" loading="lazy" height="44" /></li><li><img src="uploads/logos/begin.png" alt="BEGiN" loading="lazy" height="44" /></li><li><img src="uploads/logos/grovelight.png" alt="Grovelight" loading="lazy" height="44" /></li><li><img src="uploads/logos/yazny.png" alt="Yazny" loading="lazy" height="44" /></li><li><img src="uploads/logos/trizub.png" alt="Trizub AI" loading="lazy" height="44" /></li></ul>
+    <ul class="logo-track" aria-hidden="true"><li><img src="uploads/logos/autobrush.png" alt="Autobrush" loading="lazy" height="44" /></li><li><img src="uploads/logos/knownwell.png" alt="Knownwell" loading="lazy" height="44" /></li><li><img src="uploads/logos/knot.png" alt="Client logo" loading="lazy" height="44" /></li><li><img src="uploads/logos/sentic.png" alt="Sentic" loading="lazy" height="44" /></li><li><img src="uploads/logos/bucket-list.png" alt="Bucket List Creative" loading="lazy" height="44" /></li><li><img src="uploads/logos/begin.png" alt="BEGiN" loading="lazy" height="44" /></li><li><img src="uploads/logos/grovelight.png" alt="Grovelight" loading="lazy" height="44" /></li><li><img src="uploads/logos/yazny.png" alt="Yazny" loading="lazy" height="44" /></li><li><img src="uploads/logos/trizub.png" alt="Trizub AI" loading="lazy" height="44" /></li></ul>
   </div>
 </div>
 
@@ -1623,6 +1588,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <h2>No mystery. No "let's hop on a call to discuss budget."</h2>
         <p>Most people in this space show no pricing at all. I'd rather you know the ballpark now than waste either of our time.</p>
         <p>There's no built-in exit date. <strong style="color:var(--purple); font-weight:600;">Clients keep me around because the work gets done and they like working with me.</strong></p>
+        <p><a href="/pricing/" class="about-more" style="margin-left:0">The longer version: what the money buys, and how we start →</a></p>
       </div>
       <div class="pricing-right reveal">
         <div class="pricing-range-card">
@@ -1736,10 +1702,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </div>
       <ul class="footer-links">
         <li><a href="#services">Services</a></li>
-        <li><a href="#pricing">Pricing</a></li>
-        <li><a href="#about">About</a></li>
-      <li><a href="#faq">FAQ</a></li>
+        <li><a href="/pricing/">Pricing</a></li>
+        <li><a href="/answers/">Answers</a></li>
         <li><a href="/notes/">Notes</a></li>
+        <li><a href="#about">About</a></li>
         <li><a href="https://calendar.app.google/dy8683mNDXyWAkPo9" target="_blank">Let's Talk</a></li>
         <li><a class="li" href="https://www.linkedin.com/in/loganice" target="_blank" rel="noopener" aria-label="Logan Ice on LinkedIn"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg></a></li>
       </ul>
