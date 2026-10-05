@@ -119,15 +119,27 @@
   * { box-sizing:border-box; margin:0; padding:0; }
   body { font-family:'Poppins',sans-serif; font-weight:300; color:var(--ink); background:var(--cream); line-height:1.75; }
   a { color:var(--blue); }
-  header { background:var(--purple); padding:18px 16px; }
+  header { background:var(--purple); padding:18px 16px; position:relative; }
   header .in, main, footer .in { max-width:820px; margin:0 auto; }
   header .in { display:flex; align-items:center; justify-content:space-between; gap:16px; }
   header img { height:40px; display:block; }
   header nav a { color:#fff; font-weight:500; text-decoration:none; font-size:15px; margin-left:18px; }
   header nav a.nav-cta { background:var(--orange); color:#fff; font-weight:600; padding:9px 18px; border-radius:100px; }
   header nav { display:flex; align-items:center; white-space:nowrap; }
-  @media (max-width:700px) { header img { height:30px; } header nav a { margin-left:10px; font-size:14px; } header nav a.nav-cta { padding:7px 12px; } header nav a[href="/logan/"] { display:none; } }
-  @media (max-width:520px) { header nav a[href="/#services"], header nav a[href="/pricing/"] { display:none; } header img { height:26px; } header nav a { margin-left:10px; font-size:13px; } }
+  .hamburger { display:none; background:none; border:0; padding:8px; cursor:pointer; width:40px; height:40px; flex-direction:column; justify-content:center; gap:5px; }
+  .hamburger span { display:block; height:2px; width:22px; background:#fff; border-radius:2px; transition:transform .2s, opacity .2s; }
+  .hamburger[aria-expanded="true"] span:nth-child(1) { transform:translateY(7px) rotate(45deg); }
+  .hamburger[aria-expanded="true"] span:nth-child(2) { opacity:0; }
+  .hamburger[aria-expanded="true"] span:nth-child(3) { transform:translateY(-7px) rotate(-45deg); }
+  .site-menu { display:none; }
+  @media (max-width:700px) {
+    header img { height:30px; }
+    header nav { display:none; }
+    .hamburger { display:flex; }
+    .site-menu:not([hidden]) { display:flex; flex-direction:column; gap:4px; max-width:820px; margin:14px auto 0; padding-top:10px; border-top:1px solid rgba(255,255,255,.15); }
+    .site-menu a { color:#fff; font-weight:500; text-decoration:none; font-size:17px; padding:10px 4px; }
+    .site-menu a.nav-cta { background:var(--orange); font-weight:600; padding:12px 18px; border-radius:100px; text-align:center; margin-top:8px; }
+  }
   main { padding:56px 16px 72px; }
   .tag { font-size:11px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--orange); margin-bottom:12px; }
   h1 { font-size:clamp(30px,5vw,46px); font-weight:700; color:var(--purple); line-height:1.15; margin-bottom:16px; }
@@ -154,6 +166,15 @@
   .body th { background:var(--purple); color:#fff; font-weight:600; }
   .body tr:last-child td { border-bottom:none; }
   .table-wrap { overflow-x:auto; margin-bottom:22px; }
+  @media (max-width:640px) {
+    .body table, .body thead, .body tbody, .body tr, .body th, .body td { display:block; }
+    .body thead { position:absolute; left:-9999px; }
+    .body table { border:0; background:transparent; }
+    .body tr { background:#fff; border:1px solid var(--border); border-radius:14px; margin-bottom:12px; padding:6px 0; }
+    .body td { border:0; padding:8px 16px; }
+    .body td:first-child { font-weight:600; color:var(--purple); background:var(--cream); border-radius:12px 12px 0 0; margin:-6px 0 6px; padding:12px 16px; }
+    .body td[data-label]:not(:first-child)::before { content:attr(data-label); display:block; font-size:11px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--orange); margin-bottom:2px; }
+  }
   details { background:#fff; border:1px solid var(--border); border-radius:14px; padding:16px 20px; margin-bottom:10px; }
   summary { font-weight:600; color:var(--purple); cursor:pointer; }
   details p { margin-top:10px; }
@@ -185,7 +206,7 @@
 </style>
 </head>
 <body>
-<header><div class="in"><a href="/"><img src="/uploads/Growth_Den__Logo_Horizontal_White.png" alt="The Growth Den" /></a><nav><a href="/#services">Services</a><a href="/pricing/">Pricing</a><a href="/answers/">Answers</a><a href="/notes/">Notes</a><a href="/logan/">About</a><a class="nav-cta" href="https://calendar.app.google/dy8683mNDXyWAkPo9" target="_blank">Let's Talk</a></nav></div></header>
+<header><div class="in"><a href="/"><img src="/uploads/Growth_Den__Logo_Horizontal_White.png" alt="The Growth Den" /></a><nav><a href="/#services">Services</a><a href="/pricing/">Pricing</a><a href="/answers/">Answers</a><a href="/notes/">Notes</a><a href="/logan/">About</a><a class="nav-cta" href="https://calendar.app.google/dy8683mNDXyWAkPo9" target="_blank">Let's Talk</a></nav><button class="hamburger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="site-menu"><span></span><span></span><span></span></button></div><div class="site-menu" id="site-menu" hidden><a href="/#services">Services</a><a href="/pricing/">Pricing</a><a href="/answers/">Answers</a><a href="/notes/">Notes</a><a href="/logan/">About</a><a class="nav-cta" href="https://calendar.app.google/dy8683mNDXyWAkPo9" target="_blank">Let's Talk</a></div></header>
 <main>
   <div class="tag">Straight answers · Logan Ice</div>
   <h1>Agency, in-house hire, or fractional growth lead: what actually changes at $5M to $80M</h1>
@@ -196,7 +217,7 @@
 <p>Every comparison page on this topic is written by one of the three options, so it lands on that option. I've been the in-house growth lead at brands like Varsity Tutors and Wuffes, I've managed agencies from the client side, and now I'm the fractional person. So I'll try to be fair and tell you where I'm biased.</p>
 <p>The honest answer is that the right choice depends on two things: how much of the problem is judgment and how much is hands. Agencies sell hands. Fractional leaders mostly sell judgment. In-house people can be either, depending on who you hire. Most brands at $5M to $80M need both and can afford one and a half, which is why this is hard.</p>
 <h2>The comparison</h2>
-<div class="table-wrap"><table><thead><tr><th></th><th>Agency</th><th>In-house hire</th><th>Strategy-only fractional CMO</th><th>Embedded fractional growth lead</th></tr></thead><tbody><tr><td>What you're paying for</td><td>A team's hours on your channels</td><td>A person's full attention</td><td>Senior judgment and direction</td><td>Senior judgment plus hands in the work</td></tr><tr><td>How you pay</td><td>Usually a fee tied to your spend, or a fixed fee</td><td>Salary, benefits, bonus and a search</td><td>A flat monthly fee</td><td>A flat monthly fee, from $7,500</td></tr><tr><td>How fast you're up and running</td><td>Weeks of onboarding and account setup</td><td>A search of a few months, then onboarding</td><td>A few weeks</td><td>A read of the business inside two weeks</td></tr><tr><td>Who owns the blended number (MER)</td><td>Usually nobody. The agency reports its channel's ROAS</td><td>The hire, if they're senior enough</td><td>The fractional CMO, on paper</td><td>The growth lead, with their name on it</td></tr><tr><td>Incentive</td><td>Keep the account, grow the spend</td><td>Stay employed</td><td>Stay retained</td><td>Build something you own, then move seats or step back</td></tr><tr><td>What's left when they go</td><td>Ad accounts and a reporting deck</td><td>Whatever they documented</td><td>A strategy document</td><td>Systems, SOPs and a trained team</td></tr><tr><td>Best when</td><td>You have a clear strategy and just need volume</td><td>You have steady work for a full-time person and time to hire</td><td>You have a strong execution team that lacks direction</td><td>You need direction and hands at once, on a budget</td></tr></tbody></table></div>
+<div class="table-wrap"><table><thead><tr><th></th><th>Agency</th><th>In-house hire</th><th>Strategy-only fractional CMO</th><th>Embedded fractional growth lead</th></tr></thead><tbody><tr><td data-label="">What you're paying for</td><td data-label="Agency">A team's hours on your channels</td><td data-label="In-house hire">A person's full attention</td><td data-label="Strategy-only fractional CMO">Senior judgment and direction</td><td data-label="Embedded fractional growth lead">Senior judgment plus hands in the work</td></tr><tr><td data-label="">How you pay</td><td data-label="Agency">Usually a fee tied to your spend, or a fixed fee</td><td data-label="In-house hire">Salary, benefits, bonus and a search</td><td data-label="Strategy-only fractional CMO">A flat monthly fee</td><td data-label="Embedded fractional growth lead">A flat monthly fee, from $7,500</td></tr><tr><td data-label="">How fast you're up and running</td><td data-label="Agency">Weeks of onboarding and account setup</td><td data-label="In-house hire">A search of a few months, then onboarding</td><td data-label="Strategy-only fractional CMO">A few weeks</td><td data-label="Embedded fractional growth lead">A read of the business inside two weeks</td></tr><tr><td data-label="">Who owns the blended number (MER)</td><td data-label="Agency">Usually nobody. The agency reports its channel's ROAS</td><td data-label="In-house hire">The hire, if they're senior enough</td><td data-label="Strategy-only fractional CMO">The fractional CMO, on paper</td><td data-label="Embedded fractional growth lead">The growth lead, with their name on it</td></tr><tr><td data-label="">Incentive</td><td data-label="Agency">Keep the account, grow the spend</td><td data-label="In-house hire">Stay employed</td><td data-label="Strategy-only fractional CMO">Stay retained</td><td data-label="Embedded fractional growth lead">Build something you own, then move seats or step back</td></tr><tr><td data-label="">What's left when they go</td><td data-label="Agency">Ad accounts and a reporting deck</td><td data-label="In-house hire">Whatever they documented</td><td data-label="Strategy-only fractional CMO">A strategy document</td><td data-label="Embedded fractional growth lead">Systems, SOPs and a trained team</td></tr><tr><td data-label="">Best when</td><td data-label="Agency">You have a clear strategy and just need volume</td><td data-label="In-house hire">You have steady work for a full-time person and time to hire</td><td data-label="Strategy-only fractional CMO">You have a strong execution team that lacks direction</td><td data-label="Embedded fractional growth lead">You need direction and hands at once, on a budget</td></tr></tbody></table></div>
 <h2>What each one is structurally unable to do</h2>
 <p>A paid-media agency can't be objective about your spend when its fee is a percentage of it. That's not a character flaw; it's the pricing model, and in my experience it's still the common one for DTC media buying even though the 4A's and ANA found fixed fees are the most-used model across agencies generally. It also almost never owns the blended number, so you'll get a strong channel ROAS and a weak business.</p>
 <p>A full-time hire can't be hired quickly and can't be un-hired quickly. If you guess wrong on seniority you either pay a leader to do a manager's job or ask a manager to do a leader's job. And a single in-house person rarely has the creative production, tooling and measurement skills all at once.</p>
@@ -229,6 +250,9 @@
   <h2 class="more-h">More straight answers</h2><ul class="list"><li><a href="/fractional-head-of-growth/">What a fractional head of growth actually does for a DTC brand</a></li><li><a href="/pricing/">What The Growth Den costs, and what you get for it</a></li><li><a href="/mer-target/">How to set a MER target from your contribution margin, and hold whoever runs your ads to it</a></li><li><a href="/when-to-hire/">When a DTC brand should hire a fractional growth lead, and when it shouldn&#x27;t</a></li><li><a href="/how-to-evaluate-a-fractional-cmo/">Twelve questions that tell you whether a fractional CMO builds or just advises</a></li><li><a href="/who-owns-strategy/">Who owns strategy when you outsource execution? Usually nobody, and here&#x27;s how it goes wrong</a></li><li><a href="/ai-training-for-marketing-teams/">A consultant who trains your marketing team to use AI for creative and reporting, then leaves them running it</a></li><li><a href="/marketing-system-you-own/">How do I build a marketing system my team owns instead of relying on an agency?</a></li><li><a href="/ai-ad-angles/">How do I use AI to come up with genuinely different ad angles for paid social?</a></li><li><a href="/st-louis/">A fractional growth advisor for DTC and e-commerce brands, based in St. Louis</a></li></ul>
 </main>
 <footer><div class="in">© 2026 The Growth Den LLC · Logan Ice, St. Louis, Missouri · <a href="mailto:logan@thegrowthden.com">logan@thegrowthden.com</a><a class="li" href="https://www.linkedin.com/in/loganice" target="_blank" rel="noopener" aria-label="Logan Ice on LinkedIn"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg></a></div></footer>
+<script>
+(function(){var b=document.querySelector('.hamburger'),m=document.getElementById('site-menu');if(!b||!m)return;b.addEventListener('click',function(){var o=b.getAttribute('aria-expanded')==='true';b.setAttribute('aria-expanded',o?'false':'true');b.setAttribute('aria-label',o?'Open menu':'Close menu');m.hidden=o;});})();
+</script>
 <script src="/assets/contact.js" defer></script>
 </body>
 </html>

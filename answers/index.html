@@ -108,15 +108,27 @@
   * { box-sizing:border-box; margin:0; padding:0; }
   body { font-family:'Poppins',sans-serif; font-weight:300; color:var(--ink); background:var(--cream); line-height:1.75; }
   a { color:var(--blue); }
-  header { background:var(--purple); padding:18px 16px; }
+  header { background:var(--purple); padding:18px 16px; position:relative; }
   header .in, main, footer .in { max-width:820px; margin:0 auto; }
   header .in { display:flex; align-items:center; justify-content:space-between; gap:16px; }
   header img { height:40px; display:block; }
   header nav a { color:#fff; font-weight:500; text-decoration:none; font-size:15px; margin-left:18px; }
   header nav a.nav-cta { background:var(--orange); color:#fff; font-weight:600; padding:9px 18px; border-radius:100px; }
   header nav { display:flex; align-items:center; white-space:nowrap; }
-  @media (max-width:700px) { header img { height:30px; } header nav a { margin-left:10px; font-size:14px; } header nav a.nav-cta { padding:7px 12px; } header nav a[href="/logan/"] { display:none; } }
-  @media (max-width:520px) { header nav a[href="/#services"], header nav a[href="/pricing/"] { display:none; } header img { height:26px; } header nav a { margin-left:10px; font-size:13px; } }
+  .hamburger { display:none; background:none; border:0; padding:8px; cursor:pointer; width:40px; height:40px; flex-direction:column; justify-content:center; gap:5px; }
+  .hamburger span { display:block; height:2px; width:22px; background:#fff; border-radius:2px; transition:transform .2s, opacity .2s; }
+  .hamburger[aria-expanded="true"] span:nth-child(1) { transform:translateY(7px) rotate(45deg); }
+  .hamburger[aria-expanded="true"] span:nth-child(2) { opacity:0; }
+  .hamburger[aria-expanded="true"] span:nth-child(3) { transform:translateY(-7px) rotate(-45deg); }
+  .site-menu { display:none; }
+  @media (max-width:700px) {
+    header img { height:30px; }
+    header nav { display:none; }
+    .hamburger { display:flex; }
+    .site-menu:not([hidden]) { display:flex; flex-direction:column; gap:4px; max-width:820px; margin:14px auto 0; padding-top:10px; border-top:1px solid rgba(255,255,255,.15); }
+    .site-menu a { color:#fff; font-weight:500; text-decoration:none; font-size:17px; padding:10px 4px; }
+    .site-menu a.nav-cta { background:var(--orange); font-weight:600; padding:12px 18px; border-radius:100px; text-align:center; margin-top:8px; }
+  }
   main { padding:56px 16px 72px; }
   .tag { font-size:11px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--orange); margin-bottom:12px; }
   h1 { font-size:clamp(30px,5vw,46px); font-weight:700; color:var(--purple); line-height:1.15; margin-bottom:16px; }
@@ -143,6 +155,15 @@
   .body th { background:var(--purple); color:#fff; font-weight:600; }
   .body tr:last-child td { border-bottom:none; }
   .table-wrap { overflow-x:auto; margin-bottom:22px; }
+  @media (max-width:640px) {
+    .body table, .body thead, .body tbody, .body tr, .body th, .body td { display:block; }
+    .body thead { position:absolute; left:-9999px; }
+    .body table { border:0; background:transparent; }
+    .body tr { background:#fff; border:1px solid var(--border); border-radius:14px; margin-bottom:12px; padding:6px 0; }
+    .body td { border:0; padding:8px 16px; }
+    .body td:first-child { font-weight:600; color:var(--purple); background:var(--cream); border-radius:12px 12px 0 0; margin:-6px 0 6px; padding:12px 16px; }
+    .body td[data-label]:not(:first-child)::before { content:attr(data-label); display:block; font-size:11px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--orange); margin-bottom:2px; }
+  }
   details { background:#fff; border:1px solid var(--border); border-radius:14px; padding:16px 20px; margin-bottom:10px; }
   summary { font-weight:600; color:var(--purple); cursor:pointer; }
   details p { margin-top:10px; }
@@ -174,7 +195,7 @@
 </style>
 </head>
 <body>
-<header><div class="in"><a href="/"><img src="/uploads/Growth_Den__Logo_Horizontal_White.png" alt="The Growth Den" /></a><nav><a href="/#services">Services</a><a href="/pricing/">Pricing</a><a href="/answers/">Answers</a><a href="/notes/">Notes</a><a href="/logan/">About</a><a class="nav-cta" href="https://calendar.app.google/dy8683mNDXyWAkPo9" target="_blank">Let's Talk</a></nav></div></header>
+<header><div class="in"><a href="/"><img src="/uploads/Growth_Den__Logo_Horizontal_White.png" alt="The Growth Den" /></a><nav><a href="/#services">Services</a><a href="/pricing/">Pricing</a><a href="/answers/">Answers</a><a href="/notes/">Notes</a><a href="/logan/">About</a><a class="nav-cta" href="https://calendar.app.google/dy8683mNDXyWAkPo9" target="_blank">Let's Talk</a></nav><button class="hamburger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="site-menu"><span></span><span></span><span></span></button></div><div class="site-menu" id="site-menu" hidden><a href="/#services">Services</a><a href="/pricing/">Pricing</a><a href="/answers/">Answers</a><a href="/notes/">Notes</a><a href="/logan/">About</a><a class="nav-cta" href="https://calendar.app.google/dy8683mNDXyWAkPo9" target="_blank">Let's Talk</a></div></header>
 <main>
   <div class="tag">Straight answers</div>
   <h1>The questions people ask before they hire someone like me</h1>
@@ -183,6 +204,9 @@
   <ul class="list" style="margin-top:28px"><li><a href="/fractional-head-of-growth/">What a fractional head of growth actually does for a DTC brand</a><p>A fractional head of growth owns your acquisition and retention numbers part-time, usually two to three days a week, and unlike most fractional CMOs, does the work rather than just directing it. I&#x27;m Logan Ice. For growth-stage DTC and e-commerce brands doing roughly $5M to $80M, this is the seat I fill most often, from $7,500 a month.</p></li><li><a href="/agency-vs-fractional/">Agency, in-house hire, or fractional growth lead: what actually changes at $5M to $80M</a><p>An agency is paid to keep your account and grow your spend. An in-house hire is paid to be there. A fractional growth lead is paid to build something you own and make the number move. Here is what each one is structurally good and bad at, without the sales pitch, from someone who has been on all three sides.</p></li><li><a href="/pricing/">What The Growth Den costs, and what you get for it</a><p>Engagements start at $7,500 a month, whichever seat I&#x27;m in, and go up with how many services I cover and how much building is involved. Ad spend and software stay in your accounts. Here is what that money buys week to week, how fast you&#x27;re up and running, and why having strategy and execution in one place changes the math.</p></li><li><a href="/mer-target/">How to set a MER target from your contribution margin, and hold whoever runs your ads to it</a><p>Break-even MER is one divided by your contribution margin before marketing. If your margin is 30%, a 3.33x MER means you made nothing. Most &quot;what&#x27;s a good MER&quot; advice skips that math, which is why brands celebrate numbers that are losing them money. Here is the math, a calculator, and how I use it as the accountability contract for whoever runs your ads.</p></li><li><a href="/when-to-hire/">When a DTC brand should hire a fractional growth lead, and when it shouldn&#x27;t</a><p>The right time is usually earlier than founders think and later than agencies say. Roughly $5M to $80M in revenue, a real marketing budget with no senior owner, and one of a handful of moments that reshuffle the whole growth system. Here are the signs it&#x27;s time, the situations where I&#x27;d tell you not to, and a quick self-check.</p></li><li><a href="/how-to-evaluate-a-fractional-cmo/">Twelve questions that tell you whether a fractional CMO builds or just advises</a><p>Plenty of fractional marketing leaders are strategy-only, and most interview guides won&#x27;t catch that until month three. These are the questions I&#x27;d ask if I were hiring someone like me, including the two that most candidates can&#x27;t answer: show me the last ad account you personally ran, and how do you plan to make yourself unnecessary.</p></li><li><a href="/who-owns-strategy/">Who owns strategy when you outsource execution? Usually nobody, and here&#x27;s how it goes wrong</a><p>When an agency runs the ads and the founder runs the company, strategy falls into the gap between them. The agency optimizes its channel, the in-house team tracks Shopify, finance tracks the P&amp;L, and no single person owns the blended number. Here is what that looks like from inside, why one accountable seat fixes it, and how to set that seat up whether or not you hire me.</p></li><li><a href="/ai-training-for-marketing-teams/">A consultant who trains your marketing team to use AI for creative and reporting, then leaves them running it</a><p>Most AI training for marketers is a workshop about prompts. Your team goes back to their desks and nothing changes. What I do is different. I look at how your team actually produces ads and reports today, build the AI workflows into those jobs with them, and coach them until they can run and extend the workflows without me. I&#x27;m Logan Ice. Here is what that looks like, who it&#x27;s for, and what it costs.</p></li><li><a href="/marketing-system-you-own/">How do I build a marketing system my team owns instead of relying on an agency?</a><p>You already know the feeling. The agency has the accounts, the reporting and the know-how, and if they left tomorrow you&#x27;d be starting over. Building a system your team owns doesn&#x27;t mean firing them. It means five things live in your house, in your name, run by your people: the scorecard, the creative loop, the launch tooling, the SOPs, and the training. Here is how I build that with clients, and how to start without me.</p></li><li><a href="/ai-ad-angles/">How do I use AI to come up with genuinely different ad angles for paid social?</a><p>Ask ChatGPT for ten ad angles and you get ten polite versions of the first one. The fix isn&#x27;t a better prompt, it&#x27;s a better process. Name the default angle first, force new angles away from it on purpose, test them against independent customer personas before anyone opens a design tool, and only then produce. Here is the loop I run for clients, why each step exists, and where to get the prompts.</p></li><li><a href="/st-louis/">A fractional growth advisor for DTC and e-commerce brands, based in St. Louis</a><p>I&#x27;m Logan Ice, a fractional growth advisor who lives and works in St. Louis. Most of my clients aren&#x27;t here, and that&#x27;s fine. The ones who are get something the remote ones don&#x27;t, which is a working session at the same table. If you&#x27;re a Missouri or Midwest brand looking for someone who does strategy and Meta execution and isn&#x27;t an agency, this page is for you.</p></li></ul>
 </main>
 <footer><div class="in">© 2026 The Growth Den LLC · Logan Ice, St. Louis, Missouri · <a href="mailto:logan@thegrowthden.com">logan@thegrowthden.com</a><a class="li" href="https://www.linkedin.com/in/loganice" target="_blank" rel="noopener" aria-label="Logan Ice on LinkedIn"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg></a></div></footer>
+<script>
+(function(){var b=document.querySelector('.hamburger'),m=document.getElementById('site-menu');if(!b||!m)return;b.addEventListener('click',function(){var o=b.getAttribute('aria-expanded')==='true';b.setAttribute('aria-expanded',o?'false':'true');b.setAttribute('aria-label',o?'Open menu':'Close menu');m.hidden=o;});})();
+</script>
 <script src="/assets/contact.js" defer></script>
 </body>
 </html>

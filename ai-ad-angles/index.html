@@ -127,15 +127,27 @@
   * { box-sizing:border-box; margin:0; padding:0; }
   body { font-family:'Poppins',sans-serif; font-weight:300; color:var(--ink); background:var(--cream); line-height:1.75; }
   a { color:var(--blue); }
-  header { background:var(--purple); padding:18px 16px; }
+  header { background:var(--purple); padding:18px 16px; position:relative; }
   header .in, main, footer .in { max-width:820px; margin:0 auto; }
   header .in { display:flex; align-items:center; justify-content:space-between; gap:16px; }
   header img { height:40px; display:block; }
   header nav a { color:#fff; font-weight:500; text-decoration:none; font-size:15px; margin-left:18px; }
   header nav a.nav-cta { background:var(--orange); color:#fff; font-weight:600; padding:9px 18px; border-radius:100px; }
   header nav { display:flex; align-items:center; white-space:nowrap; }
-  @media (max-width:700px) { header img { height:30px; } header nav a { margin-left:10px; font-size:14px; } header nav a.nav-cta { padding:7px 12px; } header nav a[href="/logan/"] { display:none; } }
-  @media (max-width:520px) { header nav a[href="/#services"], header nav a[href="/pricing/"] { display:none; } header img { height:26px; } header nav a { margin-left:10px; font-size:13px; } }
+  .hamburger { display:none; background:none; border:0; padding:8px; cursor:pointer; width:40px; height:40px; flex-direction:column; justify-content:center; gap:5px; }
+  .hamburger span { display:block; height:2px; width:22px; background:#fff; border-radius:2px; transition:transform .2s, opacity .2s; }
+  .hamburger[aria-expanded="true"] span:nth-child(1) { transform:translateY(7px) rotate(45deg); }
+  .hamburger[aria-expanded="true"] span:nth-child(2) { opacity:0; }
+  .hamburger[aria-expanded="true"] span:nth-child(3) { transform:translateY(-7px) rotate(-45deg); }
+  .site-menu { display:none; }
+  @media (max-width:700px) {
+    header img { height:30px; }
+    header nav { display:none; }
+    .hamburger { display:flex; }
+    .site-menu:not([hidden]) { display:flex; flex-direction:column; gap:4px; max-width:820px; margin:14px auto 0; padding-top:10px; border-top:1px solid rgba(255,255,255,.15); }
+    .site-menu a { color:#fff; font-weight:500; text-decoration:none; font-size:17px; padding:10px 4px; }
+    .site-menu a.nav-cta { background:var(--orange); font-weight:600; padding:12px 18px; border-radius:100px; text-align:center; margin-top:8px; }
+  }
   main { padding:56px 16px 72px; }
   .tag { font-size:11px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--orange); margin-bottom:12px; }
   h1 { font-size:clamp(30px,5vw,46px); font-weight:700; color:var(--purple); line-height:1.15; margin-bottom:16px; }
@@ -162,6 +174,15 @@
   .body th { background:var(--purple); color:#fff; font-weight:600; }
   .body tr:last-child td { border-bottom:none; }
   .table-wrap { overflow-x:auto; margin-bottom:22px; }
+  @media (max-width:640px) {
+    .body table, .body thead, .body tbody, .body tr, .body th, .body td { display:block; }
+    .body thead { position:absolute; left:-9999px; }
+    .body table { border:0; background:transparent; }
+    .body tr { background:#fff; border:1px solid var(--border); border-radius:14px; margin-bottom:12px; padding:6px 0; }
+    .body td { border:0; padding:8px 16px; }
+    .body td:first-child { font-weight:600; color:var(--purple); background:var(--cream); border-radius:12px 12px 0 0; margin:-6px 0 6px; padding:12px 16px; }
+    .body td[data-label]:not(:first-child)::before { content:attr(data-label); display:block; font-size:11px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--orange); margin-bottom:2px; }
+  }
   details { background:#fff; border:1px solid var(--border); border-radius:14px; padding:16px 20px; margin-bottom:10px; }
   summary { font-weight:600; color:var(--purple); cursor:pointer; }
   details p { margin-top:10px; }
@@ -193,7 +214,7 @@
 </style>
 </head>
 <body>
-<header><div class="in"><a href="/"><img src="/uploads/Growth_Den__Logo_Horizontal_White.png" alt="The Growth Den" /></a><nav><a href="/#services">Services</a><a href="/pricing/">Pricing</a><a href="/answers/">Answers</a><a href="/notes/">Notes</a><a href="/logan/">About</a><a class="nav-cta" href="https://calendar.app.google/dy8683mNDXyWAkPo9" target="_blank">Let's Talk</a></nav></div></header>
+<header><div class="in"><a href="/"><img src="/uploads/Growth_Den__Logo_Horizontal_White.png" alt="The Growth Den" /></a><nav><a href="/#services">Services</a><a href="/pricing/">Pricing</a><a href="/answers/">Answers</a><a href="/notes/">Notes</a><a href="/logan/">About</a><a class="nav-cta" href="https://calendar.app.google/dy8683mNDXyWAkPo9" target="_blank">Let's Talk</a></nav><button class="hamburger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="site-menu"><span></span><span></span><span></span></button></div><div class="site-menu" id="site-menu" hidden><a href="/#services">Services</a><a href="/pricing/">Pricing</a><a href="/answers/">Answers</a><a href="/notes/">Notes</a><a href="/logan/">About</a><a class="nav-cta" href="https://calendar.app.google/dy8683mNDXyWAkPo9" target="_blank">Let's Talk</a></div></header>
 <main>
   <div class="tag">Straight answers · Logan Ice</div>
   <h1>How do I use AI to come up with genuinely different ad angles for paid social?</h1>
@@ -207,7 +228,7 @@
 <p>I've published the whole thing as seven prompts you can paste into Claude or ChatGPT, in <a href="/notes/angle-storm-pack/">The Angle Storm Pack</a>. Here's the shape of it and why each step is there.</p>
 <ol><li><strong>Pin the brief and name the default.</strong> Product, audience, the one thing that's true and provable, and then the angle everyone would reach for first. Writing the default down matters. You can't steer away from something you haven't named.</li><li><strong>The storm.</strong> Force the angles apart with operations, not adjectives. Change who's speaking. Change the moment in the customer's day. Argue against the category. Take the smallest true detail and make it the whole ad. Put the product in a context it's never been sold in. Each operation produces a different kind of angle, which is the point. "Give me more creative ideas" produces more of the same.</li><li><strong>Converge without killing the weird ones.</strong> Score for distance from the default and for whether a real customer would recognize themselves in it. Keep a couple that make you slightly uncomfortable. Those are usually the ones that end up winning or teaching you something.</li><li><strong>Cast a focus group.</strong> Five personas built from your actual customers: reviews, support tickets, the words people use when they're not being marketed to. Not "busy mom, 34." Specific enough to disagree with each other.</li><li><strong>Expose one persona at a time.</strong> Show each persona each angle in a separate conversation so they can't see each other's reactions. Ask what they'd feel, what they'd object to, and whether they'd stop scrolling. Independent reads are what make this more than a vibe check.</li><li><strong>Cross-tab and decide whether to loop.</strong> Put the reactions in a grid. If one persona is fighting for an angle and the others are indifferent, you've found a segment. If everyone is politely positive about everything, your angles aren't different enough yet, so go back to step two with sharper operations.</li><li><strong>Turn the winner into a brief and a generation prompt.</strong> The angle, the hook, the visual idea, the proof point, and a generation prompt written for the format you'll produce. I generate statics and video in Higgsfield and finish in CapCut, and the brief is what makes that fast.</li></ol>
 <h2>Asking for ideas versus running the loop</h2>
-<div class="table-wrap"><table><thead><tr><th></th><th>"Give me ten ad angles"</th><th>The loop</th></tr></thead><tbody><tr><td>Where the ideas start</td><td>The model's most likely answer, which is the category default</td><td>The named default, then operations that push away from it</td></tr><tr><td>How different they are</td><td>Ten versions of one idea</td><td>Different speaker, moment, context, proof; scored for distance</td></tr><tr><td>Who judges them</td><td>Whoever is in the room</td><td>Five personas built from real customer language, read separately</td></tr><tr><td>What gets produced</td><td>The one the team liked</td><td>The one a persona fought for</td></tr><tr><td>What you learn if it fails</td><td>Not much</td><td>Which segment, which angle, which operation to run next</td></tr></tbody></table></div>
+<div class="table-wrap"><table><thead><tr><th></th><th>"Give me ten ad angles"</th><th>The loop</th></tr></thead><tbody><tr><td data-label="">Where the ideas start</td><td data-label="&quot;Give me ten ad angles&quot;">The model's most likely answer, which is the category default</td><td data-label="The loop">The named default, then operations that push away from it</td></tr><tr><td data-label="">How different they are</td><td data-label="&quot;Give me ten ad angles&quot;">Ten versions of one idea</td><td data-label="The loop">Different speaker, moment, context, proof; scored for distance</td></tr><tr><td data-label="">Who judges them</td><td data-label="&quot;Give me ten ad angles&quot;">Whoever is in the room</td><td data-label="The loop">Five personas built from real customer language, read separately</td></tr><tr><td data-label="">What gets produced</td><td data-label="&quot;Give me ten ad angles&quot;">The one the team liked</td><td data-label="The loop">The one a persona fought for</td></tr><tr><td data-label="">What you learn if it fails</td><td data-label="&quot;Give me ten ad angles&quot;">Not much</td><td data-label="The loop">Which segment, which angle, which operation to run next</td></tr></tbody></table></div>
 <h2>What the numbers say</h2>
 <ul class="evidence"><li>Creative is the biggest lever you control. NCSolutions' analysis of nearly 450 CPG campaigns across TV and digital found creative accounted for 49% of incremental sales contribution, ahead of brand (21%), reach (14%) and targeting (11%). (<a href="https://www.prnewswire.com/news-releases/in-advertising-the-balance-is-shifting-brand-factors-like-consumer-loyalty-now-have-a-greater-impact-on-sales-results-than-reaching-a-broader-audience-301897320.html" target="_blank" rel="noopener">NCSolutions, Five Keys to Advertising Effectiveness, August 2023</a>)</li><li>Kantar's December 2024 analysis ranks creative quality second only to brand size in advertising profitability, and the top element within the marketer's control. (<a href="https://www.kantar.com/inspiration/advertising-media/the-codependence-factor" target="_blank" rel="noopener">Kantar, The co-dependence factor, December 2024</a>)</li><li>Everyone already has the tool. Gartner found 77% of marketing organizations that have adopted generative AI use it for creative development, rising to 84% of high performers. The differentiation is the process, not the software. (<a href="https://www.gartner.com/en/newsroom/press-releases/2025-02-18-gartner-survey-reveals-over-a-quarter-of-marketing-organizations-have-limited-or-no-adoption-of-genai-for-marketing-campaigns" target="_blank" rel="noopener">Gartner, February 2025</a>)</li><li>The volume bar at the top of DTC is high. Motion's 2025 creative trends report, based on 500+ DTC advertisers and $100M+ in analyzed spend, found 86% plan to increase AI use for research and ideation and 79% for creative production. (<a href="https://motionapp.com/creative-trends" target="_blank" rel="noopener">Motion, 2025 Ad Creative &amp; Creative Strategy Trends</a>)</li></ul>
 <h2>What a Meta creative strategist sees</h2>
@@ -237,6 +258,9 @@
   <h2 class="more-h">More straight answers</h2><ul class="list"><li><a href="/fractional-head-of-growth/">What a fractional head of growth actually does for a DTC brand</a></li><li><a href="/agency-vs-fractional/">Agency, in-house hire, or fractional growth lead: what actually changes at $5M to $80M</a></li><li><a href="/pricing/">What The Growth Den costs, and what you get for it</a></li><li><a href="/mer-target/">How to set a MER target from your contribution margin, and hold whoever runs your ads to it</a></li><li><a href="/when-to-hire/">When a DTC brand should hire a fractional growth lead, and when it shouldn&#x27;t</a></li><li><a href="/how-to-evaluate-a-fractional-cmo/">Twelve questions that tell you whether a fractional CMO builds or just advises</a></li><li><a href="/who-owns-strategy/">Who owns strategy when you outsource execution? Usually nobody, and here&#x27;s how it goes wrong</a></li><li><a href="/ai-training-for-marketing-teams/">A consultant who trains your marketing team to use AI for creative and reporting, then leaves them running it</a></li><li><a href="/marketing-system-you-own/">How do I build a marketing system my team owns instead of relying on an agency?</a></li><li><a href="/st-louis/">A fractional growth advisor for DTC and e-commerce brands, based in St. Louis</a></li></ul>
 </main>
 <footer><div class="in">© 2026 The Growth Den LLC · Logan Ice, St. Louis, Missouri · <a href="mailto:logan@thegrowthden.com">logan@thegrowthden.com</a><a class="li" href="https://www.linkedin.com/in/loganice" target="_blank" rel="noopener" aria-label="Logan Ice on LinkedIn"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg></a></div></footer>
+<script>
+(function(){var b=document.querySelector('.hamburger'),m=document.getElementById('site-menu');if(!b||!m)return;b.addEventListener('click',function(){var o=b.getAttribute('aria-expanded')==='true';b.setAttribute('aria-expanded',o?'false':'true');b.setAttribute('aria-label',o?'Open menu':'Close menu');m.hidden=o;});})();
+</script>
 <script src="/assets/contact.js" defer></script>
 </body>
 </html>

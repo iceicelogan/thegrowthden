@@ -116,15 +116,27 @@
   * { box-sizing:border-box; margin:0; padding:0; }
   body { font-family:'Poppins',sans-serif; font-weight:300; color:var(--ink); background:var(--cream); line-height:1.75; }
   a { color:var(--blue); }
-  header { background:var(--purple); padding:18px 16px; }
+  header { background:var(--purple); padding:18px 16px; position:relative; }
   header .in, main, footer .in { max-width:820px; margin:0 auto; }
   header .in { display:flex; align-items:center; justify-content:space-between; gap:16px; }
   header img { height:40px; display:block; }
   header nav a { color:#fff; font-weight:500; text-decoration:none; font-size:15px; margin-left:18px; }
   header nav a.nav-cta { background:var(--orange); color:#fff; font-weight:600; padding:9px 18px; border-radius:100px; }
   header nav { display:flex; align-items:center; white-space:nowrap; }
-  @media (max-width:700px) { header img { height:30px; } header nav a { margin-left:10px; font-size:14px; } header nav a.nav-cta { padding:7px 12px; } header nav a[href="/logan/"] { display:none; } }
-  @media (max-width:520px) { header nav a[href="/#services"], header nav a[href="/pricing/"] { display:none; } header img { height:26px; } header nav a { margin-left:10px; font-size:13px; } }
+  .hamburger { display:none; background:none; border:0; padding:8px; cursor:pointer; width:40px; height:40px; flex-direction:column; justify-content:center; gap:5px; }
+  .hamburger span { display:block; height:2px; width:22px; background:#fff; border-radius:2px; transition:transform .2s, opacity .2s; }
+  .hamburger[aria-expanded="true"] span:nth-child(1) { transform:translateY(7px) rotate(45deg); }
+  .hamburger[aria-expanded="true"] span:nth-child(2) { opacity:0; }
+  .hamburger[aria-expanded="true"] span:nth-child(3) { transform:translateY(-7px) rotate(-45deg); }
+  .site-menu { display:none; }
+  @media (max-width:700px) {
+    header img { height:30px; }
+    header nav { display:none; }
+    .hamburger { display:flex; }
+    .site-menu:not([hidden]) { display:flex; flex-direction:column; gap:4px; max-width:820px; margin:14px auto 0; padding-top:10px; border-top:1px solid rgba(255,255,255,.15); }
+    .site-menu a { color:#fff; font-weight:500; text-decoration:none; font-size:17px; padding:10px 4px; }
+    .site-menu a.nav-cta { background:var(--orange); font-weight:600; padding:12px 18px; border-radius:100px; text-align:center; margin-top:8px; }
+  }
   main { padding:56px 16px 72px; }
   .tag { font-size:11px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--orange); margin-bottom:12px; }
   h1 { font-size:clamp(30px,5vw,46px); font-weight:700; color:var(--purple); line-height:1.15; margin-bottom:16px; }
@@ -151,6 +163,15 @@
   .body th { background:var(--purple); color:#fff; font-weight:600; }
   .body tr:last-child td { border-bottom:none; }
   .table-wrap { overflow-x:auto; margin-bottom:22px; }
+  @media (max-width:640px) {
+    .body table, .body thead, .body tbody, .body tr, .body th, .body td { display:block; }
+    .body thead { position:absolute; left:-9999px; }
+    .body table { border:0; background:transparent; }
+    .body tr { background:#fff; border:1px solid var(--border); border-radius:14px; margin-bottom:12px; padding:6px 0; }
+    .body td { border:0; padding:8px 16px; }
+    .body td:first-child { font-weight:600; color:var(--purple); background:var(--cream); border-radius:12px 12px 0 0; margin:-6px 0 6px; padding:12px 16px; }
+    .body td[data-label]:not(:first-child)::before { content:attr(data-label); display:block; font-size:11px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--orange); margin-bottom:2px; }
+  }
   details { background:#fff; border:1px solid var(--border); border-radius:14px; padding:16px 20px; margin-bottom:10px; }
   summary { font-weight:600; color:var(--purple); cursor:pointer; }
   details p { margin-top:10px; }
@@ -182,7 +203,7 @@
 </style>
 </head>
 <body>
-<header><div class="in"><a href="/"><img src="/uploads/Growth_Den__Logo_Horizontal_White.png" alt="The Growth Den" /></a><nav><a href="/#services">Services</a><a href="/pricing/">Pricing</a><a href="/answers/">Answers</a><a href="/notes/">Notes</a><a href="/logan/">About</a><a class="nav-cta" href="https://calendar.app.google/dy8683mNDXyWAkPo9" target="_blank">Let's Talk</a></nav></div></header>
+<header><div class="in"><a href="/"><img src="/uploads/Growth_Den__Logo_Horizontal_White.png" alt="The Growth Den" /></a><nav><a href="/#services">Services</a><a href="/pricing/">Pricing</a><a href="/answers/">Answers</a><a href="/notes/">Notes</a><a href="/logan/">About</a><a class="nav-cta" href="https://calendar.app.google/dy8683mNDXyWAkPo9" target="_blank">Let's Talk</a></nav><button class="hamburger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="site-menu"><span></span><span></span><span></span></button></div><div class="site-menu" id="site-menu" hidden><a href="/#services">Services</a><a href="/pricing/">Pricing</a><a href="/answers/">Answers</a><a href="/notes/">Notes</a><a href="/logan/">About</a><a class="nav-cta" href="https://calendar.app.google/dy8683mNDXyWAkPo9" target="_blank">Let's Talk</a></div></header>
 <main>
   <div class="tag">Services · Logan Ice</div>
   <h1>Help building a marketing team and its systems</h1>
@@ -194,7 +215,7 @@
 <h2>Why strategy and execution from one person</h2>
 <p>Most brands get advice from one place and execution from another, and something always gets lost between them. I do both. Clients usually hire me for one thing and keep me around for more, because the work gets done and they like working with me.</p>
 <h2>Hire first, or build first</h2>
-<div class="table-wrap"><table><thead><tr><th>Your situation</th><th>What this service does</th><th>What usually doesn't fix it</th></tr></thead><tbody><tr><td>About to make your first marketing hire</td><td>Writes the job from the work that actually needs doing, then helps you hire into a system that already exists</td><td>Hiring a generalist into chaos and hoping</td></tr><tr><td>Team of two to five, no documented process</td><td>SOPs for the Monday report, the creative loop, the launch, written for the person doing it</td><td>A project management tool</td></tr><tr><td>Everyone uses AI on the side, nothing is shared</td><td>One owned workflow per job, with a named owner and training</td><td>A prompt library nobody opens</td></tr><tr><td>A good operator is being asked to also be the strategist</td><td>Sits beside them for a few months, builds the system, gets out of the way</td><td>Promoting them and adding more to the plate</td></tr><tr><td>Your last hire left after nine months</td><td>Finds out why (usually the role was never defined) before you hire again</td><td>A better recruiter</td></tr></tbody></table></div>
+<div class="table-wrap"><table><thead><tr><th>Your situation</th><th>What this service does</th><th>What usually doesn't fix it</th></tr></thead><tbody><tr><td data-label="Your situation">About to make your first marketing hire</td><td data-label="What this service does">Writes the job from the work that actually needs doing, then helps you hire into a system that already exists</td><td data-label="What usually doesn&#x27;t fix it">Hiring a generalist into chaos and hoping</td></tr><tr><td data-label="Your situation">Team of two to five, no documented process</td><td data-label="What this service does">SOPs for the Monday report, the creative loop, the launch, written for the person doing it</td><td data-label="What usually doesn&#x27;t fix it">A project management tool</td></tr><tr><td data-label="Your situation">Everyone uses AI on the side, nothing is shared</td><td data-label="What this service does">One owned workflow per job, with a named owner and training</td><td data-label="What usually doesn&#x27;t fix it">A prompt library nobody opens</td></tr><tr><td data-label="Your situation">A good operator is being asked to also be the strategist</td><td data-label="What this service does">Sits beside them for a few months, builds the system, gets out of the way</td><td data-label="What usually doesn&#x27;t fix it">Promoting them and adding more to the plate</td></tr><tr><td data-label="Your situation">Your last hire left after nine months</td><td data-label="What this service does">Finds out why (usually the role was never defined) before you hire again</td><td data-label="What usually doesn&#x27;t fix it">A better recruiter</td></tr></tbody></table></div>
 <h2>What the numbers say</h2>
 <ul class="evidence"><li>Hiring is the hard part. In The CMO Survey's 2025 report, hiring top talent was the biggest people challenge for marketing leaders at 41.2%, and the share of planned hires that are full-time fell as contractor hiring rose. (<a href="https://cmosurvey.org/cmosurvey_results/The_CMO_Survey-Highlights_and_Insights_Report-2025.pdf" target="_blank" rel="noopener">The CMO Survey, 2025</a>)</li><li>Senior roles take longer. Across 54 million applications and 93,000 jobs, Ashby's 2026 benchmarks found senior roles take 37% longer to fill than junior ones. Tech-heavy sample. (<a href="https://www.ashbyhq.com/talent-trends-report/reports/recruiting-operations-benchmarks-talent-trends" target="_blank" rel="noopener">Ashby, May 2026</a>)</li><li>A wrong hire is expensive. Gallup puts the cost of replacing an employee at one-half to two times their annual salary; SHRM's benchmark puts the average cost per hire at about $4,700 before you count the ramp. (<a href="https://www.gallup.com/workplace/247391/fixable-problem-costs-businesses-trillion.aspx" target="_blank" rel="noopener">Gallup, 2019</a>; <a href="https://www.shrm.org/topics-tools/news/talent-acquisition/real-costs-recruitment" target="_blank" rel="noopener">SHRM, April 2022</a>)</li><li>The process has to exist before the tools help. Gartner's 2026 survey of 401 marketing leaders found 70% say their internal processes aren't mature enough to implement and scale AI, and lack of internal AI expertise is the top barrier. Large-company sample. (<a href="https://www.gartner.com/en/newsroom/press-releases/2026-06-08-gartner-marketing-survey-finds-awareness-and-conversion-account-for-62-6-of-total-media-spend" target="_blank" rel="noopener">Gartner, June 2026</a>)</li><li>Training is the gap everywhere. The Marketing AI Institute's 2025 survey of 1,882 marketers found only 32% of organizations offer AI training for marketing, and lack of training was the top adoption barrier for the fifth year running. (<a href="https://www.marketingaiinstitute.com/hubfs/2025%20State%20of%20Marketing%20AI%20Report.pdf" target="_blank" rel="noopener">Marketing AI Institute, 2025</a>)</li></ul>
 <h2>A Gartner analyst on tools versus teams</h2>
@@ -219,6 +240,9 @@
   <h2 class="more-h">Latest from Notes from the Den</h2><ul class="list"><li><a href="/notes/how-to-earn-trust/">How to earn trust</a> <span class="d">October 1, 2026</span></li><li><a href="/notes/using-the-right-lure/">Using the Right Lure</a> <span class="d">September 26, 2026</span></li><li><a href="/notes/dnd-dialogue-six-years-later/">Dungeons &amp; Dragons &amp; Dialogue, Six Years Later</a> <span class="d">September 26, 2026</span></li></ul>
 </main>
 <footer><div class="in">© 2026 The Growth Den LLC · Logan Ice, St. Louis, Missouri · <a href="mailto:logan@thegrowthden.com">logan@thegrowthden.com</a><a class="li" href="https://www.linkedin.com/in/loganice" target="_blank" rel="noopener" aria-label="Logan Ice on LinkedIn"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg></a></div></footer>
+<script>
+(function(){var b=document.querySelector('.hamburger'),m=document.getElementById('site-menu');if(!b||!m)return;b.addEventListener('click',function(){var o=b.getAttribute('aria-expanded')==='true';b.setAttribute('aria-expanded',o?'false':'true');b.setAttribute('aria-label',o?'Open menu':'Close menu');m.hidden=o;});})();
+</script>
 <script src="/assets/contact.js" defer></script>
 </body>
 </html>
