@@ -10,7 +10,7 @@ kind: local
 
 Search for a marketing consultant in St. Louis and you'll find web development shops, general marketing agencies, and a handful of fractional CMOs who serve B2B companies. What you won't find is a DTC and e-commerce growth operator who will sit in your Meta account and also own the strategy. As far as I can tell, I'm the only one here who does that.
 
-I grew up in growth roles at P&G, Varsity Tutors (through its $1.4B IPO), Slalom, Little Passports, Wuffes (where we went from $14M to $40M+) and Equifax, and I studied physics and psychology at Washington University in St. Louis. I run The Growth Den from here. I work with brands all over the country over video, and I work with St. Louis brands in person when it helps.
+I grew up in growth roles at P&G, Varsity Tutors (Series A through C, as it grew from three cities to an international brand), Slalom, Little Passports, Wuffes (where we went from $14M to $40M+) and Equifax, and I studied physics and psychology at Washington University in St. Louis. I run The Growth Den from here. I work with brands all over the country over video, and I work with St. Louis brands in person when it helps.
 
 ## What local brands get
 

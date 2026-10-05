@@ -56,7 +56,7 @@ ANSWER_PAGES = [
 AUTHOR = {"@type": "Person", "@id": f"{SITE}/#logan", "name": "Logan Ice", "url": f"{SITE}/logan/",
           "mainEntityOfPage": f"{SITE}/logan/",
           "image": f"{SITE}/uploads/IMG_6671.JPG",
-          "jobTitle": "Founder and Growth Advisor",
+          "jobTitle": "Founder and Fractional Growth Advisor",
           "description": "St. Louis-based growth advisor for DTC and e-commerce brands. Led growth at Wuffes ($14M to $40M+), Little Passports, Varsity Tutors and P&G.",
           "sameAs": ["https://www.linkedin.com/in/loganice/", "https://loganice.medium.com/",
                      "https://www.stlbucketlistshow.com/1932300/episodes/19809221-the-growth-den-the-real-difference-between-demand-generation-and-demand-capture",
@@ -66,8 +66,8 @@ AUTHOR = {"@type": "Person", "@id": f"{SITE}/#logan", "name": "Logan Ice", "url"
 AUTHOR_CARD = """<aside class="author" aria-label="About the author">
     <a href="/logan/"><img src="/uploads/IMG_6671.JPG" alt="Logan Ice" width="72" height="72" loading="lazy" /></a>
     <div>
-      <p class="author-name"><a href="/logan/">Logan Ice</a> · Founder, The Growth Den</p>
-      <p>Fractional growth advisor for DTC and e-commerce brands, based in St. Louis. Led growth at Wuffes ($14M to $40M+), ran Little Passports at BEGiN, and grew with Varsity Tutors from a three-city company to its IPO. Studied physics and psychology at WashU. <a href="/logan/">The longer version</a> · <a href="https://www.linkedin.com/in/loganice/" target="_blank" rel="noopener">LinkedIn</a></p>
+      <p class="author-name"><a href="/logan/">Logan Ice</a> · Founder and Fractional Growth Advisor, The Growth Den</p>
+      <p>Fractional growth advisor for DTC and e-commerce brands, based in St. Louis. Led growth at Wuffes ($14M to $40M+), ran Little Passports at BEGiN, and was on the Varsity Tutors growth team from Series A through C as it went from three cities to an international brand. Studied physics and psychology at WashU. <a href="/logan/">The longer version</a> · <a href="https://www.linkedin.com/in/loganice/" target="_blank" rel="noopener">LinkedIn</a></p>
     </div>
   </aside>"""
 
@@ -84,7 +84,7 @@ STYLE = """
   header nav a.nav-cta { background:var(--orange); color:#fff; font-weight:600; padding:9px 18px; border-radius:100px; }
   header nav { display:flex; align-items:center; white-space:nowrap; }
   @media (max-width:600px) { header img { height:30px; } header nav a { margin-left:12px; font-size:14px; } header nav a.nav-cta { padding:7px 12px; } }
-  @media (max-width:420px) { header nav a[href="/#seats"] { display:none; } header img { height:26px; } header nav a { margin-left:10px; font-size:13px; } }
+  @media (max-width:420px) { header nav a[href="/#services"] { display:none; } header img { height:26px; } header nav a { margin-left:10px; font-size:13px; } }
   main { padding:56px 16px 72px; }
   .tag { font-size:11px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--orange); margin-bottom:12px; }
   h1 { font-size:clamp(30px,5vw,46px); font-weight:700; color:var(--purple); line-height:1.15; margin-bottom:16px; }
@@ -339,11 +339,11 @@ def page_shell(title, desc, url, ld, content, kind="article"):
 <style>{STYLE}</style>
 </head>
 <body>
-<header><div class="in"><a href="/"><img src="/uploads/Growth_Den__Logo_Horizontal_White.png" alt="The Growth Den" /></a><nav><a href="/answers/">Answers</a><a href="/notes/">Notes</a><a href="/#seats">Seats</a><a class="nav-cta" href="{CAL}" target="_blank">Let's Talk</a></nav></div></header>
+<header><div class="in"><a href="/"><img src="/uploads/Growth_Den__Logo_Horizontal_White.png" alt="The Growth Den" /></a><nav><a href="/answers/">Answers</a><a href="/notes/">Notes</a><a href="/#services">Services</a><a class="nav-cta" href="{CAL}" target="_blank">Let's Talk</a></nav></div></header>
 <main>
 {content}
 </main>
-<footer><div class="in">© {dt.date.today().year} The Growth Den LLC · Logan Ice, St. Louis · <a href="mailto:logan@thegrowthden.com">logan@thegrowthden.com</a><a class="li" href="https://www.linkedin.com/in/loganice" target="_blank" rel="noopener" aria-label="Logan Ice on LinkedIn"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg></a></div></footer>
+<footer><div class="in">© {dt.date.today().year} The Growth Den LLC · Logan Ice, St. Louis, Missouri · <a href="mailto:logan@thegrowthden.com">logan@thegrowthden.com</a><a class="li" href="https://www.linkedin.com/in/loganice" target="_blank" rel="noopener" aria-label="Logan Ice on LinkedIn"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg></a></div></footer>
 <script src="/assets/contact.js" defer></script>
 </body>
 </html>
@@ -374,7 +374,7 @@ def build_page(p, pages):
         graph.append({"@type": "ProfessionalService", "@id": f"{SITE}/#org", "name": "The Growth Den", "url": f"{SITE}/",
                       "image": f"{SITE}/uploads/Growth_Den__Logo_Horizontal_Primary.png",
                       "founder": {"@id": f"{SITE}/#logan"},
-                      "address": {"@type": "PostalAddress", "addressLocality": "St. Louis", "addressRegion": "MO", "addressCountry": "US"},
+                      "address": {"@type": "PostalAddress", "addressLocality": "St. Louis", "addressRegion": "Missouri", "addressCountry": "US"},
                       "areaServed": [{"@type": "City", "name": "St. Louis"}, {"@type": "State", "name": "Missouri"}, {"@type": "Country", "name": "United States"}],
                       "priceRange": "From $7,500/month",
                       "email": "mailto:logan@thegrowthden.com"})
@@ -403,7 +403,7 @@ def build_page(p, pages):
   <div class="box">
     <h2>Work with Logan</h2>
     <p>I'm a fractional growth advisor for growth-stage DTC and e-commerce brands. I handle strategy and take execution off your plate, in whatever seat you need, from $7,500 a month.</p>
-    <a class="cta" href="{CAL}" target="_blank">Let's see if we're a fit</a><a class="more" href="/#seats">See the seats →</a>
+    <a class="cta" href="{CAL}" target="_blank">Let's see if we're a fit</a><a class="more" href="/#services">See the services →</a>
   </div>
   {more}"""
     d = ROOT / p["slug"]

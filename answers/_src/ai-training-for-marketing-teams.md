@@ -74,7 +74,7 @@ It's a poor fit if you want a keynote, or if nobody on the team owns creative or
 
 ## What it costs
 
-Inside any of my [seats](/#seats), this is just part of the job. As a standalone program it's scoped as the three parts above: a one-time audit, a couple of months of building, then a small monthly coaching retainer. Ask and I'll give you the number on the first call. Software stays in your accounts, and I'll push for the cheapest tool that does the job.
+Inside any of my [services](/#services), this is just part of the job. As a standalone program it's scoped as the three parts above: a one-time audit, a couple of months of building, then a small monthly coaching retainer. Ask and I'll give you the number on the first call. Software stays in your accounts, and I'll push for the cheapest tool that does the job.
 
 ## Questions people ask
 

@@ -10,7 +10,7 @@ kind: answer
 
 If you search for this, most of what you'll find is written by marketplaces and agencies, and nearly all of it says the same thing: a fractional marketing leader sets strategy and hands execution to somebody else. I don't work that way, and I don't think you should hire that way at your size.
 
-At $5M to $80M you usually can't justify a $250k+ full-time head of growth plus the team underneath them, but you can't afford to have nobody accountable for the number either. A fractional head of growth is the person whose name goes on customer acquisition, retention and marketing efficiency, who shows up two or three days a week, and who is senior enough to tell you when the plan is wrong.
+At $5M to $80M you usually can't justify a full-time head of growth plus the team underneath them, but you can't afford to have nobody accountable for the number either. A fractional head of growth is the person whose name goes on customer acquisition, retention and marketing efficiency, who shows up two or three days a week, and who is senior enough to tell you when the plan is wrong.
 
 ## What I do in the seat
 
@@ -39,7 +39,7 @@ A fractional CMO usually owns brand, org design and budget at the strategy layer
 |---|---|---|---|---|
 | Owns | Acquisition, retention and MER | Brand, org design, budget | One channel | Everything, full time |
 | Does the work | Yes, two to three days a week | Usually directs others | Yes, inside its channel | Yes |
-| Paid on | A flat monthly fee | A flat monthly fee | Often a share of your ad spend | Salary plus benefits |
+| How fast you're up and running | A read of the business inside two weeks | A few weeks of onboarding | Weeks of onboarding and account setup | A search, then onboarding |
 | What you own when it ends | The system, the accounts, the trained team | The strategy documents | Usually less than you think | Everything, if they stay |
 | Typical fit | $5M to $80M, a real budget, no senior owner | Larger brands with a team to direct | A brand that already has a strategy owner | Past the point where one person has enough to do |
 
@@ -50,9 +50,9 @@ If you want the longer comparison, read [agency, in-house or fractional](/agency
 I'd rather you check my claims than take them. Here is what the people who measure this have published.
 
 <!-- evidence -->
-- A full-time head of growth is expensive before you add the team. Glassdoor puts average total pay for a VP of Marketing in the US at $301,534, and the Bureau of Labor Statistics puts the median marketing manager at $166,790 a year as of May 2025. ([Glassdoor, 2026](https://www.glassdoor.com/Salaries/vp-marketing-salary-SRCH_KO0,12.htm); [BLS Occupational Outlook Handbook, May 2025 data](https://www.bls.gov/ooh/management/advertising-promotions-and-marketing-managers.htm))
 - Marketing leadership turns over faster than the rest of the C-suite. Spencer Stuart's 2025 study found average Fortune 500 CMO tenure was 4.3 years against a C-suite average of 4.9, and 68% of those CMOs were in the seat for the first time. ([Spencer Stuart, CMO Tenure Study, March 2025](https://www.spencerstuart.com/research-and-insight/cmo-tenure-study-2025-the-evolution-of-marketing-leadership))
-- Fractional is now a normal shape of engagement. The Fractional Work Report 2026 (1,733 survey responses) found most fractional engagements run six to twelve months, 60% last six months or longer, and marketing fractionals at VP level and above charge $209 an hour on average. The report is published by a fractional-jobs marketplace, so read it with that in mind. ([Fractional Jobs, The Fractional Work Report 2026](https://www.fractionaljobs.io/the-fractional-work-report))
+- Fractional is now a normal shape of engagement. The Fractional Work Report 2026 (1,733 survey responses) found most fractional engagements run six to twelve months and 60% last six months or longer. The report is published by a fractional-jobs marketplace, so read it with that in mind. ([Fractional Jobs, The Fractional Work Report 2026](https://www.fractionaljobs.io/the-fractional-work-report))
+- Demand for one person who can do both is real. McKinsey's 2025 C-suite survey found companies with a single growth-oriented role on the executive committee see up to 2.3 times more growth than those that split it across several. ([McKinsey, The CMO's comeback, June 2025](https://www.mckinsey.com/capabilities/growth-marketing-and-sales/our-insights/the-cmos-comeback-aligning-the-c-suite-to-drive-customer-centric-growth))
 
 ## What a client said about it
 
@@ -82,7 +82,7 @@ Usually the equivalent of two to three days a week, front-loaded in the first co
 Long enough to build the system and teach the team to run it, which is usually six to twelve months or more. Most clients hire me for one seat and end up keeping me around for another, but the goal is that you own the system either way.
 
 ### How much does a fractional head of growth cost?
-The ranges I see quoted run about $5,000 to $15,000 a month for a fractional head of growth and $8,000 to $22,000 for a fractional CMO. The Growth Den starts at $7,500 a month, whichever seat I'm in, and goes up with how many seats I cover and how much building is involved. Ad spend and software stay in your accounts.
+The Growth Den starts at $7,500 a month, whichever seat I'm in, and goes up with how many seats I cover and how much building is involved. Ad spend and software stay in your accounts.
 
 ### When should we convert to a full-time hire?
 When the system is built, the cadence is running, and there's enough steady work for a full-time person to own it. I'll tell you when that point arrives, and I'll help you hire and onboard them.
