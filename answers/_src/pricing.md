@@ -2,7 +2,7 @@
 title: What a Fractional Growth Lead Costs (Pricing)
 h1: What The Growth Den costs, and what you get for it
 description: Engagements start at $7,500 a month, whichever seat I'm in, and go up with how many seats I cover and how much building is involved. Ad spend and software stay in your accounts. Here is what that money buys week to week, how it compares to the market, and a calculator for the flat-fee-versus-percentage-of-spend question.
-updated: 2026-09-28
+updated: 2026-10-05
 kind: pricing
 ---
 
@@ -25,9 +25,30 @@ Ad spend and software are never part of the fee. They stay in your accounts, in 
 
 ## How it compares
 
-Published market ranges in 2026 put a fractional head of growth at roughly $5,000 to $15,000 a month and a fractional CMO at $8,000 to $22,000, with "embedded" CMO work quoted at $20,000 to $40,000+. A full-time senior growth hire is $150,000 to $300,000+ fully loaded, plus three to five months to find them. Agencies usually charge 10% to 20% of ad spend.
+The ranges I see quoted in 2026 put a fractional head of growth at roughly $5,000 to $15,000 a month and a fractional CMO at $8,000 to $22,000, with "embedded" CMO work quoted at $20,000 to $40,000+. A full-time senior growth hire is a senior salary plus benefits, bonus and a search. Paid-media agencies commonly charge 10% to 20% of ad spend.
+
+| | What you pay | What it covers | Who owns the blended number |
+|---|---|---|---|
+| The Growth Den | From $7,500 a month, flat; interim head of marketing from $12,500 | Strategy and two to three days a week of execution in one seat; more seats, more fee | Me, with my name on it |
+| Strategy-only fractional CMO | About $8,000 to $22,000 a month in the ranges I see quoted; CMOx suggests $7,000 to $9,000 for smaller companies | Direction and budget; execution handed to your team or an agency | The CMO on paper, your team in practice |
+| Paid-media agency | Commonly 10% to 20% of ad spend with a minimum | Hours on one channel | Usually nobody; the agency reports its channel's ROAS |
+| Full-time VP of Marketing | About $246,000 average base before benefits, bonus and recruiting | Everything, full time, once hired | The hire, if senior enough |
 
 I sit at the low end of the fractional-CMO range and do the execution most fractional CMOs hand off. That's on purpose. I'm a solo operator with low overhead, and I'd rather be affordable to the brands I'm best at helping than price like a firm.
+
+## What the numbers say
+
+<!-- evidence -->
+- Marketing fractionals at VP level and above charge $209 an hour on average, about half (46%) bill mainly on a monthly retainer, and 60% of engagements last six months or longer, according to the Fractional Work Report 2026 (1,733 survey responses). It is published by a fractional-jobs marketplace, so weigh it accordingly. ([Fractional Jobs, 2026](https://www.fractionaljobs.io/the-fractional-work-report))
+- CMOx founder Casey Stanton puts a fractional CMO at $200 to $350 an hour and suggests smaller companies budget $7,000 to $9,000 a month. ([CMOx, updated March 2026](https://cmox.co/fractional-cmo-salary/))
+- Salary.com puts the average US VP of Marketing base salary at $246,057 as of October 2026, with a typical range of about $216,000 to $284,000, before benefits, bonus or recruiting cost. ([Salary.com, October 2026](https://www.salary.com/research/salary/benchmark/vp-of-marketing-salary))
+- AgencyAnalytics' 2025 pricing guide puts the most common PPC management fee at 10% to 20% of ad spend. ([AgencyAnalytics, July 2025](https://agencyanalytics.com/blog/ppc-pricing))
+- Among the 402 marketing leaders in Gartner's 2025 CMO Spend Survey, budgets sat flat at 7.7% of company revenue and paid media took 30.6% of that budget. Large-company sample. ([Gartner, May 2025](https://www.gartner.com/en/newsroom/press-releases/2025-05-12-gartner-2025-cmo-spend-survey-reveals-marketing-budgets-have-flatlined-at-seven-percent-of-overall-company-revenue))
+
+## What a client said about the money
+
+> I would have paid 20x for an agency for the same engagement, and probably a worse outcome. Beyond the excellence in his work, Logan is such a passionate, inclusive, and culture-driven part of this team, demonstrating influential leadership in even a fractional engagement. 11/10, can't recommend enough.
+> — Ari, Head of Marketing, Autobrush
 
 ## Flat retainer or a percentage of spend?
 
@@ -43,12 +64,16 @@ Ad spend. Software and tools. Paid creator or influencer fees. Photo and video p
 
 ## How we start
 
-A call to see if we're a fit. If we are, I'll send a short scope with the seat, the first 90 days as a list of bets, and the monthly number. No long onboarding. You'll have my read of the business inside the first two weeks.
+1. Book a call to see if we're a fit. Thirty minutes, no deck.
+2. Tell me the number you need moved and what you've already tried. I'll give you my first read on the call.
+3. Get a short scope from me within a few days: the seat, the first 90 days as a list of bets, and the monthly number.
+4. Sign, and give me access to the accounts in your name. Nothing gets built outside them.
+5. Expect my full read of the business inside the first two weeks, and the first changes shipped in the same window.
 
 ## Questions people ask
 
 ### How much does a fractional head of growth cost?
-The market runs roughly $5,000 to $15,000 a month for a fractional head of growth and $8,000 to $22,000 for a fractional CMO. The Growth Den starts at $7,500 a month for any seat, and goes up with how many seats I'm covering and how much building is involved.
+The ranges I see quoted run roughly $5,000 to $15,000 a month for a fractional head of growth and $8,000 to $22,000 for a fractional CMO. The Growth Den starts at $7,500 a month for any seat, and goes up with how many seats I'm covering and how much building is involved.
 
 ### What's included in the retainer?
 Strategy and execution from the same person: the weekly leadership session, two to three days a week of hands-on work, and the systems your team keeps. Ad spend, software and production budgets are separate and stay in your accounts.

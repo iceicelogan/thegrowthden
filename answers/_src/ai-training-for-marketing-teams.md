@@ -2,7 +2,7 @@
 title: AI Training for Marketing Teams: Ads & Reporting
 h1: A consultant who trains your marketing team to use AI for creative and reporting, then leaves them running it
 description: Most AI training for marketers is a workshop about prompts. Your team goes back to their desks and nothing changes. What I do is different. I look at how your team actually produces ads and reports today, build the AI workflows into those jobs with them, and coach them until they can run and extend the workflows without me. I'm Logan Ice. Here is what that looks like, who it's for, and what it costs.
-updated: 2026-09-28
+updated: 2026-10-05
 kind: answer
 ---
 
@@ -35,6 +35,23 @@ It's not fancy, but it makes the conversation concrete.
 
 Most growth-stage DTC brands I meet are between 1 and 2. That's a good place to be, because the jump to 3 is mostly about ownership and repetition, not about buying software.
 
+## What the numbers say
+
+The adoption problem is solved. The "did anything change" problem isn't.
+
+<!-- evidence -->
+- Nearly every marketing team already uses AI somewhere: 86.4% of the 1,500+ marketers in HubSpot's 2026 State of Marketing say they use it in at least a few areas, but only 26.5% say it has significantly increased their productivity. ([HubSpot, 2026 State of Marketing, updated April 2026](https://blog.hubspot.com/marketing/hubspot-blog-marketing-industry-trends-report))
+- Training is the top barrier, five years running. In the Marketing AI Institute's 2025 survey of 1,882 marketers, 62% named lack of education and training as the biggest obstacle, only 32% said their organization offers AI training for marketing, and 44% said there is none. ([Marketing AI Institute, 2025 State of Marketing AI Report](https://www.marketingaiinstitute.com/hubfs/2025%20State%20of%20Marketing%20AI%20Report.pdf))
+- Creative and reporting are where the use and the payoff are. Among marketing organizations that have adopted generative AI, Gartner found 77% use it for creative development, and 47% report a large benefit from using it for evaluation and reporting. ([Gartner, February 2025](https://www.gartner.com/en/newsroom/press-releases/2025-02-18-gartner-survey-reveals-over-a-quarter-of-marketing-organizations-have-limited-or-no-adoption-of-genai-for-marketing-campaigns))
+- The organizations seeing real financial impact redesigned the work. In McKinsey's 2026 State of AI survey, nearly three-quarters of AI high performers said they fundamentally redesigned workflows because of AI, up from 55% the year before; high performers remained about 6% of all respondents. ([McKinsey, The state of AI in 2026, August 2026](https://www.mckinsey.com/capabilities/quantumblack/our-insights/the-state-of-ai))
+
+## What a Gartner analyst says about the gap
+
+> Many believe GenAI will transform marketing, but despite the hype, many CMOs feel that their GenAI investments have yet to pay off.
+> — Suzanne Schwartz, Senior Director Analyst, Gartner Marketing Practice, in [Gartner's February 2025 survey release](https://www.gartner.com/en/newsroom/press-releases/2025-02-18-gartner-survey-reveals-over-a-quarter-of-marketing-organizations-have-limited-or-no-adoption-of-genai-for-marketing-campaigns)
+
+The investments that pay off are the ones that landed inside a job somebody already does every week. That's the whole method.
+
 ## What it looked like for a couple of teams
 
 An oral-care DTC brand had shared prompts, a handful of AI tools and a Slack-fed changelog, and a marketing leader who knew there was more in it. We ran the program as an audit with quick wins, two months of building the creative and reporting workflows, and a light coaching retainer after. The point wasn't the tools. It was that her team could run the loop on a Tuesday without me on the call.
@@ -46,6 +63,14 @@ A St. Louis creative agency asked for a half day on paid media for their partner
 Marketing teams of two to ten at DTC and e-commerce brands, usually $5M to $80M, with a leader who wants the team to get faster and doesn't want to hire an "AI person" to do it for them. It also fits agencies that want their own team to be able to do this for clients.
 
 It's a poor fit if you want a keynote, or if nobody on the team owns creative or reporting today. Training an empty seat doesn't work.
+
+## If you want to start before you call anyone
+
+1. Pick one job the team does every week, not a department. The Monday report or the creative brief are the usual two.
+2. Watch how it happens now, start to finish, including the parts nobody thinks are worth mentioning. Write the steps down.
+3. Build one AI step into that job, in the tool the team already opens, with one named owner who signs off on the output.
+4. Run it for four weeks before you touch a second job. If the owner stops using it, find out why before adding anything.
+5. Only then look at tools. Most teams already pay for one and use a tenth of it.
 
 ## What it costs
 

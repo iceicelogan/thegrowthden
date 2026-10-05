@@ -1,8 +1,8 @@
 ---
 title: How to Evaluate a Fractional CMO: 12 Questions
 h1: Twelve questions that tell you whether a fractional CMO builds or just advises
-description: Most fractional marketing leaders are strategy-only, and most interview guides won't catch that until month three. These are the questions I'd ask if I were hiring someone like me, including the two that most candidates can't answer: show me the last ad account you personally ran, and how do you plan to make yourself unnecessary.
-updated: 2026-09-28
+description: Plenty of fractional marketing leaders are strategy-only, and most interview guides won't catch that until month three. These are the questions I'd ask if I were hiring someone like me, including the two that most candidates can't answer: show me the last ad account you personally ran, and how do you plan to make yourself unnecessary.
+updated: 2026-10-05
 kind: checklist
 ---
 
@@ -26,6 +26,32 @@ So the questions below are weighted toward finding out whether this person does 
 10. **What happens to the systems, logins and documentation when we part ways?** Should be: they're yours, in your accounts, in your name, from day one.
 11. **How do you use AI in the work?** Not as a buzzword. Specifically: creative production, reporting, testing, research. If the answer is "we're exploring it," they're behind.
 12. **What would make you turn this engagement down?** A good operator has a list. Under a certain revenue, thin margins, a founder who wants a button-pusher.
+
+## What the answers tell you
+
+| The question | A builder says | An adviser says |
+|---|---|---|
+| Show me the last account you personally ran | Opens Ads Manager on the call | Describes an account their team ran |
+| Connect spend to contribution margin | MER against a break-even derived from your margin | ROAS, CPA, "efficiency" |
+| What will my team do after you leave | Run the creative loop, read the dashboard, grade a launch | "Have a clear strategy" |
+| First 30 days, specifically | Audit, scorecard, 90-day list of bets, first tests shipped | Discovery, stakeholder interviews, a deck |
+| Which channel would you turn off first | Names one and the holdout they'd run to check | "It depends" with no test |
+| What happens to the systems when we part | They're in your accounts from day one | "We'll do a handover" |
+
+## What the numbers say
+
+<!-- evidence -->
+- CEOs and marketing leaders grade the job differently. In McKinsey's 2025 survey of Fortune 1000 C-suites, 70% of CEOs said they measure marketing on year-over-year revenue growth and margin, but only 35% of CMOs tracked that as a top metric. ([McKinsey, The CMO's comeback, June 2025](https://www.mckinsey.com/capabilities/growth-marketing-and-sales/our-insights/the-cmos-comeback-aligning-the-c-suite-to-drive-customer-centric-growth))
+- Most marketing chiefs are doing it for the first time. Spencer Stuart found 68% of Fortune 500 CMOs in 2024 were first-time CMOs, which is a reason to ask for recent hands-on work rather than assume seniority means experience. ([Spencer Stuart, March 2025](https://www.spencerstuart.com/research-and-insight/cmo-tenure-study-2025-the-evolution-of-marketing-leadership))
+- Fractional means shared, so ask for the number. The Fractional Work Report 2026 found 64% of fractional workers serve two or more clients, and the median bills 21 client-facing hours a week across them. ([Fractional Jobs, 2026](https://www.fractionaljobs.io/the-fractional-work-report))
+- The hands question is worth asking either way. In that same report, 91% of fractional workers say they do hands-on execution, not just advice, which is also what every candidate will tell you; question one is how you check. ([Fractional Jobs, 2026](https://www.fractionaljobs.io/the-fractional-work-report))
+
+## A CMO on the metric question
+
+> I don't think people spend enough time aligning on the right metrics.
+> — Norm de Greve, Senior Vice President and Chief Marketing Officer, General Motors, in [McKinsey's The CMO's comeback](https://www.mckinsey.com/capabilities/growth-marketing-and-sales/our-insights/the-cmos-comeback-aligning-the-c-suite-to-drive-customer-centric-growth)
+
+Question two exists because of that. If you and the candidate don't agree on the number before the engagement starts, you will argue about it every month after.
 
 ## Red flags I'd act on
 

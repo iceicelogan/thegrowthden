@@ -2,7 +2,7 @@
 title: Who Owns Strategy When You Outsource Execution?
 h1: Who owns strategy when you outsource execution? Usually nobody, and here's how it goes wrong
 description: When an agency runs the ads and the founder runs the company, strategy falls into the gap between them. The agency optimizes its channel, the in-house team tracks Shopify, finance tracks the P&L, and no single person owns the blended number. Here is what that looks like from inside, why one accountable seat fixes it, and how to set that seat up whether or not you hire me.
-updated: 2026-09-28
+updated: 2026-10-05
 kind: answer
 ---
 
@@ -22,7 +22,7 @@ So strategy gets split. The agency has an opinion about strategy inside their ch
 
 Agencies are good at a lot of things, and I've hired and managed good ones. But an agency can't own your blended strategy, for two reasons that aren't about talent.
 
-First, their fee is usually a percentage of the spend they manage, so every strategic recommendation they make is made by someone who gets paid more if the answer is "spend more here." Second, they see one channel's data with that channel's attribution, and that attribution is generous by design. Ask any agency for their ROAS and Shopify's total revenue side by side and you'll see the gap.
+First, in my experience a paid-media agency's fee is usually a percentage of the spend it manages, so every strategic recommendation they make is made by someone who gets paid more if the answer is "spend more here." Second, they see one channel's data with that channel's attribution, and that attribution is generous by design. Ask any agency for their ROAS and Shopify's total revenue side by side and you'll see the gap.
 
 This isn't a reason not to use agencies. It's a reason not to ask them to grade themselves.
 
@@ -31,6 +31,27 @@ This isn't a reason not to use agencies. It's a reason not to ask them to grade 
 The fix is boring: one person owns the blended number and the decisions that move it. That person sets the MER target from your contribution margin, decides the budget by channel, grades every partner and every in-house buyer against the same scorecard, and has the authority to move money.
 
 That seat can be a full-time head of growth if you have the work and the budget for one. It can be a founder who commits real time to it, with the right dashboard. It can be a fractional lead, which is what I do. What it can't be is a committee, and it can't be a vendor.
+
+| Who holds the seat | Sees the whole business | Paid on the blended number | Can move money between channels | Where it breaks |
+|---|---|---|---|---|
+| Nobody (the default) | No one does | No one is | Whoever argues best in the meeting | Spend up 30%, revenue up 8%, nobody signed off |
+| The agency | One channel, its own attribution | No, usually on spend or a fixed fee | Only inside its channel | Grades itself |
+| The founder | Yes | Yes, in the end | Yes | No protected hour, decides by whoever spoke last |
+| Full-time head of growth | Yes | Yes | Yes | Only when there's enough work and budget for one |
+| Fractional growth lead (me) | Yes | Yes, flat fee | Yes, with your sign-off | When the work outgrows one person; then you hire into the system |
+
+## What the numbers say
+
+<!-- evidence -->
+- One owner beats a committee. McKinsey's 2025 C-suite survey found companies with a single customer- or growth-oriented role on the executive committee see up to 2.3 times more growth than those that split it across several roles. ([McKinsey, The CMO's comeback, June 2025](https://www.mckinsey.com/capabilities/growth-marketing-and-sales/our-insights/the-cmos-comeback-aligning-the-c-suite-to-drive-customer-centric-growth))
+- The CEO and the marketing side are measuring different things. In the same survey, 70% of CEOs said they judge marketing on year-over-year revenue growth and margin, while only 35% of CMOs tracked that as a top metric. ([McKinsey, June 2025](https://www.mckinsey.com/capabilities/growth-marketing-and-sales/our-insights/the-cmos-comeback-aligning-the-c-suite-to-drive-customer-centric-growth))
+- The data lives in too many places to agree. NIQ's 2026 outlook found 54% of CMOs say connecting data from different sources is a major barrier, and only 37% have a central data repository everyone can see. ([NIQ, November 2025](https://nielseniq.com/global/en/news-center/2025/cmos-face-a-reputation-and-results-reckoning-according-to-niqs-2026-outlook/))
+- Agencies are being re-scoped, not abandoned. In Gartner's 2025 CMO Spend Survey, 39% of marketing leaders planned to cut agency budgets, with "eliminating unproductive agency relationships" the top action. Large-company sample. ([Gartner, May 2025](https://www.gartner.com/en/newsroom/press-releases/2025-05-12-gartner-2025-cmo-spend-survey-reveals-marketing-budgets-have-flatlined-at-seven-percent-of-overall-company-revenue))
+
+## A CMO on why the meetings go in circles
+
+> I don't think people spend enough time aligning on the right metrics.
+> — Norm de Greve, Senior Vice President and Chief Marketing Officer, General Motors, in [McKinsey's The CMO's comeback](https://www.mckinsey.com/capabilities/growth-marketing-and-sales/our-insights/the-cmos-comeback-aligning-the-c-suite-to-drive-customer-centric-growth)
 
 ## How I set the seat up on an engagement
 
@@ -42,7 +63,15 @@ After that the job is mostly deciding where the next dollar goes and making sure
 
 ## If you're not going to hire anyone
 
-Do the first two steps yourself. Write down your contribution margin before marketing. Divide one by it; that's your break-even MER. Put blended MER at the top of whatever report you look at weekly, above every platform number. Tell your agency that's how they're graded from now on. You'll have a strategy owner by the end of the month: you.
+Do it yourself, in this order.
+
+1. Write down your contribution margin before marketing, and get finance to agree it.
+2. Divide one by it. That's your break-even MER. Set a target 20% to 40% above it.
+3. Put blended MER at the top of whatever report you look at weekly, above every platform number.
+4. Tell your agency and your in-house buyer that's how they're graded from now on.
+5. Block one hour a week to decide where the next dollar goes, and keep it.
+
+You'll have a strategy owner by the end of the month: you.
 
 ## Questions people ask
 
