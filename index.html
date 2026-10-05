@@ -389,9 +389,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   }
 
   @media (max-width: 600px) {
-    .logo-track img { height: 34px; }
-    .logo-marquee, .logo-track { gap: 40px; }
-    @keyframes logo-scroll { from { transform: translateX(0); } to { transform: translateX(calc(-50% - 20px)); } }
+    #proof-strip .logo-track img { height: 26px; }
+    #proof-strip .logo-track { gap: 18px 26px; }
+    #proof-strip .logo-marquee { padding: 0 16px; }
     .footer-inner { flex-direction: column; align-items: flex-start; gap: 20px; }
     .footer-links { flex-wrap: wrap; gap: 16px; }
   }
@@ -516,23 +516,15 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   /* ── LOGO STRIP ── */
   #proof-strip {
     background: #fff;
-    padding: 26px 0 22px;
+    padding: 32px 0 30px;
     border-top: 1px solid rgba(52,31,68,.08);
     border-bottom: 1px solid rgba(52,31,68,.08);
-    overflow: hidden;
   }
   .logo-tag { font-size: 11px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); text-align: center; margin-bottom: 18px; }
-  .logo-marquee { display: flex; width: max-content; gap: 64px; animation: logo-scroll 18s linear infinite; }
-  .logo-marquee:hover { animation-play-state: paused; }
-  .logo-track { display: flex; align-items: center; gap: 64px; list-style: none; margin: 0; padding: 0; }
+  .logo-marquee { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+  .logo-track { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 26px 48px; list-style: none; margin: 0; padding: 0; }
   .logo-track li { flex: 0 0 auto; display: flex; align-items: center; }
-  .logo-track img { height: 44px; width: auto; display: block; }
-  @keyframes logo-scroll { from { transform: translateX(0); } to { transform: translateX(calc(-50% - 32px)); } }
-  @media (prefers-reduced-motion: reduce) {
-    .logo-marquee { animation: none; width: auto; flex-wrap: wrap; justify-content: center; }
-    .logo-marquee .logo-track:last-child { display: none; }
-    .logo-track { flex-wrap: wrap; justify-content: center; gap: 28px 40px; padding: 0 16px; }
-  }
+  .logo-track img { height: 36px; width: auto; display: block; }
 
   /* ── PROBLEM ── */
   #problem {
@@ -1355,7 +1347,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="wrap"><div class="logo-tag">Brands and teams I've worked with</div></div>
   <div class="logo-marquee">
     <ul class="logo-track"><li><img src="uploads/logos/autobrush.png" alt="Autobrush" loading="lazy" height="44" /></li><li><img src="uploads/logos/knownwell.png" alt="Knownwell" loading="lazy" height="44" /></li><li><img src="uploads/logos/nifty.png" alt="Nifty Marketing" loading="lazy" height="44" /></li><li><img src="uploads/logos/sentic.png" alt="Sentic" loading="lazy" height="44" /></li><li><img src="uploads/logos/bucket-list.png" alt="Bucket List Creative" loading="lazy" height="44" /></li><li><img src="uploads/logos/begin.png" alt="BEGiN" loading="lazy" height="44" /></li><li><img src="uploads/logos/grovelight.png" alt="Grovelight" loading="lazy" height="44" /></li><li><img src="uploads/logos/yazny.png" alt="Yazny" loading="lazy" height="44" /></li><li><img src="uploads/logos/trizub.png" alt="Trizub AI" loading="lazy" height="44" /></li><li><img src="uploads/logos/nerdy.png" alt="Nerdy (Varsity Tutors)" loading="lazy" height="44" /></li><li><img src="uploads/logos/slalom.png" alt="Slalom" loading="lazy" height="44" /></li><li><img src="uploads/logos/wuffes.png" alt="Wuffes" loading="lazy" height="44" /></li><li><img src="uploads/logos/equifax.png" alt="Equifax Workforce Solutions" loading="lazy" height="44" /></li></ul>
-    <ul class="logo-track" aria-hidden="true"><li><img src="uploads/logos/autobrush.png" alt="Autobrush" loading="lazy" height="44" /></li><li><img src="uploads/logos/knownwell.png" alt="Knownwell" loading="lazy" height="44" /></li><li><img src="uploads/logos/nifty.png" alt="Nifty Marketing" loading="lazy" height="44" /></li><li><img src="uploads/logos/sentic.png" alt="Sentic" loading="lazy" height="44" /></li><li><img src="uploads/logos/bucket-list.png" alt="Bucket List Creative" loading="lazy" height="44" /></li><li><img src="uploads/logos/begin.png" alt="BEGiN" loading="lazy" height="44" /></li><li><img src="uploads/logos/grovelight.png" alt="Grovelight" loading="lazy" height="44" /></li><li><img src="uploads/logos/yazny.png" alt="Yazny" loading="lazy" height="44" /></li><li><img src="uploads/logos/trizub.png" alt="Trizub AI" loading="lazy" height="44" /></li><li><img src="uploads/logos/nerdy.png" alt="Nerdy (Varsity Tutors)" loading="lazy" height="44" /></li><li><img src="uploads/logos/slalom.png" alt="Slalom" loading="lazy" height="44" /></li><li><img src="uploads/logos/wuffes.png" alt="Wuffes" loading="lazy" height="44" /></li><li><img src="uploads/logos/equifax.png" alt="Equifax Workforce Solutions" loading="lazy" height="44" /></li></ul>
   </div>
 </div>
 
