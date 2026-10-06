@@ -44,6 +44,7 @@ body.mode-cmo .kid { display: none !important; }
 
 /* ---------- top bar ---------- */
 #topbar {
+  position: sticky; top: 0; z-index: 50;
   height: var(--topbar-h);
   display: flex; align-items: center; justify-content: space-between; gap: 10px;
   padding: 0 14px;

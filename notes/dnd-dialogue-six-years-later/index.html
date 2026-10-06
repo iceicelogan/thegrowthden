@@ -123,7 +123,8 @@
   * { box-sizing:border-box; margin:0; padding:0; }
   body { font-family:'Poppins',sans-serif; font-weight:300; color:var(--ink); background:var(--cream); line-height:1.75; }
   a { color:var(--blue); }
-  header { background:var(--purple); padding:18px 16px; position:relative; }
+  html { scroll-padding-top:96px; }
+  header { background:var(--purple); padding:18px 16px; position:sticky; top:0; z-index:100; box-shadow:0 2px 14px rgba(26,16,37,.25); }
   header .in, main, footer .in { max-width:820px; margin:0 auto; }
   header .in { display:flex; align-items:center; justify-content:space-between; gap:16px; }
   header img { height:40px; display:block; }
