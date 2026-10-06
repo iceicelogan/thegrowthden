@@ -2,7 +2,7 @@
 title: Build a Marketing System Your Team Owns
 h1: How do I build a marketing system my team owns instead of relying on an agency?
 description: You already know the feeling. The agency has the accounts, the reporting and the know-how, and if they left tomorrow you'd be starting over. Building a system your team owns doesn't mean firing them. It means five things live in your house, in your name, run by your people: the scorecard, the creative loop, the launch tooling, the SOPs, and the training. Here is how I build that with clients, and how to start without me.
-updated: 2026-10-05
+updated: 2026-10-06
 kind: answer
 ---
 
@@ -23,6 +23,26 @@ Miss one and you're renting. Most brands I meet have the first one and none of t
 Nobody plans it this way. You hire an agency to run ads because you don't have anyone to do it. They set up the accounts, so the structure and the naming are theirs. They build the report, so the definitions are theirs. They know what worked last quarter, and that knowledge lives in their heads and their Slack. Two years later the agency is fine and competent and you couldn't run your own marketing for a week.
 
 This isn't the agency's fault. It's the natural result of paying for hands without anyone at home owning the system those hands work in. If you want to fix it, you need an owner first and a system second.
+
+## Who owns strategy when you outsource execution? Usually nobody
+
+I've seen this from every side, and it always looks the same. The agency sends a monthly report showing a 4.2 ROAS and asks for more budget. The e-commerce manager sees Shopify revenue flat and quietly doesn't believe the report. The CFO sees marketing spend up 30% and revenue up 8% and wants to know who signed off on that. The founder, who is technically the head of marketing, is in three of those meetings and makes a decision based on whoever spoke last.
+
+Nobody is lying. They're measuring different things. And the one thing nobody is measuring is the only one that matters: total revenue against total marketing cost, and what's left after margin.
+
+Execution is easy to outsource because it's easy to describe: run the ads, send the emails, produce the creative. Strategy is hard to outsource because it depends on knowing the whole business, and the people who know the whole business are busy running it. So strategy gets split. The agency has an opinion about strategy inside their channel. The founder has an opinion at the level of "we should grow." None of those is a strategy. A strategy is a decision about where the next dollar goes and how you'll know if it was right, and someone has to own that decision.
+
+An agency can't own it, and not because of talent. They see one channel's data with that channel's attribution, and that attribution is generous by design. Ask any agency for their ROAS and Shopify's total revenue side by side and you'll see the gap. This isn't a reason not to use agencies. It's a reason not to ask them to grade themselves.
+
+| Who holds the seat | Sees the whole business | Paid on the blended number | Can move money between channels | Where it breaks |
+|---|---|---|---|---|
+| Nobody (the default) | No one does | No one is | Whoever argues best in the meeting | Spend up 30%, revenue up 8%, nobody signed off |
+| The agency | One channel, its own attribution | No, usually on spend or a fixed fee | Only inside its channel | Grades itself |
+| The founder | Yes | Yes, in the end | Yes | No protected hour, decides by whoever spoke last |
+| Full-time head of growth | Yes | Yes | Yes | Only when there's enough work and budget for one |
+| Fractional growth lead (me) | Yes | Yes, flat fee | Yes, with your sign-off | When the work outgrows one person; then you hire into the system |
+
+The fix is boring: one person owns the blended number and the decisions that move it. That seat can be a full-time head of growth, a founder with a protected hour and the right dashboard, or a fractional lead, which is what I do. What it can't be is a committee, and it can't be a vendor. Everything below is how you give that seat something to run.
 
 ## The five pieces, and the order I build them
 
@@ -50,15 +70,20 @@ This isn't the agency's fault. It's the natural result of paying for hands witho
 ## What the numbers say
 
 <!-- evidence -->
+- One owner beats a committee. McKinsey's 2025 C-suite survey found companies with a single customer- or growth-oriented role on the executive committee see up to 2.3 times more growth than those that split it across several roles, and in the same survey 70% of CEOs said they judge marketing on revenue growth and margin while only 35% of CMOs tracked that as a top metric. ([McKinsey, The CMO's comeback, June 2025](https://www.mckinsey.com/capabilities/growth-marketing-and-sales/our-insights/the-cmos-comeback-aligning-the-c-suite-to-drive-customer-centric-growth))
+- The data lives in too many places to agree. NIQ's 2026 outlook found 54% of CMOs say connecting data from different sources is a major barrier, and only 37% have a central data repository everyone can see. ([NIQ, November 2025](https://nielseniq.com/global/en/news-center/2025/cmos-face-a-reputation-and-results-reckoning-according-to-niqs-2026-outlook/))
 - Owning the work in-house is now the norm at large brands. The ANA found 82% of its members had an in-house agency in 2023, up from 42% in 2008, and 65% had moved established work from external agencies to their in-house team. ([ANA, The Continued Rise of the In-House Agency, May 2023](https://www.ana.net/content/show/id/79185))
 - Owning it doesn't mean going it alone. In the same ANA study, 92% of brands with an in-house agency still worked with an external agency, and in-house teams did an average of 61% of the work. ([ANA, May 2023](https://www.ana.net/content/show/id/79185))
 - Agency budgets are under pressure. In Gartner's 2025 survey of 402 marketing leaders, 39% planned to cut agency spend and 22% said generative AI had let them rely less on agencies for creative and strategy. Large-company sample. ([Gartner, May 2025](https://www.gartner.com/en/newsroom/press-releases/2025-05-12-gartner-2025-cmo-spend-survey-reveals-marketing-budgets-have-flatlined-at-seven-percent-of-overall-company-revenue))
 - Paid media is the biggest line to hold the number on. Gartner's respondents put 30.6% of their marketing budget into paid media, with total budgets flat at 7.7% of revenue. ([Gartner, May 2025](https://www.gartner.com/en/newsroom/press-releases/2025-05-12-gartner-2025-cmo-spend-survey-reveals-marketing-budgets-have-flatlined-at-seven-percent-of-overall-company-revenue))
 
-## What the ANA's chief executive said about it
+## What the ANA's chief executive, and a CMO, said about it
 
 > This report definitively shows that in-house agencies have become a firmly entrenched part of the holistic marketing ecosystem and are now a mainstay among a majority of marketers.
 > — Bob Liodice, CEO, Association of National Advertisers, in the [ANA's 2023 in-house agency report](https://www.ana.net/content/show/id/79185)
+
+> I don't think people spend enough time aligning on the right metrics.
+> — Norm de Greve, Senior Vice President and Chief Marketing Officer, General Motors, in [McKinsey's The CMO's comeback](https://www.mckinsey.com/capabilities/growth-marketing-and-sales/our-insights/the-cmos-comeback-aligning-the-c-suite-to-drive-customer-centric-growth)
 
 And one unsolicited line from a founder who found this page through ChatGPT, on why it matched what he was asking for:
 
@@ -99,6 +124,15 @@ The scorecard: contribution margin, break-even MER, a target, and a weekly view 
 
 ### Can a small team really own this, or is it only for big brands?
 A team of two can own it if one of them owns the number and the other owns creative. Size matters less than having a named owner for each piece.
+
+### Who owns strategy if I hire an agency for execution?
+In practice, usually nobody. The agency optimizes its channel and reports its own ROAS, and nobody reconciles that with the business. Assign one seat to own blended MER and contribution margin and grade everyone against it.
+
+### Can a founder be the strategy owner?
+Yes, with two conditions: a scorecard that leads with MER and contribution margin, and a real weekly hour to make decisions from it. If the founder can't protect that hour, that's the seat to fill.
+
+### How do I reconcile Meta's numbers with Shopify's?
+You mostly don't. Use blended MER (total revenue over total marketing spend) as the grade, and use each platform's numbers only to diagnose what to change inside that platform.
 
 ### Isn't it cheaper to just keep the agency?
 Sometimes, on the invoice. What you pay for renting is that you can't change vendors, can't judge them, and can't scale without them. Owning the system is what makes an agency a choice instead of a dependency.

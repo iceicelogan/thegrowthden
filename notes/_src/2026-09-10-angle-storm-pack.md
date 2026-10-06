@@ -1,7 +1,7 @@
 ---
 title: The Angle Storm Pack
 date: 2026-09-10
-updated: 2026-09-26
+updated: 2026-10-06
 slug: angle-storm-pack
 description: Logan Ice's creative development loop for paid social as seven prompts you can paste into Claude or ChatGPT: name the default angle, force new angles away from it, score them, test them on five independent personas, and loop until one of them fights for an angle.
 format: html
@@ -103,6 +103,20 @@ FORMAT: [static image / 15-second video / carousel]
 PLACEMENT: [feed / stories / reels]
 
 Write three headline options under 40 characters, each in the voice of the persona who fought for it; two primary-text options under 125 characters with no hashtags; the visual, described in plain language (what is in frame, what the person is doing, what the light is like, and what feels a little wrong or surprising about it); one paragraph I can paste into an image model, with subject, setting, camera distance, lighting, mood, and the one specific detail that makes it this angle and not a stock photo, with no text in the image; for video, the motion in the first three seconds and the moment the product appears; and one sentence naming the thing to protect so a designer doesn't sand it back into the default.</code></pre>
+<h2>Why AI gives you the same angle ten times</h2>
+<p>Language models are built to give the most likely answer. Ask one for ad angles for a sleep supplement and it will give you "wake up refreshed" ten different ways, because that's what most sleep ads say. It isn't the tool being lazy. It's doing exactly what it's for, and the obvious angle is the most likely one. The loop above exists to make the obvious idea explicit, then push the model away from it in directions a tired creative team wouldn't try on a Thursday afternoon.</p>
+<h2>What the numbers say</h2>
+<ul class="evidence">
+<li>Creative is the biggest lever you control. NCSolutions' analysis of nearly 450 CPG campaigns across TV and digital found creative accounted for 49% of incremental sales contribution, ahead of brand (21%), reach (14%) and targeting (11%). (<a href="https://www.prnewswire.com/news-releases/in-advertising-the-balance-is-shifting-brand-factors-like-consumer-loyalty-now-have-a-greater-impact-on-sales-results-than-reaching-a-broader-audience-301897320.html" target="_blank" rel="noopener">NCSolutions, Five Keys to Advertising Effectiveness, August 2023</a>)</li>
+<li>Kantar's December 2024 analysis ranks creative quality second only to brand size in advertising profitability, and the top element within the marketer's control. (<a href="https://www.kantar.com/inspiration/advertising-media/the-codependence-factor" target="_blank" rel="noopener">Kantar, The co-dependence factor, December 2024</a>)</li>
+<li>Everyone already has the tool. Gartner found 77% of marketing organizations that have adopted generative AI use it for creative development, rising to 84% of high performers. The differentiation is the process, not the software. (<a href="https://www.gartner.com/en/newsroom/press-releases/2025-02-18-gartner-survey-reveals-over-a-quarter-of-marketing-organizations-have-limited-or-no-adoption-of-genai-for-marketing-campaigns" target="_blank" rel="noopener">Gartner, February 2025</a>)</li>
+<li>The volume bar at the top of DTC is high. Motion's 2025 creative trends report, based on 500+ DTC advertisers and $100M+ in analyzed spend, found 86% plan to increase AI use for research and ideation and 79% for creative production. (<a href="https://motionapp.com/creative-trends" target="_blank" rel="noopener">Motion, 2025 Ad Creative &amp; Creative Strategy Trends</a>)</li>
+</ul>
+<h2>What a Meta creative strategist sees</h2>
+<blockquote><p>Some of the top DTC brands we work with are creating 50-70 new ads weekly on Meta platforms alone.</p><cite>Gil Chaimovski, Creative Strategist, Meta, quoted in <a href="https://motionapp.com/creative-trends" target="_blank" rel="noopener">Motion's 2025 Creative Trends report</a></cite></blockquote>
+<p>You don't need fifty a week. You need the five you make to disagree with each other.</p>
+<h2>Where people get it wrong</h2>
+<p>They skip naming the default and wonder why everything sounds familiar. They ask for "more creative" instead of applying an operation. They build one persona that's secretly themselves. They show the personas all the angles in one conversation, so the reactions bleed into each other. And they take the top-scoring angle straight to production without asking whether it's different enough to teach them anything if it fails.</p>
 <h2>How I actually run this</h2>
 <p>I don't do it by hand anymore. I turned prompts 1 through 3 into a skill I call Angle Storm and prompts 4 through 6 into one called Focus Group, and the personas run as separate agents so they can't peek at each other's answers. The loop is the same one you just read, and the skills just save me the pasting.</p>
 <p>The rule I don't break is the fight. I don't ship the angle that did fine on average. I go again until one persona digs in for an angle the others were lukewarm on, because that's a need state the account hasn't been talking to yet, and a need state is a new pond. That's what the loop is for, and it's why I'd rather have one strange angle somebody loves than ten reasonable ones nobody would argue about.</p>
