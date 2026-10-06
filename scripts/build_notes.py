@@ -29,7 +29,6 @@ SITE = "https://thegrowthden.com"
 CAL = "https://calendar.app.google/dy8683mNDXyWAkPo9"
 SEAT_PAGES = ["fractional-growth-strategy", "fractional-head-of-creative",
               "meta-media-buyer", "marketing-team-builder", "interim-head-of-marketing"]
-LAB_PAGES = ["lab/the-machine", "lab/the-auction", "lab/creative-is-the-targeting", "lab/lemonade-economy"]
 GTM = """<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-TR4S2MZM');</script>"""
 
 
@@ -178,6 +177,11 @@ STYLE = """
   .body img { display:block; max-width:100%; height:auto; border-radius:12px; margin:8px 0 18px; }
   .body blockquote p { margin:0; }
   .body blockquote { border-left:4px solid var(--orange); padding:4px 0 4px 18px; margin:0 0 18px; font-style:italic; color:var(--purple); }
+  .body blockquote cite { display:block; font-style:normal; font-size:14px; color:var(--muted); margin-top:6px; }
+  .body blockquote cite a { color:var(--muted); }
+  .body ul.evidence { padding-left:0; }
+  .body ul.evidence li { background:#fff; border:1px solid var(--border); border-left:5px solid var(--gold); border-radius:12px; padding:12px 16px; list-style:none; margin:0 0 10px; font-size:16px; }
+  .body ul.evidence li a { color:var(--blue); }
   .body pre.prompt, .body pre { position:relative; background:#fff; border:1px solid var(--border); border-left:4px solid var(--purple); border-radius:12px; padding:18px 18px 18px 20px; margin:0 0 22px; white-space:pre-wrap; word-wrap:break-word; font-family:'Poppins',sans-serif; font-size:15px; line-height:1.65; color:var(--ink); }
   .body pre code { font-family:inherit; }
   .copy-prompt { position:absolute; top:10px; right:10px; font-family:'Poppins',sans-serif; font-size:12px; font-weight:600; color:var(--purple); background:var(--cream); border:1px solid var(--border); border-radius:100px; padding:5px 12px; cursor:pointer; }
@@ -219,7 +223,7 @@ STYLE = """
 """
 
 
-FALLBACK_IMAGE = "/uploads/Growth_Den__Illustration_Denny.png"
+FALLBACK_IMAGE = "/uploads/og-default.png"
 
 
 def absolute(src):
@@ -244,6 +248,7 @@ def page(title, desc, url, ld, content, image=None):
 <meta property="og:description" content="{html.escape(desc)}" />
 <meta property="og:url" content="{url}" />
 <meta property="og:type" content="article" />
+<meta property="og:site_name" content="The Growth Den" />
 {img_meta}
 <link rel="icon" href="/favicon.ico" />
 <link rel="alternate" type="text/plain" title="llms.txt" href="/llms.txt" />
@@ -254,7 +259,7 @@ def page(title, desc, url, ld, content, image=None):
 <style>{STYLE}</style>
 </head>
 <body>
-<header><div class="in"><a href="/"><img src="/uploads/Growth_Den__Logo_Horizontal_White.png" alt="The Growth Den" /></a><nav><a href="/#services">Services</a><a href="/pricing/">Pricing</a><a href="/answers/">Answers</a><a href="/notes/">Notes</a><a href="/logan/">About</a><a class="nav-cta" href="https://calendar.app.google/dy8683mNDXyWAkPo9" target="_blank">Let's Talk</a></nav><button class="hamburger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="site-menu"><span></span><span></span><span></span></button></div><div class="site-menu" id="site-menu" hidden><a href="/#services">Services</a><a href="/pricing/">Pricing</a><a href="/answers/">Answers</a><a href="/notes/">Notes</a><a href="/logan/">About</a><a class="nav-cta" href="https://calendar.app.google/dy8683mNDXyWAkPo9" target="_blank">Let's Talk</a></div></header>
+<header><div class="in"><a href="/"><img src="/uploads/Growth_Den__Logo_Horizontal_White.png" alt="The Growth Den" /></a><nav><a href="/#services">Services</a><a href="/#pricing">Pricing</a><a href="/notes/">Notes</a><a href="/logan/">About</a><a class="nav-cta" href="https://calendar.app.google/dy8683mNDXyWAkPo9" target="_blank">Let's Talk</a></nav><button class="hamburger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="site-menu"><span></span><span></span><span></span></button></div><div class="site-menu" id="site-menu" hidden><a href="/#services">Services</a><a href="/#pricing">Pricing</a><a href="/notes/">Notes</a><a href="/logan/">About</a><a class="nav-cta" href="https://calendar.app.google/dy8683mNDXyWAkPo9" target="_blank">Let's Talk</a></div></header>
 <main>
 {content}
 </main>
@@ -280,22 +285,44 @@ document.querySelectorAll(".body pre").forEach(function (pre) {{
 """
 
 
-AUTHOR = {"@type": "Person", "@id": f"{SITE}/#logan", "name": "Logan Ice", "url": f"{SITE}/logan/", "image": f"{SITE}/uploads/IMG_6671.JPG",
-          "sameAs": ["https://www.linkedin.com/in/loganice/"],
+ORG = {"@type": "ProfessionalService", "@id": f"{SITE}/#org", "name": "The Growth Den", "url": f"{SITE}/",
+       "logo": {"@type": "ImageObject", "url": f"{SITE}/uploads/Growth_Den__Logo_Horizontal_Primary.png"},
+       "image": f"{SITE}/uploads/og-default.png",
+       "description": "Fractional growth advisory and embedded marketing leadership for growth-stage DTC and e-commerce brands. Strategy and execution from one person, from $7,500 a month.",
+       "foundingDate": "2025",
+       "founder": {"@id": f"{SITE}/#logan"},
+       "address": {"@type": "PostalAddress", "addressLocality": "St. Louis", "addressRegion": "Missouri", "addressCountry": "US"},
+       "areaServed": {"@type": "Country", "name": "United States"},
+       "email": "logan@thegrowthden.com",
+       "priceRange": "From $7,500/month",
+       "sameAs": ["https://www.linkedin.com/company/107193591/"]}
+
+PERSON = {"@type": "Person", "@id": f"{SITE}/#logan", "name": "Logan Ice", "url": f"{SITE}/logan/",
+          "mainEntityOfPage": f"{SITE}/logan/",
+          "image": f"{SITE}/uploads/IMG_6671.JPG",
           "jobTitle": "Founder and Fractional Growth Advisor",
-          "worksFor": {"@type": "ProfessionalService", "name": "The Growth Den", "url": f"{SITE}/"}}
+          "description": "St. Louis-based growth advisor for DTC and e-commerce brands. Led growth at Wuffes ($14M to $40M+), Little Passports, Varsity Tutors and P&G.",
+          "worksFor": {"@id": f"{SITE}/#org"},
+          "address": {"@type": "PostalAddress", "addressLocality": "St. Louis", "addressRegion": "Missouri", "addressCountry": "US"},
+          "alumniOf": {"@type": "CollegeOrUniversity", "name": "Washington University in St. Louis"},
+          "knowsAbout": ["Direct-to-consumer marketing", "E-commerce growth strategy", "Marketing efficiency ratio (MER)", "Paid social advertising", "Meta Ads", "AI-assisted ad creative", "Marketing team building"],
+          "sameAs": ["https://www.linkedin.com/in/loganice/", "https://loganice.medium.com/",
+                     "https://www.stlbucketlistshow.com/1932300/episodes/19809221-the-growth-den-the-real-difference-between-demand-generation-and-demand-capture",
+                     "https://bestmarketingconference.com/agenda/program/detail/44/standing-out-in-a-sea-of-sameness"]}
+
+AUTHOR = {"@id": f"{SITE}/#logan"}
 
 
 def build_issue(n, notes):
     url = f"{SITE}/notes/{n['slug']}/"
-    ld = {"@context": "https://schema.org", "@type": "BlogPosting", "headline": n["title"],
-          "description": n["description"], "datePublished": n["date"], "dateModified": n["updated"],
-          "url": url, "mainEntityOfPage": url, "wordCount": n["words"], "author": AUTHOR,
-          "publisher": {"@type": "Organization", "name": "The Growth Den", "url": f"{SITE}/",
-                        "logo": {"@type": "ImageObject", "url": f"{SITE}/uploads/Growth_Den__Logo_Horizontal_Primary.png"}},
-          "isPartOf": {"@type": "Blog", "name": "Notes from the Den", "url": f"{SITE}/notes/"}}
+    post = {"@type": "BlogPosting", "@id": url + "#post", "headline": n["title"],
+            "description": n["description"], "datePublished": n["date"], "dateModified": n["updated"],
+            "url": url, "mainEntityOfPage": url, "wordCount": n["words"], "author": AUTHOR,
+            "publisher": {"@id": f"{SITE}/#org"},
+            "isPartOf": {"@type": "Blog", "name": "Notes from the Den", "url": f"{SITE}/notes/"}}
     if n["cover"]:
-        ld["image"] = absolute(n["cover"])
+        post["image"] = absolute(n["cover"])
+    ld = {"@context": "https://schema.org", "@graph": [post, PERSON, ORG]}
     others = [o for o in notes if o["slug"] != n["slug"]][:3]
     more = ""
     if others:
@@ -309,7 +336,7 @@ def build_issue(n, notes):
 {n['body'] if n.get('format') == 'html' else md_to_html(n['body'])}
   </article>
   <aside class="author" aria-label="About the author">
-    <a href="/logan/"><img src="/uploads/IMG_6671.JPG" alt="Logan Ice" width="72" height="72" loading="lazy" /></a>
+    <a href="/logan/"><img src="/uploads/logan-ice-160.webp" alt="Logan Ice" width="72" height="72" loading="lazy" /></a>
     <div>
       <p class="author-name"><a href="/logan/">Logan Ice</a> · Founder and Fractional Growth Advisor, The Growth Den</p>
       <p>Fractional growth advisor for DTC and e-commerce brands, based in St. Louis. Led growth at Wuffes ($14M to $40M+), ran Little Passports at BEGiN, and was on the Varsity Tutors growth team from Series A through C as it went from three cities to an international brand. Studied physics and psychology at WashU. <a href="/logan/">The longer version</a> · <a href="https://www.linkedin.com/in/loganice/" target="_blank" rel="noopener">LinkedIn</a></p>
@@ -329,10 +356,15 @@ def build_issue(n, notes):
 def build_index(notes):
     url = f"{SITE}/notes/"
     desc = "Notes from the Den is Logan Ice's newsletter on growth marketing, running a business with AI in the loop, and the occasional D&D tangent."
-    ld = {"@context": "https://schema.org", "@type": "Blog", "name": "Notes from the Den", "url": url,
-          "description": desc, "author": AUTHOR,
-          "blogPost": [{"@type": "BlogPosting", "headline": n["title"], "url": f"{SITE}/notes/{n['slug']}/",
-                        "datePublished": n["date"]} for n in notes]}
+    answers = answer_pages()
+    ld = {"@context": "https://schema.org", "@graph": [
+        {"@type": "Blog", "@id": url + "#blog", "name": "Notes from the Den", "url": url,
+         "description": desc, "author": AUTHOR, "publisher": {"@id": f"{SITE}/#org"},
+         "blogPost": [{"@type": "BlogPosting", "headline": n["title"], "url": f"{SITE}/notes/{n['slug']}/",
+                       "datePublished": n["date"]} for n in notes]},
+        {"@type": "CollectionPage", "@id": url + "#answers", "name": "Straight answers", "url": url + "#straight-answers",
+         "hasPart": [{"@type": "Article", "headline": a["h1"], "url": f"{SITE}/{a['slug']}/"} for a in answers]},
+        PERSON, ORG]}
     def cover(n):
         if n["cover"]:
             return f'<img class="cover" src="{n["cover"]}" alt="{html.escape(n["cover_alt"])}" loading="lazy" />'
@@ -341,10 +373,15 @@ def build_index(notes):
         f'<li class="card"><a href="/notes/{n["slug"]}/">{cover(n)}<div class="card-text"><span class="card-title">{html.escape(n["title"])}</span>'
         f'<span class="d">{nice(n["date"])}</span><span class="card-desc">{html.escape(n["description"])}</span></div></a></li>'
         for n in notes)
+    answers_html = "".join(
+        f'<li><a href="/{a["slug"]}/">{html.escape(a["h1"])}</a><p>{html.escape(a["description"])}</p></li>' for a in answers)
     content = f"""  <div class="tag">The newsletter</div>
   <h1>Notes from the Den</h1>
   <div class="meta">{html.escape(desc)} Last updated <time datetime="{max(n['updated'] for n in notes)}">{nice(max(n['updated'] for n in notes))}</time>.</div>
-  <ul class="cards">{items}</ul>"""
+  <ul class="cards">{items}</ul>
+  <h2 class="more-h" id="straight-answers">Straight answers</h2>
+  <p class="meta">Plain answers to the questions DTC founders and marketing leaders ask before hiring a fractional growth lead: how it compares to an agency, when to hire, how to judge one, and how to measure the work.</p>
+  <ul class="list">{answers_html}</ul>"""
     (ROOT / "notes").mkdir(exist_ok=True)
     (ROOT / "notes" / "index.html").write_text(page("Notes from the Den", desc, url, ld, content, next((n["cover"] for n in notes if n["cover"]), FALLBACK_IMAGE)), encoding="utf-8")
 
@@ -371,6 +408,21 @@ def update_pages(notes):
     # Service pages are built by build_answers.py (they read the notes list themselves).
 
 
+def answer_pages():
+    """Straight-answer page metadata (built by build_answers.py), for the /notes/ index."""
+    try:
+        from build_answers import ANSWER_PAGES, load as load_answer
+    except ImportError:
+        return []
+    out = []
+    for slug in ANSWER_PAGES:
+        try:
+            out.append(load_answer(slug))
+        except SystemExit:
+            continue
+    return out
+
+
 def answer_urls():
     """Straight-answer pages (built by build_answers.py) for the sitemap."""
     try:
@@ -383,8 +435,6 @@ def answer_urls():
             out.append((f"{slug}/", load_answer(slug)["updated"], "0.8"))
         except SystemExit:
             continue
-    if out:
-        out.insert(0, ("answers/", max(u for _, u, _ in out), "0.7"))
     return out
 
 
@@ -398,9 +448,8 @@ def service_urls():
 
 def build_sitemap(notes):
     latest = max(n["updated"] for n in notes)
-    urls = [("", latest, "1.0")] + [("logan/", "2026-10-05", "0.8")] + service_urls() + \
+    urls = [("", latest, "1.0")] + [("logan/", "2026-10-06", "0.8")] + service_urls() + \
            answer_urls() + \
-           [(f"{s}/", latest, "0.5") for s in LAB_PAGES] + \
            [("notes/", latest, "0.7")] + [(f"notes/{n['slug']}/", n["updated"], "0.6") for n in notes]
     x = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
     for u, d, pr in urls:

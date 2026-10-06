@@ -2,7 +2,7 @@
 title: St. Louis Growth Marketing Consultant for DTC Brands
 h1: A fractional growth advisor for DTC and e-commerce brands, based in St. Louis
 description: I'm Logan Ice, a fractional growth advisor who lives and works in St. Louis. Most of my clients aren't here, and that's fine. The ones who are get something the remote ones don't, which is a working session at the same table. If you're a Missouri or Midwest brand looking for someone who does strategy and Meta execution and isn't an agency, this page is for you.
-updated: 2026-10-05
+updated: 2026-10-06
 kind: local
 ---
 
@@ -52,7 +52,7 @@ Apparel, food and beverage, supplements and wellness, beauty, pet, and home are 
 
 ## The services
 
-The same five as everywhere: [head of growth strategy](/fractional-growth-strategy/), [head of creative](/fractional-head-of-creative/), a [Meta media buyer who also brings strategy](/meta-media-buyer/), [building your marketing team and its systems](/marketing-team-builder/), and an [interim head of marketing](/interim-head-of-marketing/) when you're between leaders. From $7,500 a month for the first four; the interim service starts at $12,500. Details on [pricing](/pricing/).
+The same five as everywhere: [head of growth](/fractional-head-of-growth/), [head of creative](/fractional-head-of-creative/), a [Meta media buyer who also brings strategy](/meta-media-buyer/), [building your marketing team and its systems](/marketing-team-builder/), and an [interim head of marketing](/interim-head-of-marketing/) when you're between leaders. From $7,500 a month, whichever one I'm in. Details on [how engagements are scoped](/#pricing).
 
 ## Speaking and workshops
 

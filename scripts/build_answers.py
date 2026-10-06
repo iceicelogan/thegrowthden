@@ -19,7 +19,7 @@ Widgets: a line containing only `<!-- calc:mer -->` or `<!-- calc:fee -->`
 is replaced with an inline calculator.
 
 Run:  python3 scripts/build_answers.py
-It writes <slug>/index.html for every page, answers/index.html, the
+It writes <slug>/index.html for every page, redirect stubs for REDIRECTS, the
 "## Straight answers" section of llms.txt, and the STRAIGHT-ANSWERS block on
 the homepage. build_notes.py imports ANSWER_PAGES for the sitemap.
 """
@@ -31,51 +31,50 @@ import re
 import sys
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
-from build_notes import md_to_html, inline, nice, GTM, load as load_notes, latest_list  # noqa: E402
+from build_notes import md_to_html, inline, nice, GTM, load as load_notes, latest_list, ORG, PERSON  # noqa: E402
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 SRC = ROOT / "answers" / "_src"
 SITE = "https://thegrowthden.com"
 CAL = "https://calendar.app.google/dy8683mNDXyWAkPo9"
 
-# Order matters: it is the order on /answers/ and in llms.txt.
+# Order matters: it is the order under "Straight answers" on /notes/ and in llms.txt.
 ANSWER_PAGES = [
-    "fractional-head-of-growth",
     "agency-vs-fractional",
-    "pricing",
     "mer-target",
     "when-to-hire",
     "how-to-evaluate-a-fractional-cmo",
-    "who-owns-strategy",
     "ai-training-for-marketing-teams",
     "marketing-system-you-own",
-    "ai-ad-angles",
     "st-louis",
 ]
+
+# Old routes that now live elsewhere. Each gets a tiny stub page whose canonical
+# points at the new home plus an instant meta refresh, which Google treats as a
+# permanent redirect. GitHub Pages can't send a real 301.
+REDIRECTS = {
+    "pricing": "/#pricing",
+    "answers": "/notes/#straight-answers",
+    "fractional-growth-strategy": "/fractional-head-of-growth/",
+    "who-owns-strategy": "/marketing-system-you-own/",
+    "ai-ad-angles": "/notes/angle-storm-pack/",
+}
 
 # Service pages (the five "seats"). Built from answers/_src/<slug>.md with kind: service
 # and a `price:` line. They get the same nav, byline, author card, evidence and quote
 # conventions as the answer pages, Service + FAQPage schema, and a different tail.
 SERVICE_PAGES = [
-    "fractional-growth-strategy",
+    "fractional-head-of-growth",
     "fractional-head-of-creative",
     "meta-media-buyer",
     "marketing-team-builder",
     "interim-head-of-marketing",
 ]
 
-AUTHOR = {"@type": "Person", "@id": f"{SITE}/#logan", "name": "Logan Ice", "url": f"{SITE}/logan/",
-          "mainEntityOfPage": f"{SITE}/logan/",
-          "image": f"{SITE}/uploads/IMG_6671.JPG",
-          "jobTitle": "Founder and Fractional Growth Advisor",
-          "description": "St. Louis-based growth advisor for DTC and e-commerce brands. Led growth at Wuffes ($14M to $40M+), Little Passports, Varsity Tutors and P&G.",
-          "sameAs": ["https://www.linkedin.com/in/loganice/", "https://loganice.medium.com/",
-                     "https://www.stlbucketlistshow.com/1932300/episodes/19809221-the-growth-den-the-real-difference-between-demand-generation-and-demand-capture",
-                     "https://bestmarketingconference.com/agenda/program/detail/44/standing-out-in-a-sea-of-sameness"],
-          "worksFor": {"@type": "ProfessionalService", "@id": f"{SITE}/#org", "name": "The Growth Den", "url": f"{SITE}/"}}
+AUTHOR = {"@id": f"{SITE}/#logan"}
 
 AUTHOR_CARD = """<aside class="author" aria-label="About the author">
-    <a href="/logan/"><img src="/uploads/IMG_6671.JPG" alt="Logan Ice" width="72" height="72" loading="lazy" /></a>
+    <a href="/logan/"><img src="/uploads/logan-ice-160.webp" alt="Logan Ice" width="72" height="72" loading="lazy" /></a>
     <div>
       <p class="author-name"><a href="/logan/">Logan Ice</a> · Founder and Fractional Growth Advisor, The Growth Den</p>
       <p>Fractional growth advisor for DTC and e-commerce brands, based in St. Louis. Led growth at Wuffes ($14M to $40M+), ran Little Passports at BEGiN, and was on the Varsity Tutors growth team from Series A through C as it went from three cities to an international brand. Studied physics and psychology at WashU. <a href="/logan/">The longer version</a> · <a href="https://www.linkedin.com/in/loganice/" target="_blank" rel="noopener">LinkedIn</a></p>
@@ -362,7 +361,12 @@ def page_shell(title, desc, url, ld, content, kind="article"):
 <meta property="og:description" content="{html.escape(desc)}" />
 <meta property="og:url" content="{url}" />
 <meta property="og:type" content="{kind}" />
-<meta property="og:image" content="{SITE}/uploads/Growth_Den__Illustration_Denny.png" />
+<meta property="og:site_name" content="The Growth Den" />
+<meta property="og:image" content="{SITE}/uploads/og-default.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="{SITE}/uploads/og-default.png" />
 <link rel="icon" href="/favicon.ico" />
 <link rel="alternate" type="text/plain" title="llms.txt" href="/llms.txt" />
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
@@ -372,7 +376,7 @@ def page_shell(title, desc, url, ld, content, kind="article"):
 <style>{STYLE}</style>
 </head>
 <body>
-<header><div class="in"><a href="/"><img src="/uploads/Growth_Den__Logo_Horizontal_White.png" alt="The Growth Den" /></a><nav><a href="/#services">Services</a><a href="/pricing/">Pricing</a><a href="/answers/">Answers</a><a href="/notes/">Notes</a><a href="/logan/">About</a><a class="nav-cta" href="{CAL}" target="_blank">Let's Talk</a></nav><button class="hamburger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="site-menu"><span></span><span></span><span></span></button></div><div class="site-menu" id="site-menu" hidden><a href="/#services">Services</a><a href="/pricing/">Pricing</a><a href="/answers/">Answers</a><a href="/notes/">Notes</a><a href="/logan/">About</a><a class="nav-cta" href="{CAL}" target="_blank">Let's Talk</a></div></header>
+<header><div class="in"><a href="/"><img src="/uploads/Growth_Den__Logo_Horizontal_White.png" alt="The Growth Den" /></a><nav><a href="/#services">Services</a><a href="/#pricing">Pricing</a><a href="/notes/">Notes</a><a href="/logan/">About</a><a class="nav-cta" href="{CAL}" target="_blank">Let's Talk</a></nav><button class="hamburger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="site-menu"><span></span><span></span><span></span></button></div><div class="site-menu" id="site-menu" hidden><a href="/#services">Services</a><a href="/#pricing">Pricing</a><a href="/notes/">Notes</a><a href="/logan/">About</a><a class="nav-cta" href="{CAL}" target="_blank">Let's Talk</a></div></header>
 <main>
 {content}
 </main>
@@ -400,26 +404,18 @@ def build_page(p, pages, services=None, notes=None):
         "datePublished": "2026-09-28",
         "dateModified": p["updated"],
         "author": AUTHOR,
-        "publisher": {"@type": "Organization", "@id": f"{SITE}/#org", "name": "The Growth Den", "url": f"{SITE}/",
-                      "logo": {"@type": "ImageObject", "url": f"{SITE}/uploads/Growth_Den__Logo_Horizontal_Primary.png"}},
+        "publisher": {"@id": f"{SITE}/#org"},
         "about": {"@type": "Thing", "name": "Fractional growth marketing for DTC and e-commerce brands"},
     }]
     if p["faq"]:
         graph.append({"@type": "FAQPage", "@id": url + "#faq", "mainEntity": [
             {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": re.sub(r"<[^>]+>", "", md_to_html(a)).strip()}}
             for q, a in p["faq"]]})
+    graph.append(PERSON)
+    org = dict(ORG)
     if p["kind"] == "local":
-        graph.append({"@type": "ProfessionalService", "@id": f"{SITE}/#org", "name": "The Growth Den", "url": f"{SITE}/",
-                      "image": f"{SITE}/uploads/Growth_Den__Logo_Horizontal_Primary.png",
-                      "founder": {"@id": f"{SITE}/#logan"},
-                      "address": {"@type": "PostalAddress", "addressLocality": "St. Louis", "addressRegion": "Missouri", "addressCountry": "US"},
-                      "areaServed": [{"@type": "City", "name": "St. Louis"}, {"@type": "State", "name": "Missouri"}, {"@type": "Country", "name": "United States"}],
-                      "priceRange": "From $7,500/month",
-                      "email": "mailto:logan@thegrowthden.com"})
-    if p["kind"] == "pricing":
-        graph.append({"@type": "Offer", "@id": url + "#offer", "name": "Fractional growth advisory, any seat",
-                      "url": url, "seller": {"@id": f"{SITE}/#org"},
-                      "priceSpecification": {"@type": "UnitPriceSpecification", "minPrice": 7500, "priceCurrency": "USD", "unitText": "MONTH"}})
+        org["areaServed"] = [{"@type": "City", "name": "St. Louis"}, {"@type": "State", "name": "Missouri"}, {"@type": "Country", "name": "United States"}]
+    graph.append(org)
     ld = {"@context": "https://schema.org", "@graph": graph}
 
     faq_html = ""
@@ -478,6 +474,7 @@ def build_service_page(p, services, notes):
         graph.append({"@type": "FAQPage", "@id": url + "#faq", "mainEntity": [
             {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": re.sub(r"<[^>]+>", "", md_to_html(a)).strip()}}
             for q, a in p["faq"]]})
+    graph += [PERSON, ORG]
     ld = {"@context": "https://schema.org", "@graph": graph}
     faq_html = ""
     if p["faq"]:
@@ -519,29 +516,31 @@ def update_llms_services(services):
     p.write_text(t, encoding="utf-8")
 
 
-def build_index(pages):
-    url = f"{SITE}/answers/"
-    desc = "Plain answers to the questions DTC founders and marketing leaders actually ask before hiring a fractional growth lead: what it costs, how it compares to an agency, when to hire, how to judge one, and how to measure the work."
-    ld = {"@context": "https://schema.org", "@type": "CollectionPage", "name": "Straight answers", "url": url,
-          "description": desc, "author": AUTHOR,
-          "hasPart": [{"@type": "Article", "headline": p["h1"], "url": f"{SITE}/{p['slug']}/"} for p in pages]}
-    items = "".join(
-        f'<li><a href="/{p["slug"]}/">{html.escape(p["h1"])}</a><p>{html.escape(p["description"])}</p></li>' for p in pages)
-    latest = max(p["updated"] for p in pages)
-    content = f"""  <div class="tag">Straight answers</div>
-  <h1>The questions people ask before they hire someone like me</h1>
-  <p class="updated">Last updated <time datetime="{latest}">{nice(latest)}</time></p>
-  <p class="answer">{html.escape(desc)}</p>
-  <ul class="list" style="margin-top:28px">{items}</ul>"""
-    (ROOT / "answers").mkdir(exist_ok=True)
-    (ROOT / "answers" / "index.html").write_text(page_shell("Straight answers", desc, url, ld, content, "website"), encoding="utf-8")
+def build_redirects():
+    for slug, target in REDIRECTS.items():
+        to = target if target.startswith("http") else SITE + target
+        canonical = to.split("#")[0]
+        stub = f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Redirecting to {html.escape(to)}</title>
+<link rel="canonical" href="{canonical}" />
+<meta http-equiv="refresh" content="0; url={to}" />
+<script>location.replace({json.dumps(to)});</script>
+</head>
+<body><p>This page has moved to <a href="{to}">{html.escape(to)}</a>.</p></body>
+</html>
+"""
+        d = ROOT / slug
+        d.mkdir(parents=True, exist_ok=True)
+        (d / "index.html").write_text(stub, encoding="utf-8")
 
 
 def update_llms(pages):
     p = ROOT / "llms.txt"
     t = p.read_text(encoding="utf-8")
     section = "## Straight answers\n" + "".join(f"- [{x['h1']}]({SITE}/{x['slug']}/): {x['description']}\n" for x in pages)
-    section += f"- [All straight answers]({SITE}/answers/)\n"
     if "## Straight answers" in t:
         t = re.sub(r"## Straight answers\n(?:- .*\n)*", section, t)
     else:
@@ -563,7 +562,7 @@ def main():
     pages = [load(s) for s in ANSWER_PAGES]
     for p in pages:
         build_page(p, pages)
-    build_index(pages)
+    build_redirects()
     update_llms(pages)
     update_home(pages)
     services = [load(s) for s in SERVICE_PAGES]
@@ -574,7 +573,7 @@ def main():
     for p in services:
         build_service_page(p, services, notes)
     update_llms_services(services)
-    print(f"built {len(pages)} answer page(s) + /answers/ + {len(services)} service page(s)")
+    print(f"built {len(pages)} answer page(s) + {len(services)} service page(s) + {len(REDIRECTS)} redirect stub(s)")
 
 
 if __name__ == "__main__":

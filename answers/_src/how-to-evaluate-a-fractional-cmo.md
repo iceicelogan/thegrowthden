@@ -2,7 +2,7 @@
 title: How to Evaluate a Fractional CMO: 12 Questions
 h1: Twelve questions that tell you whether a fractional CMO builds or just advises
 description: Plenty of fractional marketing leaders are strategy-only, and most interview guides won't catch that until month three. These are the questions I'd ask if I were hiring someone like me, including the two that most candidates can't answer: show me the last ad account you personally ran, and how do you plan to make yourself unnecessary.
-updated: 2026-10-05
+updated: 2026-10-06
 kind: checklist
 ---
 
@@ -22,7 +22,7 @@ So the questions below are weighted toward finding out whether this person does 
 6. **Walk me through your first 30 days here, specifically.** Vague equals inexperienced. You should hear an audit, a scorecard, a 90-day list of bets, and a first set of tests.
 7. **Which of our channels would you turn off first, and how would you know you were right?** Tests the incrementality instinct and whether they'll spend your money carefully.
 8. **What do you not do?** Everyone has a gap. Someone who claims brand, performance, creative, lifecycle, data and PR at senior level is describing a department, not a person.
-9. **Who else are you working with right now, and how many days a week are we getting?** Fractional means shared. You want a number, and you want it to add up across their clients.
+9. **Who else are you working with right now, and how fast will we hear back from you?** Fractional means shared. You want to know how many clients they're carrying and what a normal reply time looks like, and you want the answers to add up. Same day is a reasonable bar; "I'll get to it next week" isn't ownership.
 10. **What happens to the systems, logins and documentation when we part ways?** Should be: they're yours, in your accounts, in your name, from day one.
 11. **How do you use AI in the work?** Not as a buzzword. Specifically: creative production, reporting, testing, research. If the answer is "we're exploring it," they're behind.
 12. **What would make you turn this engagement down?** A good operator has a list. Under a certain revenue, thin margins, a founder who wants a button-pusher.

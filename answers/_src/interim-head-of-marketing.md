@@ -1,10 +1,10 @@
 ---
 title: Interim Head of Marketing / CMO for DTC Brands
 h1: An interim head of marketing, or CMO, for the gap between leaders
-description: When your marketing leader leaves, goes on leave, or hasn't been hired yet, the team and the budget still need an owner on Monday. I step into the seat for a fixed window, usually three to six months at three to four days a week, run the team and the number, and help you hire and hand over to the permanent person. I'm Logan Ice. It starts at $12,500 a month.
-updated: 2026-10-05
+description: When your marketing leader leaves, goes on leave, or hasn't been hired yet, the team and the budget still need an owner on Monday. I step into the seat for a fixed window, usually three to six months, run the team and the number, and help you hire and hand over to the permanent person. I'm Logan Ice. Like every service here, it starts at $7,500 a month and is scoped to the size of the job.
+updated: 2026-10-06
 kind: service
-price: 12500
+price: 7500
 service_type: Interim head of marketing
 ---
 
@@ -24,14 +24,14 @@ service_type: Interim head of marketing
 
 ## How it's set up
 
-Three to four days a week for a window we agree on up front, usually three to six months. That's more of my time than the other services, which is why it starts at $12,500 a month rather than $7,500. There's no hard exit either. If you'd like me to stay on in a strategy or creative seat once your permanent hire lands, that happens more often than not.
+A window we agree on up front, usually three to six months, revisited monthly. This is the whole marketing function rather than one part of it, so it's scoped to the size of your team and budget. You get the weekly cadence, me in the work every week, and same-day replies: you'll hear from me the day you reach out, and we solve things together rather than you waiting on a status update. There's no hard exit either. If you'd like me to stay on in a strategy or creative seat once your permanent hire lands, that happens more often than not.
 
 ## Interim versus the other ways to cover the gap
 
 | | Leave it empty and search | Promote the senior-most person | Give it to the agency | Interim head of marketing |
 |---|---|---|---|---|
 | Who owns the number on Monday | Nobody, or the founder | Someone doing two jobs | The agency, on its own ROAS | Me |
-| Days a week on it | Whatever the founder can spare | Part of theirs | Their account team's hours | Three to four |
+| How reachable | Whenever the founder surfaces | Between their other job | A ticket to the account manager | Same day, every day |
 | Effect on the search | Rushed, because the gap hurts | Often cancelled, then regretted | None | Unhurried, and I help run it |
 | What the permanent hire walks into | Whatever piled up | A demoted colleague | An agency that owns the structure | A system that already runs |
 | Window | Open-ended | Open-ended | Open-ended | Agreed up front, revisited monthly |
@@ -52,7 +52,7 @@ Three to four days a week for a window we agree on up front, usually three to si
 ## How we start
 
 1. Call me the week the gap opens, or before it does if you can see it coming. The first conversation is about the team, the budget and the number, not the org chart.
-2. Agree the window and the days per week up front, with a monthly check on both.
+2. Agree the window and the scope up front, with a monthly check on both.
 3. In the first two weeks: a read of every channel, the scorecard on MER against your margin, and the team's weekly cadence running.
 4. By month two I know what the permanent job actually is. The description, the interview rubric and the search plan come from that.
 5. Hand over into a system that already works, and decide together whether I stay in a smaller seat.
@@ -60,7 +60,7 @@ Three to four days a week for a window we agree on up front, usually three to si
 ## Questions people ask
 
 ### How is this different from your other services?
-The other services are one part of marketing, two to three days a week, for as long as it's useful. This one is the whole function, three to four days a week, for a defined window with an end you can see. I run the team, the budget and the number, then hand the seat to whoever comes next.
+The other services are one part of marketing, for as long as it's useful. This one is the whole function, for a defined window with an end you can see. I run the team, the budget and the number, then hand the seat to whoever comes next.
 
 ### How long does an interim engagement last?
 Usually three to six months, and sometimes longer; Heidrick's 2026 survey found 42% of interim projects now run past six months. We agree the window up front and revisit it monthly. If you want me to stay on in a smaller seat after, plenty of clients do that.
@@ -69,4 +69,4 @@ Usually three to six months, and sometimes longer; Heidrick's 2026 survey found 
 Yes, and I'd argue it's the most valuable part. By month two I know exactly what the job is, so I can write the description, sit in the interviews, and onboard the person into a system that's already running instead of a mess I left behind.
 
 ### What does the interim service cost?
-From $12,500 a month. It's more than my other services because it's more days and it's the whole function. Ad spend and software stay in your accounts, as always.
+From $7,500 a month, like every service here, scoped up from there to the size of the team and the budget I'm running. Ad spend and software stay in your accounts, as always.
