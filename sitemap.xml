@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://thegrowthden.com/</loc>
-    <lastmod>2026-10-06</lastmod>
+    <lastmod>2026-10-08</lastmod>
     <priority>1.0</priority>
   </url>
   <url>
@@ -72,8 +72,13 @@
   </url>
   <url>
     <loc>https://thegrowthden.com/notes/</loc>
-    <lastmod>2026-10-06</lastmod>
+    <lastmod>2026-10-08</lastmod>
     <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://thegrowthden.com/notes/ai-is-making-people-worse-at-their-jobs/</loc>
+    <lastmod>2026-10-08</lastmod>
+    <priority>0.6</priority>
   </url>
   <url>
     <loc>https://thegrowthden.com/notes/how-to-earn-trust/</loc>
