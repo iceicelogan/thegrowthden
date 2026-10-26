@@ -310,7 +310,7 @@ PERSON = {"@type": "Person", "@id": f"{SITE}/#logan", "name": "Logan Ice", "url"
           "address": {"@type": "PostalAddress", "addressLocality": "St. Louis", "addressRegion": "Missouri", "addressCountry": "US"},
           "alumniOf": {"@type": "CollegeOrUniversity", "name": "Washington University in St. Louis"},
           "knowsAbout": ["Direct-to-consumer marketing", "E-commerce growth strategy", "Marketing efficiency ratio (MER)", "Paid social advertising", "Meta Ads", "AI-assisted ad creative", "Marketing team building"],
-          "sameAs": ["https://www.linkedin.com/in/loganice/", "https://loganice.medium.com/",
+          "sameAs": ["https://www.linkedin.com/in/loganice/",
                      "https://www.stlbucketlistshow.com/1932300/episodes/19809221-the-growth-den-the-real-difference-between-demand-generation-and-demand-capture",
                      "https://bestmarketingconference.com/agenda/program/detail/44/standing-out-in-a-sea-of-sameness",
                      "https://www.gofractional.com/r/logan-ice"]}
