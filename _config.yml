@@ -10,6 +10,7 @@ exclude:
   - chats/
   - project/
   - machine-v5-wireframe.html
+  - "uploads/Competitive Analysis for The Growth Den_ Fractional Head of Growth Consultancy.pdf"
   - _config.yml
   - Gemfile
   - Gemfile.lock
