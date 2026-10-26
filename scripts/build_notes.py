@@ -296,12 +296,15 @@ ORG = {"@type": "ProfessionalService", "@id": f"{SITE}/#org", "name": "The Growt
        "areaServed": {"@type": "Country", "name": "United States"},
        "email": "logan@thegrowthden.com",
        "priceRange": "From $7,500/month",
+       "alternateName": ["Growth Den", "The Growth Den LLC"],
+       "disambiguatingDescription": "The Growth Den (thegrowthden.com) is Logan Ice's fractional growth advisory for DTC and e-commerce brands, based in St. Louis, Missouri.",
        "sameAs": ["https://www.linkedin.com/company/107193591/"]}
 
 PERSON = {"@type": "Person", "@id": f"{SITE}/#logan", "name": "Logan Ice", "url": f"{SITE}/logan/",
           "mainEntityOfPage": f"{SITE}/logan/",
           "image": f"{SITE}/uploads/IMG_6671.JPG",
           "jobTitle": "Founder and Fractional Growth Advisor",
+          "disambiguatingDescription": "Logan Ice the St. Louis growth marketer and founder of The Growth Den, not the professional baseball player of the same name.",
           "description": "St. Louis-based growth advisor for DTC and e-commerce brands. Led growth at Wuffes ($14M to $40M+), Little Passports, Varsity Tutors and P&G.",
           "worksFor": {"@id": f"{SITE}/#org"},
           "address": {"@type": "PostalAddress", "addressLocality": "St. Louis", "addressRegion": "Missouri", "addressCountry": "US"},
@@ -312,6 +315,31 @@ PERSON = {"@type": "Person", "@id": f"{SITE}/#logan", "name": "Logan Ice", "url"
                      "https://bestmarketingconference.com/agenda/program/detail/44/standing-out-in-a-sea-of-sameness"]}
 
 AUTHOR = {"@id": f"{SITE}/#logan"}
+
+# Answer and service pages each note points readers to. Kept here rather than in
+# the note's front matter, because import_editor_note.py rewrites front matter.
+RELATED = {
+    "angle-storm-pack": ["fractional-head-of-creative", "ai-training-for-marketing-teams"],
+    "dnd-dialogue-six-years-later": ["marketing-team-builder", "fractional-head-of-growth"],
+    "using-the-right-lure": ["fractional-head-of-growth", "agency-vs-fractional"],
+    "how-to-earn-trust": ["how-to-evaluate-a-fractional-cmo", "when-to-hire"],
+    "ai-is-making-people-worse-at-their-jobs": ["ai-training-for-marketing-teams", "marketing-system-you-own"],
+}
+
+
+def related_html(slug):
+    try:
+        from build_answers import load as load_answer
+    except ImportError:
+        return ""
+    items = []
+    for r in RELATED.get(slug, []):
+        try:
+            a = load_answer(r)
+        except SystemExit:
+            continue
+        items.append(f'<li><a href="/{r}/">{html.escape(a["h1"])}</a></li>')
+    return ('<h2 class="more-h">Related</h2><ul class="list">' + "".join(items) + "</ul>") if items else ""
 
 
 def build_issue(n, notes):
@@ -330,6 +358,7 @@ def build_issue(n, notes):
         more = '<h2 class="more-h">More from Notes from the Den</h2><ul class="list">' + "".join(
             f'<li><a href="/notes/{o["slug"]}/">{html.escape(o["title"])}</a><div class="d">{nice(o["date"])}</div></li>'
             for o in others) + "</ul>"
+    related = related_html(n["slug"])
     content = f"""  <div class="tag">Notes from the Den</div>
   <h1>{html.escape(n['title'])}</h1>
   <div class="meta">By <a href="/logan/" rel="author">Logan Ice</a> · Published <time datetime="{n['date']}">{nice(n['date'])}</time> · Last updated <time datetime="{n['updated']}">{nice(n['updated'])}</time></div>
@@ -348,6 +377,7 @@ def build_issue(n, notes):
     <p>I'm a fractional growth advisor for growth-stage DTC and e-commerce brands. I handle strategy and take execution off your plate, in whatever seat you need, from $7,500 a month.</p>
     <a class="cta" href="{CAL}" target="_blank">Let's see if we're a fit</a><a class="more" href="/#services">See the services →</a>
   </div>
+  {related}
   {more}"""
     d = ROOT / "notes" / n["slug"]
     d.mkdir(parents=True, exist_ok=True)
@@ -456,6 +486,49 @@ def build_sitemap(notes):
     for u, d, pr in urls:
         x += f"  <url>\n    <loc>{SITE}/{u}</loc>\n    <lastmod>{d}</lastmod>\n    <priority>{pr}</priority>\n  </url>\n"
     (ROOT / "sitemap.xml").write_text(x + "</urlset>\n", encoding="utf-8")
+    check_published([u.rstrip("/") for u, _, _ in urls])
+
+
+# Every URL the site has ever published. A page may move (leave a redirect stub
+# behind) but its address must keep resolving: each restructure that dropped a
+# URL restarted search-engine discovery for it. New sitemap URLs are added here
+# automatically; removing a line is a deliberate decision, not a side effect.
+PUBLISHED = ROOT / "scripts" / "published_urls.txt"
+
+
+def check_published(sitemap_paths):
+    known = [l.strip() for l in PUBLISHED.read_text(encoding="utf-8").splitlines()
+             if l.strip() and not l.startswith("#")] if PUBLISHED.exists() else []
+    missing = [u for u in known if not (ROOT / u / "index.html").exists()]
+    if missing:
+        raise SystemExit("These previously published URLs no longer resolve (add a redirect stub "
+                         "in build_answers.REDIRECTS instead of deleting a page):\n  /" + "\n  /".join(missing))
+    new = [u for u in sitemap_paths if u not in known]
+    if new or not PUBLISHED.exists():
+        head = "# Every URL thegrowthden.com has published. See check_published() in build_notes.py.\n"
+        PUBLISHED.write_text(head + "".join(f"{u}\n" for u in known + new), encoding="utf-8")
+
+
+def sync_hand_pages():
+    """index.html and logan/index.html are hand-built; keep their #org/#logan nodes
+    carrying the same disambiguation fields as the generated pages."""
+    keys = ("alternateName", "disambiguatingDescription")
+    for f in (ROOT / "index.html", ROOT / "logan" / "index.html"):
+        t = f.read_text(encoding="utf-8")
+
+        def fix(m):
+            ld = json.loads(m.group(2))
+            for node in ld.get("@graph", [ld]):
+                src = {f"{SITE}/#org": ORG, f"{SITE}/#logan": PERSON}.get(node.get("@id"))
+                if src:
+                    for k in keys:
+                        if k in src:
+                            node[k] = src[k]
+            return m.group(1) + json.dumps(ld, indent=1, ensure_ascii=False) + m.group(3)
+
+        t2 = re.sub(r'(<script type="application/ld\+json">\n)(.*?)(\n</script>)', fix, t, flags=re.S)
+        if t2 != t:
+            f.write_text(t2, encoding="utf-8")
 
 
 def build_llms(notes):
@@ -476,6 +549,7 @@ def main():
     update_pages(notes)
     build_sitemap(notes)
     build_llms(notes)
+    sync_hand_pages()
     print(f"built {len(notes)} issue(s); latest {notes[0]['slug']} ({notes[0]['date']})")
 
 

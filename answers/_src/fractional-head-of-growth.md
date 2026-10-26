@@ -2,7 +2,7 @@
 title: Fractional Head of Growth for DTC Brands ($5M-$80M)
 h1: What a fractional head of growth actually does for a DTC brand
 description: A fractional head of growth owns your acquisition and retention numbers part-time and, unlike most fractional CMOs, does the work rather than just directing it. I'm Logan Ice. For growth-stage DTC and e-commerce brands doing roughly $5M to $80M, this is the seat I fill most often. I decide with you where the next marketing dollar goes, then help make it happen, from $7,500 a month.
-updated: 2026-10-06
+updated: 2026-10-26
 kind: service
 price: 7500
 service_type: Fractional head of growth
@@ -55,6 +55,14 @@ A fractional CMO usually owns brand, org design and budget at the strategy layer
 
 If you want the longer comparison, read [agency, in-house or fractional](/agency-vs-fractional/).
 
+## If you searched for a fractional CMO for your Shopify brand
+
+Many growth-stage DTC brands doing $5M to $20M a year run on Shopify, and "fractional CMO" is usually the phrase founders search when they go looking for senior marketing help. If that's you, this is probably the seat you're actually looking for. I cover the CMO layer when you need it: the budget, the marketing org, and which channel gets the next dollar. I also do the work and own the number, which is MER against your contribution margin, read from Shopify and finance rather than from each ad platform's attribution.
+
+- Fit: Shopify and other DTC brands doing roughly $5M to $80M, with a real marketing budget and no senior owner of the number.
+- What I need on day one: read access to Shopify, the ad accounts and whatever finance uses for margin.
+- Price: from $7,500 a month, whichever seat I'm in.
+
 ## What the numbers say
 
 I'd rather you check my claims than take them. Here is what the people who measure this have published.
@@ -91,6 +99,9 @@ If you're interviewing other people for this seat too, the [twelve questions](/h
 
 ### What's the difference between a fractional head of growth and a fractional CMO?
 A fractional CMO typically owns brand, marketing org design and the budget at a strategy level and hands execution to a team or an agency. A fractional head of growth owns acquisition, retention and marketing efficiency and does more of the work directly. I'm the second one, and I'll cover the first when a client needs it.
+
+### Are you a fractional CMO for Shopify brands?
+Yes, for Shopify and other DTC brands doing roughly $5M to $80M. I cover the CMO layer when you need it, and unlike most fractional CMOs I also do the work and own the number. It starts at $7,500 a month.
 
 ### Do you actually run the ads or just advise?
 Both. I'll sit in Ads Manager, build the creative pipeline and the reporting, then train your team to run it. The point is that strategy and execution come from the same person, so nothing gets lost in the handoff.

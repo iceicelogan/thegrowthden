@@ -71,6 +71,18 @@ SERVICE_PAGES = [
     "interim-head-of-marketing",
 ]
 
+# The service page each straight answer hands readers to, so the answers pass
+# their weight to the pages that win "who should I hire" questions.
+SERVICE_FOR = {
+    "agency-vs-fractional": "fractional-head-of-growth",
+    "mer-target": "fractional-head-of-growth",
+    "when-to-hire": "fractional-head-of-growth",
+    "how-to-evaluate-a-fractional-cmo": "interim-head-of-marketing",
+    "ai-training-for-marketing-teams": "marketing-team-builder",
+    "marketing-system-you-own": "marketing-team-builder",
+    "st-louis": "fractional-head-of-growth",
+}
+
 AUTHOR = {"@id": f"{SITE}/#logan"}
 
 AUTHOR_CARD = """<aside class="author" aria-label="About the author">
@@ -160,6 +172,8 @@ STYLE = """
   .box h2 { color:#fff; font-size:22px; margin-bottom:8px; }
   .box a.cta { margin-top:14px; padding:12px 26px; }
   .box a.more { color:var(--gold); margin-left:14px; font-weight:500; }
+  .box p.svc { margin-top:10px; }
+  .box p.svc a { color:var(--gold); font-weight:600; }
   h2.more-h { font-size:20px; color:var(--purple); font-weight:600; margin:48px 0 14px; }
   .list { list-style:none; padding:0; display:flex; flex-direction:column; gap:12px; }
   .list li { background:#fff; border:1px solid var(--border); border-radius:16px; padding:18px 22px; }
@@ -423,6 +437,10 @@ def build_page(p, pages, services=None, notes=None):
     if p["faq"]:
         faq_html = '<h2>Questions people ask</h2>' + "".join(
             f"<details><summary>{html.escape(q)}</summary>{md_to_html(a)}</details>" for q, a in p["faq"])
+    service_link = ""
+    if SERVICE_FOR.get(p["slug"]):
+        svc = load(SERVICE_FOR[p["slug"]])
+        service_link = f'<p class="svc">The service for this: <a href="/{svc["slug"]}/">{html.escape(svc["h1"])}</a></p>'
     others = [o for o in pages if o["slug"] != p["slug"]]
     more = '<h2 class="more-h">More straight answers</h2><ul class="list">' + "".join(
         f'<li><a href="/{o["slug"]}/">{html.escape(o["h1"])}</a></li>' for o in others) + "</ul>"
@@ -438,6 +456,7 @@ def build_page(p, pages, services=None, notes=None):
   <div class="box">
     <h2>Work with Logan</h2>
     <p>I'm a fractional growth advisor for growth-stage DTC and e-commerce brands. I handle strategy and take execution off your plate, in whatever seat you need, from $7,500 a month.</p>
+    {service_link}
     <a class="cta" href="{CAL}" target="_blank">Let's see if we're a fit</a><a class="more" href="/#services">See the services →</a>
   </div>
   {more}"""
