@@ -310,9 +310,10 @@ PERSON = {"@type": "Person", "@id": f"{SITE}/#logan", "name": "Logan Ice", "url"
           "address": {"@type": "PostalAddress", "addressLocality": "St. Louis", "addressRegion": "Missouri", "addressCountry": "US"},
           "alumniOf": {"@type": "CollegeOrUniversity", "name": "Washington University in St. Louis"},
           "knowsAbout": ["Direct-to-consumer marketing", "E-commerce growth strategy", "Marketing efficiency ratio (MER)", "Paid social advertising", "Meta Ads", "AI-assisted ad creative", "Marketing team building"],
-          "sameAs": ["https://www.linkedin.com/in/loganice/", "https://loganice.medium.com/",
+          "sameAs": ["https://www.linkedin.com/in/loganice/",
                      "https://www.stlbucketlistshow.com/1932300/episodes/19809221-the-growth-den-the-real-difference-between-demand-generation-and-demand-capture",
-                     "https://bestmarketingconference.com/agenda/program/detail/44/standing-out-in-a-sea-of-sameness"]}
+                     "https://bestmarketingconference.com/agenda/program/detail/44/standing-out-in-a-sea-of-sameness",
+                     "https://www.gofractional.com/r/logan-ice"]}
 
 AUTHOR = {"@id": f"{SITE}/#logan"}
 
@@ -512,7 +513,7 @@ def check_published(sitemap_paths):
 def sync_hand_pages():
     """index.html and logan/index.html are hand-built; keep their #org/#logan nodes
     carrying the same disambiguation fields as the generated pages."""
-    keys = ("alternateName", "disambiguatingDescription")
+    keys = ("alternateName", "disambiguatingDescription", "sameAs")
     for f in (ROOT / "index.html", ROOT / "logan" / "index.html"):
         t = f.read_text(encoding="utf-8")
 
