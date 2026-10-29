@@ -669,7 +669,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .outcome-card { display: flex; flex-direction: column; gap: 10px; background: var(--white); border: 1px solid var(--border); border-radius: var(--r-lg); padding: 30px 28px; text-decoration: none; color: var(--ink); transition: box-shadow .2s, transform .2s, border-color .2s; }
   .outcome-card:hover { box-shadow: 0 12px 40px rgba(52,31,68,.1); transform: translateY(-2px); border-color: rgba(254,124,43,.35); }
   .outcome-stat { font-size: clamp(26px, 2.6vw, 34px); font-weight: 800; color: var(--orange); line-height: 1.05; letter-spacing: -.01em; }
-  .outcome-stat.placeholder { color: var(--muted); font-size: 18px; font-weight: 600; font-style: italic; }
+  .outcome-stat--words { font-size: clamp(20px, 2vw, 24px); color: var(--purple); line-height: 1.2; }
   .outcome-brand { font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--purple); }
   .outcome-card p { font-size: 14px; line-height: 1.65; color: var(--muted); flex: 1; }
   .outcome-card p strong { color: var(--ink); font-weight: 600; }
@@ -1551,7 +1551,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="outcomes-header reveal">
       <div class="tag">Outcomes, not just process</div>
       <h2>What the work actually produced.</h2>
-      <p>The logos up top are nice. This is what happened in the businesses, in the seat I was sitting in at the time.</p>
+      <p>The logos up top are nice. This is what happened in the businesses, in the seat I was sitting in at the time. Numbers where I can share them, the client's own words where I can't yet.</p>
     </div>
     <div class="outcomes-grid reveal">
       <a class="outcome-card" href="fractional-head-of-growth/">
@@ -1561,17 +1561,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <span class="outcome-seat">Head of Growth, in-house</span>
       </a>
       <a class="outcome-card" href="fractional-head-of-growth/">
-        <!-- LOGAN: replace the bracketed placeholders with the real Autobrush numbers (blended MER before → after, the window, and the margin context), or delete the stat line and keep the quote. -->
-        <div class="outcome-stat placeholder">[Blended MER X → Y over N months]</div>
+        <div class="outcome-stat outcome-stat--words">Clarity into every decision</div>
         <div class="outcome-brand">Autobrush</div>
-        <p>Strategy and execution from one seat for a kids' oral health brand. <strong>[One line on what changed and what it protected, e.g. contribution margin held while spend scaled.]</strong> <q>I would have paid 20x for an agency for the same engagement, and probably a worse outcome.</q> Ari Ziskin, Head of Marketing.</p>
+        <p>Strategy and execution from one seat for a kids' oral health brand. In the head of marketing's words: <q>For the first time in our business, I feel like I have clarity into every important decision.</q> And then: <q>I would have paid 20x for an agency for the same engagement, and probably a worse outcome.</q> Ari Ziskin.</p>
         <span class="outcome-seat">Fractional Head of Growth · strategy + execution</span>
       </a>
       <a class="outcome-card" href="fractional-head-of-creative/">
-        <!-- LOGAN: replace with the real Knownwell outcome (e.g. time from angle to live ad before → after, angles tested per month, or the measurement that got rebuilt), or delete the stat line and keep the quote. -->
-        <div class="outcome-stat placeholder">[Angle to live ad: X days → Y hours]</div>
+        <div class="outcome-stat outcome-stat--words">Meta, explained to the whole team</div>
         <div class="outcome-brand">Knownwell</div>
-        <p>Creative and Meta strategy for a healthcare company that treats people of every size with real respect. <strong>[One line on the creative system or measurement that got built and what it changed.]</strong> <q>The only strategist I've ever met who can explain Meta updates in a way that makes sense to both a C-Suite Exec and a Preschool Teacher.</q> Nicole Bruno, Head of Content.</p>
+        <p>Creative and Meta strategy for a healthcare company that treats people of every size with real respect. <q>The only strategist I've ever met who can explain Meta updates in a way that makes sense to both a C-Suite Exec and a Preschool Teacher. It's unsettling how good he is at this.</q> Nicole Bruno, Head of Content.</p>
         <span class="outcome-seat">Head of Creative · creative system + Meta strategy</span>
       </a>
     </div>
