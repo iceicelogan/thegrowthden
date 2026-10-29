@@ -325,6 +325,8 @@ RELATED = {
     "using-the-right-lure": ["fractional-head-of-growth", "agency-vs-fractional"],
     "how-to-earn-trust": ["how-to-evaluate-a-fractional-cmo", "when-to-hire"],
     "ai-is-making-people-worse-at-their-jobs": ["ai-training-for-marketing-teams", "marketing-system-you-own"],
+    "infinitely-optimistic-finitely-capable": ["marketing-team-builder", "marketing-system-you-own"],
+    "make-the-cow-a-sphere": ["fractional-head-of-growth", "mer-target"],
 }
 
 
@@ -341,6 +343,21 @@ def related_html(slug):
             continue
         items.append(f'<li><a href="/{r}/">{html.escape(a["h1"])}</a></li>')
     return ('<h2 class="more-h">Related</h2><ul class="list">' + "".join(items) + "</ul>") if items else ""
+
+
+def cta_box(n):
+    """The closing box, specific to what the note was about when the front matter says so.
+    Front matter: cta_title, cta_text, cta_button, cta_more (a path), cta_more_text."""
+    title = n.get("cta_title") or "Work with Logan"
+    text = n.get("cta_text") or "I'm a fractional growth advisor for growth-stage DTC and e-commerce brands. I handle strategy and take execution off your plate, in whatever seat you need, from $7,500 a month."
+    button = n.get("cta_button") or "Let's see if we're a fit"
+    more = n.get("cta_more") or "/#services"
+    more_text = n.get("cta_more_text") or "See the services"
+    return f"""<div class="box">
+    <h2>{html.escape(title)}</h2>
+    <p>{inline(text)}</p>
+    <a class="cta" href="{CAL}" target="_blank">{html.escape(button)}</a><a class="more" href="{more}">{html.escape(more_text)} →</a>
+  </div>"""
 
 
 def build_issue(n, notes):
@@ -373,11 +390,7 @@ def build_issue(n, notes):
       <p>Fractional growth advisor for DTC and e-commerce brands, based in St. Louis. Led growth at Wuffes ($14M to $40M+), ran Little Passports at BEGiN, and was on the Varsity Tutors growth team from Series A through C as it went from three cities to an international brand. Studied physics and psychology at WashU. <a href="/logan/">The longer version</a> · <a href="https://www.linkedin.com/in/loganice/" target="_blank" rel="noopener">LinkedIn</a></p>
     </div>
   </aside>
-  <div class="box">
-    <h2>Work with Logan</h2>
-    <p>I'm a fractional growth advisor for growth-stage DTC and e-commerce brands. I handle strategy and take execution off your plate, in whatever seat you need, from $7,500 a month.</p>
-    <a class="cta" href="{CAL}" target="_blank">Let's see if we're a fit</a><a class="more" href="/#services">See the services →</a>
-  </div>
+  {cta_box(n)}
   {related}
   {more}"""
     d = ROOT / "notes" / n["slug"]
@@ -426,8 +439,10 @@ def replace_block(text, name, new):
 
 
 def latest_list(notes, cls):
+    def hook(n):
+        return f'<span class="notes-hook">{html.escape(n["hook"])}</span>' if n.get("hook") else ""
     return "".join(
-        f'<li><a href="/notes/{n["slug"]}/">{html.escape(n["title"])}</a> <span class="{cls}">{nice(n["date"])}</span></li>'
+        f'<li><a href="/notes/{n["slug"]}/">{html.escape(n["title"])}</a> <span class="{cls}">{nice(n["date"])}</span>{hook(n)}</li>'
         for n in notes[:3])
 
 

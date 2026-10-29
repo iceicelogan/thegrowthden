@@ -6,6 +6,12 @@ slug: dnd-dialogue-six-years-later
 description: Six years after writing about how D&D makes you better at your job, Logan Ice revisits empathy, diversity and ambiguity from the Dungeon Master's side of the table, adds what changes when AI agents join the party, and makes the case for a Session Zero in every client engagement.
 format: html
 source: https://www.linkedin.com/pulse/dungeons-dragons-dialogue-six-years-later-logan-ice-aaskc
+hook: Read this if you run meetings, manage people, or play D&D. Ideally all three.
+cta_title: Need a Dungeon Master for your marketing team?
+cta_text: Half of building a team is the Session Zero: agreeing how we'll work, who owns what, and what happens when the dice go badly. I design the team, write the SOPs and train the people who'll run them.
+cta_button: Let's talk about your team
+cta_more: /marketing-team-builder/
+cta_more_text: Building a marketing team and its systems
 ---
 
 <p><img loading="lazy" src="/uploads/notes/dnd-dialogue-six-years-later/70960b722c57a06388facd49cf7bc655.jpg" alt="A DM screen titled Dungeons &amp; Dragons &amp; Dialogue, Six Years Later, with miniatures, dice and a laptop showing a rising chart"></p><p>Six years ago I wrote <a href="https://loganice.medium.com/dungeons-dragons-dialogue-5983cfa6371d">a post about how Dungeons &amp; Dragons makes you better at your job</a> - and I'm hoping today to convince you that this hobby has done nothing but appreciate in value.</p>

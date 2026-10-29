@@ -6,6 +6,7 @@ updated: 2026-10-26
 kind: service
 price: 7500
 service_type: Fractional head of growth
+short: Fractional Head of Growth
 ---
 
 ## The short version

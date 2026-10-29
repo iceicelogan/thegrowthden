@@ -6,6 +6,7 @@ updated: 2026-10-05
 kind: service
 price: 7500
 service_type: Fractional head of creative
+short: Fractional Head of Creative
 ---
 
 ## What I do

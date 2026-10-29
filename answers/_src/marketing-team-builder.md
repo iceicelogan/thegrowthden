@@ -6,6 +6,7 @@ updated: 2026-10-05
 kind: service
 price: 7500
 service_type: Marketing team and systems building
+short: Team & Systems
 ---
 
 ## What I do

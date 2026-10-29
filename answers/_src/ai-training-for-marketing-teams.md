@@ -4,6 +4,9 @@ h1: A consultant who trains your marketing team to use AI for creative and repor
 description: I look at how your team actually produces ads and reports today, build the AI workflows into those jobs with them, and coach them until they can run and extend the workflows without me. That's different from most AI training for marketers, which is a workshop about prompts: your team goes back to their desks and nothing changes. I'm Logan Ice. Here is what that looks like, who it's for, and what it costs.
 updated: 2026-10-26
 kind: answer
+cta_title: Want your team running this in 90 days?
+cta_text: Tell me how your team produces ads and reports today and I'll tell you which workflows to build first. The training is part of the Team & Systems seat, so the tools and the people who run them both stay yours.
+cta_button: Let's talk about your team
 ---
 
 ## Why the usual AI training doesn't stick

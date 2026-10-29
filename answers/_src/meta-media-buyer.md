@@ -6,6 +6,7 @@ updated: 2026-10-05
 kind: service
 price: 7500
 service_type: Meta media buying with strategy
+short: Media & Tooling
 ---
 
 ## What I do

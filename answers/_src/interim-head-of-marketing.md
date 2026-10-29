@@ -6,6 +6,7 @@ updated: 2026-10-06
 kind: service
 price: 7500
 service_type: Interim head of marketing
+short: Interim Head of Marketing
 ---
 
 ## When this is the right service

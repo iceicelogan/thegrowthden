@@ -4,6 +4,9 @@ h1: Agency, in-house hire, or fractional growth lead: what actually changes at $
 description: An agency is paid to keep your account and grow your spend. An in-house hire is paid to be there. A fractional growth lead is paid to build something you own and make the number move. Here is what each one is structurally good and bad at, without the sales pitch, from someone who has been on all three sides.
 updated: 2026-10-05
 kind: comparison
+cta_title: Leaning fractional? Here's what the first two weeks look like.
+cta_text: Read access to the ad accounts, Shopify and finance, then my read of the whole business and a MER target agreed with your finance person. If you'd rather hire or stay with your agency after that conversation, I'll tell you so.
+cta_button: Book the fit call
 ---
 
 ## Why this question is harder than it looks

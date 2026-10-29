@@ -437,9 +437,10 @@ def build_page(p, pages, services=None, notes=None):
     if p["faq"]:
         faq_html = '<h2>Questions people ask</h2>' + "".join(
             f"<details><summary>{html.escape(q)}</summary>{md_to_html(a)}</details>" for q, a in p["faq"])
-    service_link = ""
+    service_link, svc_h1 = "", "See the services"
     if SERVICE_FOR.get(p["slug"]):
         svc = load(SERVICE_FOR[p["slug"]])
+        svc_h1 = svc.get("short") or svc["h1"]
         service_link = f'<p class="svc">The service for this: <a href="/{svc["slug"]}/">{html.escape(svc["h1"])}</a></p>'
     others = [o for o in pages if o["slug"] != p["slug"]]
     more = '<h2 class="more-h">More straight answers</h2><ul class="list">' + "".join(
@@ -454,10 +455,10 @@ def build_page(p, pages, services=None, notes=None):
   </article>
   {AUTHOR_CARD}
   <div class="box">
-    <h2>Work with Logan</h2>
-    <p>I'm a fractional growth advisor for growth-stage DTC and e-commerce brands. I handle strategy and take execution off your plate, in whatever seat you need, from $7,500 a month.</p>
+    <h2>{html.escape(p.get("cta_title") or "Work with Logan")}</h2>
+    <p>{inline(p.get("cta_text") or "I'm a fractional growth advisor for growth-stage DTC and e-commerce brands. I handle strategy and take execution off your plate, in whatever seat you need, from $7,500 a month.")}</p>
     {service_link}
-    <a class="cta" href="{CAL}" target="_blank">Let's see if we're a fit</a><a class="more" href="/#services">See the services →</a>
+    <a class="cta" href="{CAL}" target="_blank">{html.escape(p.get("cta_button") or "Let's see if we're a fit")}</a><a class="more" href="/{SERVICE_FOR[p["slug"]]}/">{html.escape(svc_h1)} →</a>
   </div>
   {more}"""
     d = ROOT / p["slug"]
