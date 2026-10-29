@@ -1078,6 +1078,13 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     color: rgba(255,255,255,.5);
   }
 
+  .testi-pull { max-width: 860px; margin: 0 auto 28px; padding: 34px 38px; border-left: 4px solid var(--gold); background: rgba(255,255,255,.05); border-radius: 0 var(--r-lg) var(--r-lg) 0; }
+  .testi-pull p { font-size: clamp(19px, 2.2vw, 26px); font-weight: 500; line-height: 1.45; color: #fff; text-wrap: pretty; }
+  .testi-pull p em { font-style: normal; color: var(--gold); }
+  .testi-pull footer { margin-top: 14px; font-size: 14px; color: rgba(255,255,255,.6); }
+  .testi-pull footer a { color: rgba(255,255,255,.85); border-bottom: 1px solid rgba(255,255,255,.3); }
+  .testi-seat { font-size: 12px; font-weight: 600; color: var(--gold); margin-top: 4px; }
+  @media (max-width: 640px) { .testi-pull { padding: 24px 22px; } }
   @media (max-width: 640px) {
     .testimonials-grid { grid-template-columns: 1fr; max-width: 520px; }
   }
@@ -1730,6 +1737,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <h2>Don't take my word for it.</h2>
       <p>The people who worked with me are probably who sent you here.</p>
     </div>
+    <blockquote class="testi-pull reveal">
+      <p>"It's such a gift to get to work with someone who can lead both strategy and execution. <em>I would have paid 20x for an agency for the same engagement, and probably a worse outcome.</em>"</p>
+      <footer>Ari Ziskin, Head of Marketing, <a href="https://www.autobrush.com/" target="_blank" rel="noopener">Autobrush</a> · Fractional Head of Growth seat</footer>
+    </blockquote>
     <div class="testimonials-grid reveal">
 
       <div class="testimonial-card">
@@ -1739,6 +1750,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <div>
             <div class="testi-name">Ari Ziskin</div>
             <div class="testi-title">Head of Marketing, Autobrush</div>
+            <div class="testi-seat">Fractional Head of Growth · strategy + execution</div>
           </div>
         </div>
       </div>
@@ -1750,6 +1762,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <div>
             <div class="testi-name">Nicole Bruno</div>
             <div class="testi-title">Head of Content, KnownWell</div>
+            <div class="testi-seat">Head of Creative · creative system + Meta strategy</div>
           </div>
         </div>
       </div>
