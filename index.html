@@ -646,6 +646,40 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     .problem-grid { grid-template-columns: 1fr; gap: 48px; }
   }
 
+  /* ── FIT (who this is for / not for) ── */
+  #fit { padding: 100px 0; background: var(--cream); }
+  .fit-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; align-items: start; }
+  .fit-col { background: var(--white); border: 1px solid var(--border); border-radius: var(--r-lg); padding: 36px; }
+  .fit-col h2 { font-size: clamp(22px, 2.4vw, 30px); font-weight: 700; color: var(--purple); line-height: 1.2; margin-bottom: 22px; text-wrap: pretty; }
+  .fit-no .tag { color: var(--muted); }
+  .fit-list { list-style: none; display: flex; flex-direction: column; gap: 14px; }
+  .fit-list li { padding-left: 26px; position: relative; font-size: 15px; line-height: 1.65; color: var(--ink); }
+  .fit-list li::before { content: "✓"; position: absolute; left: 0; top: 1px; color: var(--orange); font-weight: 700; }
+  .fit-no .fit-list li::before { content: "✕"; color: var(--muted); }
+  .fit-foot { margin-top: 24px; font-size: 14px; color: var(--muted); line-height: 1.6; }
+  .fit-foot a { color: var(--purple); font-weight: 600; border-bottom: 2px solid var(--gold); }
+  @media (max-width: 768px) { #fit { padding: 72px 0; } .fit-grid { grid-template-columns: 1fr; gap: 20px; } .fit-col { padding: 26px; } }
+
+  /* ── OUTCOMES ── */
+  #outcomes { padding: 100px 0; background: var(--white); }
+  .outcomes-header { max-width: 640px; margin-bottom: 44px; }
+  .outcomes-header h2 { font-size: clamp(28px, 3.5vw, 44px); font-weight: 700; color: var(--purple); margin-bottom: 12px; text-wrap: pretty; }
+  .outcomes-header p { font-size: 16px; color: var(--muted); line-height: 1.6; }
+  .outcomes-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .outcome-card { display: flex; flex-direction: column; gap: 10px; background: var(--white); border: 1px solid var(--border); border-radius: var(--r-lg); padding: 30px 28px; text-decoration: none; color: var(--ink); transition: box-shadow .2s, transform .2s, border-color .2s; }
+  .outcome-card:hover { box-shadow: 0 12px 40px rgba(52,31,68,.1); transform: translateY(-2px); border-color: rgba(254,124,43,.35); }
+  .outcome-stat { font-size: clamp(26px, 2.6vw, 34px); font-weight: 800; color: var(--orange); line-height: 1.05; letter-spacing: -.01em; }
+  .outcome-stat.placeholder { color: var(--muted); font-size: 18px; font-weight: 600; font-style: italic; }
+  .outcome-brand { font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--purple); }
+  .outcome-card p { font-size: 14px; line-height: 1.65; color: var(--muted); flex: 1; }
+  .outcome-card p strong { color: var(--ink); font-weight: 600; }
+  .outcome-card q { font-style: italic; color: var(--ink); }
+  .outcome-seat { font-size: 13px; font-weight: 600; color: var(--purple); border-top: 1px solid var(--border); padding-top: 12px; margin-top: 4px; }
+  .outcome-seat::after { content: " →"; color: var(--orange); }
+  .outcomes-foot { margin-top: 20px; font-size: 14px; color: var(--muted); }
+  .outcomes-foot a { color: var(--purple); font-weight: 600; border-bottom: 2px solid var(--gold); }
+  @media (max-width: 900px) { .outcomes-grid { grid-template-columns: 1fr; } #outcomes { padding: 72px 0; } }
+
   /* ── THE DEN METHOD ── */
   #method {
     padding: 120px 0;
@@ -1452,6 +1486,70 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         </div>
       </div>
     </div>
+  </div>
+</section>
+
+<!-- FIT -->
+<section id="fit">
+  <div class="wrap">
+    <div class="fit-grid">
+      <div class="fit-col fit-yes reveal">
+        <div class="tag">Who this is for</div>
+        <h2>Growth-stage DTC and e-commerce brands, roughly $5M to $80M.</h2>
+        <ul class="fit-list">
+          <li>You have a real marketing budget and nobody senior owns the number. Or somebody does, and they're stretched across three jobs.</li>
+          <li>The founder is still the de facto head of growth and would like their mornings back.</li>
+          <li>Meta, Shopify and finance all say different things and you need one scorecard everyone is graded on.</li>
+          <li>You want strategy and execution from the same person, and you want to keep whatever gets built.</li>
+        </ul>
+        <p class="fit-foot">Not sure which seat you need? <a href="/when-to-hire/">When to hire a fractional growth lead, and when not to</a>.</p>
+      </div>
+      <div class="fit-col fit-no reveal">
+        <div class="tag">Who this is not for</div>
+        <h2>Probably not you, and I'd rather say so now than on a call.</h2>
+        <ul class="fit-list">
+          <li>Brands under about $3M. At that size you need product, a scrappy generalist and your own time in Ads Manager, not a retainer.</li>
+          <li>Anyone who wants a strategy deck and no execution. I'll write the plan, and then I'll go build it with your team.</li>
+          <li>Anyone shopping for an agency. I don't mark up spend, I don't keep your accounts, and I don't take the work with me when I go.</li>
+          <li>Anyone who already knows the answer and needs somebody to press the buttons. Happy to execute, but I'll push back first.</li>
+        </ul>
+        <p class="fit-foot">Still deciding between an agency, a hire or fractional? <a href="/agency-vs-fractional/">Here's what actually changes at $5M to $80M</a>.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OUTCOMES -->
+<section id="outcomes">
+  <div class="wrap">
+    <div class="outcomes-header reveal">
+      <div class="tag">Outcomes, not just process</div>
+      <h2>What the work actually produced.</h2>
+      <p>The logos up top are nice. This is what happened in the businesses, in the seat I was sitting in at the time.</p>
+    </div>
+    <div class="outcomes-grid reveal">
+      <a class="outcome-card" href="fractional-head-of-growth/">
+        <div class="outcome-stat">$14M → $40M+</div>
+        <div class="outcome-brand">Wuffes</div>
+        <p>Led growth and marketing for a bootstrapped pet supplement brand while it nearly tripled. <strong>28 of the company's 42 people were in my org</strong>, so this was strategy, the team and the number, all at once.</p>
+        <span class="outcome-seat">Head of Growth, in-house</span>
+      </a>
+      <a class="outcome-card" href="fractional-head-of-growth/">
+        <!-- LOGAN: replace the bracketed placeholders with the real Autobrush numbers (blended MER before → after, the window, and the margin context), or delete the stat line and keep the quote. -->
+        <div class="outcome-stat placeholder">[Blended MER X → Y over N months]</div>
+        <div class="outcome-brand">Autobrush</div>
+        <p>Strategy and execution from one seat for a kids' oral health brand. <strong>[One line on what changed and what it protected, e.g. contribution margin held while spend scaled.]</strong> <q>I would have paid 20x for an agency for the same engagement, and probably a worse outcome.</q> Ari Ziskin, Head of Marketing.</p>
+        <span class="outcome-seat">Fractional Head of Growth · strategy + execution</span>
+      </a>
+      <a class="outcome-card" href="fractional-head-of-creative/">
+        <!-- LOGAN: replace with the real Knownwell outcome (e.g. time from angle to live ad before → after, angles tested per month, or the measurement that got rebuilt), or delete the stat line and keep the quote. -->
+        <div class="outcome-stat placeholder">[Angle to live ad: X days → Y hours]</div>
+        <div class="outcome-brand">Knownwell</div>
+        <p>Creative and Meta strategy for a healthcare company that treats people of every size with real respect. <strong>[One line on the creative system or measurement that got built and what it changed.]</strong> <q>The only strategist I've ever met who can explain Meta updates in a way that makes sense to both a C-Suite Exec and a Preschool Teacher.</q> Nicole Bruno, Head of Content.</p>
+        <span class="outcome-seat">Head of Creative · creative system + Meta strategy</span>
+      </a>
+    </div>
+    <p class="outcomes-foot reveal">How the number gets set in the first place: <a href="/mer-target/">a MER target from your contribution margin</a>. What you keep when it's over: <a href="/marketing-system-you-own/">a marketing system your team owns</a>.</p>
   </div>
 </section>
 
