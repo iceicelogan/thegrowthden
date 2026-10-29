@@ -29,4 +29,5 @@ lab/lemonade-economy
 lab/the-auction
 lab/the-machine
 collage
+notes/make-the-cow-a-sphere
 
