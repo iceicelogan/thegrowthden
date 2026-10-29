@@ -4,6 +4,12 @@ date: 2026-10-16
 slug: infinitely-optimistic-finitely-capable
 description: Logan Ice on working with ADHD: what the problems actually look like, the research on why so many founders have it, and the four rituals that keep his brain honest.
 format: html
+hook: Read this if you're a founder with ADHD, or you work for one.
+cta_title: Running a growth function on a brain like this one?
+cta_text: The routines in this post are the same ones I bring to client work: a weekly rhythm, a list the team actually opens, and same-day replies. If your marketing team needs that kind of structure built around it, that's the Team & Systems seat.
+cta_button: Let's talk about your team
+cta_more: /marketing-team-builder/
+cta_more_text: Building a marketing team and its systems
 ---
 
 <p><img loading="lazy" src="/uploads/notes/infinitely-optimistic-finitely-capable/874a55e85de2cc7f300bf0efecbb8824.jpg" alt="my desk, not staged"></p>

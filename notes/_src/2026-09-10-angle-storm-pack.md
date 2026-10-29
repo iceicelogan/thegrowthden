@@ -5,6 +5,12 @@ updated: 2026-10-06
 slug: angle-storm-pack
 description: Logan Ice's creative development loop for paid social as seven prompts you can paste into Claude or ChatGPT: name the default angle, force new angles away from it, score them, test them on five independent personas, and loop until one of them fights for an angle.
 format: html
+hook: Read this if your ads look like everyone else's. Seven prompts you can paste today.
+cta_title: Want this loop running inside your team?
+cta_text: The Angle Storm is the first week of the Head of Creative seat. After that I build the pipeline that turns the winning angles into finished ads fast, and teach your team to run it without me.
+cta_button: Let's talk about your creative
+cta_more: /fractional-head-of-creative/
+cta_more_text: A fractional head of creative for DTC ads
 ---
 
 <p><img loading="lazy" src="/uploads/notes/angle-storm-pack/89475f0c8651af66e7e51e35af00ab2b.png" alt="Notes from the Den, edition 1: The Angle Storm Pack. Seven copy-paste prompts that force new ad angles apart, then make a synthetic focus group fight over them."></p><p>Notes from the Den, edition 1.</p>

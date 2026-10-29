@@ -646,6 +646,40 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     .problem-grid { grid-template-columns: 1fr; gap: 48px; }
   }
 
+  /* ── FIT (who this is for / not for) ── */
+  #fit { padding: 100px 0; background: var(--cream); }
+  .fit-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; align-items: start; }
+  .fit-col { background: var(--white); border: 1px solid var(--border); border-radius: var(--r-lg); padding: 36px; }
+  .fit-col h2 { font-size: clamp(22px, 2.4vw, 30px); font-weight: 700; color: var(--purple); line-height: 1.2; margin-bottom: 22px; text-wrap: pretty; }
+  .fit-no .tag { color: var(--muted); }
+  .fit-list { list-style: none; display: flex; flex-direction: column; gap: 14px; }
+  .fit-list li { padding-left: 26px; position: relative; font-size: 15px; line-height: 1.65; color: var(--ink); }
+  .fit-list li::before { content: "✓"; position: absolute; left: 0; top: 1px; color: var(--orange); font-weight: 700; }
+  .fit-no .fit-list li::before { content: "✕"; color: var(--muted); }
+  .fit-foot { margin-top: 24px; font-size: 14px; color: var(--muted); line-height: 1.6; }
+  .fit-foot a { color: var(--purple); font-weight: 600; border-bottom: 2px solid var(--gold); }
+  @media (max-width: 768px) { #fit { padding: 72px 0; } .fit-grid { grid-template-columns: 1fr; gap: 20px; } .fit-col { padding: 26px; } }
+
+  /* ── OUTCOMES ── */
+  #outcomes { padding: 100px 0; background: var(--white); }
+  .outcomes-header { max-width: 640px; margin-bottom: 44px; }
+  .outcomes-header h2 { font-size: clamp(28px, 3.5vw, 44px); font-weight: 700; color: var(--purple); margin-bottom: 12px; text-wrap: pretty; }
+  .outcomes-header p { font-size: 16px; color: var(--muted); line-height: 1.6; }
+  .outcomes-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .outcome-card { display: flex; flex-direction: column; gap: 10px; background: var(--white); border: 1px solid var(--border); border-radius: var(--r-lg); padding: 30px 28px; text-decoration: none; color: var(--ink); transition: box-shadow .2s, transform .2s, border-color .2s; }
+  .outcome-card:hover { box-shadow: 0 12px 40px rgba(52,31,68,.1); transform: translateY(-2px); border-color: rgba(254,124,43,.35); }
+  .outcome-stat { font-size: clamp(26px, 2.6vw, 34px); font-weight: 800; color: var(--orange); line-height: 1.05; letter-spacing: -.01em; }
+  .outcome-stat--words { font-size: clamp(20px, 2vw, 24px); color: var(--purple); line-height: 1.2; }
+  .outcome-brand { font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--purple); }
+  .outcome-card p { font-size: 14px; line-height: 1.65; color: var(--muted); flex: 1; }
+  .outcome-card p strong { color: var(--ink); font-weight: 600; }
+  .outcome-card q { font-style: italic; color: var(--ink); }
+  .outcome-seat { font-size: 13px; font-weight: 600; color: var(--purple); border-top: 1px solid var(--border); padding-top: 12px; margin-top: 4px; }
+  .outcome-seat::after { content: " →"; color: var(--orange); }
+  .outcomes-foot { margin-top: 20px; font-size: 14px; color: var(--muted); }
+  .outcomes-foot a { color: var(--purple); font-weight: 600; border-bottom: 2px solid var(--gold); }
+  @media (max-width: 900px) { .outcomes-grid { grid-template-columns: 1fr; } #outcomes { padding: 72px 0; } }
+
   /* ── THE DEN METHOD ── */
   #method {
     padding: 120px 0;
@@ -1044,6 +1078,13 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     color: rgba(255,255,255,.5);
   }
 
+  .testi-pull { max-width: 860px; margin: 0 auto 28px; padding: 34px 38px; border-left: 4px solid var(--gold); background: rgba(255,255,255,.05); border-radius: 0 var(--r-lg) var(--r-lg) 0; }
+  .testi-pull p { font-size: clamp(19px, 2.2vw, 26px); font-weight: 500; line-height: 1.45; color: #fff; text-wrap: pretty; }
+  .testi-pull p em { font-style: normal; color: var(--gold); }
+  .testi-pull p.testi-pull-by { margin-top: 14px; font-size: 14px; font-weight: 300; line-height: 1.5; color: rgba(255,255,255,.6); }
+  .testi-pull p.testi-pull-by a { color: rgba(255,255,255,.85); border-bottom: 1px solid rgba(255,255,255,.3); }
+  .testi-seat { font-size: 12px; font-weight: 600; color: var(--gold); margin-top: 4px; }
+  @media (max-width: 640px) { .testi-pull { padding: 24px 22px; } }
   @media (max-width: 640px) {
     .testimonials-grid { grid-template-columns: 1fr; max-width: 520px; }
   }
@@ -1315,6 +1356,24 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .seat-keep { line-height: 1.6; margin-bottom: 20px; }
   .seat-price { font-weight: 700; color: var(--gold); font-size: 20px; margin-bottom: 12px; }
   .seat-more { color: #fff; font-weight: 500; border-bottom: 1px solid rgba(255,255,255,.35); }
+  .seat-primary { background: rgba(255,255,255,.06); border: 1px solid rgba(255,197,69,.35); border-radius: var(--r-lg); padding: 36px; color: rgba(255,255,255,.85); }
+  .seat-primary-name { font-size: clamp(24px, 2.8vw, 34px); font-weight: 700; color: #fff; margin: 6px 0 10px; }
+  .seat-primary .seat-pain { margin-bottom: 24px; color: rgba(255,255,255,.8); font-weight: 500; font-size: clamp(17px, 2vw, 21px); }
+  .seat-primary .seat-list li strong { color: var(--gold); font-weight: 600; }
+  .seat-primary .seat-price { margin-top: 18px; }
+  .seat-others-head { margin: 40px 0 16px; }
+  .seat-others-head p { color: rgba(255,255,255,.7); line-height: 1.6; max-width: 640px; }
+  .seat-others { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .seat-card { background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.12); border-radius: var(--r-md); padding: 0; color: rgba(255,255,255,.85); }
+  .seat-card[open] { background: rgba(255,255,255,.06); border-color: rgba(255,255,255,.25); grid-column: 1 / -1; }
+  .seat-card summary { list-style: none; cursor: pointer; padding: 20px 22px; display: flex; flex-direction: column; gap: 6px; position: relative; padding-right: 48px; }
+  .seat-card summary::-webkit-details-marker { display: none; }
+  .seat-card summary::after { content: "+"; position: absolute; right: 20px; top: 18px; font-size: 24px; color: var(--gold); line-height: 1; }
+  .seat-card[open] summary::after { content: "–"; }
+  .seat-card-name { font-weight: 700; color: #fff; font-size: 17px; }
+  .seat-card-pain { font-size: 14px; color: rgba(255,255,255,.65); line-height: 1.5; }
+  .seat-card .seat-cols { padding: 4px 22px 24px; }
+  @media (max-width: 768px) { .seat-others { grid-template-columns: 1fr; } .seat-primary { padding: 24px; } }
   .seat-big { margin-top: 28px; color: rgba(255,255,255,.75); line-height: 1.6; }
   .seat-big a { color: var(--gold); font-weight: 600; }
   @media (max-width: 768px) { .seat-cols { grid-template-columns: 1fr; gap: 24px; } .seat-panel { padding: 24px; } #services { padding: 80px 0; } }
@@ -1326,6 +1385,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .notes-list li { background: var(--white); border: 1px solid var(--border); border-radius: var(--r-md); padding: 18px 22px; }
   .notes-list a { color: var(--purple); font-weight: 600; font-size: 17px; }
   .notes-date { display: block; color: var(--muted); font-size: 13px; margin-top: 2px; }
+  .notes-hook { display: block; color: var(--ink); font-size: 14px; margin-top: 8px; line-height: 1.5; }
   .notes-all { display: inline-block; margin-top: 18px; color: var(--blue); font-weight: 600; }
   #faq { padding-top: 60px; }
 
@@ -1455,39 +1515,102 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </div>
 </section>
 
+<!-- FIT -->
+<section id="fit">
+  <div class="wrap">
+    <div class="fit-grid">
+      <div class="fit-col fit-yes reveal">
+        <div class="tag">Who this is for</div>
+        <h2>Growth-stage DTC and e-commerce brands, roughly $5M to $80M.</h2>
+        <ul class="fit-list">
+          <li>You have a real marketing budget and nobody senior owns the number. Or somebody does, and they're stretched across three jobs.</li>
+          <li>The founder is still the de facto head of growth and would like their mornings back.</li>
+          <li>Meta, Shopify and finance all say different things and you need one scorecard everyone is graded on.</li>
+          <li>You want strategy and execution from the same person, and you want to keep whatever gets built.</li>
+        </ul>
+        <p class="fit-foot">Not sure which seat you need? <a href="/when-to-hire/">When to hire a fractional growth lead, and when not to</a>.</p>
+      </div>
+      <div class="fit-col fit-no reveal">
+        <div class="tag">Who this is not for</div>
+        <h2>Probably not you, and I'd rather say so now than on a call.</h2>
+        <ul class="fit-list">
+          <li>Brands under about $3M. At that size you need product, a scrappy generalist and your own time in Ads Manager, not a retainer.</li>
+          <li>Anyone who wants a strategy deck and no execution. I'll write the plan, and then I'll go build it with your team.</li>
+          <li>Anyone shopping for an agency. I don't mark up spend, I don't keep your accounts, and I don't take the work with me when I go.</li>
+          <li>Anyone who already knows the answer and needs somebody to press the buttons. Happy to execute, but I'll push back first.</li>
+        </ul>
+        <p class="fit-foot">Still deciding between an agency, a hire or fractional? <a href="/agency-vs-fractional/">Here's what actually changes at $5M to $80M</a>.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OUTCOMES -->
+<section id="outcomes">
+  <div class="wrap">
+    <div class="outcomes-header reveal">
+      <div class="tag">Outcomes, not just process</div>
+      <h2>What the work actually produced.</h2>
+      <p>The logos up top are nice. This is what happened in the businesses, in the seat I was sitting in at the time.</p>
+    </div>
+    <div class="outcomes-grid reveal">
+      <a class="outcome-card" href="fractional-head-of-growth/">
+        <div class="outcome-stat">$14M → $40M+</div>
+        <div class="outcome-brand">Wuffes</div>
+        <p>Led growth and marketing for a bootstrapped pet supplement brand while it nearly tripled. <strong>28 of the company's 42 people were in my org</strong>, so this was strategy, the team and the number, all at once.</p>
+        <span class="outcome-seat">Head of Growth, in-house</span>
+      </a>
+      <a class="outcome-card" href="fractional-head-of-growth/">
+        <div class="outcome-stat outcome-stat--words">Clarity into every decision</div>
+        <div class="outcome-brand">Autobrush</div>
+        <p>Strategy and execution from one seat for a kids' oral health brand. In the head of marketing's words: <q>For the first time in our business, I feel like I have clarity into every important decision.</q> And then: <q>I would have paid 20x for an agency for the same engagement, and probably a worse outcome.</q> Ari Ziskin.</p>
+        <span class="outcome-seat">Fractional Head of Growth · strategy + execution</span>
+      </a>
+      <a class="outcome-card" href="fractional-head-of-creative/">
+        <div class="outcome-stat outcome-stat--words">Meta, explained to the whole team</div>
+        <div class="outcome-brand">Knownwell</div>
+        <p>Creative and Meta strategy for a healthcare company that treats people of every size with real respect. <q>The only strategist I've ever met who can explain Meta updates in a way that makes sense to both a C-Suite Exec and a Preschool Teacher. It's unsettling how good he is at this.</q> Nicole Bruno, Head of Content.</p>
+        <span class="outcome-seat">Head of Creative · creative system + Meta strategy</span>
+      </a>
+    </div>
+    <p class="outcomes-foot reveal">How the number gets set in the first place: <a href="/mer-target/">a MER target from your contribution margin</a>. What you keep when it's over: <a href="/marketing-system-you-own/">a marketing system your team owns</a>.</p>
+  </div>
+</section>
+
 <!-- SEATS -->
 <section id="services">
   <div class="wrap">
     <div class="method-header reveal">
       <div class="tag method-tag">Plug me in where growth is stuck</div>
       <h2>Services.</h2>
-      <p>The seat changes. The deal doesn't: strategy and execution from the same person, starting at $7,500 a month. Plenty of clients start in one seat and end up with me in two. If you need the whole function covered for a while, there's an interim service for that too.</p>
+      <p>The seat changes. The deal doesn't: strategy and execution from the same person, starting at $7,500 a month. Most clients start in the Head of Growth seat, so that's first. The others are below it, including an interim seat if you need the whole function covered for a while.</p>
     </div>
     <div class="seats reveal">
-      <div class="seat-tabs" role="tablist">
-        <button class="seat-tab active" role="tab" aria-selected="true" data-seat="strategy">Head of Strategy</button>
-        <button class="seat-tab" role="tab" aria-selected="false" data-seat="creative">Head of Creative</button>
-        <button class="seat-tab" role="tab" aria-selected="false" data-seat="media">Media &amp; Tooling</button>
-        <button class="seat-tab" role="tab" aria-selected="false" data-seat="team">Team &amp; Systems</button>
-        <button class="seat-tab" role="tab" aria-selected="false" data-seat="interim">Interim CMO</button>
-      </div>
-      <div class="seat-panel active" role="tabpanel" data-seat="strategy">
-        <p class="seat-pain">"You need someone to decide where the next dollar goes."</p>
+      <div class="seat-primary">
+        <div class="seat-label">Where most clients start</div>
+        <h3 class="seat-primary-name">Fractional Head of Growth</h3>
+        <p class="seat-pain">"You need someone to decide where the next dollar goes, and then go do it."</p>
         <div class="seat-cols">
           <div>
-            <div class="seat-label">Where I start</div>
-            <ul class="seat-list"><li>A pre-audit read of every channel, judged on MER and contribution margin, not one platform's attribution</li><li>A 90-day plan written as bets, each with a cost, a success measure and a stop date</li><li>A weekly leadership session with you and your team</li></ul>
+            <div class="seat-label">What this seat owns</div>
+            <ul class="seat-list"><li>The blended number: acquisition, retention and MER against your contribution margin, read from Shopify and finance rather than one platform's attribution</li><li>The 90-day plan, written as bets, each with a cost, a success measure and a stop date</li><li>The work itself: Ads Manager, the creative pipeline, the reporting, and teaching your team to run each of them</li><li>A weekly leadership session with you and your team, and same-day replies in between</li></ul>
           </div>
           <div>
-            <div class="seat-label">What you keep</div>
-            <p class="seat-keep">A "what to do" dashboard your team actually opens, and a plan that doesn't live in a Google Doc nobody reads.</p>
+            <div class="seat-label">How we measure it in the first 90 days</div>
+            <ul class="seat-list"><li><strong>Week two:</strong> my read of the whole business is done and a MER target is agreed with finance</li><li><strong>Month one:</strong> the bets are live and the "what to do" dashboard is in your accounts, not mine</li><li><strong>Month three:</strong> your team reads the scorecard without me explaining it, and every bet is graded against the target</li></ul>
             <div class="seat-price">From $7,500/month</div>
             <a class="seat-more" href="fractional-head-of-growth/">More on Head of Growth →</a>
           </div>
         </div>
       </div>
-      <div class="seat-panel" role="tabpanel" data-seat="creative">
-        <p class="seat-pain">"Your ads look like everyone else's."</p>
+
+      <div class="seat-others-head">
+        <div class="seat-label">Other seats I fill</div>
+        <p>Same deal, different problem. Plenty of clients start in one seat and end up with me in two. Open one to see where I start and what you keep.</p>
+      </div>
+      <div class="seat-others">
+      <details class="seat-card" data-seat="creative">
+        <summary><span class="seat-card-name">Head of Creative</span><span class="seat-card-pain">"Your ads look like everyone else's."</span></summary>
         <div class="seat-cols">
           <div>
             <div class="seat-label">Where I start</div>
@@ -1500,9 +1623,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <a class="seat-more" href="fractional-head-of-creative/">More on Head of Creative →</a>
           </div>
         </div>
-      </div>
-      <div class="seat-panel" role="tabpanel" data-seat="media">
-        <p class="seat-pain">"You already have a growth lead. You need someone great in Ads Manager."</p>
+      </details>
+      <details class="seat-card" data-seat="media">
+        <summary><span class="seat-card-name">Media &amp; Tooling</span><span class="seat-card-pain">"You already have a growth lead. You need someone great in Ads Manager."</span></summary>
         <div class="seat-cols">
           <div>
             <div class="seat-label">Where I start</div>
@@ -1515,9 +1638,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <a class="seat-more" href="meta-media-buyer/">More on Media &amp; Tooling →</a>
           </div>
         </div>
-      </div>
-      <div class="seat-panel" role="tabpanel" data-seat="team">
-        <p class="seat-pain">"You're hiring, or you're about to."</p>
+      </details>
+      <details class="seat-card" data-seat="team">
+        <summary><span class="seat-card-name">Team &amp; Systems</span><span class="seat-card-pain">"You're hiring, or you're about to."</span></summary>
         <div class="seat-cols">
           <div>
             <div class="seat-label">Where I start</div>
@@ -1530,9 +1653,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <a class="seat-more" href="marketing-team-builder/">More on Team &amp; Systems →</a>
           </div>
         </div>
-      </div>
-      <div class="seat-panel" role="tabpanel" data-seat="interim">
-        <p class="seat-pain">"Your marketing leader is gone, or not hired yet, and the team still needs an owner on Monday."</p>
+      </details>
+      <details class="seat-card" data-seat="interim">
+        <summary><span class="seat-card-name">Interim CMO</span><span class="seat-card-pain">"Your marketing leader is gone, or not hired yet, and the team still needs an owner on Monday."</span></summary>
         <div class="seat-cols">
           <div>
             <div class="seat-label">Where I start</div>
@@ -1545,10 +1668,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <a class="seat-more" href="interim-head-of-marketing/">More on Interim CMO →</a>
           </div>
         </div>
+      </details>
       </div>
       <p class="seat-big">Taking a whole new product to market? That's a bigger, custom program with a team behind it. <a href="https://calendar.app.google/dy8683mNDXyWAkPo9" target="_blank">Let's talk it through.</a></p>
     </div>
-  </div>
 </section>
 
 <!-- DELIVERABLES -->
@@ -1614,6 +1737,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <h2>Don't take my word for it.</h2>
       <p>The people who worked with me are probably who sent you here.</p>
     </div>
+    <blockquote class="testi-pull reveal">
+      <p>"It's such a gift to get to work with someone who can lead both strategy and execution. <em>I would have paid 20x for an agency for the same engagement, and probably a worse outcome.</em>"</p>
+      <p class="testi-pull-by">Ari Ziskin, Head of Marketing, <a href="https://www.autobrush.com/" target="_blank" rel="noopener">Autobrush</a> · Fractional Head of Growth seat</p>
+    </blockquote>
     <div class="testimonials-grid reveal">
 
       <div class="testimonial-card">
@@ -1623,6 +1750,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <div>
             <div class="testi-name">Ari Ziskin</div>
             <div class="testi-title">Head of Marketing, Autobrush</div>
+            <div class="testi-seat">Fractional Head of Growth · strategy + execution</div>
           </div>
         </div>
       </div>
@@ -1634,6 +1762,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <div>
             <div class="testi-name">Nicole Bruno</div>
             <div class="testi-title">Head of Content, KnownWell</div>
+            <div class="testi-seat">Head of Creative · creative system + Meta strategy</div>
           </div>
         </div>
       </div>
@@ -1714,7 +1843,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <div class="tag">Notes from the Den</div>
       <h2>What I'm writing about lately.</h2>
     </div>
-    <ul class="notes-list reveal"><!-- NOTES:START --><li><a href="/notes/make-the-cow-a-sphere/">Make the cow a sphere</a> <span class="notes-date">October 29, 2026</span></li><li><a href="/notes/infinitely-optimistic-finitely-capable/">Infinitely Optimistic, Finitely Capable</a> <span class="notes-date">October 16, 2026</span></li><li><a href="/notes/ai-is-making-people-worse-at-their-jobs/">AI is making people worse at their jobs</a> <span class="notes-date">October 8, 2026</span></li><!-- NOTES:END --></ul>
+    <ul class="notes-list reveal"><!-- NOTES:START --><li><a href="/notes/make-the-cow-a-sphere/">Make the cow a sphere</a> <span class="notes-date">October 29, 2026</span><span class="notes-hook">Read this if you want to see how I take a problem apart before I touch anything in the ad account.</span></li><li><a href="/notes/infinitely-optimistic-finitely-capable/">Infinitely Optimistic, Finitely Capable</a> <span class="notes-date">October 16, 2026</span><span class="notes-hook">Read this if you&#x27;re a founder with ADHD, or you work for one.</span></li><li><a href="/notes/ai-is-making-people-worse-at-their-jobs/">AI is making people worse at their jobs</a> <span class="notes-date">October 8, 2026</span><span class="notes-hook">Read this if your team opens ChatGPT before they&#x27;ve thought about the problem.</span></li><!-- NOTES:END --></ul>
     <a class="notes-all" href="/notes/">All notes →</a>
   </div>
 </section>
@@ -1817,12 +1946,10 @@ const observer = new IntersectionObserver((entries) => {
 }, { threshold: 0.12 });
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-// ── Seat picker ──
-document.querySelectorAll('.seat-tab').forEach(tab => {
-  tab.addEventListener('click', () => {
-    const k = tab.dataset.seat;
-    document.querySelectorAll('.seat-tab').forEach(t => { t.classList.toggle('active', t === tab); t.setAttribute('aria-selected', t === tab); });
-    document.querySelectorAll('.seat-panel').forEach(p => p.classList.toggle('active', p.dataset.seat === k));
+// ── Other seats: only one open at a time ──
+document.querySelectorAll('.seat-card').forEach(card => {
+  card.addEventListener('toggle', () => {
+    if (card.open) document.querySelectorAll('.seat-card').forEach(c => { if (c !== card) c.open = false; });
   });
 });
 </script>

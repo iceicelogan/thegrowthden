@@ -4,6 +4,9 @@ h1: Twelve questions that tell you whether a fractional CMO builds or just advis
 description: Plenty of fractional marketing leaders are strategy-only, and most interview guides won't catch that until month three. These are the questions I'd ask if I were hiring someone like me, including the two that most candidates can't answer: show me the last ad account you personally ran, and how do you plan to make yourself unnecessary.
 updated: 2026-10-06
 kind: checklist
+cta_title: Ask me the twelve questions.
+cta_text: Bring this list to the call. I'd rather you hear my answers on whether I build or just advise before we talk about anything else. If the gap you're covering is a leader who left, the interim seat is built for exactly that.
+cta_button: Interview me
 ---
 
 ## Why the usual interview misses

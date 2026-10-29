@@ -6,6 +6,11 @@ updated: 2026-10-05
 kind: service
 price: 7500
 service_type: Marketing team and systems building
+short: Team & Systems
+related: marketing-system-you-own, ai-training-for-marketing-teams, notes/dnd-dialogue-six-years-later
+cta_title: Hiring, or about to be?
+cta_text: Write down the work that needs doing every week and bring it to the call. I'll tell you which role it actually is, and whether to build the system before you post the job. Most of the time, it's before.
+cta_button: Let's map the roles
 ---
 
 ## What I do
@@ -14,6 +19,21 @@ service_type: Marketing team and systems building
 - Job descriptions, interview rubrics and onboarding plans for the next hire.
 - SOPs written for the people who'll follow them, not for marketers.
 - AI workflows your team owns, and training so they can run and extend them.
+
+## Who this is for
+
+- You're about to hire your first or next marketer and you're not sure whether the job is a media buyer, a creative owner or something else.
+- The team grew faster than its processes, so the work lives in people's heads and Slack.
+- You're leaning on an agency for things your own team should own, and you'd like that to stop.
+- Not for anyone who just wants a recruiter. I'll help you hire, but the system gets built first so the hire has something to run.
+
+## What you keep
+
+- A team that knows how to run the systems, trained by the person who built them.
+- The role map, the job descriptions, the interview rubrics and the onboarding plans.
+- SOPs and AI workflows written for the people who'll actually use them, in your accounts.
+
+From $7,500 a month, whichever seat I'm in. Where it lands above that depends on how many seats I'm covering and how much building is involved. Ad spend and software stay in your accounts and are never marked up.
 
 ## Why strategy and execution from one person
 

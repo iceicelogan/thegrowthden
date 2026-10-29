@@ -4,6 +4,12 @@ date: 2026-10-08
 slug: ai-is-making-people-worse-at-their-jobs
 description: Logan Ice on the difference between using AI to go faster and using it to outsource your brain, and why taste is the only moat left when knowledge is free.
 format: html
+hook: Read this if your team opens ChatGPT before they've thought about the problem.
+cta_title: Want your team using AI without outsourcing the thinking?
+cta_text: I build AI workflows for creative and reporting into how your team already works, then coach them until they can run and extend the workflows without me. The judgment stays human, the busywork doesn't.
+cta_button: Let's talk about your team
+cta_more: /ai-training-for-marketing-teams/
+cta_more_text: How the AI training works
 ---
 
 <p><img loading="lazy" src="/uploads/notes/ai-is-making-people-worse-at-their-jobs/e22eac15c45bc894264e2c4283bf729a.jpg" alt="thinkforyourself"></p><p>Coworkers that open Claude just to ask what time they should eat lunch, or clients that use GPT-Astra to change a SQL query from</p><p></p><pre>WHERE DATE &gt; 7/1/2026</pre><p>to</p><pre>WHERE DATE &gt; 7/8/2026</pre><p></p>

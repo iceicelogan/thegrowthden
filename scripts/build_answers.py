@@ -437,9 +437,10 @@ def build_page(p, pages, services=None, notes=None):
     if p["faq"]:
         faq_html = '<h2>Questions people ask</h2>' + "".join(
             f"<details><summary>{html.escape(q)}</summary>{md_to_html(a)}</details>" for q, a in p["faq"])
-    service_link = ""
+    service_link, svc_h1 = "", "See the services"
     if SERVICE_FOR.get(p["slug"]):
         svc = load(SERVICE_FOR[p["slug"]])
+        svc_h1 = svc.get("short") or svc["h1"]
         service_link = f'<p class="svc">The service for this: <a href="/{svc["slug"]}/">{html.escape(svc["h1"])}</a></p>'
     others = [o for o in pages if o["slug"] != p["slug"]]
     more = '<h2 class="more-h">More straight answers</h2><ul class="list">' + "".join(
@@ -454,15 +455,34 @@ def build_page(p, pages, services=None, notes=None):
   </article>
   {AUTHOR_CARD}
   <div class="box">
-    <h2>Work with Logan</h2>
-    <p>I'm a fractional growth advisor for growth-stage DTC and e-commerce brands. I handle strategy and take execution off your plate, in whatever seat you need, from $7,500 a month.</p>
+    <h2>{html.escape(p.get("cta_title") or "Work with Logan")}</h2>
+    <p>{inline(p.get("cta_text") or "I'm a fractional growth advisor for growth-stage DTC and e-commerce brands. I handle strategy and take execution off your plate, in whatever seat you need, from $7,500 a month.")}</p>
     {service_link}
-    <a class="cta" href="{CAL}" target="_blank">Let's see if we're a fit</a><a class="more" href="/#services">See the services →</a>
+    <a class="cta" href="{CAL}" target="_blank">{html.escape(p.get("cta_button") or "Let's see if we're a fit")}</a><a class="more" href="/{SERVICE_FOR[p["slug"]]}/">{html.escape(svc_h1)} →</a>
   </div>
   {more}"""
     d = ROOT / p["slug"]
     d.mkdir(parents=True, exist_ok=True)
     (d / "index.html").write_text(page_shell(p["title"], p["description"], url, ld, content), encoding="utf-8")
+
+
+def related_html(p, notes):
+    """'related:' front matter: comma-separated answer/service slugs, or notes/<slug>."""
+    items = []
+    for ref in [r.strip() for r in (p.get("related") or "").split(",") if r.strip()]:
+        if ref.startswith("notes/"):
+            slug = ref[6:]
+            n = next((x for x in notes if x["slug"] == slug), None)
+            if n:
+                items.append(f'<li><a href="/notes/{slug}/">{html.escape(n["title"])}</a> <span class="d">Notes from the Den</span></li>')
+            continue
+        try:
+            a = load(ref)
+        except SystemExit:
+            continue
+        label = "Service" if a.get("kind") == "service" else "Straight answer"
+        items.append(f'<li><a href="/{ref}/">{html.escape(a["h1"])}</a> <span class="d">{label}</span></li>')
+    return ('<h2 class="more-h">Related reading</h2><ul class="list">' + "".join(items) + "</ul>") if items else ""
 
 
 def build_service_page(p, services, notes):
@@ -517,10 +537,11 @@ def build_service_page(p, services, notes):
   </article>
   {AUTHOR_CARD}
   <div class="box">
-    <h2>Work with Logan</h2>
-    <p>I'm a fractional growth advisor for growth-stage DTC and e-commerce brands. I handle strategy and take execution off your plate, in whatever seat you need, from $7,500 a month.</p>
-    <a class="cta" href="{CAL}" target="_blank">Let's see if we're a fit</a><a class="more" href="/#services">See all the services →</a>
+    <h2>{html.escape(p.get("cta_title") or "Work with Logan")}</h2>
+    <p>{inline(p.get("cta_text") or "I'm a fractional growth advisor for growth-stage DTC and e-commerce brands. I handle strategy and take execution off your plate, in whatever seat you need, from $7,500 a month.")}</p>
+    <a class="cta" href="{CAL}" target="_blank">{html.escape(p.get("cta_button") or "Let's see if we're a fit")}</a><a class="more" href="/#pricing">How the pricing works →</a>
   </div>
+  {related_html(p, notes)}
   {more}
   {notes_html}"""
     d = ROOT / p["slug"]

@@ -4,6 +4,12 @@ date: 2026-10-01
 slug: how-to-earn-trust
 description: Logan Ice on the simplest advice he has for anyone at any stage of their career: be useful before you're asked, do what you said you would do, and tell people the truth early. Less about marketing this week, more about being a good person to work with.
 format: html
+hook: Read this if you're about to hire someone you can't fully vet yet (including me).
+cta_title: Hiring someone like me?
+cta_text: Everything in this post is how I try to work with clients: useful before you ask, do what I said, tell you the truth early. If you want to check that before a call, the twelve questions page is the interview I'd give myself.
+cta_button: Let's see if we're a fit
+cta_more: /how-to-evaluate-a-fractional-cmo/
+cta_more_text: The twelve questions
 ---
 
 <p><img loading="lazy" src="/uploads/notes/how-to-earn-trust/217ce9224f60d895d833bc64edd2dfdf.jpg" alt="A cream envelope on purple linen, closed with an orange wax seal pressed with The Growth Den bear and star, over a gold ribbon"></p><p>Every good working relationship I have comes down to one thing, and I promise it's something anyone can do.</p><p>This week's note is less about marketing and more about work in general, and maybe life in general, because the thing underneath every good client relationship I have is the same thing underneath every good friendship. It's trust. It's what makes a client call you first when something goes sideways, and it's what makes a colleague bring you the problem they're worried about instead of hiding it. The best part is that building it doesn't take any special talent. It takes a few simple habits, and anybody can start them tomorrow.</p>

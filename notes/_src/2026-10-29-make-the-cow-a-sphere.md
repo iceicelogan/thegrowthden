@@ -5,6 +5,12 @@ updated: 2026-10-29
 slug: make-the-cow-a-sphere
 description: Logan Ice on how he breaks problems down: the spherical-cow habit from physics, the What / So what / Now what questions from consulting, the four steps he runs on every client problem, and the research on when breaking things down makes you worse.
 format: html
+hook: Read this if you want to see how I take a problem apart before I touch anything in the ad account.
+cta_title: Have a problem that needs the cow treatment?
+cta_text: Most engagements start exactly like this: size the problem, strip it to the thing that actually matters, and hand you three bets you can act on Monday. That's the Head of Growth seat, from $7,500 a month.
+cta_button: Let's size your problem
+cta_more: /fractional-head-of-growth/
+cta_more_text: What a fractional head of growth does
 ---
 
 <p><img loading="lazy" src="/uploads/notes/make-the-cow-a-sphere/f75b0aaf8031adefe5b2319f998d2454.jpg" alt="A cartoon spherical cow in a field, next to the title Make the cow a sphere"></p><p>There's a joke every physics undergrad hears in their first semester, and I've been using it at work for about fifteen years.</p>

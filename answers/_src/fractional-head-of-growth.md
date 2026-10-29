@@ -6,6 +6,11 @@ updated: 2026-10-26
 kind: service
 price: 7500
 service_type: Fractional head of growth
+short: Fractional Head of Growth
+related: agency-vs-fractional, mer-target, when-to-hire, notes/make-the-cow-a-sphere
+cta_title: Tell me the number you need moved.
+cta_text: Book a call, tell me the number and what you've already tried. Inside two weeks you'll have my read of the whole business and a MER target your finance person agrees with. If it turns out you don't need this seat yet, I'll say so.
+cta_button: Let's size the problem
 ---
 
 ## The short version
@@ -24,6 +29,14 @@ After that I go do the work. I'll sit in Meta Ads Manager. I'll build the creati
 - A 90-day plan written as bets. Each one has a cost, a way to tell if it's working, and a date we stop if it isn't.
 - A "what to do" dashboard that surfaces actions and recent numbers first, with the charts tucked behind it.
 - A weekly leadership session with you and your team, and same-day replies in between. You'll hear from me the day you reach out, and we work the problem together rather than me going quiet for a week.
+
+## What you keep
+
+- The MER target, agreed with finance, and the scorecard everyone is graded against.
+- The 90-day plan as bets, and the "what to do" dashboard your team actually opens.
+- The accounts, logins and reporting, in your name from day one, and a team that reads the scorecard without me in the room.
+
+From $7,500 a month, whichever seat I'm in. Where it lands above that depends on how many seats I'm covering and how much building is involved. Ad spend and software stay in your accounts and are never marked up.
 
 ## Why strategy and execution from one person
 

@@ -6,6 +6,11 @@ updated: 2026-10-05
 kind: service
 price: 7500
 service_type: Meta media buying with strategy
+short: Media & Tooling
+related: mer-target, marketing-system-you-own, fractional-head-of-growth
+cta_title: Need a second pair of hands your growth lead will actually trust?
+cta_text: Add me to the ad account. The first week is a read of structure, naming, what's been tested and where spend is leaking. The first month is a clean rebuild, the launch tooling, and the first proper test batch.
+cta_button: Let's look at the account
 ---
 
 ## What I do
@@ -14,6 +19,21 @@ service_type: Meta media buying with strategy
 - Naming conventions and bulk launch workflows so new ads go live in minutes and the data stays clean.
 - Reporting built around the numbers that move the business, not platform-reported ROAS alone.
 - Regular working sessions with your growth lead.
+
+## Who this is for
+
+- You already have a growth lead, or the founder owns strategy, and what's missing is somebody great inside Meta Ads Manager every day.
+- The account is messy, launches take days, and the reporting leads with platform ROAS instead of the number the business runs on.
+- You want a buyer who will push back on the plan, not just execute it.
+- Not for brands where nobody owns strategy. That's the [Head of Growth seat](/fractional-head-of-growth/), and I'd rather point you there than buy media into a plan that doesn't exist.
+
+## What you keep
+
+- Accounts that are cleaner, faster to launch into and easier to read, whoever's buying next.
+- The naming conventions, the bulk launch tooling and the reporting, all in your accounts.
+- A "what to do" view on top of the numbers, and a growth lead who knows how to read it.
+
+From $7,500 a month, whichever seat I'm in. Where it lands above that depends on how many seats I'm covering and how much building is involved. Ad spend and software stay in your accounts and are never marked up.
 
 ## Why strategy and execution from one person
 
@@ -37,6 +57,11 @@ Most brands get advice from one place and execution from another, and something 
 - Automation isn't a set-and-forget answer either. Tinuiti's Q4 2025 benchmark found 27% of retail Meta spend went to Advantage+ sales campaigns, down from 38% in Q1 2025, as advertisers rebalanced. Agency client data. ([Tinuiti, Q4 2025 Digital Ads Benchmark](https://tinuiti.com/research-insights/research/digital-ads-benchmark-report-q4-2025/))
 - Platform numbers and real numbers diverge in both directions. Haus found Meta's 7-day-click reporting under-counted incremental revenue by about 15% across 640 tests; Stella found some brands with platform ROAS above 4.0 had incrementality below 1.0. That is why the reporting I build leads with MER. ([Haus, July 2025](https://www.haus.io/blog/the-meta-report-lessons-from-640-haus-incrementality-experiments); [Stella, August 2025](https://www.stellaheystella.com/blog/incrementality-study-how-incremental-is-meta-really))
 - Brands are bringing media in-house. The ANA's 2023 in-house agency report found 54% of in-house agencies handle some media planning and buying, and 65% of brands had moved work from external agencies in-house. ([ANA, May 2023](https://www.ana.net/content/show/id/79185))
+
+## What a client said about it
+
+> Logan is the only strategist I've ever met who can explain Meta updates in a way that makes sense to both a C-Suite Exec and a Preschool Teacher. It's unsettling how good he is at this.
+> — Nicole Bruno, Head of Content, Knownwell
 
 ## An analyst on where the budget goes
 
