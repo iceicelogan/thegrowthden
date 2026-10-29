@@ -1349,6 +1349,23 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .seat-keep { line-height: 1.6; margin-bottom: 20px; }
   .seat-price { font-weight: 700; color: var(--gold); font-size: 20px; margin-bottom: 12px; }
   .seat-more { color: #fff; font-weight: 500; border-bottom: 1px solid rgba(255,255,255,.35); }
+  .seat-primary { background: rgba(255,255,255,.06); border: 1px solid rgba(255,197,69,.35); border-radius: var(--r-lg); padding: 36px; color: rgba(255,255,255,.85); }
+  .seat-primary-name { font-size: clamp(24px, 2.8vw, 34px); font-weight: 700; color: #fff; margin: 6px 0 10px; }
+  .seat-primary .seat-pain { margin-bottom: 24px; color: rgba(255,255,255,.8); font-weight: 500; font-size: clamp(17px, 2vw, 21px); }
+  .seat-primary .seat-list li strong { color: var(--gold); font-weight: 600; }
+  .seat-others-head { margin: 40px 0 16px; }
+  .seat-others-head p { color: rgba(255,255,255,.7); line-height: 1.6; max-width: 640px; }
+  .seat-others { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .seat-card { background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.12); border-radius: var(--r-md); padding: 0; color: rgba(255,255,255,.85); }
+  .seat-card[open] { background: rgba(255,255,255,.06); border-color: rgba(255,255,255,.25); grid-column: 1 / -1; }
+  .seat-card summary { list-style: none; cursor: pointer; padding: 20px 22px; display: flex; flex-direction: column; gap: 6px; position: relative; padding-right: 48px; }
+  .seat-card summary::-webkit-details-marker { display: none; }
+  .seat-card summary::after { content: "+"; position: absolute; right: 20px; top: 18px; font-size: 24px; color: var(--gold); line-height: 1; }
+  .seat-card[open] summary::after { content: "–"; }
+  .seat-card-name { font-weight: 700; color: #fff; font-size: 17px; }
+  .seat-card-pain { font-size: 14px; color: rgba(255,255,255,.65); line-height: 1.5; }
+  .seat-card .seat-cols { padding: 4px 22px 24px; }
+  @media (max-width: 768px) { .seat-others { grid-template-columns: 1fr; } .seat-primary { padding: 24px; } }
   .seat-big { margin-top: 28px; color: rgba(255,255,255,.75); line-height: 1.6; }
   .seat-big a { color: var(--gold); font-weight: 600; }
   @media (max-width: 768px) { .seat-cols { grid-template-columns: 1fr; gap: 24px; } .seat-panel { padding: 24px; } #services { padding: 80px 0; } }
@@ -1559,33 +1576,34 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="method-header reveal">
       <div class="tag method-tag">Plug me in where growth is stuck</div>
       <h2>Services.</h2>
-      <p>The seat changes. The deal doesn't: strategy and execution from the same person, starting at $7,500 a month. Plenty of clients start in one seat and end up with me in two. If you need the whole function covered for a while, there's an interim service for that too.</p>
+      <p>The seat changes. The deal doesn't: strategy and execution from the same person, starting at $7,500 a month. Most clients start in the Head of Growth seat, so that's first. The others are below it, including an interim seat if you need the whole function covered for a while.</p>
     </div>
     <div class="seats reveal">
-      <div class="seat-tabs" role="tablist">
-        <button class="seat-tab active" role="tab" aria-selected="true" data-seat="strategy">Head of Strategy</button>
-        <button class="seat-tab" role="tab" aria-selected="false" data-seat="creative">Head of Creative</button>
-        <button class="seat-tab" role="tab" aria-selected="false" data-seat="media">Media &amp; Tooling</button>
-        <button class="seat-tab" role="tab" aria-selected="false" data-seat="team">Team &amp; Systems</button>
-        <button class="seat-tab" role="tab" aria-selected="false" data-seat="interim">Interim CMO</button>
-      </div>
-      <div class="seat-panel active" role="tabpanel" data-seat="strategy">
-        <p class="seat-pain">"You need someone to decide where the next dollar goes."</p>
+      <div class="seat-primary">
+        <div class="seat-label">Where most clients start</div>
+        <h3 class="seat-primary-name">Fractional Head of Growth</h3>
+        <p class="seat-pain">"You need someone to decide where the next dollar goes, and then go do it."</p>
         <div class="seat-cols">
           <div>
-            <div class="seat-label">Where I start</div>
-            <ul class="seat-list"><li>A pre-audit read of every channel, judged on MER and contribution margin, not one platform's attribution</li><li>A 90-day plan written as bets, each with a cost, a success measure and a stop date</li><li>A weekly leadership session with you and your team</li></ul>
+            <div class="seat-label">What this seat owns</div>
+            <ul class="seat-list"><li>The blended number: acquisition, retention and MER against your contribution margin, read from Shopify and finance rather than one platform's attribution</li><li>The 90-day plan, written as bets, each with a cost, a success measure and a stop date</li><li>The work itself: Ads Manager, the creative pipeline, the reporting, and teaching your team to run each of them</li><li>A weekly leadership session with you and your team, and same-day replies in between</li></ul>
           </div>
           <div>
-            <div class="seat-label">What you keep</div>
-            <p class="seat-keep">A "what to do" dashboard your team actually opens, and a plan that doesn't live in a Google Doc nobody reads.</p>
+            <div class="seat-label">How we measure it in the first 90 days</div>
+            <ul class="seat-list"><li><strong>Week two:</strong> my read of the whole business is done and a MER target is agreed with finance</li><li><strong>Month one:</strong> the bets are live and the "what to do" dashboard is in your accounts, not mine</li><li><strong>Month three:</strong> your team reads the scorecard without me explaining it, and every bet is graded against the target</li></ul>
             <div class="seat-price">From $7,500/month</div>
             <a class="seat-more" href="fractional-head-of-growth/">More on Head of Growth →</a>
           </div>
         </div>
       </div>
-      <div class="seat-panel" role="tabpanel" data-seat="creative">
-        <p class="seat-pain">"Your ads look like everyone else's."</p>
+
+      <div class="seat-others-head">
+        <div class="seat-label">Other seats I fill</div>
+        <p>Same deal, different problem. Plenty of clients start in one seat and end up with me in two. Open one to see where I start and what you keep.</p>
+      </div>
+      <div class="seat-others">
+      <details class="seat-card" data-seat="creative">
+        <summary><span class="seat-card-name">Head of Creative</span><span class="seat-card-pain">"Your ads look like everyone else's."</span></summary>
         <div class="seat-cols">
           <div>
             <div class="seat-label">Where I start</div>
@@ -1598,9 +1616,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <a class="seat-more" href="fractional-head-of-creative/">More on Head of Creative →</a>
           </div>
         </div>
-      </div>
-      <div class="seat-panel" role="tabpanel" data-seat="media">
-        <p class="seat-pain">"You already have a growth lead. You need someone great in Ads Manager."</p>
+      </details>
+      <details class="seat-card" data-seat="media">
+        <summary><span class="seat-card-name">Media &amp; Tooling</span><span class="seat-card-pain">"You already have a growth lead. You need someone great in Ads Manager."</span></summary>
         <div class="seat-cols">
           <div>
             <div class="seat-label">Where I start</div>
@@ -1613,9 +1631,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <a class="seat-more" href="meta-media-buyer/">More on Media &amp; Tooling →</a>
           </div>
         </div>
-      </div>
-      <div class="seat-panel" role="tabpanel" data-seat="team">
-        <p class="seat-pain">"You're hiring, or you're about to."</p>
+      </details>
+      <details class="seat-card" data-seat="team">
+        <summary><span class="seat-card-name">Team &amp; Systems</span><span class="seat-card-pain">"You're hiring, or you're about to."</span></summary>
         <div class="seat-cols">
           <div>
             <div class="seat-label">Where I start</div>
@@ -1628,9 +1646,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <a class="seat-more" href="marketing-team-builder/">More on Team &amp; Systems →</a>
           </div>
         </div>
-      </div>
-      <div class="seat-panel" role="tabpanel" data-seat="interim">
-        <p class="seat-pain">"Your marketing leader is gone, or not hired yet, and the team still needs an owner on Monday."</p>
+      </details>
+      <details class="seat-card" data-seat="interim">
+        <summary><span class="seat-card-name">Interim CMO</span><span class="seat-card-pain">"Your marketing leader is gone, or not hired yet, and the team still needs an owner on Monday."</span></summary>
         <div class="seat-cols">
           <div>
             <div class="seat-label">Where I start</div>
@@ -1643,10 +1661,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <a class="seat-more" href="interim-head-of-marketing/">More on Interim CMO →</a>
           </div>
         </div>
+      </details>
       </div>
       <p class="seat-big">Taking a whole new product to market? That's a bigger, custom program with a team behind it. <a href="https://calendar.app.google/dy8683mNDXyWAkPo9" target="_blank">Let's talk it through.</a></p>
     </div>
-  </div>
 </section>
 
 <!-- DELIVERABLES -->
@@ -1915,12 +1933,10 @@ const observer = new IntersectionObserver((entries) => {
 }, { threshold: 0.12 });
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-// ── Seat picker ──
-document.querySelectorAll('.seat-tab').forEach(tab => {
-  tab.addEventListener('click', () => {
-    const k = tab.dataset.seat;
-    document.querySelectorAll('.seat-tab').forEach(t => { t.classList.toggle('active', t === tab); t.setAttribute('aria-selected', t === tab); });
-    document.querySelectorAll('.seat-panel').forEach(p => p.classList.toggle('active', p.dataset.seat === k));
+// ── Other seats: only one open at a time ──
+document.querySelectorAll('.seat-card').forEach(card => {
+  card.addEventListener('toggle', () => {
+    if (card.open) document.querySelectorAll('.seat-card').forEach(c => { if (c !== card) c.open = false; });
   });
 });
 </script>
