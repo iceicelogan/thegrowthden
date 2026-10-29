@@ -60,8 +60,8 @@ Most brands get advice from one place and execution from another, and something 
 
 ## What a client said about it
 
-> Logan is the only strategist I've ever met who can explain Meta updates in a way that makes sense to both a C-Suite Exec and a Preschool Teacher. It's unsettling how good he is at this.
-> — Nicole Bruno, Head of Content, Knownwell
+> I have been so impressed with Logan's work, communication, and results! For the first time in our business, I feel like I have clarity into every important decision, and his pulse on our specific goals combined with his attentive responses and action are truly incredible. It's such a gift to get to work with someone who can lead both strategy and execution.
+> — Ari Ziskin, Head of Marketing, Autobrush
 
 ## An analyst on where the budget goes
 
