@@ -7,6 +7,10 @@ kind: service
 price: 7500
 service_type: Interim head of marketing
 short: Interim Head of Marketing
+related: how-to-evaluate-a-fractional-cmo, when-to-hire, fractional-head-of-growth
+cta_title: Need an owner on Monday?
+cta_text: Tell me when the seat went empty and what the plan was supposed to be. I can usually be in the work inside two weeks, for a fixed window we agree on up front, and I'll help you hire the permanent person while I'm there.
+cta_button: Let's cover the gap
 ---
 
 ## When this is the right service
@@ -22,6 +26,14 @@ short: Interim Head of Marketing
 - Grade every agency and in-house buyer on MER and contribution margin, not their own platform's report.
 - Keep the creative pipeline, the reporting and the launches moving. This is not a caretaker role. Growth still has to happen.
 - Write the job the permanent leader will actually do, help you hire them, and onboard them into a system that already works.
+
+## What you keep
+
+- A marketing function that didn't stall during the gap. Growth kept happening.
+- A permanent hire who inherits a working system, a real job description and a scorecard, instead of a mess.
+- The cadence, the reporting and the vendor grades, all in your accounts and your name.
+
+From $7,500 a month, whichever seat I'm in. Where it lands above that depends on how many seats I'm covering and how much building is involved. Ad spend and software stay in your accounts and are never marked up. The interim seat covers the whole function, so it's scoped to the size of the team and budget.
 
 ## How it's set up
 

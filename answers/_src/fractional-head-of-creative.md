@@ -7,6 +7,10 @@ kind: service
 price: 7500
 service_type: Fractional head of creative
 short: Fractional Head of Creative
+related: notes/angle-storm-pack, ai-training-for-marketing-teams, notes/ai-is-making-people-worse-at-their-jobs
+cta_title: Your ads don't have to look like everyone else's.
+cta_text: Give me read access to the ad account and I'll tell you what's actually winning and why, not what the agency report says. Then we run the first Angle Storm with your creative owner in the room.
+cta_button: Let's audit the creative
 ---
 
 ## What I do
@@ -15,6 +19,21 @@ short: Fractional Head of Creative
 - Angle development that forces ideas to be different from each other, instead of ten versions of the obvious one.
 - Every angle pressure-tested against a panel of audience personas before a dollar is spent on it.
 - An AI-assisted production workflow, so a winning angle becomes a batch of finished ads in hours, not weeks.
+
+## Who this is for
+
+- Your ads look fine, the offer is fine, and efficiency keeps drifting the wrong way anyway, because everything launched this quarter is a remix of last quarter's winners.
+- Your team can produce volume but not new ideas, or your agency keeps sending "variations."
+- You have a growth lead or media buyer and nobody who owns creative strategy, so angles get decided by whoever had time that week.
+- Not for brands under about $3M, or anyone who wants ads made without a strategy behind them. The strategy is the part that makes the ads different.
+
+## What you keep
+
+- A creative pipeline and testing rhythm your team can run, and the angle library behind it.
+- The persona panel and the storm prompts, written down, so the loop doesn't leave when I do.
+- The production workflow, in your tools and your accounts.
+
+From $7,500 a month, whichever seat I'm in. Where it lands above that depends on how many seats I'm covering and how much building is involved. Ad spend and software stay in your accounts and are never marked up.
 
 ## Why strategy and execution from one person
 
