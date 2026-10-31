@@ -5,7 +5,7 @@ description: Building a marketing system your team owns means five things live i
 updated: 2026-10-26
 kind: answer
 cta_title: Ready to own the system instead of renting it?
-cta_text: The scorecard, the creative loop, the launch tooling, the SOPs and the training all get built in your accounts, in your name, with your people. That's the Team & Systems seat, and it's the reason nothing leaves when I do.
+cta_text: The scorecard, the creative loop, the launch tooling, the SOPs and the training all get built in your accounts, in your name, with your people. That's the team and systems work, and it's the reason nothing leaves when I do.
 cta_button: Let's build it in your house
 ---
 

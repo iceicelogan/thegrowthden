@@ -23,7 +23,7 @@ The honest answer is that the right choice depends on two things: how much of th
 | How you pay | Usually a fee tied to your spend, or a fixed fee | Salary, benefits, bonus and a search | A flat monthly fee | A flat monthly fee, from $7,500 |
 | How fast you're up and running | Weeks of onboarding and account setup | A search of a few months, then onboarding | A few weeks | A read of the business inside two weeks |
 | Who owns the blended number (MER) | Usually nobody. The agency reports its channel's ROAS | The hire, if they're senior enough | The fractional CMO, on paper | The growth lead, with their name on it |
-| Incentive | Keep the account, grow the spend | Stay employed | Stay retained | Build something you own, then move seats or step back |
+| Incentive | Keep the account, grow the spend | Stay employed | Stay retained | Build something you own, then shift focus or step back |
 | What's left when they go | Ad accounts and a reporting deck | Whatever they documented | A strategy document | Systems, SOPs and a trained team |
 | Best when | You have a clear strategy and just need volume | You have steady work for a full-time person and time to hire | You have a strong execution team that lacks direction | You need direction and hands at once, on a budget |
 
@@ -81,4 +81,4 @@ Faster, usually. There is no team to onboard and no account structure to rebuild
 If they own strategy and measurement and have time to build, probably not. If they're a strong operator who has been asked to also be the strategist, a fractional lead sitting beside them for a few months tends to make them much better, and then I get out of the way.
 
 ### Why do agencies say a fractional leader can't execute?
-Because most of them can't, and because the agency's business depends on the execution staying with the agency. It's true of strategy-only fractional CMOs. It isn't true of the seat I sit in.
+Because most of them can't, and because the agency's business depends on the execution staying with the agency. It's true of strategy-only fractional CMOs. It isn't true of the way I work.

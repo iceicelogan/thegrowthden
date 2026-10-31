@@ -60,7 +60,7 @@ REDIRECTS = {
     "ai-ad-angles": "/notes/angle-storm-pack/",
 }
 
-# Service pages (the five "seats"). Built from answers/_src/<slug>.md with kind: service
+# Service pages (the five service areas). Built from answers/_src/<slug>.md with kind: service
 # and a `price:` line. They get the same nav, byline, author card, evidence and quote
 # conventions as the answer pages, Service + FAQPage schema, and a different tail.
 SERVICE_PAGES = [
@@ -456,7 +456,7 @@ def build_page(p, pages, services=None, notes=None):
   {AUTHOR_CARD}
   <div class="box">
     <h2>{html.escape(p.get("cta_title") or "Work with Logan")}</h2>
-    <p>{inline(p.get("cta_text") or "I'm a fractional growth advisor for growth-stage DTC and e-commerce brands. I handle strategy and take execution off your plate, in whatever seat you need, from $7,500 a month.")}</p>
+    <p>{inline(p.get("cta_text") or "I'm a fractional growth advisor for growth-stage DTC and e-commerce brands. I handle strategy and take execution off your plate, strategic growth advisory with the execution built in, from $7,500 a month.")}</p>
     {service_link}
     <a class="cta" href="{CAL}" target="_blank">{html.escape(p.get("cta_button") or "Let's see if we're a fit")}</a><a class="more" href="/{SERVICE_FOR[p["slug"]]}/">{html.escape(svc_h1)} →</a>
   </div>
@@ -538,7 +538,7 @@ def build_service_page(p, services, notes):
   {AUTHOR_CARD}
   <div class="box">
     <h2>{html.escape(p.get("cta_title") or "Work with Logan")}</h2>
-    <p>{inline(p.get("cta_text") or "I'm a fractional growth advisor for growth-stage DTC and e-commerce brands. I handle strategy and take execution off your plate, in whatever seat you need, from $7,500 a month.")}</p>
+    <p>{inline(p.get("cta_text") or "I'm a fractional growth advisor for growth-stage DTC and e-commerce brands. I handle strategy and take execution off your plate, strategic growth advisory with the execution built in, from $7,500 a month.")}</p>
     <a class="cta" href="{CAL}" target="_blank">{html.escape(p.get("cta_button") or "Let's see if we're a fit")}</a><a class="more" href="/#pricing">How the pricing works →</a>
   </div>
   {related_html(p, notes)}

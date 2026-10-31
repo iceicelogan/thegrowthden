@@ -1,7 +1,7 @@
 ---
 title: Fractional Head of Creative for DTC Ads
 h1: A fractional head of creative for DTC and e-commerce ads
-description: If your ads look like everyone else's and your team can't produce new angles fast enough, you need a fractional head of creative who can also run the production. I'm Logan Ice. In this seat I build a creative engine that finds genuinely different angles, tests them before they go live, and turns the winners into finished ads quickly with AI. It starts at $7,500 a month.
+description: If your ads look like everyone else's and your team can't produce new angles fast enough, you need a fractional head of creative who can also run the production. I'm Logan Ice. Here I build a creative engine that finds genuinely different angles, tests them before they go live, and turns the winners into finished ads quickly with AI. It starts at $7,500 a month.
 updated: 2026-10-05
 kind: service
 price: 7500
@@ -33,7 +33,7 @@ cta_button: Let's audit the creative
 - The persona panel and the storm prompts, written down, so the loop doesn't leave when I do.
 - The production workflow, in your tools and your accounts.
 
-From $7,500 a month, whichever seat I'm in. Where it lands above that depends on how many seats I'm covering and how much building is involved. Ad spend and software stay in your accounts and are never marked up.
+From $7,500 a month, strategy and execution included. Where it lands above that depends on how much of the function I'm covering and how much building is involved. Ad spend and software stay in your accounts and are never marked up.
 
 ## Why strategy and execution from one person
 

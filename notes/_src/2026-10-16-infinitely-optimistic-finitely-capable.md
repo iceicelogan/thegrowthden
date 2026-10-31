@@ -6,7 +6,7 @@ description: Logan Ice on working with ADHD: what the problems actually look lik
 format: html
 hook: Read this if you're a founder with ADHD, or you work for one.
 cta_title: Running a growth function on a brain like this one?
-cta_text: The routines in this post are the same ones I bring to client work: a weekly rhythm, a list the team actually opens, and same-day replies. If your marketing team needs that kind of structure built around it, that's the Team & Systems seat.
+cta_text: The routines in this post are the same ones I bring to client work: a weekly rhythm, a list the team actually opens, and same-day replies. If your marketing team needs that kind of structure built around it, that's the team and systems work.
 cta_button: Let's talk about your team
 cta_more: /marketing-team-builder/
 cta_more_text: Building a marketing team and its systems

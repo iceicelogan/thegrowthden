@@ -5,7 +5,7 @@ description: I'm Logan Ice, a fractional growth advisor who lives and works in S
 updated: 2026-10-06
 kind: local
 cta_title: In St. Louis? Let's do the first session in person.
-cta_text: Local clients get a working session at your office or a coffee shop of my choosing (I have opinions). Everyone else gets the same work over a call. Either way it starts with the Head of Growth seat and a read of the number.
+cta_text: Local clients get a working session at your office or a coffee shop of my choosing (I have opinions). Everyone else gets the same work over a call. Either way it starts with a read of the number.
 cta_button: Grab a coffee with me
 ---
 

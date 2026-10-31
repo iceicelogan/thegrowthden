@@ -5,7 +5,7 @@ description: Break-even MER is one divided by your contribution margin before ma
 updated: 2026-10-05
 kind: answer
 cta_title: Want someone to hold the number, not just set it?
-cta_text: Setting the target is the easy part. The Head of Growth seat is me owning MER against your contribution margin every week, grading every channel and every buyer against it, and doing the work when something's off.
+cta_text: Setting the target is the easy part. Head of growth, the way I do it, is me owning MER against your contribution margin every week, grading every channel and every buyer against it, and doing the work when something's off.
 cta_button: Let's set your target together
 ---
 
