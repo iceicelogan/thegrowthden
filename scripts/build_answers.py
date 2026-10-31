@@ -384,7 +384,9 @@ def page_shell(title, desc, url, ld, content, kind="article"):
 <meta name="twitter:image" content="{SITE}/uploads/og-default.png" />
 <link rel="icon" href="/favicon.ico" />
 <link rel="alternate" type="text/plain" title="llms.txt" href="/llms.txt" />
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet" />
 <script type="application/ld+json">
 {json.dumps(ld, indent=1, ensure_ascii=False)}
 </script>
