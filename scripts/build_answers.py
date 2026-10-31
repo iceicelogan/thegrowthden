@@ -94,9 +94,20 @@ AUTHOR_CARD = """<aside class="author" aria-label="About the author">
   </aside>"""
 
 STYLE = """
+  @font-face { font-family:'Poppins'; font-style:normal; font-weight:300; font-display:swap; src:url('/assets/fonts/poppins-latin-300-normal.woff2') format('woff2'); unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+  @font-face { font-family:'Poppins'; font-style:normal; font-weight:400; font-display:swap; src:url('/assets/fonts/poppins-latin-400-normal.woff2') format('woff2'); unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+  @font-face { font-family:'Poppins'; font-style:normal; font-weight:500; font-display:swap; src:url('/assets/fonts/poppins-latin-500-normal.woff2') format('woff2'); unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+  @font-face { font-family:'Poppins'; font-style:normal; font-weight:600; font-display:swap; src:url('/assets/fonts/poppins-latin-600-normal.woff2') format('woff2'); unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+  @font-face { font-family:'Poppins'; font-style:normal; font-weight:700; font-display:swap; src:url('/assets/fonts/poppins-latin-700-normal.woff2') format('woff2'); unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+  @font-face { font-family:'Poppins'; font-style:normal; font-weight:800; font-display:swap; src:url('/assets/fonts/poppins-latin-800-normal.woff2') format('woff2'); unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+  @font-face { font-family:'Poppins'; font-style:italic; font-weight:300; font-display:swap; src:url('/assets/fonts/poppins-latin-300-italic.woff2') format('woff2'); unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+  @font-face { font-family:'Poppins'; font-style:italic; font-weight:400; font-display:swap; src:url('/assets/fonts/poppins-latin-400-italic.woff2') format('woff2'); unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+  @font-face { font-family:'Poppins Fallback'; font-weight:100 350; src:local('Arial'), local('Helvetica Neue'), local('Roboto'); size-adjust:110%; ascent-override:95.5%; descent-override:31.8%; line-gap-override:9.1%; }
+  @font-face { font-family:'Poppins Fallback'; font-weight:351 650; src:local('Arial'), local('Helvetica Neue'), local('Roboto'); size-adjust:112.7%; ascent-override:93.2%; descent-override:31.1%; line-gap-override:8.9%; }
+  @font-face { font-family:'Poppins Fallback'; font-weight:651 900; src:local('Arial Bold'), local('Arial-BoldMT'), local('Helvetica Neue Bold'), local('Roboto Bold'), local('Arial'), local('Roboto'); size-adjust:109.5%; ascent-override:95.9%; descent-override:32.0%; line-gap-override:9.1%; }
   :root { --purple:#341f44; --blue:#256493; --orange:#fe7c2b; --gold:#ffc545; --cream:#fcf3d6; --ink:#1a1025; --muted:#6b5f78; --border:rgba(52,31,68,.12); }
   * { box-sizing:border-box; margin:0; padding:0; }
-  body { font-family:'Poppins',sans-serif; font-weight:300; color:var(--ink); background:var(--cream); line-height:1.75; }
+  body { font-family:'Poppins','Poppins Fallback',sans-serif; font-weight:300; color:var(--ink); background:var(--cream); line-height:1.75; }
   a { color:var(--blue); }
   html { scroll-padding-top:96px; }
   header { background:var(--purple); padding:18px 16px; position:sticky; top:0; z-index:100; box-shadow:0 2px 14px rgba(26,16,37,.25); }
@@ -384,9 +395,7 @@ def page_shell(title, desc, url, ld, content, kind="article"):
 <meta name="twitter:image" content="{SITE}/uploads/og-default.png" />
 <link rel="icon" href="/favicon.ico" />
 <link rel="alternate" type="text/plain" title="llms.txt" href="/llms.txt" />
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet" />
+
 <script type="application/ld+json">
 {json.dumps(ld, indent=1, ensure_ascii=False)}
 </script>
