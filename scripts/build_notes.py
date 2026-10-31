@@ -362,6 +362,14 @@ def cta_box(n):
   </div>"""
 
 
+def eager_hero(body_html):
+    """The first image in a note is its hero and sits above the fold: load it eagerly."""
+    def fix(m):
+        tag = m.group(0).replace(' loading="lazy"', "")
+        return tag if "fetchpriority" in tag else tag.replace("<img ", '<img fetchpriority="high" ', 1)
+    return re.sub(r"<img[^>]*>", fix, body_html, count=1)
+
+
 def build_issue(n, notes):
     url = f"{SITE}/notes/{n['slug']}/"
     post = {"@type": "BlogPosting", "@id": url + "#post", "headline": n["title"],
@@ -383,7 +391,7 @@ def build_issue(n, notes):
   <h1>{html.escape(n['title'])}</h1>
   <div class="meta">By <a href="/logan/" rel="author">Logan Ice</a> · Published <time datetime="{n['date']}">{nice(n['date'])}</time> · Last updated <time datetime="{n['updated']}">{nice(n['updated'])}</time></div>
   <article class="body">
-{n['body'] if n.get('format') == 'html' else md_to_html(n['body'])}
+{eager_hero(n['body'] if n.get('format') == 'html' else md_to_html(n['body']))}
   </article>
   <aside class="author" aria-label="About the author">
     <a href="/logan/"><img src="/uploads/logan-ice-160.webp" alt="Logan Ice" width="72" height="72" loading="lazy" /></a>
