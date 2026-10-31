@@ -302,7 +302,7 @@ ORG = {"@type": "ProfessionalService", "@id": f"{SITE}/#org", "name": "The Growt
 
 PERSON = {"@type": "Person", "@id": f"{SITE}/#logan", "name": "Logan Ice", "url": f"{SITE}/logan/",
           "mainEntityOfPage": f"{SITE}/logan/",
-          "image": f"{SITE}/uploads/IMG_6671.JPG",
+          "image": f"{SITE}/uploads/logan-ice-1200.jpg",
           "jobTitle": "Founder and Fractional Growth Advisor",
           "disambiguatingDescription": "Logan Ice the St. Louis growth marketer and founder of The Growth Den, not the professional baseball player of the same name.",
           "description": "St. Louis-based growth advisor for DTC and e-commerce brands. Led growth at Wuffes ($14M to $40M+), Little Passports, Varsity Tutors and P&G.",
