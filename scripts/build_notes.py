@@ -124,6 +124,7 @@ def load():
         dt.date.fromisoformat(meta["updated"])
         meta.setdefault("slug", re.sub(r"^\d{4}-\d{2}-\d{2}-", "", f.stem))
         meta["body"] = m.group(2).strip()
+        meta["file"] = str(f.relative_to(ROOT))
         rendered = meta["body"] if meta.get("format") == "html" else md_to_html(meta["body"])
         cm = re.search(r'<img[^>]*\ssrc="([^"]+)"', rendered)
         meta["cover"] = cm.group(1) if cm else None
@@ -489,7 +490,7 @@ def answer_urls():
     out = []
     for slug in ANSWER_PAGES:
         try:
-            out.append((f"{slug}/", load_answer(slug)["updated"], "0.8"))
+            out.append((f"{slug}/", git_lastmod(f"answers/_src/{slug}.md", fallback=load_answer(slug)["updated"]), "0.8"))
         except SystemExit:
             continue
     return out
@@ -498,16 +499,31 @@ def answer_urls():
 def service_urls():
     try:
         from build_answers import SERVICE_PAGES as SP, load as load_answer
-        return [(f"{s}/", load_answer(s)["updated"], "0.8") for s in SP]
+        return [(f"{s}/", git_lastmod(f"answers/_src/{s}.md", fallback=load_answer(s)["updated"]), "0.8") for s in SP]
     except (ImportError, SystemExit):
         return [(f"{s}/", "2026-10-01", "0.8") for s in SEAT_PAGES]
 
 
+def git_lastmod(*paths, fallback=None):
+    """Date of the last commit that touched any of the given source files, so the
+    sitemap's lastmod reflects real edits rather than a hand-maintained field."""
+    import subprocess
+    try:
+        out = subprocess.run(["git", "log", "-1", "--format=%cs", "--", *[str(ROOT / p) for p in paths]],
+                             capture_output=True, text=True, cwd=ROOT, check=True).stdout.strip()
+    except Exception:
+        out = ""
+    d = out or fallback or dt.date.today().isoformat()
+    return max(d, fallback) if fallback else d
+
+
 def build_sitemap(notes):
     latest = max(n["updated"] for n in notes)
-    urls = [("", latest, "1.0")] + [("logan/", "2026-10-06", "0.8")] + service_urls() + \
-           answer_urls() + \
-           [("notes/", latest, "0.7")] + [(f"notes/{n['slug']}/", n["updated"], "0.6") for n in notes]
+    home = git_lastmod("index.html", fallback=latest)
+    urls = [("", home, "1.0"), ("logan/", git_lastmod("logan/index.html", fallback="2026-10-06"), "0.8")] + \
+           service_urls() + answer_urls() + \
+           [("notes/", git_lastmod("scripts/build_notes.py", fallback=latest), "0.7")] + \
+           [(f"notes/{n['slug']}/", git_lastmod(n["file"], fallback=n["updated"]), "0.6") for n in notes]
     x = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
     for u, d, pr in urls:
         x += f"  <url>\n    <loc>{SITE}/{u}</loc>\n    <lastmod>{d}</lastmod>\n    <priority>{pr}</priority>\n  </url>\n"

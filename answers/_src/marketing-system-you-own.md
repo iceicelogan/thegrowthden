@@ -2,7 +2,7 @@
 title: Build a Marketing System Your Team Owns
 h1: How do I build a marketing system my team owns instead of relying on an agency?
 description: Building a marketing system your team owns means five things live in your house, in your name, run by your people: the scorecard, the creative loop, the launch tooling, the SOPs, and the training. It doesn't mean firing the agency. You already know the feeling: the agency has the accounts, the reporting and the know-how, and if they left tomorrow you'd be starting over. Here is how I build that with clients, and how to start without me.
-updated: 2026-10-26
+updated: 2026-10-31
 kind: answer
 cta_title: Ready to own the system instead of renting it?
 cta_text: The scorecard, the creative loop, the launch tooling, the SOPs and the training all get built in your accounts, in your name, with your people. That's the team and systems work, and it's the reason nothing leaves when I do.

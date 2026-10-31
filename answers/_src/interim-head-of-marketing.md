@@ -2,7 +2,7 @@
 title: Interim Head of Marketing / CMO for DTC Brands
 h1: An interim head of marketing, or CMO, for the gap between leaders
 description: When your marketing leader leaves, goes on leave, or hasn't been hired yet, the team and the budget still need an owner on Monday. I step into the role for a fixed window, usually three to six months, run the team and the number, and help you hire and hand over to the permanent person. I'm Logan Ice. Like every service here, it starts at $7,500 a month and is scoped to the size of the job.
-updated: 2026-10-06
+updated: 2026-10-31
 kind: service
 price: 7500
 service_type: Interim head of marketing
