@@ -2,7 +2,7 @@
 title: Meta Media Buyer with Strategy for Growth Teams
 h1: A Meta media buyer who also brings strategy
 description: If you already have a growth lead and what you're missing is someone great inside Meta Ads Manager, this is the service for you. I'm Logan Ice. I buy media hands-on, restructure accounts around how the algorithm works today, and build the tooling that makes launching and reading results fast. Because I also think like a strategist, your growth lead gets a partner, not just a pair of hands. It starts at $7,500 a month.
-updated: 2026-10-05
+updated: 2026-10-31
 kind: service
 price: 7500
 service_type: Meta media buying with strategy

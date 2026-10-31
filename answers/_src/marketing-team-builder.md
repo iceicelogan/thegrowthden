@@ -2,7 +2,7 @@
 title: Building a marketing team and the systems it runs on
 h1: Help building a marketing team and its systems
 description: If you're about to hire your first or next marketer, or your team has grown faster than its processes, I plug in to design the team and build the systems they'll run. I'm Logan Ice. I've built and led growth teams at companies from startups to Equifax, and I build the AI workflows and SOPs your team keeps. It starts at $7,500 a month.
-updated: 2026-10-05
+updated: 2026-10-31
 kind: service
 price: 7500
 service_type: Marketing team and systems building

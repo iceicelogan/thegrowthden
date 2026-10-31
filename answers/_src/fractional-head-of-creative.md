@@ -2,7 +2,7 @@
 title: Fractional Head of Creative for DTC Ads
 h1: A fractional head of creative for DTC and e-commerce ads
 description: If your ads look like everyone else's and your team can't produce new angles fast enough, you need a fractional head of creative who can also run the production. I'm Logan Ice. Here I build a creative engine that finds genuinely different angles, tests them before they go live, and turns the winners into finished ads quickly with AI. It starts at $7,500 a month.
-updated: 2026-10-05
+updated: 2026-10-31
 kind: service
 price: 7500
 service_type: Fractional head of creative
