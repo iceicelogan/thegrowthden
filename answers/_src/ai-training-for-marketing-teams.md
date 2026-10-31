@@ -5,7 +5,7 @@ description: I look at how your team actually produces ads and reports today, bu
 updated: 2026-10-26
 kind: answer
 cta_title: Want your team running this in 90 days?
-cta_text: Tell me how your team produces ads and reports today and I'll tell you which workflows to build first. The training is part of the Team & Systems seat, so the tools and the people who run them both stay yours.
+cta_text: Tell me how your team produces ads and reports today and I'll tell you which workflows to build first. The training is part of the team and systems work, so the tools and the people who run them both stay yours.
 cta_button: Let's talk about your team
 ---
 

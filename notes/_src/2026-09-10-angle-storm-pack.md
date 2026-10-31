@@ -7,7 +7,7 @@ description: Logan Ice's creative development loop for paid social as seven prom
 format: html
 hook: Read this if your ads look like everyone else's. Seven prompts you can paste today.
 cta_title: Want this loop running inside your team?
-cta_text: The Angle Storm is the first week of the Head of Creative seat. After that I build the pipeline that turns the winning angles into finished ads fast, and teach your team to run it without me.
+cta_text: The Angle Storm is the first week of the creative work. After that I build the pipeline that turns the winning angles into finished ads fast, and teach your team to run it without me.
 cta_button: Let's talk about your creative
 cta_more: /fractional-head-of-creative/
 cta_more_text: A fractional head of creative for DTC ads

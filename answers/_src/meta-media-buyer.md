@@ -25,7 +25,7 @@ cta_button: Let's look at the account
 - You already have a growth lead, or the founder owns strategy, and what's missing is somebody great inside Meta Ads Manager every day.
 - The account is messy, launches take days, and the reporting leads with platform ROAS instead of the number the business runs on.
 - You want a buyer who will push back on the plan, not just execute it.
-- Not for brands where nobody owns strategy. That's the [Head of Growth seat](/fractional-head-of-growth/), and I'd rather point you there than buy media into a plan that doesn't exist.
+- Not for brands where nobody owns strategy. That's [head of growth](/fractional-head-of-growth/), and I'd rather point you there than buy media into a plan that doesn't exist.
 
 ## What you keep
 
@@ -33,7 +33,7 @@ cta_button: Let's look at the account
 - The naming conventions, the bulk launch tooling and the reporting, all in your accounts.
 - A "what to do" view on top of the numbers, and a growth lead who knows how to read it.
 
-From $7,500 a month, whichever seat I'm in. Where it lands above that depends on how many seats I'm covering and how much building is involved. Ad spend and software stay in your accounts and are never marked up.
+From $7,500 a month, strategy and execution included. Where it lands above that depends on how much of the function I'm covering and how much building is involved. Ad spend and software stay in your accounts and are never marked up.
 
 ## Why strategy and execution from one person
 

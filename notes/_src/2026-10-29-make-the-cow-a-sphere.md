@@ -7,7 +7,7 @@ description: Logan Ice on how he breaks problems down: the spherical-cow habit f
 format: html
 hook: Read this if you want to see how I take a problem apart before I touch anything in the ad account.
 cta_title: Have a problem that needs the cow treatment?
-cta_text: Most engagements start exactly like this: size the problem, strip it to the thing that actually matters, and hand you three bets you can act on Monday. That's the Head of Growth seat, from $7,500 a month.
+cta_text: Most engagements start exactly like this: size the problem, strip it to the thing that actually matters, and hand you three bets you can act on Monday. That's strategic growth advisory with the execution built in, from $7,500 a month.
 cta_button: Let's size your problem
 cta_more: /fractional-head-of-growth/
 cta_more_text: What a fractional head of growth does

@@ -11,7 +11,7 @@ description: One or two plain sentences about the issue.
 ---
 ```
 
-Then run `python3 scripts/build_notes.py`. It rebuilds every issue page, /notes/, the latest-notes blocks on the homepage and seat pages, sitemap.xml and llms.txt.
+Then run `python3 scripts/build_notes.py`. It rebuilds every issue page, /notes/, the latest-notes blocks on the homepage and service pages, sitemap.xml and llms.txt.
 
 ## From the Notes editor
 

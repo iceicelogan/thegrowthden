@@ -1,7 +1,7 @@
 ---
 title: Interim Head of Marketing / CMO for DTC Brands
 h1: An interim head of marketing, or CMO, for the gap between leaders
-description: When your marketing leader leaves, goes on leave, or hasn't been hired yet, the team and the budget still need an owner on Monday. I step into the seat for a fixed window, usually three to six months, run the team and the number, and help you hire and hand over to the permanent person. I'm Logan Ice. Like every service here, it starts at $7,500 a month and is scoped to the size of the job.
+description: When your marketing leader leaves, goes on leave, or hasn't been hired yet, the team and the budget still need an owner on Monday. I step into the role for a fixed window, usually three to six months, run the team and the number, and help you hire and hand over to the permanent person. I'm Logan Ice. Like every service here, it starts at $7,500 a month and is scoped to the size of the job.
 updated: 2026-10-06
 kind: service
 price: 7500
@@ -33,11 +33,11 @@ cta_button: Let's cover the gap
 - A permanent hire who inherits a working system, a real job description and a scorecard, instead of a mess.
 - The cadence, the reporting and the vendor grades, all in your accounts and your name.
 
-From $7,500 a month, whichever seat I'm in. Where it lands above that depends on how many seats I'm covering and how much building is involved. Ad spend and software stay in your accounts and are never marked up. The interim seat covers the whole function, so it's scoped to the size of the team and budget.
+From $7,500 a month, strategy and execution included. Where it lands above that depends on how much of the function I'm covering and how much building is involved. Ad spend and software stay in your accounts and are never marked up. The interim engagement covers the whole function, so it's scoped to the size of the team and budget.
 
 ## How it's set up
 
-A window we agree on up front, usually three to six months, revisited monthly. This is the whole marketing function rather than one part of it, so it's scoped to the size of your team and budget. You get the weekly cadence, me in the work every week, and same-day replies: you'll hear from me the day you reach out, and we solve things together rather than you waiting on a status update. There's no hard exit either. If you'd like me to stay on in a strategy or creative seat once your permanent hire lands, that happens more often than not.
+A window we agree on up front, usually three to six months, revisited monthly. This is the whole marketing function rather than one part of it, so it's scoped to the size of your team and budget. You get the weekly cadence, me in the work every week, and same-day replies: you'll hear from me the day you reach out, and we solve things together rather than you waiting on a status update. There's no hard exit either. If you'd like me to stay on in a smaller strategy or creative role once your permanent hire lands, that happens more often than not.
 
 ## Interim versus the other ways to cover the gap
 
@@ -57,7 +57,7 @@ A window we agree on up front, usually three to six months, revisited monthly. T
 - Smaller companies are most of that demand, and the windows are longer than people assume. Heidrick's 2026 survey of 3,810 interim leaders found small and medium companies make up more than four-fifths of demand, 42% of projects now run longer than six months, and 75% of companies hire interims to fill a critical skill gap. ([Heidrick & Struggles, 2026 Talent Lens survey](https://www.heidrick.com/en/perspectives/on-demand-talent/2026-talent-lens-survey_the-state-of-interim-talent))
 - The search itself takes a while. SHRM's 2025 benchmarking puts median time-to-fill for executive roles at about 45 days, and retained search firms lay out roughly 90 days from kickoff to a signed offer, before notice periods and onboarding. ([SHRM, October 2025](https://www.shrm.org/executive-network/insights/people-strategy/state-of-recruiting-2025-insights-to-maximize-recruitment); [Hunt Scanlon / The Bowdoin Group, 2022](https://huntscanlon.com/guiding-the-search-process-with-a-timeline/))
 
-## A search firm's view of the interim seat
+## A search firm's view of the interim role
 
 > Interim leaders are no longer a stopgap; they are how forward-looking organizations turn volatility into advantage—bringing the precise expertise, speed, and objectivity needed to move critical agendas forward, exactly when and where it matters most.
 > — Sunny Ackerman, Global Managing Partner, Heidrick & Struggles, in the [2026 Talent Lens survey](https://www.heidrick.com/en/perspectives/on-demand-talent/2026-talent-lens-survey_the-state-of-interim-talent)
@@ -68,7 +68,7 @@ A window we agree on up front, usually three to six months, revisited monthly. T
 2. Agree the window and the scope up front, with a monthly check on both.
 3. In the first two weeks: a read of every channel, the scorecard on MER against your margin, and the team's weekly cadence running.
 4. By month two I know what the permanent job actually is. The description, the interview rubric and the search plan come from that.
-5. Hand over into a system that already works, and decide together whether I stay in a smaller seat.
+5. Hand over into a system that already works, and decide together whether I stay in a smaller role.
 
 ## Questions people ask
 
@@ -76,7 +76,7 @@ A window we agree on up front, usually three to six months, revisited monthly. T
 The other services are one part of marketing, for as long as it's useful. This one is the whole function, for a defined window with an end you can see. I run the team, the budget and the number, then hand the seat to whoever comes next.
 
 ### How long does an interim engagement last?
-Usually three to six months, and sometimes longer; Heidrick's 2026 survey found 42% of interim projects now run past six months. We agree the window up front and revisit it monthly. If you want me to stay on in a smaller seat after, plenty of clients do that.
+Usually three to six months, and sometimes longer; Heidrick's 2026 survey found 42% of interim projects now run past six months. We agree the window up front and revisit it monthly. If you want me to stay on in a smaller role after, plenty of clients do that.
 
 ### Will you help hire my permanent head of marketing?
 Yes, and I'd argue it's the most valuable part. By month two I know exactly what the job is, so I can write the description, sit in the interviews, and onboard the person into a system that's already running instead of a mess I left behind.

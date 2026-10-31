@@ -8,7 +8,7 @@ format: html
 source: https://www.linkedin.com/pulse/using-right-lure-logan-ice-2jrzc
 hook: Read this if buyers are asking ChatGPT who to hire and your site says nothing specific.
 cta_title: Not sure what your site should say about you?
-cta_text: Getting found by AI assistants comes down to saying one specific thing about how you work and backing it up. That's part of the read I do in the first two weeks of the Head of Growth seat, alongside the ad accounts and the number.
+cta_text: Getting found by AI assistants comes down to saying one specific thing about how you work and backing it up. That's part of the read I do in the first two weeks of working together, alongside the ad accounts and the number.
 cta_button: Let's look at how you're found
 cta_more: /fractional-head-of-growth/
 cta_more_text: What a fractional head of growth does

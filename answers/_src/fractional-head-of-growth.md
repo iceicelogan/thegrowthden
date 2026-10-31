@@ -1,7 +1,7 @@
 ---
 title: Fractional Head of Growth for DTC Brands ($5M-$80M)
 h1: What a fractional head of growth actually does for a DTC brand
-description: A fractional head of growth owns your acquisition and retention numbers part-time and, unlike most fractional CMOs, does the work rather than just directing it. I'm Logan Ice. For growth-stage DTC and e-commerce brands doing roughly $5M to $80M, this is the seat I fill most often. I decide with you where the next marketing dollar goes, then help make it happen, from $7,500 a month.
+description: A fractional head of growth owns your acquisition and retention numbers part-time and, unlike most fractional CMOs, does the work rather than just directing it. I'm Logan Ice. For growth-stage DTC and e-commerce brands doing roughly $5M to $80M, this is the engagement I'm asked for most often. I decide with you where the next marketing dollar goes, then help make it happen, from $7,500 a month.
 updated: 2026-10-26
 kind: service
 price: 7500
@@ -9,7 +9,7 @@ service_type: Fractional head of growth
 short: Fractional Head of Growth
 related: agency-vs-fractional, mer-target, when-to-hire, notes/make-the-cow-a-sphere
 cta_title: Tell me the number you need moved.
-cta_text: Book a call, tell me the number and what you've already tried. Inside two weeks you'll have my read of the whole business and a MER target your finance person agrees with. If it turns out you don't need this seat yet, I'll say so.
+cta_text: Book a call, tell me the number and what you've already tried. Inside two weeks you'll have my read of the whole business and a MER target your finance person agrees with. If it turns out you don't need this yet, I'll say so.
 cta_button: Let's size the problem
 ---
 
@@ -36,7 +36,7 @@ After that I go do the work. I'll sit in Meta Ads Manager. I'll build the creati
 - The 90-day plan as bets, and the "what to do" dashboard your team actually opens.
 - The accounts, logins and reporting, in your name from day one, and a team that reads the scorecard without me in the room.
 
-From $7,500 a month, whichever seat I'm in. Where it lands above that depends on how many seats I'm covering and how much building is involved. Ad spend and software stay in your accounts and are never marked up.
+From $7,500 a month, strategy and execution included. Where it lands above that depends on how much of the function I'm covering and how much building is involved. Ad spend and software stay in your accounts and are never marked up.
 
 ## Why strategy and execution from one person
 
@@ -70,11 +70,11 @@ If you want the longer comparison, read [agency, in-house or fractional](/agency
 
 ## If you searched for a fractional CMO for your Shopify brand
 
-Many growth-stage DTC brands doing $5M to $20M a year run on Shopify, and "fractional CMO" is usually the phrase founders search when they go looking for senior marketing help. If that's you, this is probably the seat you're actually looking for. I cover the CMO layer when you need it: the budget, the marketing org, and which channel gets the next dollar. I also do the work and own the number, which is MER against your contribution margin, read from Shopify and finance rather than from each ad platform's attribution.
+Many growth-stage DTC brands doing $5M to $20M a year run on Shopify, and "fractional CMO" is usually the phrase founders search when they go looking for senior marketing help. If that's you, this is probably what you're actually looking for. I cover the CMO layer when you need it: the budget, the marketing org, and which channel gets the next dollar. I also do the work and own the number, which is MER against your contribution margin, read from Shopify and finance rather than from each ad platform's attribution.
 
 - Fit: Shopify and other DTC brands doing roughly $5M to $80M, with a real marketing budget and no senior owner of the number.
 - What I need on day one: read access to Shopify, the ad accounts and whatever finance uses for margin.
-- Price: from $7,500 a month, whichever seat I'm in.
+- Price: from $7,500 a month, strategy and execution included.
 
 ## What the numbers say
 
@@ -106,7 +106,7 @@ I'd rather you check my claims than take them. Here is what the people who measu
 4. Get the first 90 days as a list of bets, each with a cost, a success measure and a stop date.
 5. Put the systems, logins and reporting in your accounts from day one, so whatever gets built is yours. By month three your team is reading the scorecard without me explaining it.
 
-If you're interviewing other people for this seat too, the [twelve questions](/how-to-evaluate-a-fractional-cmo/) page has the interview.
+If you're interviewing other people for this role too, the [twelve questions](/how-to-evaluate-a-fractional-cmo/) page has the interview.
 
 ## Questions people ask
 
@@ -129,10 +129,10 @@ Enough to own the number. There's a weekly leadership session, I'm in the accoun
 For most brands, no. Complex media mix modeling matters at massive scale. For everyone else, looking at MER and contribution margin across the whole business tells you what's actually moving the needle. [Here's the math.](/mer-target/)
 
 ### How long does an engagement last?
-Long enough to build the system and teach the team to run it, which is usually six to twelve months or more. Most clients hire me for one seat and end up keeping me around for another, but the goal is that you own the system either way.
+Long enough to build the system and teach the team to run it, which is usually six to twelve months or more. Most clients hire me for one thing and end up keeping me around for more, but the goal is that you own the system either way.
 
 ### How much does a fractional head of growth cost?
-The Growth Den starts at $7,500 a month, whichever seat I'm in, and goes up with how many services I cover and how much building is involved. Ad spend and software stay in your accounts.
+The Growth Den starts at $7,500 a month, strategy and execution included, and goes up with how many services I cover and how much building is involved. Ad spend and software stay in your accounts.
 
 ### When should we convert to a full-time hire?
 When the system is built, the cadence is running, and there's enough steady work for a full-time person to own it. I'll tell you when that point arrives, and I'll help you hire and onboard them.

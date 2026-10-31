@@ -14,7 +14,7 @@ YYYY-MM-DD-some-slug.md with this front matter:
 then run:  python3 scripts/build_notes.py
 
 It renders notes/<slug>/index.html for every issue, the notes/index.html
-archive, the "latest notes" blocks on the homepage and seat pages, the
+archive, the "latest notes" blocks on the homepage and service pages, the
 sitemap and the Notes section of llms.txt. No dependencies beyond Python 3.
 """
 import datetime as dt
@@ -349,7 +349,7 @@ def cta_box(n):
     """The closing box, specific to what the note was about when the front matter says so.
     Front matter: cta_title, cta_text, cta_button, cta_more (a path), cta_more_text."""
     title = n.get("cta_title") or "Work with Logan"
-    text = n.get("cta_text") or "I'm a fractional growth advisor for growth-stage DTC and e-commerce brands. I handle strategy and take execution off your plate, in whatever seat you need, from $7,500 a month."
+    text = n.get("cta_text") or "I'm a fractional growth advisor for growth-stage DTC and e-commerce brands. I handle strategy and take execution off your plate, strategic growth advisory with the execution built in, from $7,500 a month."
     button = n.get("cta_button") or "Let's see if we're a fit"
     more = n.get("cta_more") or "/#services"
     more_text = n.get("cta_more_text") or "See the services"

@@ -33,7 +33,7 @@ cta_button: Let's map the roles
 - The role map, the job descriptions, the interview rubrics and the onboarding plans.
 - SOPs and AI workflows written for the people who'll actually use them, in your accounts.
 
-From $7,500 a month, whichever seat I'm in. Where it lands above that depends on how many seats I'm covering and how much building is involved. Ad spend and software stay in your accounts and are never marked up.
+From $7,500 a month, strategy and execution included. Where it lands above that depends on how much of the function I'm covering and how much building is involved. Ad spend and software stay in your accounts and are never marked up.
 
 ## Why strategy and execution from one person
 

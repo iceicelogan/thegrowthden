@@ -5,7 +5,7 @@ description: The right time is usually earlier than founders think and later tha
 updated: 2026-10-05
 kind: checklist
 cta_title: Sounds like it's time?
-cta_text: If you're at one of the moments on this page, the fastest way to find out is a 30-minute call where you tell me the number you need moved and what you've tried. I'll tell you which seat it is, or that it isn't time yet.
+cta_text: If you're at one of the moments on this page, the fastest way to find out is a 30-minute call where you tell me the number you need moved and what you've tried. I'll tell you what kind of help it is, or that it isn't time yet.
 cta_button: Let's see if it's time
 ---
 
@@ -80,7 +80,7 @@ Usually not a disaster. Usually just a slow leak: spend that isn't tested agains
 ## Questions people ask
 
 ### At what revenue does a fractional growth lead make sense?
-Roughly $5M to $80M. Below that, spend the money on product and a generalist. Above that you can usually justify a full-time senior team, although plenty of larger brands still use a fractional lead for a specific seat.
+Roughly $5M to $80M. Below that, spend the money on product and a generalist. Above that you can usually justify a full-time senior team, although plenty of larger brands still use a fractional lead for a specific role.
 
 ### Should we hire a fractional lead or a full-time head of growth?
 If you have six-plus months of steady, well-defined work and the system already exists, hire full-time. If the strategy isn't settled and the systems aren't built, a fractional lead builds them first and then helps you hire the person who'll run them.
