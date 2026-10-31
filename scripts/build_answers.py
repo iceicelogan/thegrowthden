@@ -595,7 +595,7 @@ def update_home(pages):
     block = "".join(f'<li><a href="/{p["slug"]}/">{html.escape(p["h1"])}</a></li>' for p in pages)
     pat = re.compile(r"(<!-- STRAIGHT-ANSWERS:START -->).*?(<!-- STRAIGHT-ANSWERS:END -->)", re.S)
     if not pat.search(t):
-        raise SystemExit("STRAIGHT-ANSWERS marker not found in index.html")
+        return  # the homepage links to /notes/#straight-answers instead of listing them
     home.write_text(pat.sub(lambda m: m.group(1) + block + m.group(2), t), encoding="utf-8")
 
 
