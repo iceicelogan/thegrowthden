@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-TR4S2MZM');</script>
+<!-- End Google Tag Manager -->
+<title>Level Dial Explainer — ask anything, slide to change the depth</title>
+<link rel="canonical" href="https://thegrowthden.com/lab/explain/" />
+<meta property="og:url" content="https://thegrowthden.com/lab/explain/" />
+<meta property="og:title" content="Level Dial Explainer" />
+<meta property="og:description" content="Ask any question and drag a dial between Child, Beginner, Intermediate and Advanced explanations. A free build from The Growth Den." />
+<meta property="og:type" content="website" />
+<meta property="og:image" content="https://thegrowthden.com/uploads/og-default.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="https://thegrowthden.com/uploads/og-default.png" />
+<meta name="description" content="Ask any question and drag a dial between Child, Beginner, Intermediate and Advanced explanations. A free build from The Growth Den.">
+<meta name="robots" content="noindex">
+<link rel="icon" href="../../favicon-32x32.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap">
+<style>
+html{-webkit-text-size-adjust:100%}
+body{margin:0}
+.brand{display:inline-block;margin-bottom:18px}
+.brand img{height:34px;width:auto;display:block}
+/* Layout: one centered column on a cream ground. Ask bar, the level dial as the hero control, then one answer sheet.
+   Single deliberate look (Growth Den cream + purple ink), so no dark-theme blocks. */
+:root{
+  --ground:#fcf3d6; --sheet:#fffbf1; --ink:#341f44; --muted:#6e5c79; --line:#eadfc2;
+  --accent:#fe7c2b; --gold:#ffc545; --focus:#256493; --danger:#c42c08;
+  --display:"Poppins",ui-sans-serif,system-ui,sans-serif; --body:"Poppins",ui-sans-serif,system-ui,sans-serif;
+  --mono:"DM Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+body{background:var(--ground);color:var(--ink);font-family:var(--body);font-weight:300;font-size:16px;line-height:1.6;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:40px 56px}
+.wrap{max-width:760px;margin:0 auto;display:grid;gap:28px}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+h1{font-family:var(--display);font-weight:600;font-size:clamp(28px,5vw,40px);line-height:1.15;margin:6px 0 8px;text-wrap:balance}
+h1 em{font-style:normal;color:var(--accent)}
+.lede{margin:0;color:var(--muted);max-width:60ch}
+form{display:flex;gap:10px;flex-wrap:wrap}
+#q{flex:1 1 280px;min-width:0;font:inherit;font-weight:400;font-size:17px;color:var(--ink);background:var(--sheet);border:1.5px solid var(--line);border-radius:12px;padding:14px 16px}
+#q::placeholder{color:var(--muted)}
+button{font:inherit;cursor:pointer}
+:focus-visible{outline:2.5px solid var(--focus);outline-offset:2px}
+.primary{font-weight:600;background:var(--ink);color:var(--ground);border:0;border-radius:12px;padding:14px 22px}
+.primary:hover{background:#4a2d60}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.chip{font-size:13px;font-weight:400;color:var(--ink);background:rgba(52,31,68,.04);border:1px solid rgba(52,31,68,.28);border-radius:999px;padding:6px 12px}
+.chip:hover{border-color:var(--accent);background:var(--sheet)}
+.note{font-size:14px;color:var(--muted);margin:0}
+.err{color:var(--danger);font-weight:500}
+
+/* The dial */
+.dial{display:grid;grid-template-columns:repeat(4,1fr);position:relative;padding-top:6px;touch-action:pan-y;user-select:none;-webkit-user-select:none;cursor:grab}
+.dial.dragging{cursor:grabbing}
+.track{position:absolute;left:12.5%;right:12.5%;top:22px;height:4px;border-radius:2px;background:var(--line);z-index:0}
+.fill{position:absolute;left:0;top:0;height:100%;border-radius:2px;background:var(--gold);transition:width .3s ease}
+.stop{display:grid;justify-items:center;gap:2px;text-align:center;padding-top:42px;position:relative;min-width:0;z-index:1}
+.stop::before{content:"";position:absolute;top:17px;width:14px;height:14px;border-radius:50%;background:var(--ink);border:2px solid var(--ground);box-shadow:0 0 0 1px var(--line)}
+.stop.waiting::before{background:var(--ground);border:2px dashed var(--muted);box-shadow:none;animation:pulse 1.4s ease-in-out infinite}
+.stop input{position:absolute;opacity:0;inset:0;margin:0;cursor:inherit}
+.stop .nm{font-weight:500;font-size:15px}
+.stop .hn{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.04em}
+.stop:has(input:checked) .nm{color:var(--accent);font-weight:600}
+.stop:has(input:focus-visible){outline:2.5px solid var(--focus);outline-offset:4px;border-radius:8px}
+.knob{position:absolute;top:10px;width:28px;height:28px;margin-left:-14px;border-radius:50%;background:var(--accent);
+  border:3px solid var(--sheet);box-shadow:0 2px 10px rgba(52,31,68,.28);transition:left .3s cubic-bezier(.3,1.4,.5,1);pointer-events:none;z-index:3}
+.dial.dragging .knob,.dial.dragging .fill{transition:none}
+@keyframes pulse{50%{opacity:.35}}
+
+/* Answer sheet */
+.sheet{background:var(--sheet);border:1px solid var(--line);border-radius:18px;padding:28px clamp(18px,4vw,36px) 30px;display:grid;gap:14px;min-width:0;box-shadow:0 1px 0 rgba(52,31,68,.04),0 12px 32px -18px rgba(52,31,68,.25)}
+.sheet-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+.qtitle{font-family:var(--display);font-weight:600;font-size:21px;line-height:1.3;margin:0;text-wrap:balance;min-width:0}
+.head-r{display:flex;gap:8px;align-items:center}
+.tag{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);border:1px solid var(--line);border-radius:6px;padding:2px 7px;white-space:nowrap}
+.stopbtn{font-size:12px;background:none;border:1px solid var(--line);border-radius:6px;padding:2px 9px;color:var(--ink)}
+.answer{white-space:pre-line;font-weight:400;font-size:17px;line-height:1.7;max-width:66ch;transition:opacity .16s ease;min-width:0}
+.answer.fading{opacity:.15}
+.caret{display:inline-block;width:8px;height:1.05em;margin-left:2px;vertical-align:-2px;background:var(--accent);border-radius:1px;animation:pulse 1s steps(2) infinite}
+.waitbox{display:grid;gap:6px;padding:8px 0}
+.waitbox strong{font-weight:500}
+footer{font-size:13px;color:var(--muted);text-align:center}
+@media (prefers-reduced-motion: reduce){.knob,.fill,.answer{transition:none}.stop.waiting::before,.caret{animation:none}}
+@media (max-width:480px){.stop .nm{font-size:13px}.stop .hn{font-size:10px}.sheet{padding:22px 16px}}
+</style>
+</head>
+<body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TR4S2MZM"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager -->
+
+<div class="wrap">
+  <header>
+    <a class="brand" href="/" aria-label="The Growth Den home"><img src="../../uploads/Growth_Den__Logo_Horizontal_Primary.svg" alt="The Growth Den"></a>
+    <div class="eyebrow">A free build from The Growth Den</div>
+    <h1>Ask anything. <em>Slide</em> to change the depth.</h1>
+    <p class="lede">Every answer is written four ways, from a seven-year-old to an expert. Drag the dial and the same answer rewrites itself.</p>
+  </header>
+
+  <section>
+    <form id="ask" autocomplete="off">
+      <input id="q" name="q" type="text" placeholder="Ask about anything…" aria-label="Your question" maxlength="400">
+      <button class="primary" id="go" type="submit">Explain it</button>
+    </form>
+    <div class="chips" id="examples" aria-label="Example questions"></div>
+    <p class="note" id="unavail" hidden>New questions only work on thegrowthden.com. The example questions still work here.</p>
+  </section>
+
+  <div class="dial" role="radiogroup" aria-label="Level of understanding" id="dial">
+    <div class="track"><div class="fill" id="fill"></div></div>
+    <div class="knob" id="knob"></div>
+  </div>
+
+  <article class="sheet" id="sheet" aria-live="polite"></article>
+
+  <footer>Built by Logan Ice at The Growth Den. Answers are written live by Claude and can be wrong, so check anything important.</footer>
+</div>
+
+<script>
+const LEVELS = [
+  {key:"child", name:"Child", hint:"AGE 7",
+   brief:"a curious 7-year-old. Short sentences, everyday comparisons, no jargon at all. 50 to 90 words.", tier:"quick"},
+  {key:"beginner", name:"Beginner", hint:"NEW TO IT",
+   brief:"an adult who is new to the subject. Plain language, and define any term you use. 90 to 150 words."},
+  {key:"intermediate", name:"Intermediate", hint:"KNOWS BASICS",
+   brief:"someone with working knowledge of the field. Use correct terminology, explain the actual mechanism, and give one concrete example. 140 to 220 words."},
+  {key:"advanced", name:"Advanced", hint:"EXPERT",
+   brief:"an expert or graduate student. Be precise and technical, and cover nuances, edge cases and what is still debated. 180 to 280 words."}
+];
+const EXAMPLES = ["Why is the sky blue?","How does a credit score work?","What is inflation?","How does Meta decide who sees an ad?","How do vaccines work?","How does an AI chatbot write?"];
+
+// Prebuilt answers for the example questions, so clicking one is instant and costs nothing.
+const PREBUILT = {
+ "Why is the sky blue?": {
+  "child": "Sunlight looks white, but it's really all the colors of the rainbow mixed together.\n\nWhen sunlight comes into our air, it bumps into teeny tiny bits of air that are way too small to see. Those tiny bits bounce blue light all over the sky much more than red or yellow light. So when you look up, blue light is coming at you from every direction, and the whole sky looks blue!",
+  "beginner": "Sunlight contains every color of visible light. Each color is a wave with a different length: red waves are long and blue waves are short.\n\nAs sunlight passes through the atmosphere, it hits gas molecules like nitrogen and oxygen. These molecules scatter short wavelengths much more strongly than long ones, so blue light gets bounced around the sky in every direction while red and yellow mostly pass straight through.\n\nWherever you look, you see that scattered blue light. At sunset the light travels through far more air to reach you. Most of the blue gets scattered away before it arrives, and the reds and oranges are what's left.",
+  "intermediate": "The blue sky comes from Rayleigh scattering. When light hits particles much smaller than its wavelength, like N₂ and O₂ molecules, the strength of the scattering rises with the fourth power of frequency (it scales as 1/λ⁴). Blue light around 450 nm scatters roughly four to five times more than red light around 700 nm.\n\nSo the diffuse light from the sky is weighted heavily toward short wavelengths. It isn't violet, even though violet scatters more, because sunlight carries less violet to begin with and our eyes are less sensitive to it. Our cone cells blend the scattered spectrum into the color we call sky blue.\n\nThe same physics explains red sunsets. With the sun near the horizon, the light's path through the atmosphere is many times longer, so the short wavelengths are scattered out of the direct beam before it reaches you.",
+  "advanced": "For scatterers with size parameter x = 2πr/λ ≪ 1, each molecule's induced dipole radiates with power proportional to ω⁴, giving a Rayleigh cross-section σ ∝ α²/λ⁴, where α is the molecular polarizability. In a gas, it is density fluctuations that make the scattering incoherent and observable; the Einstein–Smoluchowski fluctuation treatment recovers Rayleigh's result for an ideal gas.\n\nThe skylight spectrum is roughly the solar spectrum (close to a 5,800 K blackbody, with absorption lines) weighted by λ⁻⁴, then modified by multiple scattering and by ozone absorption in the Chappuis band, which dominates the blue of the twilight sky. Projected onto human cone responses, that spectrum lands in the blue, not the violet.\n\nSkylight is also partially polarized, peaking about 90° from the sun, because dipole radiation vanishes along the dipole axis. Aerosols with x near 1 push scattering into the Mie regime, which is only weakly wavelength-dependent and strongly forward-peaked. That is why hazy or polluted skies look whiter."
+ },
+ "How does a credit score work?": {
+  "child": "A credit score is like a report card for how good a grown-up is at paying back money they borrowed.\n\nWhen grown-ups borrow money, like to buy a car or a house, they promise to pay it back a little at a time. Every time they pay on time, their score goes up a bit. If they forget or pay late, it goes down. Banks look at the score to decide whether they can trust someone to borrow more.",
+  "beginner": "A credit score is a three-digit number, usually between 300 and 850 in the US, that tells lenders how likely you are to pay back money you borrow. It's calculated from your credit report, which is a record of your loans and credit cards.\n\nThe biggest factor is payment history: whether you pay your bills on time. Next is how much of your available credit you're using. If you have a $10,000 card limit and owe $9,000, that looks riskier than owing $1,000. How long you've had credit, the mix of account types, and how often you apply for new credit matter too.\n\nA higher score usually means easier approvals and lower interest rates, which can save you thousands on a mortgage or car loan.",
+  "intermediate": "Most US lenders use FICO scores (300 to 850), with VantageScore as the main alternative. Both are built from your files at the three credit bureaus: Equifax, Experian and TransUnion. Because each bureau's file can differ slightly, you really have several scores at once.\n\nFICO publishes rough weights: payment history about 35%, amounts owed about 30%, length of credit history 15%, new credit 10% and credit mix 10%. Within amounts owed, the key number is utilization, which is your card balances divided by your card limits, looked at both overall and per card. It's based on the balance reported on your statement date, so paying a card down before the statement closes can raise a score within a month.\n\nFor example, someone with $3,000 of card balances across $10,000 of limits is at 30% utilization. Paying that down to $500 usually lifts the score noticeably. A single 30-day late payment, on the other hand, can drop a good score by dozens of points and stays on the report for seven years. Hard inquiries from new applications have a small, short-lived effect.",
+  "advanced": "A credit score is a rank-ordering model. It estimates the relative likelihood that a consumer goes 90 or more days delinquent on some obligation within roughly the next 24 months. FICO's classic scores are segmented scorecards: consumers are first assigned to a scorecard (thin file, prior delinquency, clean file and so on), and within each one, binned attributes add points in a logistic-regression style framework, scaled so that a fixed number of points doubles the odds of good performance.\n\nThe published factor weights are population averages, not fixed coefficients, and the effect of utilization or inquiries varies by segment. Newer versions change behavior in meaningful ways. FICO 9 ignores paid collections and treats medical collections more leniently. FICO 10T adds trended data, such as whether revolving balances have been rising or falling over 24 months. VantageScore 4.0 also uses trended data and can score thinner files.\n\nThe system is genuinely debated. Lenders often run older score versions, and mortgage in particular has been slow to move to newer models. Because scores reflect access to credit as much as creditworthiness, critics argue they disadvantage people who mostly use cash. Alternative data like rent and utility payments, and cash-flow underwriting from bank transaction data, are the main proposed fixes, with open questions about accuracy, consent and fair-lending risk."
+ },
+ "What is inflation?": {
+  "child": "Inflation is when things slowly cost more money than they used to. A treat that cost one dollar when your grown-ups were kids might cost three dollars now.\n\nThe treat didn't get bigger. Over time, each dollar just buys a little less. A little inflation every year is normal. When prices jump up really fast, it's harder for families, because their money doesn't stretch as far.",
+  "beginner": "Inflation is the rate at which prices rise across the economy over time. If inflation is 3% a year, something that costs $100 today will cost about $103 a year from now. Put another way, each dollar buys a little less than it used to.\n\nIn the US it's usually measured with the Consumer Price Index, which tracks the cost of a typical basket of things people buy, like groceries, rent, gas and medical care.\n\nInflation can happen when people want to buy more than the economy can produce, or when costs go up for businesses, like a jump in oil prices. Central banks such as the Federal Reserve try to keep it near 2% a year. Their main tool is raising interest rates when inflation runs hot, which makes borrowing more expensive and cools down spending.",
+  "intermediate": "Inflation is a sustained rise in the general price level, usually reported as the year-over-year change in an index like CPI or the PCE price index. The Federal Reserve targets 2% on PCE. Economists also watch core inflation, which strips out volatile food and energy prices, to see the underlying trend.\n\nThere are two broad drivers. Demand-pull inflation happens when total spending outpaces what the economy can supply, for example after large stimulus or a long stretch of very low interest rates. Cost-push inflation happens when input costs rise, as with an oil shock or supply chain disruption. Expectations matter too: if workers and businesses expect higher prices, they build them into wages and prices, which can make inflation feed on itself.\n\nCentral banks respond mainly through their policy interest rate. Higher rates make borrowing costlier, slow spending and investment, and cool demand. The 2021 to 2023 surge is a good example. Reopening demand, supply bottlenecks and an energy shock hit at once, and the Fed raised rates from near zero to over 5% to bring inflation back down.",
+  "advanced": "Inflation is the persistent growth rate of the aggregate price level, as distinct from one-off changes in relative prices. Measurement is itself contested. CPI is a fixed-basket, Laspeyres-type index with periodic reweighting, while PCE is a chained Fisher index with broader scope and a smaller housing weight, and it typically runs a few tenths below CPI. Both struggle with quality adjustment, new goods and owners' equivalent rent.\n\nIn the standard New Keynesian framework, inflation depends on expected future inflation and real marginal cost, or the output gap, through the Phillips curve. Policy works through the real interest rate relative to an unobservable neutral rate r*, so the stance of policy is uncertain even when the nominal rate is known. Anchored expectations are what keep the Phillips curve flat and make disinflation cheap; de-anchoring is the central risk.\n\nOpen debates include why the post-2021 disinflation came with far less unemployment than many sacrifice-ratio estimates predicted (supply normalization, a nonlinear Phillips curve that steepens when labor markets are very tight, or credibility effects), the role of fiscal policy in pinning down the price level as the fiscal theory of the price level argues, and whether expanding profit margins amplified cost shocks. The older monetarist link between money growth and inflation has proven unstable in the short run."
+ },
+ "How does Meta decide who sees an ad?": {
+  "child": "When you scroll on Instagram or Facebook, lots of companies want to show you an ad, but there's only room for a few.\n\nSo the app holds a super-fast contest every single time, faster than you can blink. It picks the ad it thinks you'll be most interested in, mixed with how much each company is willing to pay. That's why someone who loves soccer sees lots of soccer ads.",
+  "beginner": "Every time an ad slot opens up in your Facebook or Instagram feed, Meta runs an auction among all the advertisers who want to reach someone like you. It happens in a fraction of a second.\n\nThe winner isn't just whoever pays the most. Meta weighs three things: how much the advertiser is willing to pay, how likely Meta thinks you are to do what the advertiser wants (like click or buy), and how good or relevant the ad seems.\n\nTo predict what you'll do, Meta uses what it knows about your activity, like the pages you follow, the posts you engage with and the ads you've clicked before. Advertisers can choose who to target, but these days Meta's system does most of the work of finding the right people on its own.",
+  "intermediate": "Meta decides which ad wins each impression by ranking ads on total value, not on the bid alone. Total value is roughly the advertiser's bid multiplied by the estimated action rate, plus an ad quality adjustment. The estimated action rate is a machine learning prediction of how likely this specific person is to complete the advertiser's chosen event, like a purchase or a lead, if they see this ad.\n\nThat's why a well-predicted ad can beat a higher bid. If Advertiser A bids $50 per purchase with a 1% predicted purchase rate and Advertiser B bids $30 with a 2% rate, B is worth more per impression, so B wins and often pays less.\n\nAdvertisers mostly control the inputs: budget, bid strategy, the conversion event to optimize for, and the creative. Targeting has become broad by default, and Advantage+ campaigns let the system find buyers on its own. In practice the creative now does much of the targeting, because who responds to an ad tells the model who to show it to next. The quality of conversion data from the pixel and the Conversions API directly affects how good those predictions are.",
+  "advanced": "Each impression goes to the ad with the highest total value, roughly bid × estimated action rate + user-value or quality adjustments, and the winner generally pays around what it needed to beat the next ad rather than its full bid. In most campaigns the bid entering each auction isn't a number the advertiser typed. Pacing algorithms set it continuously to spend the budget over time against the chosen strategy (highest volume, cost cap, bid cap or ROAS goal), so it behaves like a dynamic shadow price.\n\nThe estimated action rate comes from a cascade of models. Meta has described a retrieval stage (Andromeda) that narrows millions of candidate ads to a manageable set, followed by heavier ranking models that predict conversion probability, increasingly using sequence-based learning over users' long engagement histories. After Apple's ATT, signal loss pushed Meta toward modeled conversions, server-side Conversions API events and aggregated measurement, so keeping predicted and observed conversion rates calibrated is an ongoing problem.\n\nMedia buyers still argue over the practical consequences: how much consolidated, broad campaigns beat segmented ones, whether creative diversity now drives retrieval more than audience settings, and how learning-phase instability (around 50 optimization events per ad set per week) interacts with budget changes. Measurement is the biggest open question, since platform-reported conversions and incrementality tests often disagree."
+ },
+ "How do vaccines work?": {
+  "child": "Your body has a team of tiny defenders that fight germs. They fight best against germs they've seen before.\n\nA vaccine is like showing them a wanted poster of a germ. It's a safe, harmless piece or picture of the germ, so your defenders can practice. Then if the real germ ever shows up, they recognize it right away and stop it before it can make you very sick.",
+  "beginner": "Your immune system protects you by learning to recognize germs, like viruses and bacteria, and remembering them. The first time it meets a new germ, it can take a week or more to build a strong defense, and you might get quite sick in the meantime.\n\nA vaccine gives your immune system a safe preview. It contains a weakened or inactivated germ, a piece of one, or instructions your cells use to make one harmless piece. Your body responds by making antibodies and memory cells for that germ.\n\nLater, if you're exposed to the real thing, those memory cells kick in fast. They often stop the infection or make it much milder. Some vaccines need boosters because that memory fades over time or the germ itself changes.",
+  "intermediate": "Vaccines work by showing the immune system an antigen, a molecule from the pathogen that the immune system can recognize, without causing the disease. This triggers the adaptive immune response. B cells produce antibodies that bind the antigen, and T cells help coordinate that response and kill infected cells. Crucially, some of these cells become long-lived memory B and T cells.\n\nDifferent vaccine types deliver the antigen in different ways. Live attenuated vaccines, like MMR, use a weakened pathogen that replicates a little. Inactivated and subunit vaccines, like the injectable flu shot and hepatitis B, use a killed pathogen or purified proteins, often with an adjuvant to strengthen the response. mRNA vaccines deliver instructions so your own cells briefly make the antigen, such as the SARS-CoV-2 spike protein.\n\nOn a later exposure, memory cells mount a secondary response that is faster and stronger. Boosters raise antibody levels and improve how tightly antibodies bind. Protection against infection can wane while protection against severe disease lasts much longer, which is what happened with COVID-19 vaccines.",
+  "advanced": "Vaccination exploits adaptive immunity's capacity for antigen-specific clonal selection and memory. Innate sensing, through pattern recognition receptors responding to pathogen-associated patterns or adjuvants, activates dendritic cells, which present antigen on MHC molecules to naive T cells in draining lymph nodes. Follicular helper T cells then drive germinal center reactions, where B cells undergo somatic hypermutation and affinity selection, producing long-lived plasma cells and memory B cells.\n\nThe platform shapes the response. Live attenuated vaccines engage both MHC class I and class II pathways and tend to give durable, broad immunity. Protein subunit vaccines depend heavily on adjuvants such as alum, AS01 or saponin-based formulations to supply innate signals. Lipid nanoparticle mRNA vaccines are partly self-adjuvanting through the ionizable lipid and RNA sensing, and they produce strong germinal center responses and CD8 T cell priming.\n\nOpen problems include durable mucosal immunity, since injected vaccines induce little secretory IgA in the airways; immune imprinting, where earlier exposures bias responses toward older variants; correlates of protection that are still poorly defined for many pathogens; and broadly neutralizing responses against highly variable antigens like HIV envelope and influenza hemagglutinin, where structure-guided germline-targeting strategies are being tested."
+ },
+ "How does an AI chatbot write?": {
+  "child": "An AI chatbot has read a gigantic amount of writing, way more than any person could read in a thousand lifetimes. From all that reading, it learned which words usually come next.\n\nWhen you ask it something, it writes the answer one little piece at a time, each time picking a word that fits well after the ones before. It's like a super-powered guessing game that's usually right, but it can still make mistakes.",
+  "beginner": "AI chatbots like ChatGPT and Claude are built on large language models. A language model is a program trained on an enormous amount of text, like books, websites and articles, to get very good at one job: predicting what comes next in a piece of writing.\n\nWhen you type a question, the chatbot breaks it into small chunks called tokens, then writes its reply one token at a time. Each time, it predicts which token fits best given everything so far, adds it, and repeats.\n\nAfter that first round of training, companies train it further on examples of good answers and on feedback from people, so it acts like a helpful assistant instead of just continuing text. Because it predicts likely text rather than looking facts up, it can sometimes say wrong things confidently.",
+  "intermediate": "Modern chatbots are large language models built on the transformer architecture. Text is split into tokens, which are word pieces, and each token is mapped to a vector of numbers. The transformer's attention layers let each token's representation draw on every earlier token, so the model builds a context-aware picture of the whole conversation.\n\nTraining happens in stages. Pretraining teaches next-token prediction on trillions of tokens of text, which forces the model to pick up grammar, facts and reasoning patterns. Fine-tuning on example conversations, followed by reinforcement learning from human or AI feedback, shapes it into an assistant that follows instructions and declines harmful requests.\n\nWhen it writes, the model outputs a probability for every possible next token. A setting called temperature controls how adventurous the pick is. The chosen token is added and the process repeats. After 'The capital of France is', for example, it puts very high probability on ' Paris'. Many chatbots also use tools like web search to ground answers in current information, which cuts down on made-up facts.",
+  "advanced": "A chat model is an autoregressive transformer modeling p(x_t | x_<t) over a subword vocabulary. Each layer applies multi-head causal self-attention and then an MLP, with residual connections and normalization, and key-value caching keeps the cost of each new token manageable. Many frontier models use mixture-of-experts layers to grow parameter count without growing per-token compute, and long-context variants rely on positional schemes like RoPE plus attention optimizations.\n\nCapabilities come mostly from pretraining on very large corpora under compute-optimal scaling, then post-training: supervised fine-tuning on demonstrations, preference optimization through RLHF, RLAIF or direct preference methods, and increasingly reinforcement learning against verifiable rewards in math and code, which produces the extended chain-of-thought reasoning used at inference time.\n\nThe open questions are substantial. Interpretability research finds features and circuits inside these models, but how they store and combine knowledge is only partly understood. Hallucination ties to calibration and to training objectives that reward fluent answers. Researchers still debate how far reasoning generalizes beyond the training distribution, how faithfully chain-of-thought reflects the model's actual computation, and how to evaluate models when benchmark data may have leaked into training sets."
+ }
+};
+
+const $ = id => document.getElementById(id);
+let level = 0;
+let current = makeDone("Why is the sky blue?", PREBUILT["Why is the sky blue?"]);
+const PROXY_URL = 'https://growth-den-lab-proxy.growth-den-lab-proxy.workers.dev';
+const MODEL = 'claude-sonnet-4-5';
+let ctl = null;
+
+function makeDone(title, texts){
+  const levels = {};
+  LEVELS.forEach(L => levels[L.key] = {text: texts[L.key], status: "done"});
+  return {title, levels};
+}
+
+// Example chips
+EXAMPLES.forEach(t => {
+  const b = document.createElement("button");
+  b.type = "button"; b.className = "chip"; b.textContent = t;
+  b.onclick = () => { $("q").value = t; ask(t); };
+  $("examples").append(b);
+});
+
+// ---------- Dial ----------
+const dial = $("dial"), knob = $("knob"), fill = $("fill");
+LEVELS.forEach((L, i) => {
+  const lab = document.createElement("label");
+  lab.className = "stop"; lab.id = "stop-" + L.key;
+  lab.innerHTML = `<input type="radio" name="level" id="lvl-${L.key}" value="${i}"><span class="nm">${L.name}</span><span class="hn">${L.hint}</span>`;
+  lab.querySelector("input").addEventListener("change", e => setLevel(+e.target.value));
+  dial.append(lab);
+});
+function moveKnobTo(pct){ knob.style.left = pct + "%"; fill.style.width = ((pct - 12.5) / 75 * 100) + "%"; }
+function placeKnob(){ moveKnobTo(12.5 + level * 25); $("lvl-" + LEVELS[level].key).checked = true; }
+function setLevel(i, instant){
+  if (i === level) { placeKnob(); return; }
+  level = i; placeKnob();
+  const a = document.querySelector(".answer");
+  if (!instant && a && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    a.classList.add("fading"); setTimeout(render, 140);
+  } else render();
+}
+
+// Drag support: the knob follows the pointer, the answer swaps live as you cross each stop, and it snaps on release.
+let drag = null;
+function fracFromX(x){ const r = dial.getBoundingClientRect(); return (x - r.left) / r.width; }
+function idxFromX(x){ return Math.max(0, Math.min(3, Math.round((fracFromX(x) - .125) / .25))); }
+dial.addEventListener("pointerdown", e => {
+  if (e.pointerType === "mouse" && e.button !== 0) return;
+  drag = {id: e.pointerId, x0: e.clientX, moved: false};
+  try { dial.setPointerCapture(e.pointerId); } catch(_) {}
+});
+dial.addEventListener("pointermove", e => {
+  if (!drag || e.pointerId !== drag.id) return;
+  if (!drag.moved && Math.abs(e.clientX - drag.x0) < 4) return;
+  if (!drag.moved) { drag.moved = true; dial.classList.add("dragging"); }
+  e.preventDefault();
+  const pct = Math.max(12.5, Math.min(87.5, fracFromX(e.clientX) * 100));
+  moveKnobTo(pct);
+  const i = idxFromX(e.clientX);
+  if (i !== level) { level = i; $("lvl-" + LEVELS[i].key).checked = true; render(); }
+});
+function endDrag(e, cancelled){
+  if (!drag || e.pointerId !== drag.id) return;
+  dial.classList.remove("dragging");
+  drag = null;
+  if (cancelled) { placeKnob(); return; }
+  setLevel(idxFromX(e.clientX), true);
+}
+dial.addEventListener("pointerup", e => endDrag(e, false));
+dial.addEventListener("pointercancel", e => endDrag(e, true));
+// Clicks are handled on pointerup, so stop the label's own click from double-firing.
+dial.addEventListener("click", e => { if (e.detail !== 0) e.preventDefault(); });
+document.addEventListener("keydown", e => {
+  if (e.target.matches("input[type=text], input[type=radio]")) return;
+  if (e.key === "ArrowRight" && level < 3) setLevel(level + 1);
+  if (e.key === "ArrowLeft" && level > 0) setLevel(level - 1);
+});
+
+// ---------- Rendering ----------
+function render(){
+  const L = LEVELS[level];
+  const lv = current.levels[L.key];
+  LEVELS.forEach(x => $("stop-" + x.key).classList.toggle("waiting", current.levels[x.key].status === "waiting" || current.levels[x.key].status === "streaming" && x.key !== L.key));
+
+  const writing = LEVELS.some(x => ["waiting","streaming"].includes(current.levels[x.key].status));
+  const sheet = $("sheet");
+  sheet.innerHTML = "";
+
+  const head = document.createElement("div"); head.className = "sheet-head";
+  const h = document.createElement("h2"); h.className = "qtitle"; h.textContent = current.title;
+  const r = document.createElement("div"); r.className = "head-r";
+  const tag = document.createElement("span"); tag.className = "tag";
+  tag.textContent = L.name + " level";
+  r.append(tag);
+  if (writing) {
+    const s = document.createElement("button"); s.type = "button"; s.className = "stopbtn"; s.textContent = "Stop";
+    s.onclick = () => ctl && ctl.abort();
+    r.append(s);
+  }
+  head.append(h, r); sheet.append(head);
+
+  if (lv.status === "error") {
+    const p = document.createElement("p"); p.className = "note err"; p.textContent = lv.err; sheet.append(p);
+    if (lv.text) { const a = document.createElement("div"); a.className = "answer"; a.textContent = lv.text; sheet.append(a); }
+    return;
+  }
+  if (lv.status === "waiting" || (lv.status === "streaming" && !lv.text)) {
+    const ready = LEVELS.filter(x => current.levels[x.key].status === "done").map(x => x.name);
+    const w = document.createElement("div"); w.className = "waitbox";
+    w.innerHTML = `<strong></strong><p class="note"></p>`;
+    w.querySelector("strong").textContent = `Writing the ${L.name.toLowerCase()} version…`;
+    w.querySelector("p").textContent = ready.length ? `${ready.join(", ")} ${ready.length > 1 ? "are" : "is"} ready to read now.` : "This usually takes a few seconds.";
+    sheet.append(w);
+    return;
+  }
+  if (lv.status === "stopped" && !lv.text) {
+    const p = document.createElement("p"); p.className = "note"; p.textContent = "Stopped before this level was written. Ask again to finish it."; sheet.append(p);
+    return;
+  }
+  const a = document.createElement("div"); a.className = "answer";
+  a.textContent = lv.text;
+  if (lv.status === "streaming") { const c = document.createElement("span"); c.className = "caret"; c.setAttribute("aria-hidden","true"); a.append(c); }
+  sheet.append(a);
+}
+
+// ---------- Claude ----------
+function prompt(q, L){
+  return [
+    `Explain this for ${L.brief}`,
+    `Question or topic: """${q}"""`,
+    "Be accurate. A simpler explanation may leave things out, but it must never say anything false. Never talk down to the reader.",
+    "Plain text only: no markdown, no bullet points, no headings, no title. Separate paragraphs with a blank line.",
+    "Reply with only the explanation itself, with no preamble."
+  ].join("\n");
+}
+function errCopy(code){
+  if (code === 429) return "Lots of people are asking questions right now. Give it a minute, then try again.";
+  if (code === 503) return "Claude is taking a breather. Try again in a minute.";
+  if (code === 403) return "New questions only work on thegrowthden.com.";
+  if (code === "empty") return "Nothing came back for this level. Try asking again.";
+  return "Something went wrong reaching Claude for this level. Try again.";
+}
+
+// Calls Claude through The Growth Den's Lab Proxy (the API key lives in the Worker, never in this page).
+// Streams when the proxy streams; falls back to a single JSON reply when it doesn't.
+async function askClaude(text, signal, onText){
+  const res = await fetch(PROXY_URL + '/claude', {
+    method: 'POST', signal,
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ model: MODEL, max_tokens: 900, stream: true, messages: [{ role: 'user', content: text }] })
+  });
+  if (!res.ok) throw { code: res.status };
+  const type = res.headers.get('content-type') || '';
+  if (!type.includes('event-stream') || !res.body) {
+    const j = await res.json();
+    const t = (j.content || []).map(b => b.text || '').join('');
+    if (t) onText(t);
+    return t;
+  }
+  const reader = res.body.getReader(), dec = new TextDecoder();
+  let buf = '', full = '';
+  for (;;) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    buf += dec.decode(value, { stream: true });
+    const lines = buf.split('\n'); buf = lines.pop();
+    for (const ln of lines) {
+      const s = ln.trim();
+      if (!s.startsWith('data:')) continue;
+      try {
+        const ev = JSON.parse(s.slice(5));
+        if (ev.type === 'content_block_delta' && ev.delta && ev.delta.text) { full += ev.delta.text; onText(full); }
+        if (ev.type === 'error') throw { code: 503 };
+      } catch (e) { if (e && e.code) throw e; }
+    }
+  }
+  return full;
+}
+
+async function ask(q){
+  q = (q || "").trim();
+  if (!q) return;
+  // Example questions are prebuilt: load all four levels instantly, no call to Claude.
+  const hit = Object.keys(PREBUILT).find(k => k.toLowerCase().replace(/[?.!\s]+$/,"") === q.toLowerCase().replace(/[?.!\s]+$/,""));
+  if (hit) {
+    if (ctl) { ctl.abort(); ctl = null; }
+    current = makeDone(hit, PREBUILT[hit]);
+    render();
+    $("sheet").scrollIntoView({behavior:"smooth", block:"nearest"});
+    return;
+  }
+  if (ctl) ctl.abort();
+  const my = ctl = new AbortController();
+  const levels = {};
+  LEVELS.forEach(L => levels[L.key] = {text:"", status:"waiting"});
+  const job = current = {title: q, levels};
+  level = 0; placeKnob(); render();
+  $("sheet").scrollIntoView({behavior:"smooth", block:"nearest"});
+
+  // Child first, then the rest in order. All four requests go out now; child is sent first and is the shortest, so it lands first.
+  LEVELS.forEach(async L => {
+    const slot = levels[L.key];
+    const onText = text => {
+      if (current !== job) return;
+      slot.text = text; slot.status = "streaming";
+      if (LEVELS[level].key === L.key) render();
+    };
+    try {
+      const text = await askClaude(prompt(q, L), my.signal, onText);
+      if (!text.trim()) throw { code: "empty" };
+      slot.text = text.trim(); slot.status = "done";
+    } catch(e) {
+      if (e && e.name === "AbortError") { slot.status = slot.text ? "done" : "stopped"; }
+      else {
+        const code = e && e.code;
+        slot.status = "error"; slot.err = errCopy(code);
+        if (code === 403 || (e instanceof TypeError && !/thegrowthden\.com$/.test(location.hostname))) $("unavail").hidden = false;
+      }
+    }
+    if (current === job) render();
+    if (LEVELS.every(x => !["waiting","streaming"].includes(levels[x.key].status)) && ctl === my) ctl = null;
+  });
+}
+
+$("ask").addEventListener("submit", e => { e.preventDefault(); ask($("q").value); });
+
+placeKnob();
+render();
+if (!/thegrowthden\.com$/.test(location.hostname)) $("unavail").hidden = false;
+</script>
+</body>
+</html>
