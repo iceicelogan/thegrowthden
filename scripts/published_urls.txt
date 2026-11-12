@@ -31,4 +31,5 @@ lab/the-machine
 collage
 notes/make-the-cow-a-sphere
 notes/roll-for-role-models
+notes/on-cavemen-and-camels
 
